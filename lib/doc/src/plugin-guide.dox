@@ -1,0 +1,123 @@
+/*! \page plugin-guide Writing plugins for Accounts UI
+
+\section providerpluginguide Writing provider plugins
+
+Provider plugins are executable binaries loaded by the Accounts application
+when an account is being created or edited. A typical provider plugin consists
+of a short main() function which instantiates a subclass of
+AccountsUI::ProviderPluginProcess and yields control to it by calling its
+\ref AccountsUI::ProviderPluginProcess::exec() "exec()" method:
+
+\code
+int main(int argc, char **argv)
+{
+    // MyPlugin is a subclass of ProviderPluginProcess
+    MyPlugin *plugin = new MyPlugin(argc, argv);
+
+    int ret = plugin->exec();
+
+    delete plugin;
+    return ret;
+}
+\endcode
+
+When the \ref AccountsUI::ProviderPluginProcess "ProviderPluginProcess" object
+is created, it creates an Accounts::Account object (which in case of a new
+account creation does not yet exists in the accounts database) representing the
+account being created or edited, and it calls its \ref
+AccountsUI::ProviderPluginProcess::accountSetupContext "accountSetupContext"
+method. This method should be reimplemented by provider plugins in order to
+return an object subclass of AccountsUI::AbstractAccountSetupContext.
+
+\note
+The ProviderPluginProcess temporarily comes with an alternate constructor,
+which takes an AccountsUI::AccountPluginInterface as its first parameter. When
+using this constructor, there's no need to implement the
+\ref AccountsUI::ProviderPluginProcess::accountSetupContext "accountSetupContext"
+method, because the \ref AccountsUI::AbstractAccountSetupContext
+"AbstractAccountSetupContext" will be obtained from the \ref
+AccountsUI::AccountPluginInterface::accountSetupContext "accountSetupContext"
+method of the \ref AccountsUI::AccountPluginInterface "AccountPluginInterface".
+
+\par
+This constructor is deprecated and will be eventually removed.
+
+The AbstractAccountSetupContext is where most of the provider plugin code would
+reside: the most important methods to be implemented are
+AccountsUI::AbstractAccountSetupContext::widget, which constructs the UI
+elements to get the basic informations about the account from the user
+(typically, username and password), and
+AccountsUI::AbstractAccountSetupContext::store, which is called when the plugin
+should store its data into the account.
+
+\section servicepluginguide Writing service plugins
+
+\subsection servicepluginxml Building the UI from the service definition file
+
+For simple service plugins, the quickest way to present settings to the user is
+to define the user interface in the XML code of the .service file, inside the
+\<ui\> element:
+
+\code
+<?xml version="1.0" encoding="UTF-8" ?>
+<service id="google-talk">
+  <type>IM</type>
+  <provider>google</provider>
+  <name>GoogleTalk</name>
+  <icon>icon_google_talk</icon>
+
+  <!-- default settings (account settings have precedence over these) -->
+  <template>
+    <setting name="manager">gabble</setting>
+    <setting name="protocol">jabber</setting>
+
+    <parameters>
+      <setting name="server">talk.google.com</setting>
+      <setting name="port" type="i">5223</setting>
+      <setting name="old-ssl" type="b">1</setting>
+      <setting name="fallback-conference-server">conference.jabber.org</setting>
+    </parameters>
+
+  </template>
+
+  <ui>
+    <layout type ="linear">
+
+      <layout type ="linear">
+        <widget type="string" key="parameters/server"/>
+        <widget type="integer" key="parameters/port"/>
+        <widget type="checkbox" key="parameters/old-ssl"/>
+      </layout>
+
+      <layout type ="flow">
+        <widget type="string" key="parameters/proxy"/>
+      </layout>
+
+    </layout>
+  </ui>
+
+</service>
+\endcode
+
+\note
+The parser is rather limited: at the moment, only string, integer and boolean
+parameters are supported. Widget labels are not implemented, but eventually
+will. Feel free to contact the team to suggest new functionality.
+
+\subsection serviceplugincode Service plugins as Qt plugins
+
+A service plugin can be implemented as a Qt plugin implementing the
+AccountsUI::ServicePluginInterface interface. The
+AccountsUI::GenericServicePlugin object implements this interface and
+subclassing it can save some typing.
+
+The AccountsUI::AbstractServiceSetupContext returned by the \ref
+AccountsUI::GenericServicePlugin "GenericServicePlugin" is the \ref
+AccountsUI::GenericServiceSetupContext "GenericServiceSetupContext", which
+builds the UI from the service XML file as described in \ref servicepluginxml.
+This context can be derived in order to extend the number the widgets and
+layouts recognized by the parser by calling the
+AccountsUI::Parser::registerWidgetMeta() method for each new widget/layout you
+want to add.
+
+*/

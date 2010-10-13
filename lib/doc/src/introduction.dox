@@ -1,0 +1,69 @@
+/*! \page introduction Introduction to Accounts UI
+
+\section about About Accounts UI
+
+The Accounts application is responsible for creating and editing user accounts,
+and it achieves that via account plugins. The different types of account
+plugins are described below.
+
+libAccountsUI provides classes which help in the creation of account plugins.
+
+\section terminology Common terminology
+
+Some terms used in these pages:
+
+ - Account
+   - This is a user account on server.
+   - With the same term we also refer to the local entity which represents a
+     remote account.
+ - Provider
+   - The organization which provides the account.
+   - Examples: Nokia, Google, Yahoo.
+ - Service
+   - The implementation of a protocol or application which uses an account.
+   - Example of services provided by Google: GMail, Google-talk, Picasa; by
+     Nokia: Ovi Mail, Ovi Calendar; by Yahoo: Flickr.
+ - Service type
+   - The protocol or application of a service.
+   - Example: e-mail (for GMail, Ovi Mail), sharing (for Picasa, Flickr).
+   - It's a string, defined by the application which uses the service.
+ - Credentials
+   - Data that is used to prove that user is who it claims to be.
+   - Example: username and password, OpenId.
+
+\section plugins Accounts Ui plugins
+
+There are two types of Account plugins: provider plugins and service plugins.
+This section assumes the reader is familiar with the UI workflow of the
+Accounts application.
+
+\subsection providerplugins Provider plugins
+
+Provider plugins are responsible for creating and editing of accounts. The
+creation of an account implies creating a record for the account into the
+accounts database (see libaccounts-qt documentation) along with some basic
+information to allow applications to authenticate to the remote server (such as
+the username or credentials ID from the SSO subsystem), and optionally other
+settings common to all services.
+
+The process of creating and editing an account involves handling of user
+credentials which might be bound to a specific security resource token which in
+turn is bound to a unix process; for this reason, creation and editing of
+accounts happens in a different process than the Accounts UI application.
+The provider plugins are not QPlugin or shared objects; instead, they are
+executable binaries.
+
+Read more about provider plugins in the section \ref providerpluginguide
+
+\subsection serviceplugins Service plugins
+
+Service plugins manage the account settings for a specific service. A service
+plugin is a shared object (QPlugin) which is loaded by the provider plugin when
+the account is being created or edited. It can show a UI element which allows
+the user to change the service settings of the account. Since some providers
+offer more than one service on the same account, when editing an account it's
+not unlikely that different service plugins will be loaded at the same time.
+
+Read more about provider plugins in the section \ref servicepluginguide
+
+*/

@@ -1,0 +1,31 @@
+/*! \mainpage
+
+<table class="mainIndex" class="indextable" cellspacing="1" cellpadding="2" border="0" align="center" width="95%">
+  <tr>
+    <th>Getting Started</th>
+    <th>API Reference</th>
+    <th>Developer Resources</th>
+  </tr>
+  <tr>
+    <td>
+      <ul>
+        <li><strong><a href="introduction.html">Introduction to Accounts UI</a></strong></li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li><a href="annotated.html">Classes</a></li>
+        <li><a href="hierarchy.html">Inheritance Hierarchy</a></li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li><a href="plugin-guide.html">Writing Account plugins</a></li>
+        <li><a href="https://cwiki.nokia.com/AccountmgtL">Accounts and SSO Wiki</a></li>
+      </ul>
+    </td>
+  </tr>
+
+</table>
+
+*/

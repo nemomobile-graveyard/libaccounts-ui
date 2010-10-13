@@ -1,0 +1,71 @@
+/*
+ * This file is part of accounts-ui
+ *
+ * Copyright (C) 2009-2010 Nokia Corporation.
+ *
+ * Contact: Alberto Mardegan <alberto.mardegan@nokia.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * version 2.1 as published by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ */
+
+#ifndef ACCOUNTSUI_SERVICESETTINGSWIDGET_H
+#define ACCOUNTSUI_SERVICESETTINGSWIDGET_H
+
+//Meegotouch
+#include <MContainer>
+
+//#include <AccountsUI/abstract-service-setup-context.h>
+namespace AccountsUI {
+
+class ServiceSettingsWidgetPrivate;
+class AbstractServiceSetupContext;
+/*!
+ * @class ServiceSettingsWidget is the class to provide
+ * service settings.
+ *  It gives one switch to enable/disable settings and below are
+ * all the settings.
+ */
+class ServiceSettingsWidget : public MContainer
+{
+Q_OBJECT;
+public:
+    /*!
+     * Constuctor having following param
+     * @param context is the Service context for which it has to create settings widget
+     * @param parent is the parent widget
+     * @param showOnlySettings is bool which will show only settings and not the toggle switch button when true
+     * @param showAllSettings is bool which displays all settings when true and only mandatory settings when false
+     */
+    ServiceSettingsWidget(AccountsUI::AbstractServiceSetupContext *context,
+                          QGraphicsItem *parent = 0,
+                          bool showOnlySettings = true,
+                          bool showAllSettings = true
+                          );
+    ~ServiceSettingsWidget();
+    void setServiceButtonEnable(bool enable);
+
+    private slots:
+        void openSettingsPage();
+        void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+private:
+    ServiceSettingsWidgetPrivate *d_ptr;
+    Q_DISABLE_COPY(ServiceSettingsWidget)
+    Q_DECLARE_PRIVATE(ServiceSettingsWidget)
+};
+}
+
+#endif // ACCOUNTSUI_SERVICESETTINGSWIDGET_H

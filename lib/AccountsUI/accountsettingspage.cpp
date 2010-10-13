@@ -1,0 +1,419 @@
+/*
+ * This file is part of accounts-ui
+ *
+ * Copyright (C) 2009-2010 Nokia Corporation.
+ *
+ * Contact: Alberto Mardegan <alberto.mardegan@nokia.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * version 2.1 as published by the Free Software Foundation.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA
+ */
+
+#include "accountsettingspage.h"
+#include "provider-plugin-process.h"
+#include "service-settings-widget.h"
+#include "AccountsUI/CredentialDialog"
+
+//accounts-qt lib
+#include <Accounts/Account>
+
+//Meegotouch
+#include <MContainer>
+#include <MLayout>
+#include <MLinearLayoutPolicy>
+#include <MMessageBox>
+#include <MLocale>
+#include <MAction>
+#include <MLabel>
+#include <MGridLayoutPolicy>
+#include <MButton>
+#include <MContentItem>
+#include <MApplicationIfProxy>
+#include <MMessageBox>
+
+//Qt
+#include <QDebug>
+#include <QTimer>
+
+//Accounts-Ui
+#include "abstract-account-setup-context.h"
+
+#define INFO_BANNER_TIMEOUT 3000
+
+namespace AccountsUI {
+
+class AccountSettingsPagePrivate
+{
+public:
+    AccountSettingsPagePrivate()
+            : context(0),
+            service(0),
+            account(0),
+            showAllServices(0),
+            usernameAndStatus(0),
+            serviceSettingLayout(0),
+            layoutServicePolicy(0),
+            enableButton(0),
+            syncHandler(0),
+            changePasswordDialogStarted(false)
+    {}
+
+    ~AccountSettingsPagePrivate() {}
+
+    AbstractAccountSetupContext *context;
+    const Accounts::Service *service;
+    Accounts::Account* account;
+    QList<AbstractServiceSetupContext *> contexts;
+    MAction *showAllServices;
+    MContentItem *usernameAndStatus;
+    QString serviceType;
+    QList<QString> serviceNames;
+    MLayout *serviceSettingLayout;
+    MGridLayoutPolicy *layoutServicePolicy;
+    MButton *enableButton;
+    Accounts::ServiceList serviceList;
+    QList<AbstractSetupContext*> abstractContexts;
+    AccountSyncHandler *syncHandler;
+    bool changePasswordDialogStarted;
+};
+
+void AccountSettingsPage::setServicesToBeShown()
+{
+    Q_D(AccountSettingsPage);
+    /* List the services available on the account and load all the respective
+     * plugins. */
+    int row = 0;
+    //% "%1 Settings"
+    setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->account()->providerName()));
+    Accounts::ServiceList services = d->context->account()->services();
+    foreach (Accounts::Service *service, services) {
+        if (!d->serviceNames.contains(service->name())) {
+            ServiceHelper *helper = new ServiceHelper(service, this);
+            AbstractServiceSetupContext *serviceContext;
+            serviceContext = helper->serviceSetupContext(d->context->account(), this);
+            if (serviceContext) {
+                if (!d->serviceType.isEmpty()) {
+                    if (service->serviceType() == d->serviceType) {
+                        QString catalog = service->trCatalog();
+                        if (!catalog.isEmpty()) {
+                            MLocale locale;
+                            locale.installTrCatalog(catalog);
+                            MLocale::setDefault(locale);
+                        }
+                        setTitle(QString("%1 Settings").arg(qtTrId(serviceContext->service()->displayName().toLatin1())));
+                        d->serviceNames.append(service->name());
+                        d->contexts.append(serviceContext);
+                    }
+                } else {
+                    d->serviceNames.append(service->name());
+                    d->contexts.append(serviceContext);
+                }
+            } else
+                qWarning() << QString("Couldn't create context for %1 service")
+                    .arg(service->name());
+        }
+    }
+
+    /* iterate through the contexts we created for each service, and get the
+     * UI widgets to embed */
+    foreach (AbstractServiceSetupContext *context, d->contexts) {
+        d->abstractContexts.append(context);
+        d->service = context->service();
+        const Accounts::Service *service = context->service();
+        ServiceSettingsWidget *settingsWidget;
+        if (d->serviceList.count() <= 1)
+            settingsWidget = new ServiceSettingsWidget(context, this);
+        else {
+            settingsWidget = new ServiceSettingsWidget(context, this, false, false);
+            d->account->selectService(service);
+            if (d->account->enabled())
+                settingsWidget->setServiceButtonEnable(true);
+            else
+                settingsWidget->setServiceButtonEnable(false);
+        }
+        settingsWidget->setHeaderVisible(false);
+        d->layoutServicePolicy-> addItem(settingsWidget, row++, 0);
+    }
+}
+
+AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
+        : MApplicationPage(),
+          d_ptr(new AccountSettingsPagePrivate())
+{
+    Q_D(AccountSettingsPage);
+
+    Q_ASSERT (context != NULL);
+    d->context = context;
+    d->account = d->context->account();
+    d->abstractContexts.append(d->context);
+    d->serviceType = d->context->serviceType();
+
+    d->syncHandler = new AccountSyncHandler(this);
+    connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
+            this, SLOT(onSyncStateChanged(const SyncState&)));
+    setStyleName("AccountSettingsPage");
+}
+
+AccountSettingsPage::~AccountSettingsPage()
+{
+    delete d_ptr;
+}
+
+void AccountSettingsPage::createContent()
+{
+    Q_D(AccountSettingsPage);
+
+    //we need a central widget to get the right layout size under the menubar
+    MWidget* centralWidget = new MWidget();
+    MLayout* layout = new MLayout(centralWidget);
+    MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
+
+    if (d->context) {
+        QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
+        if(accountSettingsWidget != 0) {
+            layoutPolicy->addItem(accountSettingsWidget);
+        } else {
+            MWidget *upperWidget = new MWidget(this);
+            MLayout *upperLayout = new MLayout(upperWidget);
+            MLinearLayoutPolicy *upperLayoutPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
+
+            MLayout *horizontalLayout = new MLayout();
+            MLinearLayoutPolicy *horizontalLayoutPolicy = new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
+            d->usernameAndStatus = new MContentItem(MContentItem::TwoTextLabels);
+            horizontalLayoutPolicy->addItem(d->usernameAndStatus);
+            d->serviceList = d->account->services();
+            d->enableButton = new MButton();
+            d->enableButton->setViewType(MButton::switchType);
+            d->enableButton->setCheckable(true);
+            d->account->selectService(NULL);
+            if ( d->account->enabled())
+                d->enableButton->setChecked(true);
+            else
+                d->enableButton->setChecked(false);
+            connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
+            horizontalLayoutPolicy->addItem(d->enableButton);
+            if (d->context->account()) {
+                d->usernameAndStatus->setTitle(d->context->account()->displayName());
+                d->context->account()->selectService(NULL);
+                if (!d->context->account()->enabled()) {
+                    //% "Disabled"
+                    d->usernameAndStatus->setSubtitle(qtTrId("qtn_acc_disabled"));
+                } else {
+                    d->usernameAndStatus->setSubtitle(QString::null);
+                }
+            }
+            upperLayoutPolicy->addItem(horizontalLayout);
+
+            //% "Change password"
+            MButton *changePassword = new MButton(qtTrId("qtn_acc_change_password"));
+            upperLayoutPolicy->addItem(changePassword);
+            connect(changePassword, SIGNAL(clicked()), this, SLOT(openChangePasswordDialog()));
+
+            layoutPolicy->addItem(upperWidget);
+        }
+    }
+
+    MWidget *serviceWidget = new MWidget(this);
+    d->serviceSettingLayout = new MLayout(serviceWidget);
+    d->layoutServicePolicy = new MGridLayoutPolicy(d->serviceSettingLayout);
+    layoutPolicy->addItem(serviceWidget);
+
+    /* Sets the service widgets and add it into the layout policy*/
+    setServicesToBeShown();
+
+    MContentItem *synchItem = new MContentItem(MContentItem::SingleTextLabel);
+    //% "Synchronization"
+    synchItem->setTitle(qtTrId("qtn_acc_sync"));
+    layoutPolicy->addItem(synchItem);
+    connect(synchItem, SIGNAL(clicked()),
+            this, SLOT(openSynchUi()));
+
+    layoutPolicy->addStretch();
+    setCentralWidget(centralWidget);
+
+    //% "Delete"
+    MAction* action = new MAction(qtTrId("qtn_comm_command_delete"), this);
+    action->setLocation(MAction::ApplicationMenuLocation);
+    addAction(action);
+
+    connect(action, SIGNAL(triggered()),
+            this, SLOT(removeAccount()));
+
+    if (d->context && !d->context->serviceType().isEmpty()) {
+        QStringList serviceType;
+        Accounts::ServiceList services = d->context->account()->services();
+        foreach (Accounts::Service *service, services) {
+            serviceType.append(service->serviceType());
+        }
+        serviceType.removeDuplicates();
+        if (serviceType.count() > 1) {
+            //% "All Services"
+            d->showAllServices = new MAction(qtTrId("qtn_acc_settings_all_services"), this);
+            d->showAllServices->setLocation(MAction::ApplicationMenuLocation);
+            addAction(d->showAllServices);
+            connect(d->showAllServices, SIGNAL(triggered()),
+                    this, SLOT(showAllServices()));
+        }
+    }
+
+    //Saving the settings on back button press
+    connect(this, SIGNAL(backButtonClicked()),
+            this, SLOT(saveSettings()));
+}
+
+const AbstractAccountSetupContext *AccountSettingsPage::context()
+{
+    Q_D(AccountSettingsPage);
+    return d->context;
+}
+
+void AccountSettingsPage::enable(bool state)
+{
+    Q_D(AccountSettingsPage);
+    if (d->serviceList.count() <= 1) {
+        d->account->selectService(d->serviceList.at(0));
+        d->account->setEnabled(state);
+    }
+    d->context->account()->selectService(NULL);
+    if (state) {
+        if(d->usernameAndStatus)
+            d->usernameAndStatus->setSubtitle(QString::null);
+    } else {
+        if(d->usernameAndStatus)
+            //% "Disabled"
+            d->usernameAndStatus->setSubtitle(qtTrId("qtn_acc_disabled"));
+    }
+     d->account->setEnabled(state);
+}
+
+void AccountSettingsPage::removeAccount()
+{
+    Q_D(AccountSettingsPage);
+    //% "Delete %1 from your device?"
+    QString dialogTitle =
+        qtTrId("qtn_acc_remove_account").arg(d->context->account()->displayName());
+    MMessageBox removeMBox(dialogTitle, M::YesButton | M::NoButton);
+    removeMBox.setStyleName("RemoveDialog");
+
+    if (removeMBox.exec() == M::YesButton) {
+        d->context->account()->remove();
+        d->context->account()->sync();
+        ProviderPluginProcess::instance()->quit();
+    }
+}
+
+void AccountSettingsPage::saveSettings()
+{
+    Q_D(AccountSettingsPage);
+    setProgressIndicatorVisible(true);
+    qDebug() << Q_FUNC_INFO;
+    d->syncHandler->store(d->abstractContexts);
+}
+
+void AccountSettingsPage::onSyncStateChanged(const SyncState &state)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    Q_D(AccountSettingsPage);
+    switch (state) {
+        case NotValidated:
+            qDebug() << Q_FUNC_INFO << "NotValidated";
+            setProgressIndicatorVisible(false);
+            break;
+        case Validated:
+            qDebug() << Q_FUNC_INFO << "Validated";
+            d->syncHandler->store(d->abstractContexts);
+            break;
+        case NotStored:
+            qDebug() << Q_FUNC_INFO << "NotStored";
+            connect(d->context->account(), SIGNAL(synced()),
+                    ProviderPluginProcess::instance(), SLOT(quit()));
+            d->context->account()->sync();
+            break;
+        case Stored:
+            qDebug() << Q_FUNC_INFO << "Stored";
+            connect(d->context->account(), SIGNAL(synced()),
+                    ProviderPluginProcess::instance(), SLOT(quit()));
+            d->context->account()->sync();
+            break;
+        default:
+            return;
+    }
+}
+
+void AccountSettingsPage::openChangePasswordDialog()
+{
+    Q_D(AccountSettingsPage);
+    //ignore multiple clicks
+    if (d->changePasswordDialogStarted)
+    {
+        qDebug() << Q_FUNC_INFO << "Change password dialog is started already";
+        return;
+    }
+
+    d->changePasswordDialogStarted = true;
+
+    CredentialDialog *credentialDialog = new CredentialDialog(d->account->credentialsId());
+    credentialDialog->setParent(this);
+
+    if (!credentialDialog) {
+        qCritical() << "Cannot create change password dialog";
+        return;
+    }
+    connect (credentialDialog, SIGNAL(safeToDeleteMe(CredentialDialog*)),
+             this, SLOT(deleteCredentialsDialog()));
+    //% "Change Password"
+    credentialDialog->setTitle(qtTrId("qtn_acc_login_title_change"));
+    credentialDialog->exec();
+}
+
+void AccountSettingsPage::deleteCredentialsDialog()
+{
+    Q_D(AccountSettingsPage);
+    d->changePasswordDialogStarted = false;
+    CredentialDialog *credentialDialog;
+
+    if (sender() != NULL &&
+        (credentialDialog = qobject_cast<CredentialDialog *>(sender())) != NULL)
+        credentialDialog->deleteLater();
+}
+
+void AccountSettingsPage::openSynchUi()
+{
+    setProgressIndicatorVisible(true);
+
+    //Start Sync-Ui
+    MApplicationIfProxy mApplicationIfProxy("com.nokia.syncui", this);
+
+    if (mApplicationIfProxy.connection().isConnected()) {
+        mApplicationIfProxy.launch();
+    } else {
+        MInfoBanner* infoBanner = new MInfoBanner();
+
+        //% "Unable to launch Synchronisation"
+        infoBanner->setBodyText(qtTrId("qtn_acc_synchronisation_err_undefined"));
+        infoBanner->appear(MSceneWindow::DestroyWhenDone);
+        QTimer::singleShot(INFO_BANNER_TIMEOUT, infoBanner, SLOT(disappear()));
+    }
+    setProgressIndicatorVisible(false);
+}
+
+void AccountSettingsPage::showAllServices()
+{
+    Q_D(AccountSettingsPage);
+    d->serviceType = QLatin1String("");
+    setServicesToBeShown();
+    d->showAllServices->setVisible(false);
+}
+} // namespace

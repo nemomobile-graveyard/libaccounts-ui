@@ -1,0 +1,5 @@
+accountsui.cpp
+accountsui.h
+accountsuiproxy.cpp
+accountsuiproxy.h
+com.nokia.AccountsUI.xml

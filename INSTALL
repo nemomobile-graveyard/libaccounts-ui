@@ -1,0 +1,2 @@
+dpkg-buildpackage -rfakeroot
+dpkg --install ../accounts-ui*.deb

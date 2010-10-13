@@ -1,0 +1,34 @@
+lib/tests/libaccountplugin-test
+
+#gdb core files
+core.*
+core
+
+gen_*
+moc_*
+*.o
+Makefile
+*.so
+*.so.*
+
+# vim swap files
+.*.swp
+Makefile
+doc/html
+.moc
+.obj
+.*.swp
+*.o
+*~
+
+#from kdiff3
+*.orig
+
+# build/packaging files
+build-stamp
+builddir/
+configure-stamp
+debian/
+lib/doc/html/
+lib/doc/lib.tags
+

@@ -1,0 +1,14 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+serviceplugindir=${libdir}/AccountsUI/
+providerplugindir=${prefix}/libexec/AccountsUI/
+
+Name: AccountsUI
+Description: Accounts-UI plugins development
+Version: 0.1
+Requires: accounts-qt, meegotouch, libsignon-qt
+Libs: -L${libdir} -lAccountPlugin
+Cflags: -I${includedir}
+
