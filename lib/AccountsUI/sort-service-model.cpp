@@ -60,6 +60,9 @@ void SortServiceModel::createPriorities(const QString &fileName)
     QSettings settings(fileName, QSettings::IniFormat);
     foreach(QString key, settings.allKeys()) {
         priorities.insert(key, settings.value(key, 0).toInt());
+        //only the latest value will be used
+        if (hiddenService.contains(key))
+            hiddenService.removeOne(key);
         if (settings.value(key, 0).toInt() > 1000)
             hiddenService.append(key);
     }
