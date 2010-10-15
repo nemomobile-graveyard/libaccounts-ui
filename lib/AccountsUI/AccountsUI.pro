@@ -31,6 +31,7 @@ HEADERS += account-plugin-interface.h \
     credentialwidget.h \
     credentialwidgetview.h \
     credential-image-widget.h \
+    debug.h \
     genericaccountsetupform.h \
     generic-account-setup-context.h \
     genericaccountsetupformview.h \
@@ -110,6 +111,8 @@ headers.files += AccountPluginInterface \
     credentialdialog.h \
     CredentialWidget \
     credentialwidget.h \
+    Debug \
+    debug.h \
     GenericAccountSetupContext \
     generic-account-setup-context.h \
     ServiceHelper \
