@@ -1,3 +1,9 @@
+libaccounts-ui (0.10-1) unstable; urgency=low
+
+  * Fixes: NB#190924 -  Email crashes continuously while launching @ "QMailStorePrivate::attemptAccountConfiguration" with Google account
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Fri, 15 Oct 2010 12:45:22 +0300
+
 libaccounts-ui (0.9) unstable; urgency=low
 
   * Proper handling of service hidding 
