@@ -90,7 +90,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
         MWidget *widget = context->widget(0, showAllSettings);
         if (widget) {
             d->containerMainPolicy->addItem(widget, 2, 0);
-    }
+        }
     }
     setCentralWidget(containerCentralWidget);
 }
