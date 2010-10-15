@@ -30,6 +30,7 @@
 #include <MComponentCache>
 #include <MApplication>
 #include <MApplicationWindow>
+#include <MComponentData>
 #include <MLocale>
 
 namespace AccountsUI {
@@ -58,7 +59,6 @@ public:
         setupType = CreateNew;
 
         application = MComponentCache::mApplication(argc, argv);
-        window = MComponentCache::mApplicationWindow();
         manager = new Accounts::Manager(this);
 
         /* parse command line options */
@@ -104,6 +104,13 @@ public:
         if (account != 0)
             monitorServices();
 
+        if (windowId != 0) {
+            MComponentData::ChainData chainData(windowId, QString());
+            MComponentData::pushChainData(chainData);
+        }
+
+        window = new MApplicationWindow;
+
         MLocale locale;
         locale.installTrCatalog("accountssso");
         MLocale::setDefault(locale);
@@ -114,7 +121,6 @@ public:
         delete m_context;
     }
 
-    void bindPageToAccountsUi(MApplicationPage *page);
     void printAccountId();
     AbstractAccountSetupContext *context() const;
     void serviceEnabled(Accounts::Service *service);
