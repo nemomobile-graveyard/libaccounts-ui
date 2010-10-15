@@ -119,7 +119,7 @@ void ServiceSelectionPage::createContent()
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         //ServiceSettingsWidget sets the display widget of the changing settings
         ServiceSettingsWidget *settingsWidget =
-            new ServiceSettingsWidget(d->serviceContextList.at(i), this,  false, false);
+            new ServiceSettingsWidget(d->serviceContextList.at(i), this,  false, false, true);
         settingsWidget->setHeaderVisible(false);
         mainLayoutPolicy->addItem(settingsWidget);
 
