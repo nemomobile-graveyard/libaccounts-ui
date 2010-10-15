@@ -32,7 +32,6 @@
 #include <MApplication>
 #include <MApplicationIfProxy>
 #include <MApplicationWindow>
-#include <MLocale>
 
 #include <QDebug>
 #include <QX11Info>
@@ -199,58 +198,6 @@ void ProviderPluginProcess::init(int &argc, char **argv)
     if (plugin_instance != 0)
         qWarning() << "ProviderPluginProcess already instantiated";
     plugin_instance = this;
-
-    d->account = 0;
-    d->setupType = CreateNew;
-
-    MLocale locale;
-    locale.installTrCatalog("accountssso");
-    MLocale::setDefault(locale);
-
-    d->manager = new Accounts::Manager(this);
-
-    /* parse command line options */
-    bool type_set = false;
-    for (int i = 0; i < argc; ++i)
-    {
-        Q_ASSERT(argv[i] != NULL);
-
-        if ((strcmp(argv[i], "--create") == 0) && !type_set)
-        {
-            d->setupType = CreateNew;
-            type_set = true;
-
-            i++;
-            if (i < argc)
-                d->account = d->manager->createAccount(argv[i]);
-        }
-        else if ((strcmp(argv[i], "--edit") == 0) && !type_set)
-        {
-            d->setupType = EditExisting;
-            type_set = true;
-
-            i++;
-            if (i < argc)
-                d->account = d->manager->account(atoi(argv[i]));
-        }
-        else if (strcmp(argv[i], "--windowId") == 0)
-        {
-            i++;
-            if (i < argc)
-                d->windowId = atoi(argv[i]);
-            Q_ASSERT(d->windowId != 0);
-        }
-        else if (strcmp(argv[i], "--serviceType") == 0)
-        {
-            i++;
-            if (i < argc)
-                d->serviceType = argv[i];
-            Q_ASSERT(d->serviceType != 0);
-        }
-    }
-
-    if (d->account != 0)
-        d->monitorServices();
 }
 
 ProviderPluginProcess::~ProviderPluginProcess()

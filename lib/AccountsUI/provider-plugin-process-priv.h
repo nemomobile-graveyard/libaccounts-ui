@@ -30,6 +30,7 @@
 #include <MComponentCache>
 #include <MApplication>
 #include <MApplicationWindow>
+#include <MLocale>
 
 namespace AccountsUI {
 
@@ -53,8 +54,59 @@ public:
         : m_context(0)
         , windowId(0)
     {
+        account = 0;
+        setupType = CreateNew;
+
         application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
+        manager = new Accounts::Manager(this);
+
+        /* parse command line options */
+        bool type_set = false;
+        for (int i = 0; i < argc; ++i)
+        {
+            Q_ASSERT(argv[i] != NULL);
+
+            if ((strcmp(argv[i], "--create") == 0) && !type_set)
+            {
+                setupType = CreateNew;
+                type_set = true;
+
+                i++;
+                if (i < argc)
+                    account = manager->createAccount(argv[i]);
+            }
+            else if ((strcmp(argv[i], "--edit") == 0) && !type_set)
+            {
+                setupType = EditExisting;
+                type_set = true;
+
+                i++;
+                if (i < argc)
+                    account = manager->account(atoi(argv[i]));
+            }
+            else if (strcmp(argv[i], "--windowId") == 0)
+            {
+                i++;
+                if (i < argc)
+                    windowId = atoi(argv[i]);
+                Q_ASSERT(windowId != 0);
+            }
+            else if (strcmp(argv[i], "--serviceType") == 0)
+            {
+                i++;
+                if (i < argc)
+                    serviceType = argv[i];
+                Q_ASSERT(serviceType != 0);
+            }
+        }
+
+        if (account != 0)
+            monitorServices();
+
+        MLocale locale;
+        locale.installTrCatalog("accountssso");
+        MLocale::setDefault(locale);
     }
 
     ~ProviderPluginProcessPrivate()
