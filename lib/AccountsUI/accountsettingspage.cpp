@@ -429,7 +429,7 @@ void AccountSettingsPage::showAllServices()
 
 
 /*
- * The same serviceTypes cannot be enabled in mean time
+ * The same serviceTypes cannot be enabled in meantime
  * */
 void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
 {
@@ -437,7 +437,7 @@ void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
     qDebug() << Q_FUNC_INFO << __LINE__;
     if (!sender())
     {
-        qCritical() << "disableExclusiveServiceTypes() must be called via signaling";
+        qCritical() << "disableSameServiceTypes() must be called via signaling";
         return;
     }
 
