@@ -97,6 +97,7 @@ private slots:
     void showAllServices();
     void onSyncStateChanged(const SyncState &state);
     void deleteCredentialsDialog();
+    void disableSameServiceTypes(const QString &serviceType);
 
 private:
     AccountSettingsPagePrivate* d_ptr;

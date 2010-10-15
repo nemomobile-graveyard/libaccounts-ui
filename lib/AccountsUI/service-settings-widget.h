@@ -51,12 +51,17 @@ public:
     ServiceSettingsWidget(AccountsUI::AbstractServiceSetupContext *context,
                           QGraphicsItem *parent = 0,
                           bool showOnlySettings = true,
-                          bool showAllSettings = true
+                          bool showAllSettings = true,
+                          bool enabled = true
                           );
     ~ServiceSettingsWidget();
     void setServiceButtonEnable(bool enable);
 
-    private slots:
+    Q_SIGNALS:
+        void serviceButtonEnabled(const QString &serviceType);
+
+    private Q_SLOTS:
+        void enabled(bool enabled);
         void openSettingsPage();
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);

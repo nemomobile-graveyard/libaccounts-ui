@@ -54,7 +54,8 @@ public:
 ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *context,
                                              QGraphicsItem *parent,
                                              bool showOnlySettings,
-                                             bool showAllSettings)
+                                             bool showAllSettings,
+                                             bool enabled)
     : MContainer(parent),
     d_ptr(new ServiceSettingsWidgetPrivate())
 {
@@ -74,9 +75,9 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
             serviceNameLabel->setText(serviceHepler->prettyName());
 
-            connect(d->enableServiceButton, SIGNAL(toggled(bool)), context, SLOT(enable(bool)));
+            d->enableServiceButton->setChecked(enabled);
+            connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            d->enableServiceButton->setChecked(true);
             d->containerMainPolicy->addItem(serviceNameLabel, 0, 0, Qt::AlignLeft);
             d->containerMainPolicy->addItem(d->enableServiceButton, 0, 1, Qt::AlignRight);
             if (!serviceHepler->description().isNull()) {
@@ -114,10 +115,27 @@ void ServiceSettingsWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void ServiceSettingsWidget::enabled(bool enabled)
+{
+    Q_D(ServiceSettingsWidget);
+    if (!d->context)
+        return;
+
+    d->context->enable(enabled);
+
+    if (enabled &&
+        d->context->service()) {
+            emit serviceButtonEnabled(d->context->service()->serviceType());
+            qDebug() << Q_FUNC_INFO << __LINE__ << d->context->service()->serviceType() << enabled;
+    }
+}
+
 void ServiceSettingsWidget::setServiceButtonEnable(bool enable)
 {
     Q_D(ServiceSettingsWidget);
-    d->enableServiceButton->setChecked(enable);
+
+    if (d->enableServiceButton->isChecked() != enable)
+        d->enableServiceButton->setChecked(enable);
 }
 
 void ServiceSettingsWidget::openSettingsPage()
