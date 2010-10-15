@@ -75,8 +75,8 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
             serviceNameLabel->setText(serviceHepler->prettyName());
 
-            d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
+            d->enableServiceButton->setChecked(enabled);
 
             d->containerMainPolicy->addItem(serviceNameLabel, 0, 0, Qt::AlignLeft);
             d->containerMainPolicy->addItem(d->enableServiceButton, 0, 1, Qt::AlignRight);
