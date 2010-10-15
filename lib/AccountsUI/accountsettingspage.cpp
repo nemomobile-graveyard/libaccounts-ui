@@ -45,6 +45,7 @@
 //Qt
 #include <QDebug>
 #include <QTimer>
+#include <QMultiMap>
 
 //Accounts-Ui
 #include "abstract-account-setup-context.h"
@@ -86,6 +87,7 @@ public:
     QList<AbstractSetupContext*> abstractContexts;
     AccountSyncHandler *syncHandler;
     bool changePasswordDialogStarted;
+    QMultiMap<QString, ServiceSettingsWidget*> settingsWidgets;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -135,15 +137,20 @@ void AccountSettingsPage::setServicesToBeShown()
         if (d->serviceList.count() <= 1)
             settingsWidget = new ServiceSettingsWidget(context, this);
         else {
-            settingsWidget = new ServiceSettingsWidget(context, this, false, false);
             d->account->selectService(service);
-            if (d->account->enabled())
-                settingsWidget->setServiceButtonEnable(true);
-            else
-                settingsWidget->setServiceButtonEnable(false);
+            settingsWidget = new ServiceSettingsWidget(context,
+                                                       this,
+                                                       false,
+                                                       false,
+                                                       d->account->enabled());
+
+            connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
+                     this, SLOT(disableSameServiceTypes(const QString&)));
         }
         settingsWidget->setHeaderVisible(false);
-        d->layoutServicePolicy-> addItem(settingsWidget, row++, 0);
+        d->layoutServicePolicy->addItem(settingsWidget, row++, 0);
+
+        d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
     }
 }
 
@@ -281,10 +288,12 @@ const AbstractAccountSetupContext *AccountSettingsPage::context()
 void AccountSettingsPage::enable(bool state)
 {
     Q_D(AccountSettingsPage);
-    if (d->serviceList.count() <= 1) {
+
+    if (d->serviceList.count() == 1) {
         d->account->selectService(d->serviceList.at(0));
         d->account->setEnabled(state);
     }
+
     d->context->account()->selectService(NULL);
     if (state) {
         if(d->usernameAndStatus)
@@ -294,7 +303,8 @@ void AccountSettingsPage::enable(bool state)
             //% "Disabled"
             d->usernameAndStatus->setSubtitle(qtTrId("qtn_acc_disabled"));
     }
-     d->account->setEnabled(state);
+
+    d->account->setEnabled(state);
 }
 
 void AccountSettingsPage::removeAccount()
@@ -415,5 +425,30 @@ void AccountSettingsPage::showAllServices()
     d->serviceType = QLatin1String("");
     setServicesToBeShown();
     d->showAllServices->setVisible(false);
+}
+
+
+/*
+ * The same serviceTypes cannot be enabled in mean time
+ * */
+void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
+{
+    Q_D(AccountSettingsPage);
+    qDebug() << Q_FUNC_INFO << __LINE__;
+    if (!sender())
+    {
+        qCritical() << "disableExclusiveServiceTypes() must be called via signaling";
+        return;
+    }
+
+    if (d->settingsWidgets.count(serviceType) == 1)
+        return;
+
+    foreach (ServiceSettingsWidget *widget, d->settingsWidgets.values(serviceType)) {
+        if (widget == sender())
+            continue;
+
+        widget->setServiceButtonEnable(false);
+    }
 }
 } // namespace
