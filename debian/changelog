@@ -1,0 +1,81 @@
+libaccounts-ui (0.11-1) unstable; urgency=low
+
+  * Fixes: NB#198635 -  Both Gmail services can be enabled in certain scenario
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Mon, 18 Oct 2010 10:00:22 +0300
+
+libaccounts-ui (0.10-1) unstable; urgency=low
+
+  * Fixes: NB#190924 -  Email crashes continuously while launching @ "QMailStorePrivate::attemptAccountConfiguration" with Google account
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Fri, 15 Oct 2010 12:45:22 +0300
+
+libaccounts-ui (0.9) unstable; urgency=low
+
+  * Proper handling of service hidding 
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Thu, 14 Oct 2010 13:05:58 +0300
+
+libaccounts-ui (0.8-1) unstable; urgency=low
+
+  * Fixing problem with extra validation of created account 
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Sun, 11 Oct 2010 12:45:22 +0300
+ 
+libaccounts-ui (0.7-2) unstable; urgency=low
+
+  * Storing Identity data prior to the credentials validation. 
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Sun, 10 Oct 2010 15:45:22 +0300
+
+libaccounts-ui (0.7) unstable; urgency=low
+
+  * Storing Identity data prior to the credentials validation. 
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Sun, 10 Oct 2010 14:45:22 +0300
+
+libaccounts-ui (0.6) unstable; urgency=low
+
+  * Fixing storing of settings in accountSettingsPage
+  * Fixing the bug about exporting showInfoBanner
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 08 Oct 2010 17:35:22 +0300
+
+libaccounts-ui (0.5) unstable; urgency=low
+
+  * Fixes: NB#196262 -  UI freezes in account settings view
+
+ -- Alexander Akimov <ext-radek.zielonka@nokia.com>  Fri, 08 Oct 2010 13:00:22 +0300
+
+libaccounts-ui (0.4) unstable; urgency=low
+
+  * Proper handling of validating and storing
+
+    Also the Sign in button is disconected while validating and storing
+    to prevent multitimes validating while presing multitime
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Fri, 08 Oct 2010 10:00:22 +0300
+
+libaccounts-ui (0.3) unstable; urgency=low
+
+  * Fixes: NB#193820 - Accounts components use an old and deprecated version of Bearer API.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 06 Oct 2010 14:33:00 +0300
+
+libaccounts-ui (0.2) unstable; urgency=low
+
+  * Adding bug fixes, which were lost during repo migration
+
+ -- Alexander Akimov <ext-alexander.akimo@nokia.com>  Mon, 05 Oct 2010 10:27:22 +0300
+ 
+libaccounts-ui (0.1-2) unstable; urgency=low
+
+  * Add Replaces: line for libaccounts-ui-dev.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Mon, 04 Oct 2010 10:27:22 +0300
+
+libaccounts-ui (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Mon, 20 Sep 2010 16:26:21 +0300

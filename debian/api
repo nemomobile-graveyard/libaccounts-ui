@@ -1,0 +1,6 @@
+interface: libAccountsUI
+type: library
+scope: Platform
+state: unstable
+libs-pkg: libaccounts-ui0
+dev-pkg: libaccounts-ui-dev

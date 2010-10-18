@@ -28,7 +28,6 @@ doc/html
 build-stamp
 builddir/
 configure-stamp
-debian/
 lib/doc/html/
 lib/doc/lib.tags
 

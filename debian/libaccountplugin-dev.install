@@ -1,0 +1,3 @@
+usr/include/AccountsUI/*
+usr/lib/libAccountPlugin*.so
+usr/lib/pkgconfig/AccountPlugin.pc
