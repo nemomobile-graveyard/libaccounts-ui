@@ -1,3 +1,9 @@
+libaccounts-ui (0.11-1) unstable; urgency=low
+
+  * Fixes: NB#198635 -  Both Gmail services can be enabled in certain scenario
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Mon, 18 Oct 2010 10:00:22 +0300
+
 libaccounts-ui (0.10-1) unstable; urgency=low
 
   * Fixes: NB#190924 -  Email crashes continuously while launching @ "QMailStorePrivate::attemptAccountConfiguration" with Google account
