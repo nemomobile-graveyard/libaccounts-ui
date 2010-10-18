@@ -65,7 +65,14 @@ public:
     /*!
      * Gets the account being setup by this context.
      */
+    Accounts::Account *account() const;
+
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
+    /*!
+     * @deprecated
+     */
     Accounts::Account *account();
+#endif
 
 public Q_SLOTS:
     /*!
