@@ -24,6 +24,8 @@
 #include "provider-plugin-process.h"
 #include "service-settings-widget.h"
 #include "AccountsUI/CredentialDialog"
+#include "service-model.h"
+#include "sort-service-model.h"
 
 //accounts-qt lib
 #include <Accounts/Account>
@@ -79,7 +81,6 @@ public:
     MAction *showAllServices;
     MContentItem *usernameAndStatus;
     QString serviceType;
-    QList<QString> serviceNames;
     MLayout *serviceSettingLayout;
     MGridLayoutPolicy *layoutServicePolicy;
     MButton *enableButton;
@@ -98,33 +99,29 @@ void AccountSettingsPage::setServicesToBeShown()
     int row = 0;
     //% "%1 Settings"
     setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->account()->providerName()));
-    Accounts::ServiceList services = d->context->account()->services();
-    foreach (Accounts::Service *service, services) {
-        if (!d->serviceNames.contains(service->name())) {
-            ServiceHelper *helper = new ServiceHelper(service, this);
-            AbstractServiceSetupContext *serviceContext;
-            serviceContext = helper->serviceSetupContext(d->context->account(), this);
-            if (serviceContext) {
-                if (!d->serviceType.isEmpty()) {
-                    if (service->serviceType() == d->serviceType) {
-                        QString catalog = service->trCatalog();
-                        if (!catalog.isEmpty()) {
-                            MLocale locale;
-                            locale.installTrCatalog(catalog);
-                            MLocale::setDefault(locale);
-                        }
-                        setTitle(QString("%1 Settings").arg(qtTrId(serviceContext->service()->displayName().toLatin1())));
-                        d->serviceNames.append(service->name());
-                        d->contexts.append(serviceContext);
-                    }
-                } else {
-                    d->serviceNames.append(service->name());
-                    d->contexts.append(serviceContext);
-                }
-            } else
-                qWarning() << QString("Couldn't create context for %1 service")
-                    .arg(service->name());
-        }
+
+    ServiceModel *serviceModel = new ServiceModel(d->context->account(), this);
+    SortServiceModel *sortModel = new SortServiceModel(this);
+    sortModel->setSourceModel(serviceModel);
+    sortModel->sort(ServiceModel::ServiceNameColumn);
+
+    QAbstractProxyModel *proxy = 0;
+    // selecting the service type
+    if (!d->context->serviceType().isEmpty()) {
+        FilterTypeServiceModel *filterServiceModel = new FilterTypeServiceModel(this);
+        filterServiceModel->setSourceModel(sortModel);
+        filterServiceModel->setFilterFixedString(d->context->serviceType());
+        proxy = filterServiceModel;
+    } else
+        proxy = sortModel;
+
+    for (int i = 0; i < proxy->rowCount(); i++) {
+        QModelIndex index = proxy->index(i, 0);
+        const QVariant vServiceHelper = index.data(ServiceModel::ServiceHelperColumn);
+        ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
+        AbstractServiceSetupContext *context =
+            serviceHelper->serviceSetupContext(d->context->account(), this);
+        d->contexts.append(context);
     }
 
     /* iterate through the contexts we created for each service, and get the
