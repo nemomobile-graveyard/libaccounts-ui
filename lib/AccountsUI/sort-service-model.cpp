@@ -28,6 +28,21 @@
 #include <QSettings>
 #include <QDebug>
 
+bool FilterTypeServiceModel::filterAcceptsRow(int source_row,
+                                              const QModelIndex &source_parent) const
+{
+    QModelIndex serviceIndex = sourceModel()->index(source_row, 0,
+                                                    source_parent);
+    const QVariant vServiceHelper = sourceModel()->data(serviceIndex,
+                                                        ServiceModel::ServiceHelperColumn);
+    ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
+    QString serviceType = serviceHelper->serviceType();
+    if (serviceType == filterRegExp().pattern())
+        return true;
+    else
+        return false;
+}
+
 SortServiceModel::SortServiceModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
@@ -51,6 +66,13 @@ SortServiceModel::SortServiceModel(QObject *parent)
         foreach(QString filename, homePriorityList)
             createPriorities(home.filePath(filename));
     }
+}
+
+void SortServiceModel::setEnabledServices(const Accounts::ServiceList &enabledServices)
+{
+    qDebug()<<Q_FUNC_INFO;
+    foreach(Accounts::Service *service, enabledServices)
+        enabledServicesName.append(service->name());
 }
 
 void SortServiceModel::createPriorities(const QString &fileName)
@@ -90,6 +112,7 @@ bool SortServiceModel::filterAcceptsRow(int source_row,
         sourceModel()->index(source_row, ServiceModel::ServiceNameColumn, source_parent);
     QString key =
         sourceModel()->data(source_index).toString();
-
+    if (enabledServicesName.contains(key))
+        return true;
     return !hiddenService.contains(key);
 }
