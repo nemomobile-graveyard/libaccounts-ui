@@ -39,26 +39,26 @@ public:
 };
 
 AbstractAccountSetupContext::AbstractAccountSetupContext
-    (Accounts::Account *account, SetupType type, QObject *parent)
-    : AbstractSetupContext(account, parent),
-    d_ptr(new AbstractAccountSetupContextPrivate())
-    {
+    (Accounts::Account *account, SetupType type, QObject *parent):
+        AbstractSetupContext(account, parent),
+        d_ptr(new AbstractAccountSetupContextPrivate())
+{
     Q_D(AbstractAccountSetupContext);
-        d->setupType = type;
-    }
+    d->setupType = type;
+}
 
-    AbstractAccountSetupContext::~AbstractAccountSetupContext()
-    {
-        delete d_ptr;
-    }
+AbstractAccountSetupContext::~AbstractAccountSetupContext()
+{
+    delete d_ptr;
+}
 
-    SetupType
-    AbstractAccountSetupContext::setupType()
-    {
-        Q_D(AbstractAccountSetupContext);
+SetupType
+AbstractAccountSetupContext::setupType()
+{
+    Q_D(AbstractAccountSetupContext);
 
-        return d->setupType;
-    }
+    return d->setupType;
+}
 
 void
 AbstractAccountSetupContext::setServiceType(const QString &serviceType)

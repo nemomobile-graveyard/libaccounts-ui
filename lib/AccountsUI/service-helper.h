@@ -95,7 +95,7 @@ public:
      */
     QString serviceName();
 
-     /*!
+    /*!
      * Gets the context object which handles account service
      * creation/settings/deletion.
      * Calling this method will cause the loading of the service plugin.
@@ -107,7 +107,7 @@ public:
         Accounts::Account *account,
         QObject *parent = 0);
 
- private:
+private:
     ServiceHelperPrivate *d_ptr;
     Q_DECLARE_PRIVATE(ServiceHelper)
 };

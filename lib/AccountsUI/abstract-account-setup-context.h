@@ -47,7 +47,7 @@ class AbstractAccountSetupContextPrivate;
  * AccountsUI/AbstractAccountSetupContext
  * @brief Context object for provider plugins.
  */
-class ACCOUNTSUI_EXPORT AbstractAccountSetupContext : public AbstractSetupContext
+class ACCOUNTSUI_EXPORT AbstractAccountSetupContext: public AbstractSetupContext
 {
     Q_OBJECT
 

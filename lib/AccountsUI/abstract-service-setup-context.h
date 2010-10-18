@@ -39,7 +39,7 @@ class AbstractServiceSetupContextPrivate;
  * AccountsUI/AbstractServiceSetupContext
  * @brief Context object for service plugins.
  */
-class ACCOUNTSUI_EXPORT AbstractServiceSetupContext : public AbstractSetupContext
+class ACCOUNTSUI_EXPORT AbstractServiceSetupContext: public AbstractSetupContext
 {
     Q_OBJECT
 
@@ -58,11 +58,14 @@ public:
     const Accounts::Service *service() const;
 
     /*!
-     * Constructs the UI element which handles account creation/settings/deletion.
-     * by taking showAllSettings as a boolean variable, which creates all the widgets when true
-     * and only the mandatory widgets when false.
+     * Constructs the UI element which handles account
+     * creation/settings/deletion.
+     * @param parent The parent widget.
+     * @param showAllSettings Whether all the settings should be shown, or
+     * only the mandatory ones.
      */
-    virtual MWidget *widget(QGraphicsItem *parent = 0, bool showAllSettings = true) = 0;
+    virtual MWidget *widget(QGraphicsItem *parent = 0,
+                            bool showAllSettings = true) = 0;
 
     /*!
      * Checks whether the service has mandatory settings.
@@ -79,7 +82,7 @@ public:
      *
      * @param enabled Whether the service should be enabled.
      */
-    public slots:
+public slots:
     virtual void enable(bool enabled);
 
 private:
