@@ -62,7 +62,14 @@ public:
     /*!
      * @return The SetupType specified when creating the context.
      */
+    SetupType setupType() const;
+
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
+    /*!
+     * @deprecated
+     */
     SetupType setupType();
+#endif
 
     /*!
      * Constructs the UI element which handles account creation/settings/deletion.

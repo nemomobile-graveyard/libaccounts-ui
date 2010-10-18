@@ -60,6 +60,14 @@ AbstractAccountSetupContext::setupType()
     return d->setupType;
 }
 
+SetupType
+AbstractAccountSetupContext::setupType() const
+{
+    Q_D(const AbstractAccountSetupContext);
+
+    return d->setupType;
+}
+
 void
 AbstractAccountSetupContext::setServiceType(const QString &serviceType)
 {
