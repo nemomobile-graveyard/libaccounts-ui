@@ -86,6 +86,28 @@ public:
      */
     const QString serviceType() const;
 
+    /*!
+     * This method returns the username currently set in the UI. It's meant to
+     * be called by service plugins, during the validation phase, if they need
+     * to store the username in their service settings.
+     *
+     * This function returns a non-empty string only if setUserName() has
+     * previously been called by the account plugin itself.
+     *
+     * @return The account username.
+     */
+    QString userName() const;
+
+protected:
+    /*!
+     * The account setup context implementation should call this method before
+     * starting the validation of the service contexts. It's used so that
+     * service plugins could get the username, if they need to.
+     *
+     * @param userName The user name currently written in the UI.
+     */
+    void setUserName(const QString &userName);
+
 private:
     AbstractAccountSetupContextPrivate *d_ptr;
     Q_DECLARE_PRIVATE(AbstractAccountSetupContext)

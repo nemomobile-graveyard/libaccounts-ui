@@ -36,6 +36,7 @@ public:
 
     SetupType setupType;
     QString serviceType;
+    QString userName;
 };
 
 AbstractAccountSetupContext::AbstractAccountSetupContext
@@ -82,6 +83,22 @@ AbstractAccountSetupContext::serviceType() const
     Q_D(const AbstractAccountSetupContext);
 
     return d->serviceType;
+}
+
+void
+AbstractAccountSetupContext::setUserName(const QString &userName)
+{
+    Q_D(AbstractAccountSetupContext);
+
+    d->userName = userName;
+}
+
+QString
+AbstractAccountSetupContext::userName() const
+{
+    Q_D(const AbstractAccountSetupContext);
+
+    return d->userName;
 }
 
 } // namespace
