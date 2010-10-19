@@ -1,3 +1,9 @@
+libaccounts-ui (0.12-1) unstable; urgency=low
+
+  * Add the ProviderPluginProxy class.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 19 Oct 2010 11:19:47 +0300
+
 libaccounts-ui (0.11-1) unstable; urgency=low
 
   * Fixes: NB#198635 -  Both Gmail services can be enabled in certain scenario
