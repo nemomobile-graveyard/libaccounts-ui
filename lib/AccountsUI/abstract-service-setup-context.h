@@ -31,6 +31,7 @@
 
 namespace AccountsUI {
 
+class AbstractAccountSetupContext;
 class AbstractServiceSetupContextPrivate;
 
 /*!
@@ -56,6 +57,20 @@ public:
      * Gets the service being setup by this context.
      */
     const Accounts::Service *service() const;
+
+    /*!
+     * Sets the AbstractServiceSetupContext. This method should not be called
+     * by the service plugin itself.
+     * @param context The AbstractAccountSetupContext.
+     */
+    void setAccountSetupContext(AbstractAccountSetupContext *context);
+
+    /*!
+     * Gets the AbstractAccountSetupContext.
+     * @return The AbstractAccountSetupContext which was set with
+     * setAccountSetupContext(), or 0 if none was set.
+     */
+    AbstractAccountSetupContext *accountSetupContext() const;
 
     /*!
      * Constructs the UI element which handles account
