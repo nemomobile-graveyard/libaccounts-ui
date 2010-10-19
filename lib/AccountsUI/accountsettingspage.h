@@ -23,10 +23,10 @@
 #ifndef ACCOUNTSUI_ACCOUNTSETTINGSPAGE_H
 #define ACCOUNTSUI_ACCOUNTSETTINGSPAGE_H
 
-//AccountsUI
-#include <AccountsUI/ServiceHelper>
+//libAccountsUI
+#include <AccountsUI/service-helper.h>
 #include <AccountsUI/abstract-account-setup-context.h>
-#include "account-sync-handler.h"
+#include <AccountsUI/common.h>
 
 //Meegotouch
 #include <MApplicationPage>
@@ -36,6 +36,7 @@ namespace Accounts {
 }
 
 namespace AccountsUI {
+
 class AbstractAccountSetupContext;
 class AccountSettingsPagePrivate;
 

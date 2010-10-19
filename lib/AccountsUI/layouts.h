@@ -23,10 +23,15 @@
 #ifndef ACCOUNTSUI_LAYOUTS_H
 #define ACCOUNTSUI_LAYOUTS_H
 
+//M
 #include <MLayout>
+
+//Qt
 #include <QDebug>
-#include <AccountsUI/parser.h>
+
+//libAccountsUI
 #include <AccountsUI/ui-builder.h>
+#include <AccountsUI/parser.h>
 
 using namespace AccountsUI;
 
@@ -38,8 +43,7 @@ class ContextFreeLayout: public UiBuilder
 public:
     ContextFreeLayout(QObject *parent):
         UiBuilder(parent) {};
-    virtual ~ContextFreeLayout()
-    {
+    virtual ~ContextFreeLayout() {
         qDebug() << __PRETTY_FUNCTION__;
     }
 protected:
@@ -51,8 +55,7 @@ protected:
     virtual QGraphicsLayoutItem* ui(const QDomElement &node,
                             GenericServiceSetupContext *context,
                             Parser *parser,
-                            bool showAllSettings = true)
-    {
+                            bool showAllSettings = true) {
         qDebug() << __PRETTY_FUNCTION__;
         return layout(children(node, context,  parser, showAllSettings));
     };

@@ -23,7 +23,10 @@
 #ifndef ACCOUNTSUI_ACCOUNTMANAGERSINGLETON_H
 #define ACCOUNTSUI_ACCOUNTMANAGERSINGLETON_H
 
+//libAccountsUI
 #include <AccountsUI/common.h>
+
+//Accounts
 #include <Accounts/Manager>
 
 namespace AccountsUI {

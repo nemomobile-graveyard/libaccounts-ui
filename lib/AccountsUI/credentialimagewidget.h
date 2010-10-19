@@ -24,6 +24,9 @@
 #ifndef ACCOUNTSUI_CREDENTIAL_IMAGE_WIDGET_H
 #define ACCOUNTSUI_CREDENTIAL_IMAGE_WIDGET_H
 
+//libAccountsUI
+#include <AccountsUI/common.h>
+
 //Qt
 #include <QObject>
 

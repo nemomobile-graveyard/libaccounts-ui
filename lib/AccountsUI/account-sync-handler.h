@@ -23,22 +23,12 @@
 #ifndef ACCOUNTSUI_ACCOUNT_SYNC_HANDLER_H
 #define ACCOUNTSUI_ACCOUNT_SYNC_HANDLER_H
 
-//AccountsUI
+//libAccountsUI
 #include <AccountsUI/abstract-account-setup-context.h>
 #include <AccountsUI/abstract-service-setup-context.h>
+#include <AccountsUI/common.h>
 
 namespace AccountsUI {
-
-/*!
- * State of validating and storing process which is passed through
- * signal finished(const FinishedMessage).
- */
-enum SyncState {
-    Validated,
-    NotValidated,
-    Stored,
-    NotStored
-};
 
 class AccountSyncHandlerPrivate;
 
@@ -51,7 +41,7 @@ class AccountSyncHandlerPrivate;
  * its services settings.
  * After emiting syncStateChanged(Stored) the caller should sync the account.
  */
-class AccountSyncHandler : public QObject
+class ACCOUNTSUI_EXPORT AccountSyncHandler : public QObject
 {
     Q_OBJECT
 

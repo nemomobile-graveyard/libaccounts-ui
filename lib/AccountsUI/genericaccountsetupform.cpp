@@ -176,4 +176,4 @@ void GenericAccountSetupForm::setEnabledForm(bool enable)
     }
 }
 
-M_REGISTER_WIDGET_NO_CREATE(GenericAccountSetupForm)
+M_REGISTER_WIDGET_NO_CREATE(GenericAccountSetupForm);

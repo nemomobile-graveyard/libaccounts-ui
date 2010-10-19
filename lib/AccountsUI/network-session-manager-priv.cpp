@@ -197,4 +197,4 @@ void NetworkSessionManagerPrivate::sessionErrorHandler(QNetworkSession::SessionE
     }
 }
 
-} //AccountsUI
+} //namespace

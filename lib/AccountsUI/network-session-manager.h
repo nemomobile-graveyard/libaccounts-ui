@@ -23,8 +23,10 @@
 #ifndef ACCOUNTSUI_NETWORKSESSIONMANAGER_H
 #define ACCOUNTSUI_NETWORKSESSIONMANAGER_H
 
+//libAccountsUI
 #include <AccountsUI/common.h>
 
+//Qt
 #include <QObject>
 #include <QMetaType>
 
@@ -63,7 +65,7 @@ private:
     Q_DECLARE_PRIVATE(NetworkSessionManager)
 };
 
-} //AccountsUI
+} //namespace
 
 Q_DECLARE_METATYPE(AccountsUI::NetworkSessionManager::ErrorType)
 
