@@ -32,67 +32,12 @@
 #include <MApplication>
 #include <MApplicationIfProxy>
 #include <MApplicationWindow>
-#include <MLocale>
 
 #include <QDebug>
-#include <QX11Info>
-
-#include <X11/Xatom.h>
-#include <X11/Xlib.h>
 
 namespace AccountsUI {
 
 static ProviderPluginProcess *plugin_instance = 0;
-
-static void showWindow(Qt::HANDLE windowId, bool show)
-{
-    // this code was copied from libdui's m-servicefwgen tool
-    Atom netWmStateAtom =
-        XInternAtom(QX11Info::display(), "_NET_WM_STATE", False);
-
-    if (show) {
-        // Remove the property
-        XDeleteProperty(QX11Info::display(), windowId, netWmStateAtom);
-    } else {
-        // Tell the window to not to be shown in the switcher
-        Atom skipTaskbarAtom = XInternAtom(QX11Info::display(),
-                                           "_NET_WM_STATE_SKIP_TASKBAR", False);
-
-        QVector<Atom> atoms;
-        atoms.append(skipTaskbarAtom);
-        XChangeProperty(QX11Info::display(), windowId, netWmStateAtom,
-                        XA_ATOM, 32, PropModeReplace,
-                        (unsigned char *)atoms.data(), atoms.count());
-    }
-
-    XSync(QX11Info::display(), False);
-}
-
-void ProviderPluginProcessPrivate::bindPageToAccountsUi(MApplicationPage *page)
-{
-    Q_Q(ProviderPluginProcess);
-
-    page->setEscapeMode(MApplicationPageModel::EscapeManualBack);
-    q->connect(page, SIGNAL(backButtonClicked()), SLOT(quit()));
-
-    // hide AccountsUI
-    showWindow(windowId, false);
-
-    // update the X server (code taken from libdui's m-servicefwgen tool)
-    {
-        XPropertyEvent p;
-        p.send_event = True;
-        p.display = QX11Info::display();
-        p.type   = PropertyNotify;
-        p.window = RootWindow(p.display, 0);
-        p.atom   = XInternAtom(p.display, "_NET_CLIENT_LIST", False);
-        p.state  = PropertyNewValue;
-        p.time   = CurrentTime;
-        XSendEvent(p.display, p.window, False, PropertyChangeMask, (XEvent*)&p);
-
-        XSync(QX11Info::display(), False);
-    }
-}
 
 void ProviderPluginProcessPrivate::printAccountId()
 {
@@ -199,58 +144,6 @@ void ProviderPluginProcess::init(int &argc, char **argv)
     if (plugin_instance != 0)
         qWarning() << "ProviderPluginProcess already instantiated";
     plugin_instance = this;
-
-    d->account = 0;
-    d->setupType = CreateNew;
-
-    MLocale locale;
-    locale.installTrCatalog("accountssso");
-    MLocale::setDefault(locale);
-
-    d->manager = new Accounts::Manager(this);
-
-    /* parse command line options */
-    bool type_set = false;
-    for (int i = 0; i < argc; ++i)
-    {
-        Q_ASSERT(argv[i] != NULL);
-
-        if ((strcmp(argv[i], "--create") == 0) && !type_set)
-        {
-            d->setupType = CreateNew;
-            type_set = true;
-
-            i++;
-            if (i < argc)
-                d->account = d->manager->createAccount(argv[i]);
-        }
-        else if ((strcmp(argv[i], "--edit") == 0) && !type_set)
-        {
-            d->setupType = EditExisting;
-            type_set = true;
-
-            i++;
-            if (i < argc)
-                d->account = d->manager->account(atoi(argv[i]));
-        }
-        else if (strcmp(argv[i], "--windowId") == 0)
-        {
-            i++;
-            if (i < argc)
-                d->windowId = atoi(argv[i]);
-            Q_ASSERT(d->windowId != 0);
-        }
-        else if (strcmp(argv[i], "--serviceType") == 0)
-        {
-            i++;
-            if (i < argc)
-                d->serviceType = argv[i];
-            Q_ASSERT(d->serviceType != 0);
-        }
-    }
-
-    if (d->account != 0)
-        d->monitorServices();
 }
 
 ProviderPluginProcess::~ProviderPluginProcess()
@@ -300,7 +193,6 @@ int ProviderPluginProcess::exec()
         return 1;
     }
 
-    d->bindPageToAccountsUi(page);
     page->appear(d->window);
 
     return d->application->exec();
@@ -312,9 +204,6 @@ void ProviderPluginProcess::quit()
 
     if (d->windowId != 0)
     {
-        // show AccountsUI
-        showWindow(d->windowId, true);
-
         MApplicationIfProxy mApplicationIfProxy("com.nokia.accounts-ui",
                 this);
 
