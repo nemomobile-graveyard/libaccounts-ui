@@ -107,7 +107,9 @@ public:
         AbstractAccountSetupContext *context,
         QObject *parent = 0);
 
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
     /*!
+     * @deprecated
      * Gets the context object which handles account service
      * creation/settings/deletion.
      * Calling this method will cause the loading of the service plugin.
@@ -118,6 +120,7 @@ public:
     AbstractServiceSetupContext *serviceSetupContext(
         Accounts::Account *account,
         QObject *parent = 0);
+#endif
 
 private:
     ServiceHelperPrivate *d_ptr;
