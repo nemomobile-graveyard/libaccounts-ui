@@ -1,3 +1,10 @@
+libaccounts-ui (0.13-1) unstable; urgency=low
+
+  * Fixes: NB#198463 - Two gmail services are shown in Google account
+    settings page
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Tue, 19 Oct 2010 12:13:55 +0300
+
 libaccounts-ui (0.12-1) unstable; urgency=low
 
   * Add the ProviderPluginProxy class.
