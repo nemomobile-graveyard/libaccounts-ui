@@ -100,6 +100,18 @@ public:
      * creation/settings/deletion.
      * Calling this method will cause the loading of the service plugin.
      *
+     * @param context The account setup context.
+     * @param parent The parent object for the context.
+     */
+    AbstractServiceSetupContext *serviceSetupContext(
+        AbstractAccountSetupContext *context,
+        QObject *parent = 0);
+
+    /*!
+     * Gets the context object which handles account service
+     * creation/settings/deletion.
+     * Calling this method will cause the loading of the service plugin.
+     *
      * @param account the account which is used
      * @param parent The parent object for the context.
      */

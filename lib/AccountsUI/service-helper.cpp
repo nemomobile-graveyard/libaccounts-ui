@@ -21,6 +21,7 @@
  */
 
 #include "service-helper.h"
+#include "abstract-account-setup-context.h"
 
 //AccountsUI
 #include <AccountsUI/ServicePluginInterface>
@@ -161,6 +162,27 @@ QString ServiceHelper::description()
         return descriptionElement.text();
     else
         return 0;
+}
+
+AbstractServiceSetupContext *
+ServiceHelper::serviceSetupContext(AbstractAccountSetupContext *context,
+                                   QObject *parent)
+{
+    Q_D(ServiceHelper);
+    if (!d->plugin)
+        d->loadPlugin();
+
+    AbstractServiceSetupContext *serviceContext;
+    if (d->plugin)
+        serviceContext = d->plugin->serviceSetupContext(context->account(),
+                                                        d->service, parent);
+    else
+        serviceContext = new GenericServiceSetupContext(context->account(),
+                                                        d->service, parent);
+
+    if (serviceContext)
+        serviceContext->setAccountSetupContext(context);
+    return serviceContext;
 }
 
 AbstractServiceSetupContext *
