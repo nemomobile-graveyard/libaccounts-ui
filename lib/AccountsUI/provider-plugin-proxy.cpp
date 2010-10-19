@@ -89,8 +89,7 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
             .arg(windowId);
 
         newAccountCreation = false;
-    }
-    else {
+    } else {
         processArguments = QString::fromLatin1("%1 --create %2 --windowId %3")
             .arg(pluginFileInfo.canonicalFilePath())
             .arg(providerId)
@@ -147,8 +146,7 @@ void ProviderPluginProxyPrivate::onError(QProcess::ProcessError err)
     Q_Q(ProviderPluginProxy);
 
     PWATCHER_TRACE(pwatcher);
-    if (err == QProcess::FailedToStart)
-    {
+    if (err == QProcess::FailedToStart) {
         pluginName.clear();
 
         emit q->failed();
@@ -169,16 +167,14 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
 
     PWATCHER_TRACE(pwatcher) << exitCode;
 
-    if (exitStatus == QProcess::CrashExit)
-    {
+    if (exitStatus == QProcess::CrashExit) {
         emit q->failed();
         process->deleteLater();
         process = NULL;
         return;
     }
 
-    if (newAccountCreation)
-    {
+    if (newAccountCreation) {
         char buffer[16];
         process->readLine(buffer, sizeof(buffer));
         int result = QString::fromAscii(buffer).toInt();
@@ -186,8 +182,7 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
         qDebug() << "Plugin output: " << result;
 
         emit q->created(result);
-    }
-    else
+    } else
         emit q->edited();
 
     pluginName.clear();
