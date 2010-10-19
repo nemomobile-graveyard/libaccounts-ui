@@ -129,6 +129,8 @@ void AccountSettingsPage::setServicesToBeShown()
 
     /* iterate through the contexts we created for each service, and get the
      * UI widgets to embed */
+    QMap<QString, bool> enabledServiceTypes;
+
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
         d->service = context->service();
@@ -138,20 +140,33 @@ void AccountSettingsPage::setServicesToBeShown()
             settingsWidget = new ServiceSettingsWidget(context, this);
         else {
             d->account->selectService(service);
+
+            bool enabled = false;
+            if (d->account->enabled() &&
+                !enabledServiceTypes.contains(service->serviceType())) {
+                enabledServiceTypes.insert(service->serviceType(), true);
+                enabled = true;
+            }
+
             settingsWidget = new ServiceSettingsWidget(context,
                                                        this,
                                                        false,
                                                        false,
-                                                       d->account->enabled());
+                                                       enabled);
 
-            connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
-                     this, SLOT(disableSameServiceTypes(const QString&)));
+            d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
         }
+
         settingsWidget->setHeaderVisible(false);
         d->layoutServicePolicy->addItem(settingsWidget, row++, 0);
-
-        d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
     }
+
+    /*
+     * no need in extra processing of any signals during content creation
+     * */
+    foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets)
+        connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
+                 this, SLOT(disableSameServiceTypes(const QString&)));
 }
 
 AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
