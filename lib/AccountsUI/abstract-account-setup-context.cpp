@@ -36,29 +36,38 @@ public:
 
     SetupType setupType;
     QString serviceType;
+    QString userName;
 };
 
 AbstractAccountSetupContext::AbstractAccountSetupContext
-    (Accounts::Account *account, SetupType type, QObject *parent)
-    : AbstractSetupContext(account, parent),
-    d_ptr(new AbstractAccountSetupContextPrivate())
-    {
+    (Accounts::Account *account, SetupType type, QObject *parent):
+        AbstractSetupContext(account, parent),
+        d_ptr(new AbstractAccountSetupContextPrivate())
+{
     Q_D(AbstractAccountSetupContext);
-        d->setupType = type;
-    }
+    d->setupType = type;
+}
 
-    AbstractAccountSetupContext::~AbstractAccountSetupContext()
-    {
-        delete d_ptr;
-    }
+AbstractAccountSetupContext::~AbstractAccountSetupContext()
+{
+    delete d_ptr;
+}
 
-    SetupType
-    AbstractAccountSetupContext::setupType()
-    {
-        Q_D(AbstractAccountSetupContext);
+SetupType
+AbstractAccountSetupContext::setupType()
+{
+    Q_D(AbstractAccountSetupContext);
 
-        return d->setupType;
-    }
+    return d->setupType;
+}
+
+SetupType
+AbstractAccountSetupContext::setupType() const
+{
+    Q_D(const AbstractAccountSetupContext);
+
+    return d->setupType;
+}
 
 void
 AbstractAccountSetupContext::setServiceType(const QString &serviceType)
@@ -74,6 +83,22 @@ AbstractAccountSetupContext::serviceType() const
     Q_D(const AbstractAccountSetupContext);
 
     return d->serviceType;
+}
+
+void
+AbstractAccountSetupContext::setUserName(const QString &userName)
+{
+    Q_D(AbstractAccountSetupContext);
+
+    d->userName = userName;
+}
+
+QString
+AbstractAccountSetupContext::userName() const
+{
+    Q_D(const AbstractAccountSetupContext);
+
+    return d->userName;
 }
 
 } // namespace

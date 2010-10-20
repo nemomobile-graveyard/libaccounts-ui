@@ -121,7 +121,7 @@ void AccountSettingsPage::setServicesToBeShown()
         const QVariant vServiceHelper = index.data(ServiceModel::ServiceHelperColumn);
         ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
         AbstractServiceSetupContext *context =
-            serviceHelper->serviceSetupContext(d->context->account(), this);
+            serviceHelper->serviceSetupContext(d->context, this);
         d->contexts.append(context);
     }
 
