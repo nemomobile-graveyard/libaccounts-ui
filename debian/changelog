@@ -1,3 +1,9 @@
+libaccounts-ui (0.15-1) unstable; urgency=low
+
+  * Allow AccountService plugins to get the username.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Wed, 20 Oct 2010 16:32:53 +0300
+
 libaccounts-ui (0.14-1) unstable; urgency=low
 
   * Set enabledServices fro accounts settings page to dont filter them out 
