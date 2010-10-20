@@ -103,6 +103,7 @@ void AccountSettingsPage::setServicesToBeShown()
     ServiceModel *serviceModel = new ServiceModel(d->context->account(), this);
     SortServiceModel *sortModel = new SortServiceModel(this);
     sortModel->setSourceModel(serviceModel);
+    sortModel->setEnabledServices(d->context->account()->enabledServices());
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
     QAbstractProxyModel *proxy = 0;
