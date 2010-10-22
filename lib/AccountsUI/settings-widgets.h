@@ -23,21 +23,24 @@
 #ifndef ACCOUNTSUI_WIDGETS_H
 #define ACCOUNTSUI_WIDGETS_H
 
+//Qt
 #include <QDebug>
 #include <QVariant>
 #include <QString>
 #include <QObject>
 #include <QMetaObject>
 
-
+//M
 #include <MButton>
 #include <MLayout>
 #include <MLinearLayoutPolicy>
 #include <MTextEdit>
 #include <MLabel>
 
+//Accounts
 #include <Accounts/Account>
 
+//libAccountsUI
 #include <AccountsUI/generic-service-setup-context.h>
 #include <AccountsUI/parser.h>
 #include <AccountsUI/ui-builder.h>
@@ -58,13 +61,11 @@ public:
         : UiBuilder(parent), key(QString::null), editor(0)
     {};
 
-    virtual ~ParameterText ()
-    {
+    virtual ~ParameterText () {
         qDebug() << __PRETTY_FUNCTION__;
     }
 
-    virtual void store(GenericServiceSetupContext *context)
-    {
+    virtual void store(GenericServiceSetupContext *context) {
         context->account()->setValue(key, editor->text());
     }
 
@@ -87,8 +88,7 @@ private:
 protected:
     MTextEdit *editor;
 
-    virtual void store(GenericServiceSetupContext *context)
-    {
+    virtual void store(GenericServiceSetupContext *context) {
         context->account()->setValue(key,
                                      editor->text().toInt());
     }
@@ -97,10 +97,10 @@ public:
     Q_INVOKABLE ParameterInteger (QObject *parent)
     : UiBuilder(parent), key(QString::null), editor(0) {};
 
-    virtual ~ParameterInteger ()
-    {
+    virtual ~ParameterInteger () {
         qDebug() << __PRETTY_FUNCTION__;
     };
+
     virtual QGraphicsLayoutItem* ui(const QDomElement &node, GenericServiceSetupContext *context,
                                     Parser *parser, bool showAllSettings = true);
 
@@ -124,10 +124,10 @@ public:
     Q_INVOKABLE ParameterBoolean (QObject *parent)
     : UiBuilder(parent), key(QString::null), button(0) {};
 
-    virtual ~ParameterBoolean ()
-    {
+    virtual ~ParameterBoolean () {
         qDebug() << __PRETTY_FUNCTION__;
     };
+
     virtual QGraphicsLayoutItem* ui(const QDomElement &node, GenericServiceSetupContext *context,
                                     Parser *parser, bool showAllSettings = true);
 };

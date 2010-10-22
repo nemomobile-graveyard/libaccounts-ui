@@ -23,10 +23,9 @@
 #ifndef ACCOUNTSUI_SERVICESETTINGSWIDGET_H
 #define ACCOUNTSUI_SERVICESETTINGSWIDGET_H
 
-//Meegotouch
+//M
 #include <MContainer>
 
-//#include <AccountsUI/abstract-service-setup-context.h>
 namespace AccountsUI {
 
 class ServiceSettingsWidgetPrivate;
@@ -71,6 +70,7 @@ private:
     Q_DISABLE_COPY(ServiceSettingsWidget)
     Q_DECLARE_PRIVATE(ServiceSettingsWidget)
 };
-}
+
+} //namespace
 
 #endif // ACCOUNTSUI_SERVICESETTINGSWIDGET_H

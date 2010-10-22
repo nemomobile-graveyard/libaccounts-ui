@@ -54,4 +54,4 @@ void NetworkSessionManager::stopSession()
     d->stopSession();
 }
 
-} //AccountsUI
+} //namespace

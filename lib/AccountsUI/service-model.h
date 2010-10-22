@@ -23,9 +23,10 @@
 #ifndef ACCOUNTSUI_SERVICEMODEL_H
 #define ACCOUNTSUI_SERVICEMODEL_H
 
-//project
-#include <AccountsUI/ServiceHelper>
+//libAccountsUI
+#include <AccountsUI/service-helper.h>
 #include <AccountsUI/abstract-account-setup-context.h>
+
 //Qt
 #include <QAbstractTableModel>
 #include <QDomDocument>

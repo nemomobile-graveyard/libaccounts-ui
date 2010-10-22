@@ -71,7 +71,7 @@ void ServiceModel::init(const Accounts::ServiceList &services)
 QVariant ServiceModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     Q_D(const ServiceModel);
-    if(orientation != Qt::Horizontal) {
+    if (orientation != Qt::Horizontal) {
         return QVariant();
     }
     Columns column = static_cast<Columns>(section);
@@ -94,7 +94,7 @@ ServiceModel::serviceHelper(const QModelIndex& index) const
 {
     Q_D(const ServiceModel);
     Q_ASSERT(d->serviceList.count() > index.row());
-    if(d->serviceList.count() < index.row()) {
+    if (d->serviceList.count() < index.row()) {
         return 0;
     }
     return d->serviceList.at(index.row());

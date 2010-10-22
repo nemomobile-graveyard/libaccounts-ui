@@ -23,7 +23,7 @@
 #ifndef ACCOUNTSUI_SETTINGSPAGE_H
 #define ACCOUNTSUI_SETTINGSPAGE_H
 
-//Meegotouch
+//M
 #include <MApplicationPage>
 
 namespace AccountsUI {
@@ -48,6 +48,7 @@ private:
     Q_DISABLE_COPY(SettingsPage)
     Q_DECLARE_PRIVATE(SettingsPage)
 };
-}
+
+} //namespace
 
 #endif // ACCOUNTSUI_SETTINGSPAGE_H

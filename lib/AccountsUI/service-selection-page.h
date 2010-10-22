@@ -23,9 +23,11 @@
 #ifndef ACCOUNTSUI_SERVICESELECTIONPAGE_H
 #define ACCOUNTSUI_SERVICESELECTIONPAGE_H
 
+//libAccountsUI
 #include <AccountsUI/abstract-account-setup-context.h>
 #include <AccountsUI/abstract-service-setup-context.h>
-#include "account-sync-handler.h"
+#include <AccountsUI/account-sync-handler.h>
+#include <AccountsUI/common.h>
 
 //Meegotouch
 #include <MApplicationPage>

@@ -24,7 +24,7 @@
 
 #include "credentialwidgetview.h"
 #include "credentialwidget.h"
-#include "credential-image-widget.h"
+#include "credentialimagewidget.h"
 
 //M
 #include <MLayout>
@@ -84,7 +84,7 @@ public:
 
     /*
      * these parts are common for all three different
-     * variants of signon-ui dialogs
+     * variants of accounts-ui dialogs
      */
     MLayout   *mainLayout;
 
@@ -134,7 +134,7 @@ public:
 
     MDialog *keyChainDialog;
 
-    Identity *identity;
+    SignOn::Identity *identity;
 
 public:
     void destroyAllWidgets();
@@ -314,7 +314,7 @@ void CredentialWidgetView::recreateWidgets()
         connect(d->usernameTextEdit, SIGNAL(widgetClicked()),
                 this, SLOT(usernameTextEditGainedFocus()));
 
-        if(model()->checkboxVisible()) {
+        if (model()->checkboxVisible()) {
             d->rememberPasswordSwitch->setChecked(model()->checkboxPressed());
             connect(d->rememberPasswordSwitch, SIGNAL(toggled(bool)),
                     this, SLOT(refreshCheckboxStateInModel(bool)));
@@ -565,7 +565,7 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
         d->landscapePolicy->addItem(d->captchaRefreshButton,4,3,1,1,Qt::AlignRight);
         d->landscapePolicy->addItem(d->captchaTextEdit,5,0,1,4);
 
-        if(model()->signInButtonVisible() && model()->nextButtonVisible()) {
+        if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
             d->landscapePolicy->addItem(d->signInButton,6,0,1,2);
             d->landscapePolicy->addItem(d->nextButton,6,2,1,2);
         } else {
@@ -581,7 +581,7 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
         d->landscapePolicy->addItem(d->captchaRefreshButton,3,3,1,1,Qt::AlignRight);
         d->landscapePolicy->addItem(d->captchaTextEdit,4,0,1,4);
 
-        if(model()->signInButtonVisible() && model()->nextButtonVisible()) {
+        if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
             d->landscapePolicy->addItem(d->signInButton,5,0,1,2);
             d->landscapePolicy->addItem(d->nextButton,5,2,1,2);
         } else {
@@ -624,7 +624,7 @@ void CredentialWidgetView::configureWithLogin()
     if (model()->checkboxVisible()) {
         d->portraitPolicy->addItem(d->rememberPasswordLabel,4,0);
         d->portraitPolicy->addItem(d->rememberPasswordSwitch,4,1);
-        if(model()->signInButtonVisible() && model()->nextButtonVisible()) {
+        if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
             d->portraitPolicy->addItem(d->signInButton,5,0,1,2);
             d->portraitPolicy->addItem(d->nextButton,6,0,1,2);
         } else {
@@ -634,7 +634,7 @@ void CredentialWidgetView::configureWithLogin()
                 d->portraitPolicy->addItem(d->nextButton,5,0,1,2);
         }
     } else {
-        if(model()->signInButtonVisible() && model()->nextButtonVisible()) {
+        if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
             d->portraitPolicy->addItem(d->signInButton,4,0,1,2);
             d->portraitPolicy->addItem(d->nextButton,5,0,1,2);
         } else {
@@ -655,7 +655,7 @@ void CredentialWidgetView::configureWithLogin()
         d->landscapePolicy->addItem(d->rememberPasswordLabel,2,0,1,3);
         d->landscapePolicy->addItem(d->rememberPasswordSwitch,2,3,1,1,Qt::AlignRight);
 
-        if(model()->signInButtonVisible() && model()->nextButtonVisible()) {
+        if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
             d->landscapePolicy->addItem(d->signInButton,3,0,1,2);
             d->landscapePolicy->addItem(d->nextButton,3,2,1,2);
         } else {
@@ -666,7 +666,7 @@ void CredentialWidgetView::configureWithLogin()
             d->landscapePolicy->setRowAlignment(3,Qt::AlignHCenter);
         }
     } else {
-        if(model()->signInButtonVisible() && model()->nextButtonVisible()) {
+        if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
             d->landscapePolicy->addItem(d->signInButton,2,0,1,2);
             d->landscapePolicy->addItem(d->nextButton,2,2,1,2);
         } else {
@@ -684,7 +684,7 @@ void CredentialWidgetView::configureWithButtonsOnly()
     Q_D(CredentialWidgetView);
 
     //landscape && portrait mode
-    if(model()->signInButtonVisible() && model()->nextButtonVisible()) {
+    if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
         d->landscapePolicy->addItem(d->signInButton,0,0,1,2);
         d->landscapePolicy->addItem(d->nextButton,0,2,1,2);
         d->portraitPolicy->addItem(d->signInButton,0,0);
@@ -736,4 +736,4 @@ void CredentialWidgetView::updateMainLayout()
     d->mainLayout->setLandscapePolicy(d->landscapePolicy);
 }
 
-M_REGISTER_VIEW_NEW(CredentialWidgetView, CredentialWidget)
+M_REGISTER_VIEW_NEW(CredentialWidgetView, CredentialWidget);

@@ -68,4 +68,4 @@ void showInfoBanner(const QString &text,
     banner->appear(MSceneWindow::DestroyWhenDone);
 }
 
-} //AccountsUI
+} //namespace

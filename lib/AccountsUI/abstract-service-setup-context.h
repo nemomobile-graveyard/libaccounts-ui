@@ -23,7 +23,7 @@
 #ifndef ACCOUNTSUI_ABSTRACT_SERVICE_SETUP_CONTEXT_H
 #define ACCOUNTSUI_ABSTRACT_SERVICE_SETUP_CONTEXT_H
 
-//AccountsUI
+//libAccountsUI
 #include <AccountsUI/abstract-setup-context.h>
 
 //Meegotouch

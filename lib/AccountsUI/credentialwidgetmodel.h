@@ -24,10 +24,13 @@
 #ifndef ACCOUNTSUI_CREDENTIALWIDGETMODEL_H
 #define ACCOUNTSUI_CREDENTIALWIDGETMODEL_H
 
+//libAccountsUI
+#include <AccountsUI/common.h>
+
 //M
 #include <MWidgetModel>
 
-class CredentialWidgetModel: public MWidgetModel
+class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
 {
     Q_OBJECT
     M_MODEL(CredentialWidgetModel)
@@ -135,5 +138,7 @@ class CredentialWidgetModel: public MWidgetModel
         void signInClicked();
         void nextClicked();
 };
+
+
 #endif // ACCOUNTSUI_CREDENTIALWIDGETMODEL_H
 

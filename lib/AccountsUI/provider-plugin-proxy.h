@@ -23,11 +23,14 @@
 #ifndef ACCOUNTSUI_PROVIDER_PLUGIN_PROXY_H
 #define ACCOUNTSUI_PROVIDER_PLUGIN_PROXY_H
 
+//libAccountsUI
 #include <AccountsUI/common.h>
 
+//Accounts
 #include <Accounts/Account>
 #include <Accounts/Provider>
 
+//Qt
 #include <QProcess>
 
 namespace AccountsUI {

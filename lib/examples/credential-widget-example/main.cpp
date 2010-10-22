@@ -21,24 +21,21 @@
  * 02110-1301 USA
  */
 
-#ifndef ACCOUNTSUI_CREDENTIALWIDGETSTYLE_H
-#define ACCOUNTSUI_CREDENTIALWIDGETSTYLE_H
+// M
+#include <MApplication>
+#include <MApplicationWindow>
 
-//libAccountsUI
-#include <AccountsUI/common.h>
+// project
+#include "credentialwidgetexample.h"
 
-//M
-#include <MWidgetStyle>
-
-class ACCOUNTSUI_EXPORT CredentialWidgetStyle: public MWidgetStyle
+int main(int argc, char *argv[])
 {
-    Q_OBJECT
-    M_STYLE(CredentialWidgetStyle)
-};
+    MApplication a(argc, argv);
 
-class ACCOUNTSUI_EXPORT CredentialWidgetStyleContainer: public MWidgetStyleContainer
-{
-    M_STYLE_CONTAINER(CredentialWidgetStyle)
-};
-
-#endif // ACCOUNTSUI_CREDENTIALWIDGETSTYLE_H
+    // MainWindow w;
+    MApplicationWindow w;
+    CredentialWidgetExample *credentialWidgetPage = new CredentialWidgetExample(&w);
+    w.showNormal();
+    credentialWidgetPage->appear();
+    return a.exec();
+}

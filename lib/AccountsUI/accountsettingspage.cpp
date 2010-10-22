@@ -20,12 +20,14 @@
  * 02110-1301 USA
  */
 
+//project
 #include "accountsettingspage.h"
 #include "provider-plugin-process.h"
 #include "service-settings-widget.h"
-#include "AccountsUI/CredentialDialog"
+#include "credentialdialog.h"
 #include "service-model.h"
 #include "sort-service-model.h"
+#include "account-sync-handler.h"
 
 //accounts-qt lib
 #include <Accounts/Account>
@@ -201,7 +203,7 @@ void AccountSettingsPage::createContent()
 
     if (d->context) {
         QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
-        if(accountSettingsWidget != 0) {
+        if (accountSettingsWidget != 0) {
             layoutPolicy->addItem(accountSettingsWidget);
         } else {
             MWidget *upperWidget = new MWidget(this);
@@ -309,10 +311,10 @@ void AccountSettingsPage::enable(bool state)
 
     d->context->account()->selectService(NULL);
     if (state) {
-        if(d->usernameAndStatus)
+        if (d->usernameAndStatus)
             d->usernameAndStatus->setSubtitle(QString::null);
     } else {
-        if(d->usernameAndStatus)
+        if (d->usernameAndStatus)
             //% "Disabled"
             d->usernameAndStatus->setSubtitle(qtTrId("qtn_acc_disabled"));
     }
@@ -464,4 +466,5 @@ void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
         widget->setServiceButtonEnable(false);
     }
 }
+
 } // namespace

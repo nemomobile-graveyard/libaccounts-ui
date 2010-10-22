@@ -23,7 +23,7 @@
 #ifndef ACCOUNTSUI_GENERICSERVICESETUPCONTEXT_H
 #define ACCOUNTSUI_GENERICSERVICESETUPCONTEXT_H
 
-#include <AccountsUI/AbstractServiceSetupContext>
+#include <AccountsUI/abstract-service-setup-context.h>
 #include <AccountsUI/ui-builder.h>
 #include <AccountsUI/parser.h>
 
