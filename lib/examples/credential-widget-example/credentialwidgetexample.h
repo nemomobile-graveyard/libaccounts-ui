@@ -4,6 +4,7 @@
  * Copyright (C) 2009-2010 Nokia Corporation.
  *
  * Contact: Alberto Mardegan <alberto.mardegan@nokia.com>
+ * Contact: Lucian Horga <ext-lucian.horga@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -20,43 +21,37 @@
  * 02110-1301 USA
  */
 
-#ifndef NETWORKSESSIONMANAGERPRIV_H
-#define NETWORKSESSIONMANAGERPRIV_H
+#ifndef CREDENTIALWIDGETEXAMPLE_H
+#define CREDENTIALWIDGETEXAMPLE_H
 
 //Qt
-#include <QObject>
-#include <qnetworksession.h>
-#include <qnetworkconfiguration.h>
-#include <qnetworkconfigmanager.h>
+#include <QtCore>
 
-namespace AccountsUI {
+//M
+#include <MApplicationPage>
+#include <MWidget>
 
-class NetworkSessionManager;
+//libAccountsUI
+#include <AccountsUI/CredentialWidget>
 
-class NetworkSessionManagerPrivate : public QObject
+using namespace AccountsUI;
+
+class CredentialWidgetExample: public MApplicationPage
 {
     Q_OBJECT
-
-    NetworkSessionManagerPrivate(NetworkSessionManager *parent);
-    ~NetworkSessionManagerPrivate();
-
-    void startSession();
-    void stopSession();
+public:
+   CredentialWidgetExample(QObject *parent = 0);
+    ~CredentialWidgetExample();
+    virtual void createContent();
 
 private Q_SLOTS:
-    void sessionStateHandler(QNetworkSession::State state);
-    void sessionErrorHandler(QNetworkSession::SessionError err);
-    void sessionOpened();
+    void showLogin();
+    void showCaptcha();
+    void showAll();
 
 private:
-    NetworkSessionManager *q_ptr;
-    Q_DECLARE_PUBLIC(NetworkSessionManager);
-    Q_DISABLE_COPY(NetworkSessionManagerPrivate);
-
-    QNetworkSession *networkSession;
-    bool isSessionReady;
+    CredentialWidgetModel *m_widgetModel;
+    CredentialWidget *credentialWidget;
 };
 
-} //namespace
-
-#endif //NETWORKSESSIONMANAGERPRIV_H
+#endif // CREDENTILWIDGETEXAMPLE_H

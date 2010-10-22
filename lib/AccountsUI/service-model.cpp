@@ -40,16 +40,27 @@ public:
     QMap<ServiceModel::Columns, QVariant> headerData;
 };
 
-ServiceModel::ServiceModel(QObject* parent)
+ServiceModel::ServiceModel(QObject *parent)
     : QAbstractTableModel(parent)
     , d_ptr(new ServiceModelPrivate())
 {
+    init(AccountsManager::instance()->serviceList());
+}
+
+ServiceModel::ServiceModel(Accounts::Account *account, QObject *parent)
+    : QAbstractTableModel(parent)
+    , d_ptr(new ServiceModelPrivate())
+{
+    init(account->services());
+}
+
+void ServiceModel::init(const Accounts::ServiceList &services)
+{
     Q_D(ServiceModel);
+
     d->headerData.insert(ServiceHelperColumn, "serviceHelper");
     d->headerData.insert(ServiceNameColumn, "serviceName");
     d->headerData.insert(ColumnCount, "columncount");
-    Accounts::ServiceList services =
-        AccountsManager::instance()->serviceList();
     for (int i = 0; i < services.size(); i++)
     {
         QDomDocument domDocument = services[i]->domDocument();
@@ -60,7 +71,7 @@ ServiceModel::ServiceModel(QObject* parent)
 QVariant ServiceModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     Q_D(const ServiceModel);
-    if(orientation != Qt::Horizontal) {
+    if (orientation != Qt::Horizontal) {
         return QVariant();
     }
     Columns column = static_cast<Columns>(section);
@@ -83,7 +94,7 @@ ServiceModel::serviceHelper(const QModelIndex& index) const
 {
     Q_D(const ServiceModel);
     Q_ASSERT(d->serviceList.count() > index.row());
-    if(d->serviceList.count() < index.row()) {
+    if (d->serviceList.count() < index.row()) {
         return 0;
     }
     return d->serviceList.at(index.row());

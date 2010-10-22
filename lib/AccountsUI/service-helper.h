@@ -23,10 +23,10 @@
 #ifndef ACCOUNTSUI_SERVICE_H
 #define ACCOUNTSUI_SERVICE_H
 
-//AccountsUI
-#include <AccountsUI/AbstractServiceSetupContext>
+//libAccountsUI
+#include <AccountsUI/abstract-service-setup-context.h>
 
-//accounts-qt
+//Accounts
 #include <Accounts/Service>
 
 namespace AccountsUI {
@@ -95,7 +95,21 @@ public:
      */
     QString serviceName();
 
-     /*!
+    /*!
+     * Gets the context object which handles account service
+     * creation/settings/deletion.
+     * Calling this method will cause the loading of the service plugin.
+     *
+     * @param context The account setup context.
+     * @param parent The parent object for the context.
+     */
+    AbstractServiceSetupContext *serviceSetupContext(
+        AbstractAccountSetupContext *context,
+        QObject *parent = 0);
+
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
+    /*!
+     * @deprecated
      * Gets the context object which handles account service
      * creation/settings/deletion.
      * Calling this method will cause the loading of the service plugin.
@@ -106,8 +120,9 @@ public:
     AbstractServiceSetupContext *serviceSetupContext(
         Accounts::Account *account,
         QObject *parent = 0);
+#endif
 
- private:
+private:
     ServiceHelperPrivate *d_ptr;
     Q_DECLARE_PRIVATE(ServiceHelper)
 };

@@ -23,7 +23,7 @@
 #ifndef ACCOUNTSUI_ABSTRACT_ACCOUNT_SETUP_CONTEXT_H
 #define ACCOUNTSUI_ABSTRACT_ACCOUNT_SETUP_CONTEXT_H
 
-//AccountsUI
+//libAccountsUI
 #include <AccountsUI/abstract-setup-context.h>
 
 //Meegotouch
@@ -47,7 +47,7 @@ class AbstractAccountSetupContextPrivate;
  * AccountsUI/AbstractAccountSetupContext
  * @brief Context object for provider plugins.
  */
-class ACCOUNTSUI_EXPORT AbstractAccountSetupContext : public AbstractSetupContext
+class ACCOUNTSUI_EXPORT AbstractAccountSetupContext: public AbstractSetupContext
 {
     Q_OBJECT
 
@@ -62,7 +62,14 @@ public:
     /*!
      * @return The SetupType specified when creating the context.
      */
+    SetupType setupType() const;
+
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
+    /*!
+     * @deprecated
+     */
     SetupType setupType();
+#endif
 
     /*!
      * Constructs the UI element which handles account creation/settings/deletion.
@@ -78,6 +85,28 @@ public:
      * @return The service type.
      */
     const QString serviceType() const;
+
+    /*!
+     * This method returns the username currently set in the UI. It's meant to
+     * be called by service plugins, during the validation phase, if they need
+     * to store the username in their service settings.
+     *
+     * This function returns a non-empty string only if setUserName() has
+     * previously been called by the account plugin itself.
+     *
+     * @return The account username.
+     */
+    QString userName() const;
+
+protected:
+    /*!
+     * The account setup context implementation should call this method before
+     * starting the validation of the service contexts. It's used so that
+     * service plugins could get the username, if they need to.
+     *
+     * @param userName The user name currently written in the UI.
+     */
+    void setUserName(const QString &userName);
 
 private:
     AbstractAccountSetupContextPrivate *d_ptr;

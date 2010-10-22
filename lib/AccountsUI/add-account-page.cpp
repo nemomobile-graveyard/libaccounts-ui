@@ -20,15 +20,16 @@
  * 02110-1301 USA
  */
 
+//project
 #include "add-account-page.h"
-
 #include "service-selection-page.h"
 #include "service-model.h"
 #include "service-helper.h"
 #include "sort-service-model.h"
 #include "provider-plugin-process.h"
+#include "account-sync-handler.h"
 
-//libaccounts
+//Accounts
 #include <Accounts/Account>
 #include <Accounts/Manager>
 
@@ -52,61 +53,6 @@ using namespace Accounts;
 M_REGISTER_WIDGET_NO_CREATE(AccountsUI::AddAccountPage)
 
 namespace AccountsUI {
-
-class FilterTypeServiceModel : public QSortFilterProxyModel
-{
-public:
-    FilterTypeServiceModel(QObject *parent = 0) : QSortFilterProxyModel(parent)
-    {}
-    ~FilterTypeServiceModel()
-    {}
-protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-};
-
-bool FilterTypeServiceModel::filterAcceptsRow(int source_row,
-                                              const QModelIndex &source_parent) const
-{
-
-    QModelIndex serviceIndex = sourceModel()->index(source_row, 0,
-                                                    source_parent);
-    const QVariant vServiceHelper = sourceModel()->data(serviceIndex,
-                                                        ServiceModel::ServiceHelperColumn);
-    ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
-    QString serviceType = serviceHelper->serviceType();
-    if (serviceType == filterRegExp().pattern())
-        return true;
-    else
-        return false;
-}
-
-class FilterProviderServiceModel : public QSortFilterProxyModel
-{
-public:
-    FilterProviderServiceModel(QObject *parent = 0) : QSortFilterProxyModel(parent)
-    {}
-    ~FilterProviderServiceModel()
-    {}
-protected:
-    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-};
-
-bool FilterProviderServiceModel::filterAcceptsRow(int source_row,
-                                                  const QModelIndex &source_parent) const
-{
-
-    QModelIndex serviceIndex = sourceModel()->index(source_row, 0,
-                                                    source_parent);
-    const QVariant vServiceHelper = sourceModel()->data(serviceIndex,
-                                                        ServiceModel::ServiceHelperColumn);
-    ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
-    QString providerName = serviceHelper->providerName();
-
-    if (filterRegExp().indexIn(providerName)== -1)
-        return false;
-    else
-        return true;
-}
 
 class AddAccountPagePrivate
 {
@@ -177,35 +123,28 @@ void AddAccountPage::navigateToServiceSelectionPage()
     Q_D(AddAccountPage);
     disconnect(d->context, SIGNAL(validated()), this, SLOT(navigateToServiceSelectionPage()));
 
-    ServiceModel *serviceModel = new ServiceModel(this);
+    ServiceModel *serviceModel = new ServiceModel(d->context->account(), this);
 
     SortServiceModel *sortModel = new SortServiceModel(this);
     sortModel->setSourceModel(serviceModel);
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
-    QString providerName(d->context->account()->providerName());
     QAbstractProxyModel *proxy = 0;
-    FilterProviderServiceModel *proxyModel = new FilterProviderServiceModel(this);
-    proxyModel->setSourceModel(sortModel);
-    QRegExp regExp(QString::fromLatin1("^%1$").arg(QRegExp::escape(providerName)),
-            Qt::CaseSensitive);
-    proxyModel->setFilterRegExp(regExp);
-
     // selecting the service type
     if (!d->context->serviceType().isEmpty()) {
         FilterTypeServiceModel *filterServiceModel = new FilterTypeServiceModel(this);
-        filterServiceModel->setSourceModel(proxyModel);
+        filterServiceModel->setSourceModel(sortModel);
         filterServiceModel->setFilterFixedString(d->context->serviceType());
         proxy = filterServiceModel;
     } else
-        proxy = proxyModel;
+        proxy = sortModel;
 
     for (int i = 0; i < proxy->rowCount(); i++) {
         QModelIndex index = proxy->index(i, 0);
         const QVariant vServiceHelper = index.data(ServiceModel::ServiceHelperColumn);
         ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
         AbstractServiceSetupContext *context =
-            serviceHelper->serviceSetupContext(d->context->account(), this);
+            serviceHelper->serviceSetupContext(d->context, this);
         d->serviceContextList.append(context);
     }
 

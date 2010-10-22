@@ -20,12 +20,13 @@
  * 02110-1301 USA
  */
 
-#include "genericaccountsetupformview.h"
 //project
-#include <CredentialWidget>
+#include "credentialwidget.h"
 #include "genericaccountsetupform.h"
+#include "genericaccountsetupformview.h"
 #include "common.h"
-//Meegotouch
+
+//M
 #include <MLayout>
 #include <MLinearLayoutPolicy>
 #include <MGridLayoutPolicy>
@@ -35,6 +36,7 @@
 #include <MInfoBanner>
 #include <MContentItem>
 #include <MSeparator>
+
 //Qt
 #include <QDebug>
 #include <QDesktopServices>
@@ -113,11 +115,14 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     MContentItem *providerInfoItem =
         new MContentItem(MContentItem::IconAndSingleTextLabel, controller);
     providerInfoItem->setTitle(providerName);
-    //TODO: find out in the future how to retrieve the size from the MContentItem image widget size
     providerInfoItem->setImageID(providerIconId);
 
     // Credentials widget
-    delete widgetModel;
+    if (widgetModel) {
+        delete widgetModel;
+        widgetModel = NULL;
+    }
+
     widgetModel = new CredentialWidgetModel();
     widgetModel->setDialogsVisabilityConfig(CredentialWidgetModel::LoginDialogVisible);
     widgetModel->setSignInButtonVisible(true);
@@ -149,7 +154,6 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     mainLayoutPolicy->addItem(credentialWidget, Qt::AlignLeft);
     mainLayoutPolicy->addStretch(3);
 }
-
 
 GenericAccountSetupFormView::GenericAccountSetupFormView(GenericAccountSetupForm *controller)
     : MWidgetView(controller)

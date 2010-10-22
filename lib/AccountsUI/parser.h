@@ -23,12 +23,13 @@
 #ifndef ACCOUNTSUI_PARSER_H
 #define ACCOUNTSUI_PARSER_H
 
+//Qt
 #include <QDomElement>
 #include <MLayout>
-
 #include <QHash>
 #include <QMetaObject>
 
+//libAccountsUI
 #include <AccountsUI/ui-builder.h>
 
 namespace AccountsUI {

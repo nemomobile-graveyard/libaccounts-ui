@@ -21,8 +21,9 @@
  */
 
 #include "service-helper.h"
+#include "abstract-account-setup-context.h"
 
-//AccountsUI
+//libAccountsUI
 #include <AccountsUI/ServicePluginInterface>
 #include <AccountsUI/GenericServiceSetupContext>
 
@@ -56,7 +57,7 @@ public:
 void ServiceHelperPrivate::loadPlugin()
 {
     QString libPath = getenv("ACCOUNTS_UI_PLUGIN_DIR");
-    if(!libPath.isEmpty()) {
+    if (!libPath.isEmpty()) {
         libPath = QDir::cleanPath(libPath) + QDir::separator();
     } else {
         libPath = "/usr/lib/AccountsUI/";
@@ -161,6 +162,27 @@ QString ServiceHelper::description()
         return descriptionElement.text();
     else
         return 0;
+}
+
+AbstractServiceSetupContext *
+ServiceHelper::serviceSetupContext(AbstractAccountSetupContext *context,
+                                   QObject *parent)
+{
+    Q_D(ServiceHelper);
+    if (!d->plugin)
+        d->loadPlugin();
+
+    AbstractServiceSetupContext *serviceContext;
+    if (d->plugin)
+        serviceContext = d->plugin->serviceSetupContext(context->account(),
+                                                        d->service, parent);
+    else
+        serviceContext = new GenericServiceSetupContext(context->account(),
+                                                        d->service, parent);
+
+    if (serviceContext)
+        serviceContext->setAccountSetupContext(context);
+    return serviceContext;
 }
 
 AbstractServiceSetupContext *

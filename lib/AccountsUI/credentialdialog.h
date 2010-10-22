@@ -24,6 +24,7 @@
 #ifndef ACCOUNTSUI_CREDENTIALDIALOG_H
 #define ACCOUNTSUI_CREDENTIALDIALOG_H
 
+//project
 #include <AccountsUI/common.h>
 
 //Qt
@@ -40,20 +41,21 @@
 #include <MTextEdit>
 
 //SignOn
-#include <identity.h>
-#include <identityinfo.h>
+#include <SignOn/Identity>
 
-using namespace SignOn;
+namespace AccountsUI {
 
-class CredentialWidgetModel;
+enum CredentialDialogType {
+   SaveOrDeleteCreds,
+   SaveCredsOrCancel
+};
 
 class ACCOUNTSUI_EXPORT CredentialDialog: public MDialog
 {
     Q_OBJECT
 
 public:
-    CredentialDialog(const qint32 credentialsId);
-
+    CredentialDialog(const qint32 credentialsId, CredentialDialogType type = SaveCredsOrCancel);
     ~CredentialDialog();
 
 private:
@@ -76,6 +78,11 @@ private Q_SLOTS:
     void clearPasswordField();
 
 Q_SIGNALS:
+    /**
+      * Emitted after confirmation of succesfull
+      * credentials deletion has been received from signon.
+      */
+    void credentialsDeleted(const qint32 credentialsId);
     void safeToDeleteMe(CredentialDialog *ptr);
 
 private:
@@ -97,6 +104,8 @@ private:
     bool passwordSetByUser;
     QString username;
 };
+
+} //namespace
 
 #endif  // ACCOUNTSUI_CREDENTIALDIALOG_H
 

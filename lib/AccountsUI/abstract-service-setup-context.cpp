@@ -29,12 +29,14 @@ namespace AccountsUI {
 class AbstractServiceSetupContextPrivate
 {
 public:
-    AbstractServiceSetupContextPrivate()
-            : service(0)
+    AbstractServiceSetupContextPrivate():
+        service(0),
+        accountSetupContext(0)
     {
     }
 
     const Service *service;
+    AbstractAccountSetupContext *accountSetupContext;
 };
 
 AbstractServiceSetupContext::AbstractServiceSetupContext
@@ -59,6 +61,23 @@ const Service *AbstractServiceSetupContext::service() const
     Q_D(const AbstractServiceSetupContext);
 
     return d->service;
+}
+
+void AbstractServiceSetupContext::setAccountSetupContext(
+    AbstractAccountSetupContext *context)
+{
+    Q_D(AbstractServiceSetupContext);
+
+    Q_ASSERT(d->accountSetupContext == 0);
+    d->accountSetupContext = context;
+}
+
+AbstractAccountSetupContext *
+AbstractServiceSetupContext::accountSetupContext() const
+{
+    Q_D(const AbstractServiceSetupContext);
+
+    return d->accountSetupContext;
 }
 
 void AbstractServiceSetupContext::enable(bool enabled)

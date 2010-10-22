@@ -23,8 +23,9 @@
 #ifndef ACCOUNTSUI_SERVICEMODEL_H
 #define ACCOUNTSUI_SERVICEMODEL_H
 
-//project
-#include <AccountsUI/ServiceHelper>
+//libAccountsUI
+#include <AccountsUI/service-helper.h>
+#include <AccountsUI/abstract-account-setup-context.h>
 
 //Qt
 #include <QAbstractTableModel>
@@ -56,11 +57,21 @@ public:
         ColumnCount
     };
 
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
     /*!
-     *  Constructor creates an Model
+     * @deprecated
+     * Constructor creates an Model
      * \param parent The parent Object.
      */
-    ServiceModel(QObject* parent );
+    ServiceModel(QObject *parent);
+#endif
+
+    /*!
+     *  Constructor creates an Model
+     * \param account The Account object.
+     * \param parent The parent Object.
+     */
+    ServiceModel(Accounts::Account *account, QObject *parent = 0);
 
     /*!
      * The Destructor.
@@ -129,6 +140,7 @@ private:
     ServiceModelPrivate* d_ptr;
     Q_DISABLE_COPY(ServiceModel)
     Q_DECLARE_PRIVATE(ServiceModel);
+    void init(const Accounts::ServiceList &services);
 };
 
 Q_DECLARE_METATYPE(AccountsUI::ServiceHelper *)

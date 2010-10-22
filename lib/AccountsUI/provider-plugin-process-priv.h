@@ -23,13 +23,19 @@
 #ifndef ACCOUNTSUI_PROVIDER_PLUGIN_PROCESS_PRIV_H
 #define ACCOUNTSUI_PROVIDER_PLUGIN_PROCESS_PRIV_H
 
-#include "provider-plugin-process.h"
+//libAccountsUI
+#include <AccountsUI/provider-plugin-process.h>
 
-#include <Accounts/Account>
-#include <Accounts/Manager>
+//Accounts
+#include <Accounts/account.h>
+#include <Accounts/manager.h>
+
+//M
 #include <MComponentCache>
 #include <MApplication>
 #include <MApplicationWindow>
+#include <MComponentData>
+#include <MLocale>
 
 namespace AccountsUI {
 
@@ -53,8 +59,65 @@ public:
         : m_context(0)
         , windowId(0)
     {
+        account = 0;
+        setupType = CreateNew;
+
         application = MComponentCache::mApplication(argc, argv);
-        window = MComponentCache::mApplicationWindow();
+        manager = new Accounts::Manager(this);
+
+        /* parse command line options */
+        bool type_set = false;
+        for (int i = 0; i < argc; ++i)
+        {
+            Q_ASSERT(argv[i] != NULL);
+
+            if ((strcmp(argv[i], "--create") == 0) && !type_set)
+            {
+                setupType = CreateNew;
+                type_set = true;
+
+                i++;
+                if (i < argc)
+                    account = manager->createAccount(argv[i]);
+            }
+            else if ((strcmp(argv[i], "--edit") == 0) && !type_set)
+            {
+                setupType = EditExisting;
+                type_set = true;
+
+                i++;
+                if (i < argc)
+                    account = manager->account(atoi(argv[i]));
+            }
+            else if (strcmp(argv[i], "--windowId") == 0)
+            {
+                i++;
+                if (i < argc)
+                    windowId = atoi(argv[i]);
+                Q_ASSERT(windowId != 0);
+            }
+            else if (strcmp(argv[i], "--serviceType") == 0)
+            {
+                i++;
+                if (i < argc)
+                    serviceType = argv[i];
+                Q_ASSERT(serviceType != 0);
+            }
+        }
+
+        if (account != 0)
+            monitorServices();
+
+        if (windowId != 0) {
+            MComponentData::ChainData chainData(windowId, QString());
+            MComponentData::pushChainData(chainData);
+        }
+
+        window = new MApplicationWindow;
+
+        MLocale locale;
+        locale.installTrCatalog("accountssso");
+        MLocale::setDefault(locale);
     }
 
     ~ProviderPluginProcessPrivate()
@@ -62,7 +125,6 @@ public:
         delete m_context;
     }
 
-    void bindPageToAccountsUi(MApplicationPage *page);
     void printAccountId();
     AbstractAccountSetupContext *context() const;
     void serviceEnabled(Accounts::Service *service);

@@ -23,8 +23,8 @@
 #ifndef ACCOUNTSUI_ACCOUNT_PLUGIN_INTERFACE_H
 #define ACCOUNTSUI_ACCOUNT_PLUGIN_INTERFACE_H
 
-//AccountsUI
-#include <AccountsUI/AbstractAccountSetupContext>
+//libAccountsUI
+#include <AccountsUI/abstract-account-setup-context.h>
 
 //Qt
 #include <QtPlugin>

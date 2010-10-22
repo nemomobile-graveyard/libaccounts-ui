@@ -24,9 +24,9 @@
 #define ACCOUNTSUI_PROVIDER_PLUGIN_PROCESS_H
 
 // AccountsUI
-#include <AccountsUI/AccountPluginInterface>
-#include <AccountsUI/AbstractAccountSetupContext>
-#include <AccountsUI/AbstractServiceSetupContext>
+#include <AccountsUI/account-plugin-interface.h>
+#include <AccountsUI/abstract-account-setup-context.h>
+#include <AccountsUI/abstract-service-setup-context.h>
 
 //Qt
 #include <QObject>

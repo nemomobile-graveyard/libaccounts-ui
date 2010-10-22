@@ -24,36 +24,51 @@
 //Qt
 #include <QTimer>
 
-//SignOnUi
+//libAccountsUI
 #include "credentialdialog.h"
-#include "credentialwidget.h"
+
+namespace AccountsUI {
 
 #define INFO_BANNER_TIMEOUT 3000
 
-CredentialDialog::CredentialDialog(const qint32 credentialsId)
+CredentialDialog::CredentialDialog(const qint32 credentialsId, CredentialDialogType type)
         :MDialog()
 {
     qDebug() << Q_FUNC_INFO;
 
     passwordSetByUser = false;
-
     initDialog();
+
+    identity = SignOn::Identity::existingIdentity(credentialsId, this);
+
+    //if there is no identity with that ID return
+    if (!identity)
+        return;
 
     //% "Save"
     saveButtonModel = (QObject*)addButton(qtTrId("qtn_comm_save"));
     saveButtonModel->setObjectName("wgSaveButton");
     connect(saveButtonModel, SIGNAL(clicked()), this, SLOT(saveClicked()));
 
-    //% "Cancel"
-    cancelButtonModel = (QObject*)addButton(qtTrId("qtn_comm_cancel"));
-    cancelButtonModel->setObjectName("wgCancelButton");
-    connect(cancelButtonModel, SIGNAL(clicked()), this, SLOT(cancelClicked()));
+    if (type == SaveCredsOrCancel) {
 
-    identity = SignOn::Identity::existingIdentity(credentialsId, this);
+        //% "Cancel"
+        cancelButtonModel = (QObject*)addButton(qtTrId("qtn_comm_cancel"));
+        cancelButtonModel->setObjectName("wgCancelButton");
+        connect(cancelButtonModel, SIGNAL(clicked()), this, SLOT(cancelClicked()));
 
-    //if there is no identity with that ID return
-    if(!identity)
-        return;
+    } else {
+
+        //% "Delete"
+        deleteButtonModel = (QObject *)addButton(qtTrId("qtn_comm_delete"));
+        deleteButtonModel->setObjectName("wgDeleteButton");
+        connect(deleteButtonModel, SIGNAL(clicked()),
+                this, SLOT(deleteClicked()));
+
+        connect(identity, SIGNAL(removed()),
+                this, SLOT(removedIdentity()));
+    }
+
     connect(identity, SIGNAL(info(const SignOn::IdentityInfo&)),
             this, SLOT(setDialogData(const SignOn::IdentityInfo&)));
     connect(identity, SIGNAL(credentialsStored(const quint32)),
@@ -141,6 +156,14 @@ void CredentialDialog::deleteClicked()
 void CredentialDialog::removedIdentity()
 {
     qDebug() << Q_FUNC_INFO;
+
+    emit credentialsDeleted(identity->id());
+
+    if (identity) {
+        delete identity;
+        identity = NULL;
+    }
+
     emit safeToDeleteMe(this);
 }
 
@@ -156,8 +179,7 @@ void CredentialDialog::saveClicked()
                     this, SLOT(infoReady(const SignOn::IdentityInfo&)));
             identity->queryInfo();
         }
-    } else
-    {
+    } else {
         qDebug() << Q_FUNC_INFO << "Password is not set by user: canceling";
         emit safeToDeleteMe(this);
     }
@@ -225,3 +247,4 @@ void CredentialDialog::error(const SignOn::Error &err)
     emit safeToDeleteMe(this);
 }
 
+} //namespace

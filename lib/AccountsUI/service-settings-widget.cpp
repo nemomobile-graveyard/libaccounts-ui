@@ -32,6 +32,7 @@
 #include <MGridLayoutPolicy>
 #include <MLabel>
 #include <MButton>
+#include <MLocale>
 #include <QDebug>
 #include <QDomElement>
 namespace AccountsUI {
@@ -62,6 +63,12 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     Q_D(ServiceSettingsWidget);
     d->context = context;
     d->showAllSettings = showAllSettings;
+    QString catalog = d->context->service()->trCatalog();
+    if (!catalog.isEmpty()) {
+         MLocale locale;
+         locale.installTrCatalog(catalog);
+         MLocale::setDefault(locale);
+    }
     MWidget *containerCentralWidget = new MWidget(this);
     MLayout *containerMainLayout = new MLayout(containerCentralWidget);
     d->containerMainPolicy = new MGridLayoutPolicy(containerMainLayout);

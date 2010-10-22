@@ -23,7 +23,7 @@
 #ifndef ACCOUNTSUI_ABSTRACT_SERVICE_SETUP_CONTEXT_H
 #define ACCOUNTSUI_ABSTRACT_SERVICE_SETUP_CONTEXT_H
 
-//AccountsUI
+//libAccountsUI
 #include <AccountsUI/abstract-setup-context.h>
 
 //Meegotouch
@@ -31,6 +31,7 @@
 
 namespace AccountsUI {
 
+class AbstractAccountSetupContext;
 class AbstractServiceSetupContextPrivate;
 
 /*!
@@ -39,7 +40,7 @@ class AbstractServiceSetupContextPrivate;
  * AccountsUI/AbstractServiceSetupContext
  * @brief Context object for service plugins.
  */
-class ACCOUNTSUI_EXPORT AbstractServiceSetupContext : public AbstractSetupContext
+class ACCOUNTSUI_EXPORT AbstractServiceSetupContext: public AbstractSetupContext
 {
     Q_OBJECT
 
@@ -58,11 +59,28 @@ public:
     const Accounts::Service *service() const;
 
     /*!
-     * Constructs the UI element which handles account creation/settings/deletion.
-     * by taking showAllSettings as a boolean variable, which creates all the widgets when true
-     * and only the mandatory widgets when false.
+     * Sets the AbstractServiceSetupContext. This method should not be called
+     * by the service plugin itself.
+     * @param context The AbstractAccountSetupContext.
      */
-    virtual MWidget *widget(QGraphicsItem *parent = 0, bool showAllSettings = true) = 0;
+    void setAccountSetupContext(AbstractAccountSetupContext *context);
+
+    /*!
+     * Gets the AbstractAccountSetupContext.
+     * @return The AbstractAccountSetupContext which was set with
+     * setAccountSetupContext(), or 0 if none was set.
+     */
+    AbstractAccountSetupContext *accountSetupContext() const;
+
+    /*!
+     * Constructs the UI element which handles account
+     * creation/settings/deletion.
+     * @param parent The parent widget.
+     * @param showAllSettings Whether all the settings should be shown, or
+     * only the mandatory ones.
+     */
+    virtual MWidget *widget(QGraphicsItem *parent = 0,
+                            bool showAllSettings = true) = 0;
 
     /*!
      * Checks whether the service has mandatory settings.
@@ -79,7 +97,7 @@ public:
      *
      * @param enabled Whether the service should be enabled.
      */
-    public slots:
+public slots:
     virtual void enable(bool enabled);
 
 private:

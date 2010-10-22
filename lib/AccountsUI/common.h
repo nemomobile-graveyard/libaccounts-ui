@@ -23,11 +23,14 @@
 #ifndef ACCOUNTSUI_COMMON_H
 #define ACCOUNTSUI_COMMON_H
 
+//Qt
 #include <QtCore/QtGlobal>
 #include <QString>
 
+//SignOn
 #include <SignOn/Error>
 
+//M
 #include <MInfoBanner>
 
 #define ACCOUNTSUI_EXPORT Q_DECL_EXPORT

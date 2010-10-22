@@ -23,9 +23,10 @@
 #ifndef ACCOUNTSUI_ABSTRACT_SETUP_CONTEXT_H
 #define ACCOUNTSUI_ABSTRACT_SETUP_CONTEXT_H
 
+//libAccountsUI
 #include <AccountsUI/common.h>
 
-//accounts-qt
+//AccountsQt
 #include <Accounts/Account>
 
 //Qt
@@ -65,7 +66,14 @@ public:
     /*!
      * Gets the account being setup by this context.
      */
+    Accounts::Account *account() const;
+
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
+    /*!
+     * @deprecated
+     */
     Accounts::Account *account();
+#endif
 
 public Q_SLOTS:
     /*!

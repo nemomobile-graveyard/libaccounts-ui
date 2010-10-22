@@ -30,7 +30,8 @@ HEADERS += account-plugin-interface.h \
     credentialdialog.h \
     credentialwidget.h \
     credentialwidgetview.h \
-    credential-image-widget.h \
+    credentialimagewidget.h \
+    debug.h \
     genericaccountsetupform.h \
     generic-account-setup-context.h \
     genericaccountsetupformview.h \
@@ -39,6 +40,8 @@ HEADERS += account-plugin-interface.h \
     service-helper.h \
     provider-plugin-process.h \
     provider-plugin-process-priv.h \
+    provider-plugin-proxy.h \
+    provider-plugin-proxy-priv.h \
     add-account-page.h \
     service-selection-page.h \
     service-model.h \
@@ -69,6 +72,7 @@ SOURCES += abstract-account-setup-context.cpp \
     accountsmanagersingleton.cpp \
     service-helper.cpp \
     provider-plugin-process.cpp \
+    provider-plugin-proxy.cpp \
     add-account-page.cpp \
     service-selection-page.cpp \
     service-model.cpp \
@@ -105,17 +109,25 @@ headers.files += AccountPluginInterface \
     abstract-account-setup-context.h \
     AbstractServiceSetupContext \
     abstract-service-setup-context.h \
+    AbstractSetupContext \
     abstract-setup-context.h \
+    AccountSyncHandler \
+    account-sync-handler.h \
     CredentialDialog \
     credentialdialog.h \
     CredentialWidget \
     credentialwidget.h \
+    credentialwidgetmodel.h \
+    Debug \
+    debug.h \
     GenericAccountSetupContext \
     generic-account-setup-context.h \
     ServiceHelper \
     service-helper.h \
     ProviderPluginProcess \
     provider-plugin-process.h \
+    ProviderPluginProxy \
+    provider-plugin-proxy.h \
     AddAccountPage \
     add-account-page.h \
     AccountsManagerSingleton \

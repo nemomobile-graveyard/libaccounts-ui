@@ -23,13 +23,30 @@
 #ifndef ACCOUNTSUI_SORT_SERVICE_MODEL_H
 #define ACCOUNTSUI_SORT_SERVICE_MODEL_H
 
+//Accounts
+#include <Accounts/Account>
+
+//Qt
 #include <QSortFilterProxyModel>
 #include <QStringList>
+
+class FilterTypeServiceModel : public QSortFilterProxyModel
+{
+public:
+    FilterTypeServiceModel(QObject *parent = 0) : QSortFilterProxyModel(parent)
+    {}
+    ~FilterTypeServiceModel()
+    {}
+protected:
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+};
 
 class SortServiceModel : public QSortFilterProxyModel
 {
 public:
     SortServiceModel(QObject *parent = 0);
+    virtual ~SortServiceModel() {};
+    void setEnabledServices(const Accounts::ServiceList &enabledServices);
 
 protected:
     virtual bool lessThan(const QModelIndex &left,
@@ -41,6 +58,7 @@ protected:
 private:
     QHash<QString, int> priorities;
     QStringList hiddenService;
+    QStringList enabledServicesName;
 };
 
 #endif // ACCOUNTSUI_SORT_SERVICE_MODEL_H

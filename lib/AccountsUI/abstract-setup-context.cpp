@@ -52,6 +52,13 @@ AbstractSetupContext::~AbstractSetupContext()
     delete d_ptr;
 }
 
+Account *AbstractSetupContext::account() const
+{
+    Q_D(const AbstractSetupContext);
+
+    return d->account;
+}
+
 Account *AbstractSetupContext::account()
 {
     Q_D(AbstractSetupContext);

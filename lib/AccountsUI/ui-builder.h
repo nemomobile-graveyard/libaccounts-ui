@@ -23,8 +23,10 @@
 #ifndef ACCOUNTSUI_UIBUILDER_H
 #define ACCOUNTSUI_UIBUILDER_H
 
+//libAccountsUI
 #include <AccountsUI/common.h>
 
+//Qt
 #include <QObject>
 #include <QDomDocument>
 #include <QGraphicsLayoutItem>
