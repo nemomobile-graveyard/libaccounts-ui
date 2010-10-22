@@ -1,3 +1,34 @@
+libaccounts-ui (0.16-1) unstable; urgency=low
+
+  * Fixes: NB#198688 having logical id in the names
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 22 Oct 2010 09:43:22 +0300
+
+libaccounts-ui (0.15-1) unstable; urgency=low
+
+  * Allow AccountService plugins to get the username.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Wed, 20 Oct 2010 16:32:53 +0300
+
+libaccounts-ui (0.14-1) unstable; urgency=low
+
+  * Set enabledServices fro accounts settings page to dont filter them out 
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Wed, 20 Oct 2010 13:52:35 +0300
+
+libaccounts-ui (0.13-1) unstable; urgency=low
+
+  * Fixes: NB#198463 - Two gmail services are shown in Google account
+    settings page
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Tue, 19 Oct 2010 12:13:55 +0300
+
+libaccounts-ui (0.12-1) unstable; urgency=low
+
+  * Add the ProviderPluginProxy class.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 19 Oct 2010 11:19:47 +0300
+
 libaccounts-ui (0.11-1) unstable; urgency=low
 
   * Fixes: NB#198635 -  Both Gmail services can be enabled in certain scenario
