@@ -24,8 +24,9 @@
 #define ACCOUNTSUI_ACCOUNTSETTINGSPAGE_H
 
 //libAccountsUI
-#include <AccountsUI/service-helper.h>
 #include <AccountsUI/abstract-account-setup-context.h>
+#include <AccountsUI/account-sync-handler.h>
+#include <AccountsUI/service-helper.h>
 #include <AccountsUI/common.h>
 
 //Meegotouch

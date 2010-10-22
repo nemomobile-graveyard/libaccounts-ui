@@ -37,17 +37,6 @@
 
 namespace AccountsUI {
 
-/*!
- * State of validating and storing process which is passed through
- * signal finished(const FinishedMessage).
- */
-enum SyncState {
-    Validated,
-    NotValidated,
-    Stored,
-    NotStored
-};
-
 typedef SignOn::Error::ErrorType SignonErrType;
 
 /*!

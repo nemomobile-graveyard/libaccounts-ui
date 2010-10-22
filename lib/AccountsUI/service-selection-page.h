@@ -26,6 +26,7 @@
 //libAccountsUI
 #include <AccountsUI/abstract-account-setup-context.h>
 #include <AccountsUI/abstract-service-setup-context.h>
+#include <AccountsUI/account-sync-handler.h>
 #include <AccountsUI/common.h>
 
 //Meegotouch
