@@ -1,3 +1,9 @@
+libaccounts-ui (0.16-1) unstable; urgency=low
+
+  * Fixes: NB#198688 having logical id in the names
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 22 Oct 2010 09:43:22 +0300
+
 libaccounts-ui (0.15-1) unstable; urgency=low
 
   * Allow AccountService plugins to get the username.
