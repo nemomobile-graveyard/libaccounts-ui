@@ -23,10 +23,12 @@
 #ifndef ACCOUNTSUI_ADDACCOUNTPAGE_H
 #define ACCOUNTSUI_ADDACCOUNTPAGE_H
 
+//libAccountsUI
 #include <AccountsUI/abstract-account-setup-context.h>
-#include "account-sync-handler.h"
+#include <AccountsUI/account-sync-handler.h>
+#include <AccountsUI/common.h>
 
-//Meegotouch
+//M
 #include <MApplicationPage>
 
 namespace AccountsUI {

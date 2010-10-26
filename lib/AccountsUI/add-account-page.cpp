@@ -20,15 +20,16 @@
  * 02110-1301 USA
  */
 
+//project
 #include "add-account-page.h"
-
 #include "service-selection-page.h"
 #include "service-model.h"
 #include "service-helper.h"
 #include "sort-service-model.h"
 #include "provider-plugin-process.h"
+#include "account-sync-handler.h"
 
-//libaccounts
+//Accounts
 #include <Accounts/Account>
 #include <Accounts/Manager>
 

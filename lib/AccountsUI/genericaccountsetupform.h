@@ -26,8 +26,10 @@
 //project
 #include <AccountsUI/genericaccountsetupformmodel.h>
 #include <AccountsUI/abstract-account-setup-context.h>
+
 //Meegotouch
 #include <MWidgetController>
+
 //Qt
 #include <QDomDocument>
 

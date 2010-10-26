@@ -23,10 +23,10 @@
 #ifndef ACCOUNTSUI_SERVICE_H
 #define ACCOUNTSUI_SERVICE_H
 
-//AccountsUI
-#include <AccountsUI/AbstractServiceSetupContext>
+//libAccountsUI
+#include <AccountsUI/abstract-service-setup-context.h>
 
-//accounts-qt
+//Accounts
 #include <Accounts/Service>
 
 namespace AccountsUI {

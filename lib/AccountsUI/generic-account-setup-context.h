@@ -24,8 +24,9 @@
 #define ACCOUNTSUI_GENERICACCOUNTSETUPCONTEXT_H
 
 //project lib
-#include <AccountsUI/AbstractAccountSetupContext>
+#include <AccountsUI/abstract-account-setup-context.h>
 
+//SignOn
 #include <SignOn/Identity>
 #include <SignOn/SessionData>
 #include <SignOn/Error>

@@ -32,19 +32,18 @@
 #include <MWidgetView>
 
 //project
-#include "credentialwidgetmodel.h"
-#include "credentialwidgetstyle.h"
+#include <AccountsUI/credentialwidget.h>
+#include <AccountsUI/credentialwidgetmodel.h>
+#include <AccountsUI/credentialwidgetstyle.h>
+#include <AccountsUI/common.h>
 
 //SignOn
 #include <AuthService>
 #include <Identity>
 
-class CredentialWidget;
 class CredentialWidgetViewPrivate;
 
-using namespace SignOn;
-
-class CredentialWidgetView: public MWidgetView
+class ACCOUNTSUI_EXPORT CredentialWidgetView: public MWidgetView
 {
     Q_OBJECT
     M_VIEW(CredentialWidgetModel, CredentialWidgetStyle)

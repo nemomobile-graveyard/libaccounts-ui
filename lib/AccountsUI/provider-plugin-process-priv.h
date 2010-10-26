@@ -23,10 +23,14 @@
 #ifndef ACCOUNTSUI_PROVIDER_PLUGIN_PROCESS_PRIV_H
 #define ACCOUNTSUI_PROVIDER_PLUGIN_PROCESS_PRIV_H
 
-#include "provider-plugin-process.h"
+//libAccountsUI
+#include <AccountsUI/provider-plugin-process.h>
 
-#include <Accounts/Account>
-#include <Accounts/Manager>
+//Accounts
+#include <Accounts/account.h>
+#include <Accounts/manager.h>
+
+//M
 #include <MComponentCache>
 #include <MApplication>
 #include <MApplicationWindow>

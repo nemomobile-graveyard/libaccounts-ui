@@ -23,9 +23,11 @@
 #ifndef ACCOUNTSUI_GENERICSERVICEPLUGIN_H
 #define ACCOUNTSUI_GENERICSERVICEPLUGIN_H
 
+//M
 #include <MWidget>
 
-#include <AccountsUI/ServicePluginInterface>
+//libAccountsUI
+#include <AccountsUI/service-plugin-interface.h>
 
 namespace AccountsUI {
 

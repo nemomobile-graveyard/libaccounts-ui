@@ -1,3 +1,16 @@
+libaccounts-ui (0.17-1) unstable; urgency=low
+
+  * Pumped up version.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Fri, 22 Oct 2010 18:57:00 +0300
+
+libaccounts-ui (0.17) unstable; urgency=low
+
+  * Modified libAccountsUI in order to include all the moved functionality from libSignonUI + fixed exporting of some headers.
+  * Fixes: NB#198784 -  The class AccountSyncHandler should be exported
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Fri, 22 Oct 2010 16:46:00 +0300
+
 libaccounts-ui (0.16-1) unstable; urgency=low
 
   * Fixes: NB#198688 having logical id in the names

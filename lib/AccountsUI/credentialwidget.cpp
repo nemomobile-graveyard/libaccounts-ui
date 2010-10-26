@@ -23,7 +23,6 @@
 
 //project
 #include "credentialwidget.h"
-#include "credentialwidgetview.h"
 
 //Qt
 #include <QDebug>

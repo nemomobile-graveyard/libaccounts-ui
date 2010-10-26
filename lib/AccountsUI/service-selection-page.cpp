@@ -21,7 +21,7 @@
  */
 
 #include "service-selection-page.h"
-
+#include "account-sync-handler.h"
 #include "provider-plugin-process.h"
 #include "service-settings-widget.h"
 

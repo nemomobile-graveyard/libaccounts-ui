@@ -23,9 +23,10 @@
 #ifndef ACCOUNTSUI_ABSTRACT_SETUP_CONTEXT_H
 #define ACCOUNTSUI_ABSTRACT_SETUP_CONTEXT_H
 
+//libAccountsUI
 #include <AccountsUI/common.h>
 
-//accounts-qt
+//AccountsQt
 #include <Accounts/Account>
 
 //Qt

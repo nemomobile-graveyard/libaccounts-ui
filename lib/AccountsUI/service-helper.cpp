@@ -23,7 +23,7 @@
 #include "service-helper.h"
 #include "abstract-account-setup-context.h"
 
-//AccountsUI
+//libAccountsUI
 #include <AccountsUI/ServicePluginInterface>
 #include <AccountsUI/GenericServiceSetupContext>
 
@@ -57,7 +57,7 @@ public:
 void ServiceHelperPrivate::loadPlugin()
 {
     QString libPath = getenv("ACCOUNTS_UI_PLUGIN_DIR");
-    if(!libPath.isEmpty()) {
+    if (!libPath.isEmpty()) {
         libPath = QDir::cleanPath(libPath) + QDir::separator();
     } else {
         libPath = "/usr/lib/AccountsUI/";

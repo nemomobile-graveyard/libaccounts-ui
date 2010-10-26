@@ -24,10 +24,10 @@
 #ifndef ACCOUNTSUI_CREDENTIALWIDGET_H
 #define ACCOUNTSUI_CREDENTIALWIDGET_H
 
+//libAccountsUI
 #include <AccountsUI/common.h>
-
-//project
-#include "credentialwidgetmodel.h"
+#include <AccountsUI/credentialwidget.h>
+#include <AccountsUI/credentialwidgetmodel.h>
 
 //M
 #include <MWidgetController>

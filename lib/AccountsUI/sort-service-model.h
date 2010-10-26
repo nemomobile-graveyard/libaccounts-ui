@@ -23,7 +23,7 @@
 #ifndef ACCOUNTSUI_SORT_SERVICE_MODEL_H
 #define ACCOUNTSUI_SORT_SERVICE_MODEL_H
 
-//accounts-qt lib
+//Accounts
 #include <Accounts/Account>
 
 //Qt

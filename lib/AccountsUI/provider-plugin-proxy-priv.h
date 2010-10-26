@@ -23,16 +23,20 @@
 #ifndef ACCOUNTSUI_PROVIDER_PLUGIN_PROXY_PRIV_H
 #define ACCOUNTSUI_PROVIDER_PLUGIN_PROXY_PRIV_H
 
-#include "provider-plugin-proxy.h"
-#include "debug.h"
+//libAccountsUI
+#include <AccountsUI/provider-plugin-proxy.h>
+#include <AccountsUI/debug.h>
 
+//Accounts
 #include <Accounts/Manager>
 
+//Qt
 #include <QProcess>
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
 
+//M
 #include <MApplication>
 #include <MWindow>
 
