@@ -1,3 +1,9 @@
+libaccounts-ui (0.18-1) unstable; urgency=low
+
+  * Fixes: NB#198580 - Hidden service doesn't get visible after checking CDS
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 26 Oct 2010 16:12:22 +0300
+
 libaccounts-ui (0.17-1) unstable; urgency=low
 
   * Pumped up version.
