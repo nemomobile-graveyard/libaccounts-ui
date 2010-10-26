@@ -136,26 +136,29 @@ void AccountSettingsPage::setServicesToBeShown()
         d->service = context->service();
         const Accounts::Service *service = context->service();
         ServiceSettingsWidget *settingsWidget;
-        if (d->serviceList.count() <= 1)
-            settingsWidget = new ServiceSettingsWidget(context, this);
-        else {
-            d->account->selectService(service);
 
-            bool enabled = false;
-            if (d->account->enabled() &&
-                !enabledServiceTypes.contains(service->serviceType())) {
-                enabledServiceTypes.insert(service->serviceType(), true);
-                enabled = true;
-            }
+        d->account->selectService(service);
 
+        bool enabled = false;
+        if (d->account->enabled() &&
+            !enabledServiceTypes.contains(service->serviceType())) {
+            enabledServiceTypes.insert(service->serviceType(), true);
+            enabled = true;
+        }
+        if (d->serviceList.count() > 1)
+            settingsWidget = new ServiceSettingsWidget(context,
+                                                   this,
+                                                   false,
+                                                   false,
+                                                   enabled);
+        else
             settingsWidget = new ServiceSettingsWidget(context,
                                                        this,
-                                                       false,
-                                                       false,
+                                                       true,
+                                                       true,
                                                        enabled);
 
-            d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
-        }
+        d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
 
         settingsWidget->setHeaderVisible(false);
         d->layoutServicePolicy->addItem(settingsWidget, row++, 0);
