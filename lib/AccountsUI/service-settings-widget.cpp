@@ -43,26 +43,25 @@ public:
             : enableServiceButton(0)
             , context(0)
             , containerMainPolicy(0)
-            , showAllSettings(0)
             {}
     ~ServiceSettingsWidgetPrivate() {}
     MButton *enableServiceButton;
     AbstractServiceSetupContext *context;
     MGridLayoutPolicy *containerMainPolicy;
-    bool showAllSettings;
+    SettingsType settingsOrBoth;
 };
 
 ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *context,
                                              QGraphicsItem *parent,
-                                             bool showOnlySettings,
-                                             bool showAllSettings,
+                                             SettingsType settingsOrBoth,
+                                             SettingsType allOrMandatory,
                                              bool enabled)
     : MContainer(parent),
     d_ptr(new ServiceSettingsWidgetPrivate())
 {
     Q_D(ServiceSettingsWidget);
     d->context = context;
-    d->showAllSettings = showAllSettings;
+    d->settingsOrBoth = settingsOrBoth;
     QString catalog = d->context->service()->trCatalog();
     if (!catalog.isEmpty()) {
          MLocale locale;
@@ -72,7 +71,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     MWidget *containerCentralWidget = new MWidget(this);
     MLayout *containerMainLayout = new MLayout(containerCentralWidget);
     d->containerMainPolicy = new MGridLayoutPolicy(containerMainLayout);
-    if (!showOnlySettings) {
+    if (d->settingsOrBoth == ShowButtonAndSettings) {
         MLabel *serviceNameLabel = new MLabel(this);
         d->enableServiceButton = new MButton(this);
         d->enableServiceButton->setViewType(MButton::switchType);
@@ -97,8 +96,9 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             }
         }
     }
+
     if (context) {
-        MWidget *widget = context->widget(0, showAllSettings);
+        MWidget *widget = context->widget(0, allOrMandatory);
         if (widget) {
             d->containerMainPolicy->addItem(widget, 2, 0);
         }

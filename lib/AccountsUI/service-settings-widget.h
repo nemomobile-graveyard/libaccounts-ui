@@ -28,6 +28,13 @@
 
 namespace AccountsUI {
 
+    enum SettingsType {
+        ShowMandatory = 0,
+        ShowAll,
+        ShowOnlySettings,
+        ShowButtonAndSettings,
+    };
+
 class ServiceSettingsWidgetPrivate;
 class AbstractServiceSetupContext;
 /*!
@@ -49,8 +56,8 @@ public:
      */
     ServiceSettingsWidget(AccountsUI::AbstractServiceSetupContext *context,
                           QGraphicsItem *parent = 0,
-                          bool showOnlySettings = true,
-                          bool showAllSettings = true,
+                          SettingsType settingsOrBoth = ShowButtonAndSettings,
+                          SettingsType allOrMandatory = ShowMandatory,
                           bool enabled = true
                           );
     ~ServiceSettingsWidget();
