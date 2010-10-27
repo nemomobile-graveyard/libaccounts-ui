@@ -145,17 +145,17 @@ void AccountSettingsPage::setServicesToBeShown()
             enabledServiceTypes.insert(service->serviceType(), true);
             enabled = true;
         }
+
         if (d->serviceList.count() > 1)
             settingsWidget = new ServiceSettingsWidget(context,
                                                    this,
-                                                   false,
-                                                   false,
+                                                   ServiceSettingsWidget::EnableButton,
                                                    enabled);
         else
             settingsWidget = new ServiceSettingsWidget(context,
                                                        this,
-                                                       true,
-                                                       true,
+                                                       ServiceSettingsWidget::MandatorySettings |
+                                                       ServiceSettingsWidget::NonMandatorySettings,
                                                        enabled);
 
         d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);

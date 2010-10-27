@@ -47,10 +47,15 @@ public:
      * @param showOnlySettings is bool which will show only settings and not the toggle switch button when true
      * @param showAllSettings is bool which displays all settings when true and only mandatory settings when false
      */
+    enum VisibleSettings {
+        MandatorySettings = 1 << 0,
+        NonMandatorySettings = 1 << 1,
+        EnableButton = 1 << 2
+    };
+
     ServiceSettingsWidget(AccountsUI::AbstractServiceSetupContext *context,
                           QGraphicsItem *parent = 0,
-                          bool showOnlySettings = true,
-                          bool showAllSettings = true,
+                          int settingsConf = MandatorySettings | EnableButton,
                           bool enabled = true
                           );
     ~ServiceSettingsWidget();
