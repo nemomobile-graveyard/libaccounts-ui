@@ -333,9 +333,6 @@ void GenericAccountSetupContext::validate()
     Q_D(GenericAccountSetupContext);
     qDebug() << Q_FUNC_INFO;
 
-    // set the user name for the AbstractAccountSetupContext
-    setUserName(d->genericAccountSetupForm->username());
-
     if (d->contextIsValidated == true) {
         qDebug() << Q_FUNC_INFO << "context is validated already";
         emit validated();
@@ -348,6 +345,9 @@ void GenericAccountSetupContext::validate()
         emit validated();
         return;
     }
+
+    // set the user name for the AbstractAccountSetupContext
+    setUserName(d->genericAccountSetupForm->username());
 
     emit validating();
 
