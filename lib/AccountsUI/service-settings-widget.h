@@ -28,11 +28,10 @@
 
 namespace AccountsUI {
 
-    enum SettingsType {
-        ShowMandatory = 0,
-        ShowAll,
-        ShowOnlySettings,
-        ShowButtonAndSettings,
+    enum VisibleSettings {
+        MandatorySettings = 1 << 0,
+        NonMandatorySettings = 1 << 1,
+        EnableButton = 1 << 2
     };
 
 class ServiceSettingsWidgetPrivate;
@@ -56,8 +55,7 @@ public:
      */
     ServiceSettingsWidget(AccountsUI::AbstractServiceSetupContext *context,
                           QGraphicsItem *parent = 0,
-                          SettingsType settingsOrBoth = ShowButtonAndSettings,
-                          SettingsType allOrMandatory = ShowMandatory,
+                          int settingsConf = MandatorySettings | EnableButton,
                           bool enabled = true
                           );
     ~ServiceSettingsWidget();

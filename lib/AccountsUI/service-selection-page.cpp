@@ -120,8 +120,7 @@ void ServiceSelectionPage::createContent()
         //ServiceSettingsWidget sets the display widget of the changing settings
         ServiceSettingsWidget *settingsWidget =
                 new ServiceSettingsWidget(d->serviceContextList.at(i), this,
-                                          ShowButtonAndSettings,
-                                          ShowMandatory,
+                                          MandatorySettings | EnableButton,
                                           true);
         settingsWidget->setHeaderVisible(false);
         mainLayoutPolicy->addItem(settingsWidget);
