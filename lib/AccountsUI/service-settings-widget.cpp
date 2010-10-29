@@ -50,15 +50,6 @@ public:
     MGridLayoutPolicy *containerMainPolicy;
 };
 
-bool settingBitAtLocation(int setting, int digit)
-{
-    int constant = 1 << (digit-1);
-    if (setting & constant)
-        return true;
-    else
-        return false;
-}
-
 ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *context,
                                              QGraphicsItem *parent,
                                              int settingsConf,
@@ -79,7 +70,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     MLayout *containerMainLayout = new MLayout(containerCentralWidget);
     d->containerMainPolicy = new MGridLayoutPolicy(containerMainLayout);
 
-    if (settingBitAtLocation(settingsConf, 3)) {
+    if (settingsConf & EnableButton) {
         MLabel *serviceNameLabel = new MLabel(this);
         d->enableServiceButton = new MButton(this);
         d->enableServiceButton->setViewType(MButton::switchType);
@@ -106,9 +97,9 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     }
 
     if (context) {
-        if (settingBitAtLocation(settingsConf, 2)
-            | settingBitAtLocation(settingsConf, 1)) {
-            MWidget *widget = context->widget(0, settingBitAtLocation(settingsConf, 2));
+        if ((settingsConf & NonMandatorySettings) |
+            (settingsConf & MandatorySettings)) {
+            MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
             if (widget) {
                 d->containerMainPolicy->addItem(widget, 2, 0);
             }

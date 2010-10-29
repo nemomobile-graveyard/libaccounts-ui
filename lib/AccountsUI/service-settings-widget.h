@@ -29,12 +29,6 @@
 //#include <AccountsUI/abstract-service-setup-context.h>
 namespace AccountsUI {
 
-    enum VisibleSettings {
-        MandatorySettings = 1 << 0,
-        NonMandatorySettings = 1 << 1,
-        EnableButton = 1 << 2
-    };
-
 class ServiceSettingsWidgetPrivate;
 class AbstractServiceSetupContext;
 /*!
@@ -54,6 +48,12 @@ public:
      * @param showOnlySettings is bool which will show only settings and not the toggle switch button when true
      * @param showAllSettings is bool which displays all settings when true and only mandatory settings when false
      */
+    enum VisibleSettings {
+        MandatorySettings = 1 << 0,
+        NonMandatorySettings = 1 << 1,
+        EnableButton = 1 << 2
+    };
+
     ServiceSettingsWidget(AccountsUI::AbstractServiceSetupContext *context,
                           QGraphicsItem *parent = 0,
                           int settingsConf = MandatorySettings | EnableButton,
