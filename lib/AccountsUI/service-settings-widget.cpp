@@ -97,7 +97,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     }
 
     if (context) {
-        if ((settingsConf & NonMandatorySettings) |
+        if ((settingsConf & NonMandatorySettings) ||
             (settingsConf & MandatorySettings)) {
             MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
             if (widget) {
