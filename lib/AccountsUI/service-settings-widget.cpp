@@ -48,20 +48,18 @@ public:
     MButton *enableServiceButton;
     AbstractServiceSetupContext *context;
     MGridLayoutPolicy *containerMainPolicy;
-    SettingsType settingsOrBoth;
 };
 
 ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *context,
                                              QGraphicsItem *parent,
-                                             SettingsType settingsOrBoth,
-                                             SettingsType allOrMandatory,
+                                             int settingsConf,
                                              bool enabled)
     : MContainer(parent),
     d_ptr(new ServiceSettingsWidgetPrivate())
 {
     Q_D(ServiceSettingsWidget);
+
     d->context = context;
-    d->settingsOrBoth = settingsOrBoth;
     QString catalog = d->context->service()->trCatalog();
     if (!catalog.isEmpty()) {
          MLocale locale;
@@ -71,7 +69,8 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     MWidget *containerCentralWidget = new MWidget(this);
     MLayout *containerMainLayout = new MLayout(containerCentralWidget);
     d->containerMainPolicy = new MGridLayoutPolicy(containerMainLayout);
-    if (d->settingsOrBoth == ShowButtonAndSettings) {
+
+    if (settingsConf & EnableButton) {
         MLabel *serviceNameLabel = new MLabel(this);
         d->enableServiceButton = new MButton(this);
         d->enableServiceButton->setViewType(MButton::switchType);
@@ -98,9 +97,12 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     }
 
     if (context) {
-        MWidget *widget = context->widget(0, allOrMandatory);
-        if (widget) {
-            d->containerMainPolicy->addItem(widget, 2, 0);
+        if ((settingsConf & NonMandatorySettings) ||
+            (settingsConf & MandatorySettings)) {
+            MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
+            if (widget) {
+                d->containerMainPolicy->addItem(widget, 2, 0);
+            }
         }
     }
     setCentralWidget(containerCentralWidget);
