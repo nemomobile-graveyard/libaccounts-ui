@@ -346,7 +346,10 @@ void AccountSettingsPage::saveSettings()
     Q_D(AccountSettingsPage);
     setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
-    d->syncHandler->store(d->abstractContexts);
+
+    //we should call only validate. Storing will be handled
+    //in onSyncStateChangted func.
+    d->syncHandler->validate(d->abstractContexts);
 }
 
 void AccountSettingsPage::onSyncStateChanged(const SyncState &state)
