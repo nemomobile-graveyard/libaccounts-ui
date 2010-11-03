@@ -36,6 +36,7 @@
 #include <MInfoBanner>
 #include <MContentItem>
 #include <MSeparator>
+#include <MLabel>
 
 //Qt
 #include <QDebug>
@@ -53,7 +54,6 @@ public:
     {
         controller = 0;
         mainLayoutPolicy = 0;
-        topLayoutPolicy = 0;
         registerNewLink = QString();
         authDomainSeparator = QString();
         authDomainDefault = QString();
@@ -67,7 +67,7 @@ public:
 public:
     GenericAccountSetupForm *controller;
     MLinearLayoutPolicy *mainLayoutPolicy;
-    MGridLayoutPolicy *topLayoutPolicy;
+    MLayout *mainLayout;
     QMap<MWidget*, QDomElement> formWidgetDomElementMap;
     QDomDocument providerAccountDocument;
     CredentialWidgetModel *widgetModel;
@@ -91,12 +91,15 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     // xml file that describes the ui elements for the provider
     providerAccountDocument = aProviderAccountDocument;
     QDomElement root = aProviderAccountDocument.documentElement();
+    QDomElement descriptionElement = root.firstChildElement("description");
     QDomElement providerIcon = root.firstChildElement("icon");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
     QString providerName = root.firstChildElement("name").text();
     if (q->model() != NULL) {
         q->model()->setProviderName(providerName);
     }
+
+    QString descriptionText = descriptionElement.text();
     QString providerIconId = providerIcon.text();
     registerNewLink = signUpLink.text();
 
@@ -114,14 +117,22 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     // Provider info widgets
     MContentItem *providerInfoItem =
         new MContentItem(MContentItem::IconAndSingleTextLabel, controller);
+    providerInfoItem->setObjectName("pluginProviderName");
     providerInfoItem->setTitle(providerName);
     providerInfoItem->setImageID(providerIconId);
+
+    MLabel* descriptionLabel = new MLabel(descriptionText);
+    descriptionLabel->setWordWrap(true);
+    descriptionLabel->setWrapMode(QTextOption::WordWrap);
 
     // Credentials widget
     if (widgetModel) {
         delete widgetModel;
         widgetModel = NULL;
     }
+
+    MSeparator *separator = new MSeparator();
+    separator->setOrientation(Qt::Horizontal);
 
     widgetModel = new CredentialWidgetModel();
     widgetModel->setDialogsVisabilityConfig(CredentialWidgetModel::LoginDialogVisible);
@@ -134,25 +145,29 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
                      q_ptr, SLOT(updateModel(QList<const char*>)));
 
     // add the widgets to the layout
-    topLayoutPolicy->addItem(providerInfoItem, 0, 0, Qt::AlignLeft);
-    if (!registerNewLink.isEmpty()) {
-        MContentItem *signUpItem =
-            new MContentItem(MContentItem::TwoTextLabels, controller);
-        //% "New to %1?"
-        signUpItem->setTitle(qtTrId("qtn_acc_login_new_to_x").arg(providerName));
-        signUpItem->setSubtitle(qtTrId("qtn_acc_login_register_here"));
-        QObject::connect(signUpItem, SIGNAL(clicked()), q_ptr, SLOT(registerNew()));
-        topLayoutPolicy->addItem(signUpItem, 0, 1, Qt::AlignRight);
-        topLayoutPolicy->setColumnStretchFactor(0,3);
-        topLayoutPolicy->setColumnStretchFactor(1,1);
-    }
-
-    MSeparator *separator = new MSeparator();
-    separator->setOrientation(Qt::Horizontal);
+    mainLayoutPolicy->addItem(providerInfoItem);
+    mainLayoutPolicy->addItem(descriptionLabel);
     mainLayoutPolicy->addItem(separator);
-
-    mainLayoutPolicy->addItem(credentialWidget, Qt::AlignLeft);
+    mainLayoutPolicy->addItem(credentialWidget);
     mainLayoutPolicy->addStretch(3);
+
+    if (!registerNewLink.isEmpty()) {
+
+        //% "Don't have a %1 account yet?"
+        MLabel *questionLabel = new MLabel(QString("Don't have a %1 account yet?").arg(providerName));
+        questionLabel->setAlignment(Qt::AlignCenter);
+        questionLabel->setObjectName("AccountsPrimaryInfoLabel");
+
+        //% "Get one here"
+        QString link("Get one here!<a href=\"%1\"></a>");
+        MLabel* subscribeLabel = new MLabel(link.arg(registerNewLink));
+        subscribeLabel->setTextFormat(Qt::RichText);
+        subscribeLabel->setAlignment(Qt::AlignCenter);
+        subscribeLabel->setObjectName("AccountsSecondaryInfoLabel");
+
+        mainLayoutPolicy->addItem(questionLabel, Qt::AlignCenter);
+        mainLayoutPolicy->addItem(subscribeLabel, Qt::AlignCenter);
+    }
 }
 
 GenericAccountSetupFormView::GenericAccountSetupFormView(GenericAccountSetupForm *controller)
@@ -164,13 +179,10 @@ GenericAccountSetupFormView::GenericAccountSetupFormView(GenericAccountSetupForm
     d->controller = controller;
 
     // layouts
-    MLayout *mainLayout = new MLayout();
-    d->mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Vertical);
-    MLayout *topLayout = new MLayout(mainLayout);
-    topLayout->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum));
-    d->topLayoutPolicy = new MGridLayoutPolicy(topLayout);
-    d->mainLayoutPolicy->addItem(topLayout);
-    controller->setLayout(mainLayout);
+    d->mainLayout = new MLayout();
+    d->mainLayoutPolicy = new MLinearLayoutPolicy(d->mainLayout, Qt::Vertical);
+
+    controller->setLayout(d->mainLayout);
 }
 
 GenericAccountSetupFormView::~GenericAccountSetupFormView()
@@ -284,13 +296,6 @@ void GenericAccountSetupFormView::updateModel(QList<const char*> modifications)
             model()->setPassword(d->widgetModel->password());
         }
      }
-}
-
-void GenericAccountSetupFormView::registerNew()
-{
-    Q_D(GenericAccountSetupFormView);
-    if (!QDesktopServices::openUrl(QUrl(d->registerNewLink)))
-        qWarning() << Q_FUNC_INFO << "Unable to open web browser";
 }
 
 // bind view and controller together
