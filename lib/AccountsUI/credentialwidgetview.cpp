@@ -348,9 +348,11 @@ void CredentialWidgetView::recreateWidgets()
     }
 
     if (d->signInButton == NULL) {
-        //% "Sign in"
-        d->signInButton = new MButton(qtTrId("qtn_acc_auth_dial_button"));
+        //% "CONNECT"
+        d->signInButton = new MButton(QLatin1String("CONNECT"));
         d->signInButton->setStyleName("wgSignInButton");
+        d->signInButton->setObjectName("CommonSingleButton");
+
 
         connect(d->signInButton, SIGNAL(clicked()),
                         model(), SIGNAL(signInClicked()));
@@ -537,18 +539,18 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
         d->portraitPolicy->addItem(d->captchaRefreshButton,6,1,Qt::AlignRight);
         d->portraitPolicy->addItem(d->captchaTextEdit,7,0,1,2);
         if (model()->signInButtonVisible())
-            d->portraitPolicy->addItem(d->signInButton,8,0,1,2);
+            d->portraitPolicy->addItem(d->signInButton,8,0,1,2,Qt::AlignCenter);
         if (model()->nextButtonVisible())
-            d->portraitPolicy->addItem(d->nextButton,9,0,1,2);
+            d->portraitPolicy->addItem(d->nextButton,9,0,1,2,Qt::AlignCenter);
     } else {
         d->portraitPolicy->addItem(d->captchaLabel,4,0,1,2);
         d->portraitPolicy->addItem(d->captchaImage,5,0,Qt::AlignLeft);
         d->portraitPolicy->addItem(d->captchaRefreshButton,5,1,Qt::AlignRight);
         d->portraitPolicy->addItem(d->captchaTextEdit,6,0,1,2);
         if (model()->signInButtonVisible())
-            d->portraitPolicy->addItem(d->signInButton,7,0,1,2);
+            d->portraitPolicy->addItem(d->signInButton,7,0,1,2,Qt::AlignCenter);
         if (model()->nextButtonVisible())
-            d->portraitPolicy->addItem(d->nextButton,7,0,1,2);
+            d->portraitPolicy->addItem(d->nextButton,7,0,1,2,Qt::AlignCenter);
     }
 
     //landscape mode
@@ -566,13 +568,13 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
         d->landscapePolicy->addItem(d->captchaTextEdit,5,0,1,4);
 
         if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
-            d->landscapePolicy->addItem(d->signInButton,6,0,1,2);
-            d->landscapePolicy->addItem(d->nextButton,6,2,1,2);
+            d->landscapePolicy->addItem(d->signInButton,6,0,1,2,Qt::AlignCenter);
+            d->landscapePolicy->addItem(d->nextButton,6,2,1,2,Qt::AlignCenter);
         } else {
             if (model()->signInButtonVisible())
-                d->landscapePolicy->addItem(d->signInButton,6,0,1,4);
+                d->landscapePolicy->addItem(d->signInButton,6,0,1,4,Qt::AlignCenter);
             else
-                d->landscapePolicy->addItem(d->nextButton,6,0,1,4);
+                d->landscapePolicy->addItem(d->nextButton,6,0,1,4,Qt::AlignCenter);
             d->landscapePolicy->setRowAlignment(6,Qt::AlignHCenter);
         }
     } else {
@@ -582,13 +584,13 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
         d->landscapePolicy->addItem(d->captchaTextEdit,4,0,1,4);
 
         if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
-            d->landscapePolicy->addItem(d->signInButton,5,0,1,2);
-            d->landscapePolicy->addItem(d->nextButton,5,2,1,2);
+            d->landscapePolicy->addItem(d->signInButton,5,0,1,2,Qt::AlignCenter);
+            d->landscapePolicy->addItem(d->nextButton,5,2,1,2,Qt::AlignCenter);
         } else {
             if (model()->signInButtonVisible())
-                d->landscapePolicy->addItem(d->signInButton,5,0,1,4);
+                d->landscapePolicy->addItem(d->signInButton,5,0,1,4,Qt::AlignCenter);
             else
-                d->landscapePolicy->addItem(d->nextButton,5,0,1,4);
+                d->landscapePolicy->addItem(d->nextButton,5,0,1,4,Qt::AlignCenter);
             d->landscapePolicy->setRowAlignment(5,Qt::AlignHCenter);
         }
     }
@@ -625,23 +627,23 @@ void CredentialWidgetView::configureWithLogin()
         d->portraitPolicy->addItem(d->rememberPasswordLabel,4,0);
         d->portraitPolicy->addItem(d->rememberPasswordSwitch,4,1);
         if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
-            d->portraitPolicy->addItem(d->signInButton,5,0,1,2);
-            d->portraitPolicy->addItem(d->nextButton,6,0,1,2);
+            d->portraitPolicy->addItem(d->signInButton,5,0,1,2,Qt::AlignCenter);
+            d->portraitPolicy->addItem(d->nextButton,6,0,1,2,Qt::AlignCenter);
         } else {
             if (model()->signInButtonVisible())
-                d->portraitPolicy->addItem(d->signInButton,5,0,1,2);
+                d->portraitPolicy->addItem(d->signInButton,5,0,1,2,Qt::AlignCenter);
             else
-                d->portraitPolicy->addItem(d->nextButton,5,0,1,2);
+                d->portraitPolicy->addItem(d->nextButton,5,0,1,2,Qt::AlignCenter);
         }
     } else {
         if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
-            d->portraitPolicy->addItem(d->signInButton,4,0,1,2);
-            d->portraitPolicy->addItem(d->nextButton,5,0,1,2);
+            d->portraitPolicy->addItem(d->signInButton,4,0,1,2,Qt::AlignCenter);
+            d->portraitPolicy->addItem(d->nextButton,5,0,1,2,Qt::AlignCenter);
         } else {
             if (model()->signInButtonVisible())
-                d->portraitPolicy->addItem(d->signInButton,4,0,1,2);
+                d->portraitPolicy->addItem(d->signInButton,4,0,1,2,Qt::AlignCenter);
             else
-                d->portraitPolicy->addItem(d->nextButton,4,0,1,2);
+                d->portraitPolicy->addItem(d->nextButton,4,0,1,2,Qt::AlignCenter);
         }
     }
 
@@ -656,24 +658,24 @@ void CredentialWidgetView::configureWithLogin()
         d->landscapePolicy->addItem(d->rememberPasswordSwitch,2,3,1,1,Qt::AlignRight);
 
         if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
-            d->landscapePolicy->addItem(d->signInButton,3,0,1,2);
-            d->landscapePolicy->addItem(d->nextButton,3,2,1,2);
+            d->landscapePolicy->addItem(d->signInButton,3,0,1,2,Qt::AlignCenter);
+            d->landscapePolicy->addItem(d->nextButton,3,2,1,2,Qt::AlignCenter);
         } else {
             if (model()->signInButtonVisible())
-                d->landscapePolicy->addItem(d->signInButton,3,0,1,4);
+                d->landscapePolicy->addItem(d->signInButton,3,0,1,4,Qt::AlignCenter);
             else
-                d->landscapePolicy->addItem(d->nextButton,3,0,1,4);
+                d->landscapePolicy->addItem(d->nextButton,3,0,1,4,Qt::AlignCenter);
             d->landscapePolicy->setRowAlignment(3,Qt::AlignHCenter);
         }
     } else {
         if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
-            d->landscapePolicy->addItem(d->signInButton,2,0,1,2);
-            d->landscapePolicy->addItem(d->nextButton,2,2,1,2);
+            d->landscapePolicy->addItem(d->signInButton,2,0,1,2,Qt::AlignCenter);
+            d->landscapePolicy->addItem(d->nextButton,2,2,1,2,Qt::AlignCenter);
         } else {
             if (model()->signInButtonVisible())
-                d->landscapePolicy->addItem(d->signInButton,2,0,1,4);
+                d->landscapePolicy->addItem(d->signInButton,2,0,1,4,Qt::AlignCenter);
             else
-                d->landscapePolicy->addItem(d->nextButton,2,0,1,4);
+                d->landscapePolicy->addItem(d->nextButton,2,0,1,4,Qt::AlignCenter);
             d->landscapePolicy->setRowAlignment(2,Qt::AlignHCenter);
         }
     }
@@ -685,17 +687,17 @@ void CredentialWidgetView::configureWithButtonsOnly()
 
     //landscape && portrait mode
     if (model()->signInButtonVisible() && model()->nextButtonVisible()) {
-        d->landscapePolicy->addItem(d->signInButton,0,0,1,2);
-        d->landscapePolicy->addItem(d->nextButton,0,2,1,2);
-        d->portraitPolicy->addItem(d->signInButton,0,0);
-        d->portraitPolicy->addItem(d->nextButton,1,0);
+        d->landscapePolicy->addItem(d->signInButton,0,0,1,2,Qt::AlignCenter);
+        d->landscapePolicy->addItem(d->nextButton,0,2,1,2,Qt::AlignCenter);
+        d->portraitPolicy->addItem(d->signInButton,0,0,Qt::AlignCenter);
+        d->portraitPolicy->addItem(d->nextButton,1,0,Qt::AlignCenter);
     } else {
         if (model()->signInButtonVisible()) {
-            d->landscapePolicy->addItem(d->signInButton,0,0,1,4);
-            d->portraitPolicy->addItem(d->signInButton,0,0);
+            d->landscapePolicy->addItem(d->signInButton,0,0,1,4,Qt::AlignCenter);
+            d->portraitPolicy->addItem(d->signInButton,0,0,Qt::AlignCenter);
         } else {
-            d->landscapePolicy->addItem(d->nextButton,0,0,1,4);
-            d->portraitPolicy->addItem(d->nextButton,0,0);
+            d->landscapePolicy->addItem(d->nextButton,0,0,1,4,Qt::AlignCenter);
+            d->portraitPolicy->addItem(d->nextButton,0,0,Qt::AlignCenter);
         }
         d->landscapePolicy->setRowAlignment(0,Qt::AlignHCenter);
     }

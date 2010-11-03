@@ -1,3 +1,9 @@
+libaccounts-ui (0.20) unstable; urgency=low
+
+  * Seattle changes for acounts sign in page.
+
+ -- Lucian Horga <ext-lucian.horga@nokia.com>  Thu, 03 Nov 2010 12:13:10 +0300
+
 libaccounts-ui (0.19-1) unstable; urgency=low
 
   * Fixes: NB186925 - Validating acc and servicesacc and services  before storing 
