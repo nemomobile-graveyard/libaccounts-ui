@@ -121,7 +121,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     providerInfoItem->setTitle(providerName);
     providerInfoItem->setImageID(providerIconId);
 
-    MLabel* descriptionLabel = new MLabel(descriptionText);
+    MLabel *descriptionLabel = new MLabel(descriptionText);
     descriptionLabel->setWordWrap(true);
     descriptionLabel->setWrapMode(QTextOption::WordWrap);
 
@@ -160,10 +160,12 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
 
         //% "Get one here"
         QString link("Get one here!<a href=\"%1\"></a>");
-        MLabel* subscribeLabel = new MLabel(link.arg(registerNewLink));
+        MLabel *subscribeLabel = new MLabel(link.arg(registerNewLink));
         subscribeLabel->setTextFormat(Qt::RichText);
         subscribeLabel->setAlignment(Qt::AlignCenter);
         subscribeLabel->setObjectName("AccountsSecondaryInfoLabel");
+        QObject::connect(subscribeLabel, SIGNAL(clicked()),
+                         controller, SLOT(registerNew()));
 
         mainLayoutPolicy->addItem(questionLabel, Qt::AlignCenter);
         mainLayoutPolicy->addItem(subscribeLabel, Qt::AlignCenter);
@@ -296,6 +298,13 @@ void GenericAccountSetupFormView::updateModel(QList<const char*> modifications)
             model()->setPassword(d->widgetModel->password());
         }
      }
+}
+
+void GenericAccountSetupFormView::registerNew()
+{
+    Q_D(GenericAccountSetupFormView);
+    if (!QDesktopServices::openUrl(QUrl(d->registerNewLink)))
+    qWarning() << Q_FUNC_INFO << "Unable to open web browser";
 }
 
 // bind view and controller together

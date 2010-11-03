@@ -55,6 +55,7 @@ private slots:
     void signIn();
     void updateModel(QList<const char*>);
 
+    void registerNew();
 private:
     Q_DISABLE_COPY(GenericAccountSetupFormView)
     Q_DECLARE_PRIVATE(GenericAccountSetupFormView);
