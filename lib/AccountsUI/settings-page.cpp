@@ -81,7 +81,6 @@ void SettingsPage::createContent()
     d->enableButton = new MButton(this, d->buttonModel);
     d->enableButton->setViewType(MButton::switchType);
     d->enableButton->setCheckable(true);
-//    d->enableButton->setChecked(true);
     connect(d->enableButton, SIGNAL(toggled(bool)),
             this, SLOT(changeServiceStatus(bool)));
 
