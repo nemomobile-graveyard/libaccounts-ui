@@ -158,6 +158,9 @@ pkgconfig.files = AccountPlugin.pc
 pkgconfig.path = $${INSTALL_PREFIX}/lib/pkgconfig
 view_configuration.files = $${_PRO_FILE_PWD_}/libAccountPlugin.conf
 view_configuration.path = $${INSTALL_PREFIX}/share/themes/base/meegotouch/libAccountPlugin
+style_configuration.files = $${_PRO_FILE_PWD_}/libAccountPlugin.css
+style_configuration.path = $${INSTALL_PREFIX}/share/themes/base/meegotouch/libAccountPlugin/style
 INSTALLS += \
 	pkgconfig \
-	view_configuration
+        view_configuration \
+        style_configuration

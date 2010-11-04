@@ -25,6 +25,7 @@
 
 //Meegotouch
 #include <MApplicationPage>
+#include <MButton>
 
 namespace AccountsUI {
 class SettingsPagePrivate;
@@ -36,12 +37,13 @@ class SettingsPage: public MApplicationPage
 
 public:
     SettingsPage(AccountsUI::AbstractServiceSetupContext *context,
+                 MButtonModel *model,
                  QGraphicsItem *parent = 0);
     virtual ~SettingsPage();
     virtual void createContent();
 
 private slots:
-    void changeAccountStatus(bool);
+    void changeServiceStatus(bool);
 
 private:
     SettingsPagePrivate *d_ptr;
