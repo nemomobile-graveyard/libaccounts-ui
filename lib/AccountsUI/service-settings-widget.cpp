@@ -156,7 +156,7 @@ void ServiceSettingsWidget::openSettingsPage()
 {
     Q_D(ServiceSettingsWidget);
     SettingsPage *settingsPage =
-            new SettingsPage(d->context);
+            new SettingsPage(d->context, d->enableServiceButton->model());
     settingsPage->appear();
 }
 

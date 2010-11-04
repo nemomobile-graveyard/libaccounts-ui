@@ -37,20 +37,23 @@ class SettingsPagePrivate
 public:
     SettingsPagePrivate()
             : context(0)
-            , enableAccountButton(0)
+            , enableButton(0)
     {}
     ~SettingsPagePrivate(){}
     AbstractServiceSetupContext *context;
-    MButton *enableAccountButton;
+    MButton *enableButton;
+    MButtonModel *buttonModel;
 };
 
 SettingsPage::SettingsPage(AbstractServiceSetupContext *context,
+                           MButtonModel *model,
                            QGraphicsItem *parent)
     : MApplicationPage(parent)
     , d_ptr(new SettingsPagePrivate())
 {
     Q_D(SettingsPage);
     d->context = context;
+    d->buttonModel = model;
     connect(this, SIGNAL(backButtonClicked()), d->context, SLOT(store()));
 }
 
@@ -75,15 +78,15 @@ void SettingsPage::createContent()
     //% "Enable %1"
     MLabel *enableLabel = new MLabel(qtTrId("qtn_acc_enable").
                                      arg(d->context->account()->displayName()));
-    d->enableAccountButton = new MButton(this);
-    d->enableAccountButton->setViewType(MButton::switchType);
-    d->enableAccountButton->setCheckable(true);
-    d->enableAccountButton->setChecked(true);
-    connect(d->enableAccountButton, SIGNAL(toggled(bool)),
-            this, SLOT(changeAccountStatus(bool)));
+    d->enableButton = new MButton(this, d->buttonModel);
+    d->enableButton->setViewType(MButton::switchType);
+    d->enableButton->setCheckable(true);
+//    d->enableButton->setChecked(true);
+    connect(d->enableButton, SIGNAL(toggled(bool)),
+            this, SLOT(changeServiceStatus(bool)));
 
     horizontalLayoutPolicy->addItem(enableLabel);
-    horizontalLayoutPolicy->addItem(d->enableAccountButton);
+    horizontalLayoutPolicy->addItem(d->enableButton);
     horizontalLayoutPolicy->setSpacing(0);
     layoutPolicy->addItem(horizontalLayout);
     MWidget *widget = d->context->widget(this);
@@ -92,10 +95,10 @@ void SettingsPage::createContent()
     setCentralWidget(centralWidget);
 }
 
-void SettingsPage::changeAccountStatus(bool status)
+void SettingsPage::changeServiceStatus(bool status)
 {
     Q_D(SettingsPage);
-    d->context->account()->selectService(NULL);
+    d->context->account()->selectService(d->context->service());
     d->context->account()->setEnabled(status);
 }
 
