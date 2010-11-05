@@ -1,4 +1,4 @@
-libaccounts-ui (0.21-1) unstable; urgency=low
+libaccounts-ui (0.21-2) unstable; urgency=low
 
   * Fixes: NB#193329 - Switch button in Google settings functions as 'disable' account button
   * Added css file for future settings changes
