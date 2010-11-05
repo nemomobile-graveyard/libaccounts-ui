@@ -159,13 +159,13 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
         questionLabel->setObjectName("AccountsPrimaryInfoLabel");
 
         //% "Get one here"
-        QString link("Get one here!<a href=\"%1\"></a>");
+        QString link("<a href=\"%1\"> Get one here! </a>");
         MLabel *subscribeLabel = new MLabel(link.arg(registerNewLink));
         subscribeLabel->setTextFormat(Qt::RichText);
         subscribeLabel->setAlignment(Qt::AlignCenter);
         subscribeLabel->setObjectName("AccountsSecondaryInfoLabel");
-        QObject::connect(subscribeLabel, SIGNAL(clicked()),
-                         controller, SLOT(registerNew()));
+        QObject::connect(subscribeLabel, SIGNAL(linkActivated(QString)),
+                              q_ptr, SLOT(registerNew()));
 
         mainLayoutPolicy->addItem(questionLabel, Qt::AlignCenter);
         mainLayoutPolicy->addItem(subscribeLabel, Qt::AlignCenter);
