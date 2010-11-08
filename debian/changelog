@@ -1,3 +1,9 @@
+libaccounts-ui (0.22-1) unstable; urgency=low
+
+  * Fixes: NB#202437 -  New account registration option is not working
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 8 Nov 2010 11:32:22 +0300
+
 libaccounts-ui (0.21-2) unstable; urgency=low
 
   * Fixes: NB#193329 - Switch button in Google settings functions as 'disable' account button
