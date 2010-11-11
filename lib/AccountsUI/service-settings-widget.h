@@ -67,8 +67,6 @@ public:
     private Q_SLOTS:
         void enabled(bool enabled);
         void openSettingsPage();
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     ServiceSettingsWidgetPrivate *d_ptr;
