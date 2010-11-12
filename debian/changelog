@@ -1,3 +1,9 @@
+libaccounts-ui (0.23-1) unstable; urgency=low
+
+  * Fixes: NB#191186 - Services are not shown in account settings
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 12 Nov 2010 11:39:22 +0300
+
 libaccounts-ui (0.22-1) unstable; urgency=low
 
   * Fixes: NB#202437 -  New account registration option is not working
