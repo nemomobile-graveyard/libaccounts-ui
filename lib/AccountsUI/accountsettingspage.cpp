@@ -206,6 +206,7 @@ void AccountSettingsPage::createContent()
 
     if (d->context) {
         QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
+        d->serviceList = d->account->services();
         if (accountSettingsWidget != 0) {
             layoutPolicy->addItem(accountSettingsWidget);
         } else {
@@ -217,7 +218,7 @@ void AccountSettingsPage::createContent()
             MLinearLayoutPolicy *horizontalLayoutPolicy = new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
             d->usernameAndStatus = new MContentItem(MContentItem::TwoTextLabels);
             horizontalLayoutPolicy->addItem(d->usernameAndStatus);
-            d->serviceList = d->account->services();
+
             d->enableButton = new MButton();
             d->enableButton->setViewType(MButton::switchType);
             d->enableButton->setCheckable(true);
