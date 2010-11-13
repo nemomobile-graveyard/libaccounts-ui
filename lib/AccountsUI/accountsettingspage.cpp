@@ -29,8 +29,9 @@
 #include "sort-service-model.h"
 #include "account-sync-handler.h"
 
-//accounts-qt lib
+//Accounts
 #include <Accounts/Account>
+#include <Accounts/Provider>
 
 //Meegotouch
 #include <MContainer>
@@ -44,7 +45,9 @@
 #include <MButton>
 #include <MContentItem>
 #include <MApplicationIfProxy>
-#include <MMessageBox>
+#include <MContentItem>
+#include <MSeparator>
+#include <MImageWidget>
 
 //Qt
 #include <QDebug>
@@ -53,6 +56,7 @@
 
 //Accounts-Ui
 #include "abstract-account-setup-context.h"
+#include "accountsmanagersingleton.h"
 
 #define INFO_BANNER_TIMEOUT 3000
 
@@ -84,7 +88,7 @@ public:
     MContentItem *usernameAndStatus;
     QString serviceType;
     MLayout *serviceSettingLayout;
-    MGridLayoutPolicy *layoutServicePolicy;
+    MLinearLayoutPolicy *layoutServicePolicy;
     MButton *enableButton;
     Accounts::ServiceList serviceList;
     QList<AbstractSetupContext*> abstractContexts;
@@ -96,9 +100,8 @@ public:
 void AccountSettingsPage::setServicesToBeShown()
 {
     Q_D(AccountSettingsPage);
-    /* List the services available on the account and load all the respective
-     * plugins. */
-    int row = 0;
+    /* List the services available on the account and load all the respective plugins. */
+
     //% "%1 Settings"
     setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->account()->providerName()));
 
@@ -159,9 +162,7 @@ void AccountSettingsPage::setServicesToBeShown()
                                                        enabled);
 
         d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
-
-        settingsWidget->setHeaderVisible(false);
-        d->layoutServicePolicy->addItem(settingsWidget, row++, 0);
+        d->layoutServicePolicy->addItem(settingsWidget);
     }
 
     /*
@@ -203,6 +204,7 @@ void AccountSettingsPage::createContent()
     MWidget* centralWidget = new MWidget();
     MLayout* layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
+    layoutPolicy->setSpacing(0);
 
     if (d->context) {
         QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
@@ -213,38 +215,48 @@ void AccountSettingsPage::createContent()
             MWidget *upperWidget = new MWidget(this);
             MLayout *upperLayout = new MLayout(upperWidget);
             MLinearLayoutPolicy *upperLayoutPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
+            upperLayoutPolicy->setSpacing(0);
 
             MLayout *horizontalLayout = new MLayout();
             MLinearLayoutPolicy *horizontalLayoutPolicy = new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
-            d->usernameAndStatus = new MContentItem(MContentItem::TwoTextLabels);
-            horizontalLayoutPolicy->addItem(d->usernameAndStatus);
+            horizontalLayoutPolicy->setSpacing(0);
 
-            d->enableButton = new MButton();
+            QString providerName(d->account->providerName());
+            QString providerIconId;
+            // xml file that describes the ui elements for the provider
+            Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
+            if (provider) {
+                QDomElement root = provider->domDocument().documentElement();
+                QDomElement providerIcon = root.firstChildElement("icon");
+                providerIconId = providerIcon.text();
+            }
+
+            d->usernameAndStatus = new MContentItem(MContentItem::IconAndTwoTextLabels, this);
+            d->usernameAndStatus->setImageID(providerIconId);
+            d->usernameAndStatus->setTitle(providerName);
+            d->usernameAndStatus->setSubtitle(d->context->account()->displayName());
+
+            MSeparator *separatorTop = new MSeparator(this);
+            separatorTop->setOrientation(Qt::Horizontal);
+
+            d->serviceList = d->account->services();
+
+            d->enableButton = new MButton(this);
             d->enableButton->setViewType(MButton::switchType);
             d->enableButton->setCheckable(true);
+
             d->account->selectService(NULL);
             if ( d->account->enabled())
                 d->enableButton->setChecked(true);
             else
                 d->enableButton->setChecked(false);
-            connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
-            horizontalLayoutPolicy->addItem(d->enableButton);
-            if (d->context->account()) {
-                d->usernameAndStatus->setTitle(d->context->account()->displayName());
-                d->context->account()->selectService(NULL);
-                if (!d->context->account()->enabled()) {
-                    //% "Disabled"
-                    d->usernameAndStatus->setSubtitle(qtTrId("qtn_acc_disabled"));
-                } else {
-                    d->usernameAndStatus->setSubtitle(QString::null);
-                }
-            }
-            upperLayoutPolicy->addItem(horizontalLayout);
 
-            //% "Change password"
-            MButton *changePassword = new MButton(qtTrId("qtn_acc_change_password"));
-            upperLayoutPolicy->addItem(changePassword);
-            connect(changePassword, SIGNAL(clicked()), this, SLOT(openChangePasswordDialog()));
+            connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
+
+            horizontalLayoutPolicy->addItem(d->usernameAndStatus, Qt::AlignLeft | Qt::AlignVCenter);
+            horizontalLayoutPolicy->addItem(d->enableButton, Qt::AlignRight | Qt::AlignVCenter);
+            upperLayoutPolicy->addItem(horizontalLayout);
+            upperLayoutPolicy->addItem(separatorTop);
 
             layoutPolicy->addItem(upperWidget);
         }
@@ -252,25 +264,42 @@ void AccountSettingsPage::createContent()
 
     MWidget *serviceWidget = new MWidget(this);
     d->serviceSettingLayout = new MLayout(serviceWidget);
-    d->layoutServicePolicy = new MGridLayoutPolicy(d->serviceSettingLayout);
-    layoutPolicy->addItem(serviceWidget);
+    d->layoutServicePolicy = new MLinearLayoutPolicy(d->serviceSettingLayout, Qt::Vertical);
+    d->layoutServicePolicy->setSpacing(0);
 
     /* Sets the service widgets and add it into the layout policy*/
     setServicesToBeShown();
 
-    MContentItem *synchItem = new MContentItem(MContentItem::SingleTextLabel);
-    //% "Synchronization"
-    synchItem->setTitle(qtTrId("qtn_acc_sync"));
-    layoutPolicy->addItem(synchItem);
-    connect(synchItem, SIGNAL(clicked()),
+    MWidget *synchItem = new MWidget(this);
+    MLayout *synchItemLayout = new MLayout(synchItem);
+    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
+    synchItemPolicy->setSpacing(0);
+
+    MButton *enableServiceButton = new MButton(this);
+    enableServiceButton->setViewType(MButton::switchType);
+    enableServiceButton->setCheckable(true);
+
+    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
+    //% "Scheduled Synchronization"
+    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
+    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
+
+    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
+    sideImage->setStyleName( "CommonSwitchIcon" );
+
+    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
+    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
+    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+
+    connect(synchItemContent, SIGNAL(clicked()),
             this, SLOT(openSynchUi()));
 
-    layoutPolicy->addStretch();
     setCentralWidget(centralWidget);
 
     //% "Delete"
-    MAction* action = new MAction(qtTrId("qtn_comm_command_delete"), this);
-    action->setLocation(MAction::ApplicationMenuLocation);
+    MAction *action = new MAction(QLatin1String("icon-m-toolbar-delete"),
+                                  qtTrId("qtn_comm_command_delete"), this);
+    action->setLocation(MAction::ToolBarLocation);
     addAction(action);
 
     connect(action, SIGNAL(triggered()),
@@ -292,6 +321,14 @@ void AccountSettingsPage::createContent()
                     this, SLOT(showAllServices()));
         }
     }
+
+    MSeparator *separatorBottom = new MSeparator(this);
+    separatorBottom->setOrientation(Qt::Horizontal);
+
+    layoutPolicy->addItem(serviceWidget);
+    layoutPolicy->addItem(separatorBottom);
+    layoutPolicy->addItem(synchItem);
+    layoutPolicy->addStretch();
 
     //Saving the settings on back button press
     connect(this, SIGNAL(backButtonClicked()),
