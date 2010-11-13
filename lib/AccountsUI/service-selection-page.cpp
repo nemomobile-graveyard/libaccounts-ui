@@ -24,9 +24,9 @@
 #include "account-sync-handler.h"
 #include "provider-plugin-process.h"
 #include "service-settings-widget.h"
+#include "accountsmanagersingleton.h"
 
 //Qt
-
 #include <QStringListModel>
 #include <QItemSelection>
 #include <QDebug>
@@ -39,6 +39,14 @@
 #include <MButton>
 #include <MWidgetCreator>
 #include <MContainer>
+#include <MSeparator>
+#include <MContentItem>
+#include <MWidgetAction>
+#include <MImageWidget>
+
+//libAccounts
+#include <Accounts/Provider>
+#include <Accounts/Manager>
 
 namespace AccountsUI {
 
@@ -50,13 +58,13 @@ class ServiceSelectionPagePrivate
 public:
     ServiceSelectionPagePrivate()
         : serviceList(0),
-        accountInstallButton(0),
+        doneAction(0),
         context(0),
         syncHandler(0)
         {}
     ~ServiceSelectionPagePrivate() {}
     MList *serviceList;
-    MButton *accountInstallButton;
+    MAction *doneAction;
     AbstractAccountSetupContext *context;
     QList<AbstractServiceSetupContext*> serviceContextList;
     QList<AbstractSetupContext*> abstractContexts;
@@ -77,25 +85,12 @@ ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
     d->context->account()->setEnabled(true);
     d->serviceContextList = serviceContextList;
     d->abstractContexts.append(d->context);
-    QString providerName(d->context->account()->providerName());
-    //% "Add new account"
-    setTitle(qtTrId("qtn_acc_add_new_account_title"));
-    setEscapeMode(MApplicationPageModel::EscapeManualBack);
 
-    d->accountInstallButton = new MButton(this);
-    d->accountInstallButton->setStyleName("serviceaccountInstallButton");
-    //% "Finalize Setup"
-    d->accountInstallButton->setText(qtTrId("qtn_comm_command_done"));
+    setEscapeMode(MApplicationPageModel::EscapeManualBack);
 
     d->syncHandler = new AccountSyncHandler(this);
     connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
-    connect(d->accountInstallButton,SIGNAL(clicked()),
-            this, SLOT(onAccountInstallButton()));
-    connect(d->serviceList,SIGNAL(itemClicked(QModelIndex)),
-            this,SLOT(serviceSelected(QModelIndex)));
-    connect(this, SIGNAL(backButtonClicked()),
-            this, SLOT(close()));
 }
 
 void ServiceSelectionPage::serviceSelected(QModelIndex index)
@@ -115,6 +110,31 @@ void ServiceSelectionPage::createContent()
     MWidget *centralWidget = new MWidget(this);
     MLayout *mainLayout = new MLayout(centralWidget);
     MLinearLayoutPolicy *mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Vertical);
+    mainLayoutPolicy->setSpacing(0);
+
+    QString providerName(d->context->account()->providerName());
+    // xml file that describes the ui elements for the provider
+    Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
+    if (provider) {
+        QDomElement root = provider->domDocument().documentElement();
+        QDomElement providerIcon = root.firstChildElement("icon");
+        QString providerIconId = providerIcon.text();
+
+        // Provider info widgets
+        MContentItem *providerInfoItem =
+                new MContentItem(MContentItem::IconAndTwoTextLabels, this);
+        providerInfoItem->setObjectName("pluginProviderName");
+        providerInfoItem->setTitle(providerName);
+        providerInfoItem->setSubtitle(d->context->account()->displayName());
+        providerInfoItem->setImageID(providerIconId);
+        mainLayoutPolicy->addItem(providerInfoItem);
+    }
+
+    MSeparator *separatorTop = new MSeparator(this);
+    separatorTop->setOrientation(Qt::Horizontal);
+    mainLayoutPolicy->addItem(separatorTop);
+    mainLayoutPolicy->setSpacing(0);
+    mainLayoutPolicy->setContentsMargins(0,0,0,0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         //ServiceSettingsWidget sets the display widget of the changing settings
@@ -123,23 +143,58 @@ void ServiceSelectionPage::createContent()
                                           ServiceSettingsWidget::MandatorySettings |
                                           ServiceSettingsWidget::EnableButton,
                                           true);
-        settingsWidget->setHeaderVisible(false);
         mainLayoutPolicy->addItem(settingsWidget);
 
         d->abstractContexts.append(d->serviceContextList.at(i));
     }
 
-    mainLayoutPolicy->setItemSpacing(d->serviceContextList.count(),20);
-    mainLayoutPolicy->addItem(d->accountInstallButton);
-    mainLayoutPolicy->addStretch();
+    MSeparator *separatorBottom = new MSeparator(this);
+    separatorBottom->setOrientation(Qt::Horizontal);
+    mainLayoutPolicy->addItem(separatorBottom);
 
+    MWidget *synchItem = new MWidget(this);
+    MLayout *synchItemLayout = new MLayout(synchItem);
+    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
+    synchItemPolicy->setSpacing(0);
+
+    MButton *enableServiceButton = new MButton(this);
+    enableServiceButton->setViewType(MButton::switchType);
+    enableServiceButton->setCheckable(true);
+
+    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
+    //% "Scheduled Synchronization"
+    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
+    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
+
+    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
+    sideImage->setStyleName( "CommonSwitchIcon" );
+
+    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
+    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
+    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+
+    mainLayoutPolicy->addItem(synchItem);
+
+    //% "DONE"
+    d->doneAction = new MAction(qtTrId("qtn_comm_command_done"),centralWidget);
+    d->doneAction->setLocation(MAction::ToolBarLocation);
+    addAction(d->doneAction);
+
+    mainLayoutPolicy->addStretch();
     setCentralWidget(centralWidget);
+
+    connect(d->doneAction,SIGNAL(triggered()),
+            this, SLOT(onAccountInstallButton()));
+    connect(d->serviceList,SIGNAL(itemClicked(QModelIndex)),
+            this,SLOT(serviceSelected(QModelIndex)));
+    connect(this, SIGNAL(backButtonClicked()),
+            this, SLOT(close()));
 }
 
 void ServiceSelectionPage::onAccountInstallButton()
 {
     Q_D(ServiceSelectionPage);
-    disconnect(d->accountInstallButton,SIGNAL(clicked()),
+    disconnect(d->doneAction,SIGNAL(triggered()),
                this, SLOT(onAccountInstallButton()));
     setProgressIndicatorVisible(true);
     d->syncHandler->validate(d->abstractContexts);
@@ -159,7 +214,7 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             d->context->account()->sync();
             break;
         default:
-            connect(d->accountInstallButton,SIGNAL(clicked()),
+            connect(d->doneAction,SIGNAL(triggered()),
                     this, SLOT(onAccountInstallButton()));
             setProgressIndicatorVisible(false);
             return;

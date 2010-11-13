@@ -20,22 +20,28 @@
  * 02110-1301 USA
  */
 
+//project
 #include "service-settings-widget.h"
-#include <AccountsUI/abstract-service-setup-context.h>
+#include "abstract-service-setup-context.h"
 #include "settings-page.h"
 #include "service-helper.h"
-//MeegoTouch
 
-#include <MContainer>
+//M
+#include <MContentItem>
 #include <MLayout>
 #include <MLinearLayoutPolicy>
 #include <MGridLayoutPolicy>
 #include <MLabel>
 #include <MButton>
 #include <MLocale>
+#include <MImageWidget>
+
+//Qt
 #include <QDebug>
 #include <QDomElement>
+
 namespace AccountsUI {
+
 class ServiceSettingsWidgetPrivate
 {
 public:
@@ -47,14 +53,14 @@ public:
     ~ServiceSettingsWidgetPrivate() {}
     MButton *enableServiceButton;
     AbstractServiceSetupContext *context;
-    MGridLayoutPolicy *containerMainPolicy;
+    MLinearLayoutPolicy *containerMainPolicy;
 };
 
 ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *context,
                                              QGraphicsItem *parent,
                                              int settingsConf,
                                              bool enabled)
-    : MContainer(parent),
+    : MWidget(parent),
     d_ptr(new ServiceSettingsWidgetPrivate())
 {
     Q_D(ServiceSettingsWidget);
@@ -66,19 +72,28 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
          locale.installTrCatalog(catalog);
          MLocale::setDefault(locale);
     }
-    MWidget *containerCentralWidget = new MWidget(this);
-    MLayout *containerMainLayout = new MLayout(containerCentralWidget);
-    d->containerMainPolicy = new MGridLayoutPolicy(containerMainLayout);
+
+    MLayout *containerMainLayout = new MLayout(this);
+    d->containerMainPolicy = new MLinearLayoutPolicy(containerMainLayout, Qt::Horizontal);
+    d->containerMainPolicy->setSpacing(0);
+    d->containerMainPolicy->setContentsMargins(0,0,0,0);
 
     if (settingsConf & EnableButton) {
-        MLabel *serviceNameLabel = new MLabel(this);
         d->enableServiceButton = new MButton(this);
         d->enableServiceButton->setViewType(MButton::switchType);
         d->enableServiceButton->setCheckable(true);
+
         if (context) {
             ServiceHelper *serviceHepler =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
-            serviceNameLabel->setText(serviceHepler->prettyName());
+
+            MContentItem *serviceInfo =
+                    new MContentItem(MContentItem::TwoTextLabels);
+            serviceInfo->setTitle(serviceHepler->prettyName());
+            serviceInfo->setSubtitle(serviceHepler->description());
+
+            MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
+            sideImage->setStyleName( "CommonSwitchIcon" );
 
             /*
              * no signals during widget creation
@@ -87,11 +102,16 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            d->containerMainPolicy->addItem(serviceNameLabel, 0, 0, Qt::AlignLeft);
-            d->containerMainPolicy->addItem(d->enableServiceButton, 0, 1, Qt::AlignRight);
-            if (!serviceHepler->description().isNull()) {
-                MLabel *descLabel = new MLabel(serviceHepler->description());
-                d->containerMainPolicy->addItem(descLabel, 1, 0, Qt::AlignLeft);
+            d->containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
+            d->containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
+            d->containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+
+            if (d->context->widget(0)) {
+                connect(serviceInfo, SIGNAL(clicked()),
+                        this, SLOT(openSettingsPage()));
+            } else {
+                //make the arrow look disabled
+                sideImage->setOpacity(0.2);
             }
         }
     }
@@ -101,31 +121,15 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             (settingsConf & MandatorySettings)) {
             MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
             if (widget) {
-                d->containerMainPolicy->addItem(widget, 2, 0);
+                d->containerMainPolicy->addItem(widget);
             }
         }
     }
-    setCentralWidget(containerCentralWidget);
 }
 
 ServiceSettingsWidget::~ServiceSettingsWidget()
 {
     delete d_ptr;
-}
-
-void ServiceSettingsWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_UNUSED(event);
-}
-
-void ServiceSettingsWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_UNUSED(event);
-    Q_D(ServiceSettingsWidget);
-    if (d->context) {
-        if (d->context->widget(0))
-            openSettingsPage();
-    }
 }
 
 void ServiceSettingsWidget::enabled(bool enabled)
