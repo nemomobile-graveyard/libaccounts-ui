@@ -154,12 +154,12 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     if (!registerNewLink.isEmpty()) {
 
         //% "Don't have a %1 account yet?"
-        MLabel *questionLabel = new MLabel(QString("Don't have a %1 account yet?").arg(providerName));
+        MLabel *questionLabel = new MLabel(qtTrId("qtn_acc_login_new_to_x").arg(providerName));
         questionLabel->setAlignment(Qt::AlignCenter);
         questionLabel->setObjectName("AccountsPrimaryInfoLabel");
 
         //% "Get one here"
-        QString link("<a href=\"%1\"> Get one here! </a>");
+        QString link("<a href=\"%1\"> " + qtTrId("qtn_acc_login_register_here") + "! </a>");
         MLabel *subscribeLabel = new MLabel(link.arg(registerNewLink));
         subscribeLabel->setTextFormat(Qt::RichText);
         subscribeLabel->setAlignment(Qt::AlignCenter);
