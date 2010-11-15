@@ -39,6 +39,7 @@ static MLayout *wrapWithLabelAbove(QGraphicsLayoutItem *widget, const QString &t
     // only 1 policy!
     MLinearLayoutPolicy *formElementLayoutPolicy =
         new MLinearLayoutPolicy(formElementLayout, Qt::Vertical);
+    formElementLayoutPolicy->setSpacing(0);
 
     formElementLayoutPolicy->addItem(new MLabel(text));
     formElementLayoutPolicy->addItem(widget);
