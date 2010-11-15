@@ -356,8 +356,8 @@ void AccountSettingsPage::enable(bool state)
             d->usernameAndStatus->setSubtitle(QString::null);
     } else {
         if (d->usernameAndStatus)
-            //% "Disabled"
-            d->usernameAndStatus->setSubtitle(qtTrId("qtn_acc_disabled"));
+            //TODO: as the qtn_acc_disabled is removed we are still waiting how we show disabled account
+            d->usernameAndStatus->setSubtitle(QLatin1String("Disabled"));
     }
 
     d->account->setEnabled(state);
