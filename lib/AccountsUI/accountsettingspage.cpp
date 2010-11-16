@@ -58,6 +58,9 @@
 #include "abstract-account-setup-context.h"
 #include "accountsmanagersingleton.h"
 
+//sync-widget
+#include "AccountsSyncWidget.h"
+
 #define INFO_BANNER_TIMEOUT 3000
 
 namespace AccountsUI {
@@ -270,29 +273,47 @@ void AccountSettingsPage::createContent()
     /* Sets the service widgets and add it into the layout policy*/
     setServicesToBeShown();
 
-    MWidget *synchItem = new MWidget(this);
-    MLayout *synchItemLayout = new MLayout(synchItem);
-    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
-    synchItemPolicy->setSpacing(0);
+//    MWidget *synchItem = new MWidget(this);
+//    MLayout *synchItemLayout = new MLayout(synchItem);
+//    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
+//    synchItemPolicy->setSpacing(0);
 
-    MButton *enableServiceButton = new MButton(this);
-    enableServiceButton->setViewType(MButton::switchType);
-    enableServiceButton->setCheckable(true);
+//    MButton *enableServiceButton = new MButton(this);
+//    enableServiceButton->setViewType(MButton::switchType);
+//    enableServiceButton->setCheckable(true);
 
-    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
-    //% "Scheduled Synchronization"
-    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
-    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
+    QFile file("/tmp/out.txt");
+    file.open(QIODevice::Append | QIODevice::Text);
 
-    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
-    sideImage->setStyleName( "CommonSwitchIcon" );
+        QTextStream out(&file);
+    QStringList sericesNames;
+    for (int i = 0; i < d->serviceList.count(); i++) {
+        sericesNames << d->serviceList.at(i)->name();
+        out <<"service name"<<d->serviceList.at(i)->name();
+    }
 
-    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
-    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
-    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+        out << "The magic number is: "<<d->account->id();
+    AccountsSyncWidget *synchItem = new AccountsSyncWidget(d->account->id(), sericesNames);
+    if(synchItem)
+        out << "widget is thereeeee";
+    else
+        out <<"noooooooooooooo";
+//    layoutPolicy->addItem(synchItem);
 
-    connect(synchItemContent, SIGNAL(clicked()),
-            this, SLOT(openSynchUi()));
+//    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
+//    //% "Scheduled Synchronization"
+//    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
+//    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
+//
+//    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
+//    sideImage->setStyleName( "CommonSwitchIcon" );
+//
+//    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
+//    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
+//    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+
+//    connect(synchItem, SIGNAL(clicked()),
+//            this, SLOT(openSynchUi()));
 
     setCentralWidget(centralWidget);
 
@@ -327,7 +348,7 @@ void AccountSettingsPage::createContent()
 
     layoutPolicy->addItem(serviceWidget);
     layoutPolicy->addItem(separatorBottom);
-    layoutPolicy->addItem(synchItem);
+//    layoutPolicy->addItem(synchItem);
     layoutPolicy->addStretch();
 
     //Saving the settings on back button press
