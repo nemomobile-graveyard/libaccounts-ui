@@ -17,7 +17,8 @@ QT += xml network
 # -----------------------------------------------------------------------------
 PKGCONFIG += accounts-qt \
     libsignon-qt \
-    meegotouch
+    meegotouch \
+    accountsyncwidget
 
 # -----------------------------------------------------------------------------
 # input

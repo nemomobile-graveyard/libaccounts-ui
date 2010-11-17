@@ -58,6 +58,9 @@
 #include "abstract-account-setup-context.h"
 #include "accountsmanagersingleton.h"
 
+//sync-widget
+#include "AccountsSyncWidget.h"
+
 #define INFO_BANNER_TIMEOUT 3000
 
 namespace AccountsUI {
@@ -270,29 +273,22 @@ void AccountSettingsPage::createContent()
     /* Sets the service widgets and add it into the layout policy*/
     setServicesToBeShown();
 
-    MWidget *synchItem = new MWidget(this);
-    MLayout *synchItemLayout = new MLayout(synchItem);
-    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
-    synchItemPolicy->setSpacing(0);
+    QStringList sericesNames;
+    for (int i = 0; i < d->serviceList.count(); i++)
+        sericesNames << d->serviceList.at(i)->name();
 
-    MButton *enableServiceButton = new MButton(this);
-    enableServiceButton->setViewType(MButton::switchType);
-    enableServiceButton->setCheckable(true);
+    /* sync widget */
+    AccountsSyncWidget *synchItem = new AccountsSyncWidget(d->account->id(), sericesNames);
 
-    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
-    //% "Scheduled Synchronization"
-    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
-    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
+    QString catalog = synchItem->trCatalog();
+    if (!catalog.isEmpty()) {
+        MLocale locale;
+        locale.installTrCatalog(catalog);
+        MLocale::setDefault(locale);
+    }
 
-    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
-    sideImage->setStyleName( "CommonSwitchIcon" );
 
-    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
-    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
-    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
-
-    connect(synchItemContent, SIGNAL(clicked()),
-            this, SLOT(openSynchUi()));
+    synchItem->createWidget();
 
     setCentralWidget(centralWidget);
 
@@ -327,7 +323,8 @@ void AccountSettingsPage::createContent()
 
     layoutPolicy->addItem(serviceWidget);
     layoutPolicy->addItem(separatorBottom);
-    layoutPolicy->addItem(synchItem);
+    if (synchItem->mustBeShown())
+        layoutPolicy->addItem(synchItem);
     layoutPolicy->addStretch();
 
     //Saving the settings on back button press
@@ -456,26 +453,6 @@ void AccountSettingsPage::deleteCredentialsDialog()
     if (sender() != NULL &&
         (credentialDialog = qobject_cast<CredentialDialog *>(sender())) != NULL)
         credentialDialog->deleteLater();
-}
-
-void AccountSettingsPage::openSynchUi()
-{
-    setProgressIndicatorVisible(true);
-
-    //Start Sync-Ui
-    MApplicationIfProxy mApplicationIfProxy("com.nokia.syncui", this);
-
-    if (mApplicationIfProxy.connection().isConnected()) {
-        mApplicationIfProxy.launch();
-    } else {
-        MInfoBanner* infoBanner = new MInfoBanner();
-
-        //% "Unable to launch Synchronisation"
-        infoBanner->setBodyText(qtTrId("qtn_acc_synchronisation_err_undefined"));
-        infoBanner->appear(MSceneWindow::DestroyWhenDone);
-        QTimer::singleShot(INFO_BANNER_TIMEOUT, infoBanner, SLOT(disappear()));
-    }
-    setProgressIndicatorVisible(false);
 }
 
 void AccountSettingsPage::showAllServices()

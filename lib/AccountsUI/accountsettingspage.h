@@ -95,7 +95,6 @@ public slots:
 private slots:
     void saveSettings();
     void openChangePasswordDialog();
-    void openSynchUi();
     void showAllServices();
     void onSyncStateChanged(const SyncState &state);
     void deleteCredentialsDialog();
