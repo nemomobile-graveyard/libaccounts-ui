@@ -351,7 +351,7 @@ void AccountSettingsPage::createContent()
     if (synchItem->mustBeShown()) {
 //        out << "\n ************ enabled";
         layoutPolicy->addItem(synchItem);
-//    }
+    }
 //    else
 //        out <<"\n ^^^^^^^^^^^^ disabled";
     layoutPolicy->addStretch();
