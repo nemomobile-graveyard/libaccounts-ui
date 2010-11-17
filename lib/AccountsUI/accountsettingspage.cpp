@@ -278,9 +278,9 @@ void AccountSettingsPage::createContent()
         sericesNames << d->serviceList.at(i)->name();
 
     /* sync widget */
-    AccountsSyncWidget *synchItem = new AccountsSyncWidget(d->account->id(), sericesNames);
+    AccountsSyncWidget *syncItem = new AccountsSyncWidget(d->account->id(), sericesNames);
 
-    QString catalog = synchItem->trCatalog();
+    QString catalog = syncItem->trCatalog();
     if (!catalog.isEmpty()) {
         MLocale locale;
         locale.installTrCatalog(catalog);
@@ -288,7 +288,7 @@ void AccountSettingsPage::createContent()
     }
 
 
-    synchItem->createWidget();
+    syncItem->createWidget();
 
     setCentralWidget(centralWidget);
 
@@ -323,8 +323,8 @@ void AccountSettingsPage::createContent()
 
     layoutPolicy->addItem(serviceWidget);
     layoutPolicy->addItem(separatorBottom);
-    if (synchItem->mustBeShown())
-        layoutPolicy->addItem(synchItem);
+    if (syncItem->mustBeShown())
+        layoutPolicy->addItem(syncItem);
     layoutPolicy->addStretch();
 
     //Saving the settings on back button press
