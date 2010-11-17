@@ -348,7 +348,12 @@ void AccountSettingsPage::createContent()
 
     layoutPolicy->addItem(serviceWidget);
     layoutPolicy->addItem(separatorBottom);
-//    layoutPolicy->addItem(synchItem);
+    if (synchItem->mustBeShown()) {
+//        out << "\n ************ enabled";
+        layoutPolicy->addItem(synchItem);
+//    }
+//    else
+//        out <<"\n ^^^^^^^^^^^^ disabled";
     layoutPolicy->addStretch();
 
     //Saving the settings on back button press
