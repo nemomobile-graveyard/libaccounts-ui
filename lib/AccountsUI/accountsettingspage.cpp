@@ -273,12 +273,12 @@ void AccountSettingsPage::createContent()
     /* Sets the service widgets and add it into the layout policy*/
     setServicesToBeShown();
 
-    QStringList sericesNames;
+    QStringList servicesNames;
     for (int i = 0; i < d->serviceList.count(); i++)
-        sericesNames << d->serviceList.at(i)->name();
+        servicesNames << d->serviceList.at(i)->name();
 
     /* sync widget */
-    AccountsSyncWidget *syncItem = new AccountsSyncWidget(d->account->id(), sericesNames);
+    AccountsSyncWidget *syncItem = new AccountsSyncWidget(d->account->id(), servicesNames);
 
     QString catalog = syncItem->trCatalog();
     if (!catalog.isEmpty()) {
