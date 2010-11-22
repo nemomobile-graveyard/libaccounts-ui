@@ -246,10 +246,13 @@ void AccountSettingsPage::createContent()
             d->enableButton->setCheckable(true);
 
             d->account->selectService(NULL);
-            if ( d->account->enabled())
+            if ( d->account->enabled()) {
+		d->panel->setEnabled(true);
                 d->enableButton->setChecked(true);
-            else
+	    } else {
+		d->panel->setEnabled(false);
                 d->enableButton->setChecked(false);
+	    }
 
             connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
 
