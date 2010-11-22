@@ -98,6 +98,8 @@ public:
     AccountSyncHandler *syncHandler;
     bool changePasswordDialogStarted;
     QMultiMap<QString, ServiceSettingsWidget*> settingsWidgets;
+    MLayout *layout;
+    MLinearLayoutPolicy *layoutPolicy;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -205,15 +207,15 @@ void AccountSettingsPage::createContent()
 
     //we need a central widget to get the right layout size under the menubar
     MWidget* centralWidget = new MWidget();
-    MLayout* layout = new MLayout(centralWidget);
-    MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
-    layoutPolicy->setSpacing(0);
+    d->layout = new MLayout(centralWidget);
+    d->layoutPolicy = new MLinearLayoutPolicy(d->layout, Qt::Vertical);
+    d->layoutPolicy->setSpacing(0);
 
     if (d->context) {
         QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
         d->serviceList = d->account->services();
         if (accountSettingsWidget != 0) {
-            layoutPolicy->addItem(accountSettingsWidget);
+            d->layoutPolicy->addItem(accountSettingsWidget);
         } else {
             MWidget *upperWidget = new MWidget(this);
             MLayout *upperLayout = new MLayout(upperWidget);
@@ -261,7 +263,7 @@ void AccountSettingsPage::createContent()
             upperLayoutPolicy->addItem(horizontalLayout);
             upperLayoutPolicy->addItem(separatorTop);
 
-            layoutPolicy->addItem(upperWidget);
+            d->layoutPolicy->addItem(upperWidget);
         }
     }
 
@@ -278,17 +280,17 @@ void AccountSettingsPage::createContent()
         servicesNames << d->serviceList.at(i)->name();
 
     /* sync widget */
-    AccountsSyncWidget *syncItem = new AccountsSyncWidget(d->account->id(), servicesNames);
+//    AccountsSyncWidget *syncItem = new AccountsSyncWidget(d->account->id(), servicesNames);
 
-    QString catalog = syncItem->trCatalog();
-    if (!catalog.isEmpty()) {
-        MLocale locale;
-        locale.installTrCatalog(catalog);
-        MLocale::setDefault(locale);
-    }
+//    QString catalog = syncItem->trCatalog();
+//    if (!catalog.isEmpty()) {
+//        MLocale locale;
+//        locale.installTrCatalog(catalog);
+//        MLocale::setDefault(locale);
+//    }
+//setWidget();
 
-
-    syncItem->createWidget();
+//    syncItem->createWidget();
 
     setCentralWidget(centralWidget);
 
@@ -321,11 +323,11 @@ void AccountSettingsPage::createContent()
     MSeparator *separatorBottom = new MSeparator(this);
     separatorBottom->setOrientation(Qt::Horizontal);
 
-    layoutPolicy->addItem(serviceWidget);
-    layoutPolicy->addItem(separatorBottom);
-    if (syncItem->mustBeShown())
-        layoutPolicy->addItem(syncItem);
-    layoutPolicy->addStretch();
+    d->layoutPolicy->addItem(serviceWidget);
+    d->layoutPolicy->addItem(separatorBottom);
+//    if (syncItem->mustBeShown())
+//        d->layoutPolicy->addItem(syncItem);
+    d->layoutPolicy->addStretch();
 
     //Saving the settings on back button press
     connect(this, SIGNAL(backButtonClicked()),
@@ -486,6 +488,12 @@ void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
 
         widget->setServiceButtonEnable(false);
     }
+}
+
+void AccountSettingsPage::setWidget(MWidget *widget)
+{
+     Q_D(AccountSettingsPage);
+     d->layoutPolicy->addItem(widget);
 }
 
 } // namespace

@@ -31,6 +31,8 @@
 
 //Meegotouch
 #include <MApplicationPage>
+#include <MLinearLayoutPolicy>
+#include <MWidget>
 
 namespace Accounts {
     class Account;
@@ -76,6 +78,9 @@ public:
      * Returns the context.
      */
     const AbstractAccountSetupContext *context();
+
+
+void setWidget(MWidget *widget);
 
 public slots:
     /*!
