@@ -98,6 +98,7 @@ public:
     AccountSyncHandler *syncHandler;
     bool changePasswordDialogStarted;
     QMultiMap<QString, ServiceSettingsWidget*> settingsWidgets;
+    MWidgetController *panel;
     MLayout *layout;
     MLinearLayoutPolicy *layoutPolicy;
 };
@@ -138,7 +139,9 @@ void AccountSettingsPage::setServicesToBeShown()
     /* iterate through the contexts we created for each service, and get the
      * UI widgets to embed */
     QMap<QString, bool> enabledServiceTypes;
-
+    d->panel = new MWidgetController();
+    MLayout *layoutPanel = new MLayout(d->panel);
+    MLinearLayoutPolicy *panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
         d->service = context->service();
@@ -156,20 +159,21 @@ void AccountSettingsPage::setServicesToBeShown()
 
         if (d->serviceList.count() > 1)
             settingsWidget = new ServiceSettingsWidget(context,
-                                                   this,
+                                                   d->panel,
                                                    ServiceSettingsWidget::EnableButton,
                                                    enabled);
         else
             settingsWidget = new ServiceSettingsWidget(context,
-                                                       this,
+                                                       d->panel,
                                                        ServiceSettingsWidget::MandatorySettings |
                                                        ServiceSettingsWidget::NonMandatorySettings,
                                                        enabled);
 
         d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
-        d->layoutServicePolicy->addItem(settingsWidget);
+        panelPolicy->addItem(settingsWidget);
     }
 
+    d->layoutServicePolicy->addItem(d->panel);
     /*
      * no need in extra processing of any signals during content creation
      * */
@@ -343,6 +347,7 @@ const AbstractAccountSetupContext *AccountSettingsPage::context()
 void AccountSettingsPage::enable(bool state)
 {
     Q_D(AccountSettingsPage);
+    d->panel->setEnabled(state);
 
     if (d->serviceList.count() == 1) {
         d->account->selectService(d->serviceList.at(0));
