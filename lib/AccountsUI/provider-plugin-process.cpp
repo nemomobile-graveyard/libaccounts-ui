@@ -188,6 +188,9 @@ int ProviderPluginProcess::exec()
 
     d->window->show();
     MApplicationPage *page = mainPage();
+    system("echo lllllllll");
+     system(QString("echo %1").arg(page->metaObject()->className()).toLatin1());
+
     if (page == 0) {
         qWarning() << Q_FUNC_INFO << "The mainPage() returned 0";
         return 1;
