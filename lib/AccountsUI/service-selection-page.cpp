@@ -48,6 +48,9 @@
 #include <Accounts/Provider>
 #include <Accounts/Manager>
 
+//sync-widget
+#include "AccountsSyncWidget.h"
+
 namespace AccountsUI {
 
 M_REGISTER_WIDGET_NO_CREATE(ServiceSelectionPage)
@@ -152,28 +155,33 @@ void ServiceSelectionPage::createContent()
     separatorBottom->setOrientation(Qt::Horizontal);
     mainLayoutPolicy->addItem(separatorBottom);
 
-    MWidget *synchItem = new MWidget(this);
-    MLayout *synchItemLayout = new MLayout(synchItem);
-    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
-    synchItemPolicy->setSpacing(0);
+    /* sync widget */
+    AccountsSyncWidget *syncItem = new AccountsSyncWidget(d->context->account());
 
-    MButton *enableServiceButton = new MButton(this);
-    enableServiceButton->setViewType(MButton::switchType);
-    enableServiceButton->setCheckable(true);
 
-    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
-    //% "Scheduled Synchronization"
-    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
-    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
+//    MWidget *synchItem = new MWidget(this);
+//    MLayout *synchItemLayout = new MLayout(synchItem);
+//    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
+//    synchItemPolicy->setSpacing(0);
+//
+//    MButton *enableServiceButton = new MButton(this);
+//    enableServiceButton->setViewType(MButton::switchType);
+//    enableServiceButton->setCheckable(true);
+//
+//    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
+//    //% "Scheduled Synchronization"
+//    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
+//    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
+//
+//    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
+//    sideImage->setStyleName( "CommonSwitchIcon" );
+//
+//    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
+//    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
+//    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
 
-    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
-    sideImage->setStyleName( "CommonSwitchIcon" );
-
-    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
-    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
-    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
-
-    mainLayoutPolicy->addItem(synchItem);
+    if (syncItem->mustBeShown())
+        mainLayoutPolicy->addItem(syncItem);
 
     //% "DONE"
     d->doneAction = new MAction(qtTrId("qtn_comm_command_done"),centralWidget);
