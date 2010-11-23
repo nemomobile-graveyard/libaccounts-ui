@@ -1,3 +1,9 @@
+libaccounts-ui (0.26) unstable; urgency=low
+
+  * Seattle ui - disabled accounts settings view.
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 23 Nov 2010 10:04:22 +0300
+
 libaccounts-ui (0.25) unstable; urgency=low
 
   * Fixes: NB#204705 - Logical ids are in account settings
