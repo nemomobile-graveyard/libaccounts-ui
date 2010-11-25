@@ -31,6 +31,8 @@
 
 //Meegotouch
 #include <MApplicationPage>
+#include <MLinearLayoutPolicy>
+#include <MWidget>
 
 namespace Accounts {
     class Account;
@@ -77,6 +79,9 @@ public:
      */
     const AbstractAccountSetupContext *context();
 
+
+void setWidget(MWidget *widget);
+
 public slots:
     /*!
      * Called when the user toggles the enable button for the account.
@@ -95,7 +100,6 @@ public slots:
 private slots:
     void saveSettings();
     void openChangePasswordDialog();
-    void openSynchUi();
     void showAllServices();
     void onSyncStateChanged(const SyncState &state);
     void deleteCredentialsDialog();

@@ -31,6 +31,7 @@
 
 //Meegotouch
 #include <MApplicationPage>
+#include <MWidget>
 
 // Qt
 #include <QModelIndex>
@@ -39,7 +40,7 @@ namespace AccountsUI {
 
 class ServiceSelectionPagePrivate;
 
-class ServiceSelectionPage: public MApplicationPage
+class ACCOUNTSUI_EXPORT ServiceSelectionPage: public MApplicationPage
 {
     Q_OBJECT
 
@@ -50,6 +51,7 @@ public:
                                   QGraphicsItem *parent = 0);
     virtual ~ServiceSelectionPage();
     virtual void createContent();
+    void setWidget(MWidget *widget);
 
 private slots:
     void serviceSelected(QModelIndex);

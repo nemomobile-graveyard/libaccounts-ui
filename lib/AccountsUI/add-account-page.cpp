@@ -172,8 +172,14 @@ void AddAccountPage::navigateToServiceSelectionPage()
         return;
     }
 
+    openServiceSelectionPage(d->context, d->serviceContextList);
+}
+
+void AddAccountPage::openServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
+                                              QList<AccountsUI::AbstractServiceSetupContext *> &serviceContextList)
+{
     ServiceSelectionPage *serviceSelectionPage =
-        new ServiceSelectionPage(d->context, d->serviceContextList);
+        new ServiceSelectionPage(context, serviceContextList);
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),
             this,SLOT(appear()));
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),

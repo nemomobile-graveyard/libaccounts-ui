@@ -68,6 +68,11 @@ private slots:
     void stopProgressIndicator();
     void onSyncStateChanged(const SyncState &state);
 
+protected:
+    virtual void openServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
+                                     QList<AccountsUI::AbstractServiceSetupContext*>
+                                     &serviceContextList);
+
 private:
     AddAccountPagePrivate *d_ptr;
     Q_DISABLE_COPY(AddAccountPage)
