@@ -58,8 +58,6 @@
 #include "abstract-account-setup-context.h"
 #include "accountsmanagersingleton.h"
 
-//sync-widget
-#include "AccountsSyncWidget.h"
 
 #define INFO_BANNER_TIMEOUT 3000
 
@@ -78,7 +76,11 @@ public:
             layoutServicePolicy(0),
             enableButton(0),
             syncHandler(0),
-            changePasswordDialogStarted(false)
+            changePasswordDialogStarted(false),
+            panel(0),
+            layout(0),
+            layoutPolicy(0),
+            panelPolicy(0)
     {}
 
     ~AccountSettingsPagePrivate() {}
@@ -101,6 +103,7 @@ public:
     MWidgetController *panel;
     MLayout *layout;
     MLinearLayoutPolicy *layoutPolicy;
+    MLinearLayoutPolicy *panelPolicy;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -141,7 +144,7 @@ void AccountSettingsPage::setServicesToBeShown()
     QMap<QString, bool> enabledServiceTypes;
     d->panel = new MWidgetController();
     MLayout *layoutPanel = new MLayout(d->panel);
-    MLinearLayoutPolicy *panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
+    d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
         d->service = context->service();
@@ -170,7 +173,7 @@ void AccountSettingsPage::setServicesToBeShown()
                                                        enabled);
 
         d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
-        panelPolicy->addItem(settingsWidget);
+        d->panelPolicy->addItem(settingsWidget);
     }
 
     d->layoutServicePolicy->addItem(d->panel);
@@ -283,9 +286,6 @@ void AccountSettingsPage::createContent()
     for (int i = 0; i < d->serviceList.count(); i++)
         servicesNames << d->serviceList.at(i)->name();
 
-    /* sync widget */
-    AccountsSyncWidget *syncItem = new AccountsSyncWidget(d->account);
-
     setCentralWidget(centralWidget);
 
     //% "Delete"
@@ -319,8 +319,6 @@ void AccountSettingsPage::createContent()
 
     d->layoutPolicy->addItem(serviceWidget);
     d->layoutPolicy->addItem(separatorBottom);
-    if (syncItem->mustBeShown())
-        d->layoutPolicy->addItem(syncItem);
     d->layoutPolicy->addStretch();
 
     //Saving the settings on back button press
@@ -488,7 +486,7 @@ void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
 void AccountSettingsPage::setWidget(MWidget *widget)
 {
      Q_D(AccountSettingsPage);
-     d->layoutPolicy->addItem(widget);
+     d->panelPolicy->addItem(widget);
 }
 
 } // namespace
