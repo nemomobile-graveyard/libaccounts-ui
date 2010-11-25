@@ -48,6 +48,9 @@
 #include <Accounts/Provider>
 #include <Accounts/Manager>
 
+//sync-widget
+#include "AccountsSyncWidget.h"
+
 namespace AccountsUI {
 
 M_REGISTER_WIDGET_NO_CREATE(ServiceSelectionPage)
@@ -60,7 +63,8 @@ public:
         : serviceList(0),
         doneAction(0),
         context(0),
-        syncHandler(0)
+        syncHandler(0),
+        mainLayoutPolicy(0)
         {}
     ~ServiceSelectionPagePrivate() {}
     MList *serviceList;
@@ -69,6 +73,7 @@ public:
     QList<AbstractServiceSetupContext*> serviceContextList;
     QList<AbstractSetupContext*> abstractContexts;
     AccountSyncHandler *syncHandler;
+    MLinearLayoutPolicy *mainLayoutPolicy;
 };
 
 ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
@@ -109,8 +114,8 @@ void ServiceSelectionPage::createContent()
 
     MWidget *centralWidget = new MWidget(this);
     MLayout *mainLayout = new MLayout(centralWidget);
-    MLinearLayoutPolicy *mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Vertical);
-    mainLayoutPolicy->setSpacing(0);
+    d->mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Vertical);
+    d->mainLayoutPolicy->setSpacing(0);
 
     QString providerName(d->context->account()->providerName());
     // xml file that describes the ui elements for the provider
@@ -127,14 +132,14 @@ void ServiceSelectionPage::createContent()
         providerInfoItem->setTitle(providerName);
         providerInfoItem->setSubtitle(d->context->account()->displayName());
         providerInfoItem->setImageID(providerIconId);
-        mainLayoutPolicy->addItem(providerInfoItem);
+        d->mainLayoutPolicy->addItem(providerInfoItem);
     }
 
     MSeparator *separatorTop = new MSeparator(this);
     separatorTop->setOrientation(Qt::Horizontal);
-    mainLayoutPolicy->addItem(separatorTop);
-    mainLayoutPolicy->setSpacing(0);
-    mainLayoutPolicy->setContentsMargins(0,0,0,0);
+    d->mainLayoutPolicy->addItem(separatorTop);
+    d->mainLayoutPolicy->setSpacing(0);
+    d->mainLayoutPolicy->setContentsMargins(0,0,0,0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         //ServiceSettingsWidget sets the display widget of the changing settings
@@ -143,44 +148,21 @@ void ServiceSelectionPage::createContent()
                                           ServiceSettingsWidget::MandatorySettings |
                                           ServiceSettingsWidget::EnableButton,
                                           true);
-        mainLayoutPolicy->addItem(settingsWidget);
+        d->mainLayoutPolicy->addItem(settingsWidget);
 
         d->abstractContexts.append(d->serviceContextList.at(i));
     }
 
     MSeparator *separatorBottom = new MSeparator(this);
     separatorBottom->setOrientation(Qt::Horizontal);
-    mainLayoutPolicy->addItem(separatorBottom);
-
-    MWidget *synchItem = new MWidget(this);
-    MLayout *synchItemLayout = new MLayout(synchItem);
-    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
-    synchItemPolicy->setSpacing(0);
-
-    MButton *enableServiceButton = new MButton(this);
-    enableServiceButton->setViewType(MButton::switchType);
-    enableServiceButton->setCheckable(true);
-
-    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
-    //% "Scheduled Synchronization"
-    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
-    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
-
-    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
-    sideImage->setStyleName( "CommonSwitchIcon" );
-
-    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
-    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
-    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
-
-    mainLayoutPolicy->addItem(synchItem);
+    d->mainLayoutPolicy->addItem(separatorBottom);
 
     //% "DONE"
     d->doneAction = new MAction(qtTrId("qtn_comm_command_done"),centralWidget);
     d->doneAction->setLocation(MAction::ToolBarLocation);
     addAction(d->doneAction);
 
-    mainLayoutPolicy->addStretch();
+    d->mainLayoutPolicy->addStretch();
     setCentralWidget(centralWidget);
 
     connect(d->doneAction,SIGNAL(triggered()),
@@ -219,6 +201,12 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             setProgressIndicatorVisible(false);
             return;
     }
+}
+
+void ServiceSelectionPage::setWidget(MWidget *widget)
+{
+     Q_D(ServiceSelectionPage);
+     d->mainLayoutPolicy->addItem(widget);
 }
 
 } //namespace

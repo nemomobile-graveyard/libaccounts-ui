@@ -17,7 +17,8 @@ QT += xml network
 # -----------------------------------------------------------------------------
 PKGCONFIG += accounts-qt \
     libsignon-qt \
-    meegotouch
+    meegotouch \
+    accountsyncwidget
 
 # -----------------------------------------------------------------------------
 # input
@@ -146,7 +147,9 @@ headers.files += AccountPluginInterface \
     common.h \
     NetworkSessionManager \
     network-session-manager.h \
-    account-sync-handler.h
+    account-sync-handler.h \
+    ServiceSelectionPage \
+    service-selection-page.h
 
 # -----------------------------------------------------------------------------
 # common installation setup

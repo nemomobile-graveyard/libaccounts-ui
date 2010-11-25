@@ -58,6 +58,9 @@
 #include "abstract-account-setup-context.h"
 #include "accountsmanagersingleton.h"
 
+//sync-widget
+#include "AccountsSyncWidget.h"
+
 #define INFO_BANNER_TIMEOUT 3000
 
 namespace AccountsUI {
@@ -75,7 +78,11 @@ public:
             layoutServicePolicy(0),
             enableButton(0),
             syncHandler(0),
-            changePasswordDialogStarted(false)
+            changePasswordDialogStarted(false),
+            panel(0),
+            layout(0),
+            layoutPolicy(0),
+            panelPolicy(0)
     {}
 
     ~AccountSettingsPagePrivate() {}
@@ -96,6 +103,9 @@ public:
     bool changePasswordDialogStarted;
     QMultiMap<QString, ServiceSettingsWidget*> settingsWidgets;
     MWidgetController *panel;
+    MLayout *layout;
+    MLinearLayoutPolicy *layoutPolicy;
+    MLinearLayoutPolicy *panelPolicy;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -134,8 +144,9 @@ void AccountSettingsPage::setServicesToBeShown()
     /* iterate through the contexts we created for each service, and get the
      * UI widgets to embed */
     QMap<QString, bool> enabledServiceTypes;
+    d->panel = new MWidgetController();
     MLayout *layoutPanel = new MLayout(d->panel);
-    MLinearLayoutPolicy *panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
+    d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
         d->service = context->service();
@@ -164,7 +175,7 @@ void AccountSettingsPage::setServicesToBeShown()
                                                        enabled);
 
         d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
-        panelPolicy->addItem(settingsWidget);
+        d->panelPolicy->addItem(settingsWidget);
     }
 
     d->layoutServicePolicy->addItem(d->panel);
@@ -205,16 +216,15 @@ void AccountSettingsPage::createContent()
 
     //we need a central widget to get the right layout size under the menubar
     MWidget* centralWidget = new MWidget();
-    MLayout* layout = new MLayout(centralWidget);
-    MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
-    layoutPolicy->setSpacing(0);
-    d->panel = new MWidgetController();
+    d->layout = new MLayout(centralWidget);
+    d->layoutPolicy = new MLinearLayoutPolicy(d->layout, Qt::Vertical);
+    d->layoutPolicy->setSpacing(0);
 
     if (d->context) {
         QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
         d->serviceList = d->account->services();
         if (accountSettingsWidget != 0) {
-            layoutPolicy->addItem(accountSettingsWidget);
+            d->layoutPolicy->addItem(accountSettingsWidget);
         } else {
             MWidget *upperWidget = new MWidget(this);
             MLayout *upperLayout = new MLayout(upperWidget);
@@ -265,7 +275,7 @@ void AccountSettingsPage::createContent()
             upperLayoutPolicy->addItem(horizontalLayout);
             upperLayoutPolicy->addItem(separatorTop);
 
-            layoutPolicy->addItem(upperWidget);
+            d->layoutPolicy->addItem(upperWidget);
         }
     }
 
@@ -277,29 +287,9 @@ void AccountSettingsPage::createContent()
     /* Sets the service widgets and add it into the layout policy*/
     setServicesToBeShown();
 
-    MWidget *synchItem = new MWidget(this);
-    MLayout *synchItemLayout = new MLayout(synchItem);
-    MLinearLayoutPolicy *synchItemPolicy = new MLinearLayoutPolicy(synchItemLayout, Qt::Horizontal);
-    synchItemPolicy->setSpacing(0);
-
-    MButton *enableServiceButton = new MButton(this);
-    enableServiceButton->setViewType(MButton::switchType);
-    enableServiceButton->setCheckable(true);
-
-    MContentItem *synchItemContent = new MContentItem(MContentItem::TwoTextLabels);
-    //% "Scheduled Synchronization"
-    synchItemContent->setTitle(qtTrId("qtn_acc_sync"));
-    synchItemContent->setSubtitle(QLatin1String("Messages, Email"));
-
-    MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
-    sideImage->setStyleName( "CommonSwitchIcon" );
-
-    synchItemPolicy->addItem(enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
-    synchItemPolicy->addItem(synchItemContent, Qt::AlignLeft | Qt::AlignVCenter);
-    synchItemPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
-
-    connect(synchItemContent, SIGNAL(clicked()),
-            this, SLOT(openSynchUi()));
+    QStringList servicesNames;
+    for (int i = 0; i < d->serviceList.count(); i++)
+        servicesNames << d->serviceList.at(i)->name();
 
     setCentralWidget(centralWidget);
 
@@ -332,10 +322,9 @@ void AccountSettingsPage::createContent()
     MSeparator *separatorBottom = new MSeparator(this);
     separatorBottom->setOrientation(Qt::Horizontal);
 
-    layoutPolicy->addItem(serviceWidget);
-    layoutPolicy->addItem(separatorBottom);
-    layoutPolicy->addItem(synchItem);
-    layoutPolicy->addStretch();
+    d->layoutPolicy->addItem(serviceWidget);
+    d->layoutPolicy->addItem(separatorBottom);
+    d->layoutPolicy->addStretch();
 
     //Saving the settings on back button press
     connect(this, SIGNAL(backButtonClicked()),
@@ -466,26 +455,6 @@ void AccountSettingsPage::deleteCredentialsDialog()
         credentialDialog->deleteLater();
 }
 
-void AccountSettingsPage::openSynchUi()
-{
-    setProgressIndicatorVisible(true);
-
-    //Start Sync-Ui
-    MApplicationIfProxy mApplicationIfProxy("com.nokia.syncui", this);
-
-    if (mApplicationIfProxy.connection().isConnected()) {
-        mApplicationIfProxy.launch();
-    } else {
-        MInfoBanner* infoBanner = new MInfoBanner();
-
-        //% "Unable to launch Synchronisation"
-        infoBanner->setBodyText(qtTrId("qtn_acc_synchronisation_err_undefined"));
-        infoBanner->appear(MSceneWindow::DestroyWhenDone);
-        QTimer::singleShot(INFO_BANNER_TIMEOUT, infoBanner, SLOT(disappear()));
-    }
-    setProgressIndicatorVisible(false);
-}
-
 void AccountSettingsPage::showAllServices()
 {
     Q_D(AccountSettingsPage);
@@ -517,6 +486,12 @@ void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
 
         widget->setServiceButtonEnable(false);
     }
+}
+
+void AccountSettingsPage::setWidget(MWidget *widget)
+{
+     Q_D(AccountSettingsPage);
+     d->panelPolicy->addItem(widget);
 }
 
 } // namespace

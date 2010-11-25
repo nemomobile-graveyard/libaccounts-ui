@@ -25,6 +25,7 @@
 
 //M
 #include <MContainer>
+#include <MWidget>
 
 namespace AccountsUI {
 
@@ -60,6 +61,7 @@ public:
                           );
     ~ServiceSettingsWidget();
     void setServiceButtonEnable(bool enable);
+    void setWidget(MWidget *widget);
 
     Q_SIGNALS:
         void serviceButtonEnabled(const QString &serviceType);

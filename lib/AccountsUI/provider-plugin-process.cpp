@@ -188,6 +188,7 @@ int ProviderPluginProcess::exec()
 
     d->window->show();
     MApplicationPage *page = mainPage();
+
     if (page == 0) {
         qWarning() << Q_FUNC_INFO << "The mainPage() returned 0";
         return 1;
