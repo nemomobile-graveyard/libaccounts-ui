@@ -47,6 +47,7 @@ public:
     explicit ServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
                                   QList<AccountsUI::AbstractServiceSetupContext*>
                                   &serviceContextList,
+                                  QString serviceType,
                                   QGraphicsItem *parent = 0);
     virtual ~ServiceSelectionPage();
     virtual void createContent();

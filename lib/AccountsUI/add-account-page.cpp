@@ -28,6 +28,7 @@
 #include "sort-service-model.h"
 #include "provider-plugin-process.h"
 #include "account-sync-handler.h"
+#include "account-setup-finished-page.h"
 
 //Accounts
 #include <Accounts/Account>
@@ -69,9 +70,11 @@ public:
     QList<AbstractServiceSetupContext*> serviceContextList;
     AccountSyncHandler *syncHandler;
     QList<AbstractSetupContext*> abstractContexts;
+    QString serviceType;
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
+                               QString serviceType,
                                QGraphicsItem *parent)
         : MApplicationPage(parent)
         , d_ptr(new AddAccountPagePrivate())
@@ -81,6 +84,7 @@ AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
     setStyleName("AddAccountPage");
     setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
+    d->serviceType = serviceType;
 }
 
 AddAccountPage::~AddAccountPage()
@@ -107,7 +111,7 @@ void AddAccountPage::createContent()
     // TODO : this part is just for testing purposes, to jump to service selection page, without going through authentication
     if (!qgetenv("ACCOUNTSUI_SKIP_VALIDATION").isEmpty()) {
         MButton *nextButton = new MButton("Skip Validation");
-        connect(nextButton, SIGNAL(clicked()), this, SLOT(navigateToServiceSelectionPage()));
+        connect(nextButton, SIGNAL(clicked()), this, SLOT(/*goToA()*/navigateToServiceSelectionPage()));
         layoutPolicy->addItem(nextButton);
     }
     // TODO : listen for rotation change and propagate it to the widget for correct layout policy
@@ -116,6 +120,13 @@ void AddAccountPage::createContent()
     connect(d->context, SIGNAL(validating()), SLOT(startProgressIndicator()));
     connect(d->context, SIGNAL(error(AccountsUI::ErrorCode, const QString &)),
             this,  SLOT(stopProgressIndicator()));
+}
+
+void AddAccountPage::goToA()
+{
+    Q_D(AddAccountPage);
+//    AccountSetupFinishedPage *page = new AccountSetupFinishedPage(d->context->account(), "e-mail");
+//    page->appear();
 }
 
 void AddAccountPage::navigateToServiceSelectionPage()
@@ -173,7 +184,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
     }
 
     ServiceSelectionPage *serviceSelectionPage =
-        new ServiceSelectionPage(d->context, d->serviceContextList);
+        new ServiceSelectionPage(d->context, d->serviceContextList, d->serviceType);
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),
             this,SLOT(appear()));
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),

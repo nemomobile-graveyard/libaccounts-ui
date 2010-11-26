@@ -53,6 +53,7 @@ public:
      * Class constructor.
      */
     explicit AddAccountPage(AccountsUI::AbstractAccountSetupContext *context,
+                            QString serviceType,
                             QGraphicsItem *parent = 0);
     virtual ~AddAccountPage();
 
@@ -63,6 +64,7 @@ public:
 
 private slots:
     void navigateToServiceSelectionPage();
+    void goToA();
     void clearServiceContextList();
     void startProgressIndicator();
     void stopProgressIndicator();
