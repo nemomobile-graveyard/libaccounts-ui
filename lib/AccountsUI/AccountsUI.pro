@@ -148,6 +148,7 @@ headers.files += AccountPluginInterface \
     NetworkSessionManager \
     network-session-manager.h \
     account-sync-handler.h \
+    ServiceSelectionPage \
     service-selection-page.h
 
 # -----------------------------------------------------------------------------
