@@ -1,3 +1,9 @@
+libaccounts-ui (0.27) unstable; urgency=low
+
+  * Sync widget integration changes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 26 Nov 2010 17:25:22 +0300
+
 libaccounts-ui (0.26) unstable; urgency=low
 
   * Seattle ui - disabled accounts settings view.
