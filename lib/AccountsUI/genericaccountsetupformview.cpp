@@ -37,6 +37,7 @@
 #include <MContentItem>
 #include <MSeparator>
 #include <MLabel>
+#include <MProgressIndicator>
 
 //Qt
 #include <QDebug>
@@ -52,8 +53,20 @@ public:
           isInDomDocumentUpdate(false),
           q_ptr(publicObject)
     {
-        controller = 0;
-        mainLayoutPolicy = 0;
+        controller = NULL;
+        mainLayoutPolicy = NULL;
+        mainLayout = NULL;
+        separator = NULL;
+        descriptionLabel = NULL;
+        providerInfoItem = NULL;
+        questionLabel = NULL;
+        subscribeLabel = NULL;
+        progressIndicator = NULL;
+        connectingLabel = NULL;
+        stopButton = NULL;
+        widgetModel = NULL;
+        credentialWidget = NULL;
+
         registerNewLink = QString();
         authDomainSeparator = QString();
         authDomainDefault = QString();
@@ -63,14 +76,26 @@ public:
     {}
 
     void createUiFromXml(const QDomDocument &providerAccountDocument);
+    void showCredentialWidgetAndHideProgress();
+    void hideCredentialWidgetAndShowProgress();
 
 public:
     GenericAccountSetupForm *controller;
     MLinearLayoutPolicy *mainLayoutPolicy;
     MLayout *mainLayout;
+    MSeparator *separator;
+    MLabel *descriptionLabel;
+    MContentItem *providerInfoItem;
+    CredentialWidgetModel *widgetModel;
+    CredentialWidget *credentialWidget;
+    MLabel *questionLabel;
+    MLabel *subscribeLabel;
+    MProgressIndicator *progressIndicator;
+    MLabel *connectingLabel;
+    MButton *stopButton;
+
     QMap<MWidget*, QDomElement> formWidgetDomElementMap;
     QDomDocument providerAccountDocument;
-    CredentialWidgetModel *widgetModel;
     bool isInDomDocumentUpdate;
     QString registerNewLink;
     QString authDomainSeparator;
@@ -80,6 +105,88 @@ protected:
     Q_DECLARE_PUBLIC(GenericAccountSetupFormView);
     GenericAccountSetupFormView *q_ptr;
 };
+
+void GenericAccountSetupFormViewPrivate::showCredentialWidgetAndHideProgress()
+{
+    if (mainLayoutPolicy) {
+        for (int i = mainLayoutPolicy->count() - 1; i >= 0; i--)
+            mainLayoutPolicy->removeAt(i);
+    }
+
+    if (mainLayout) {
+        for (int i = mainLayout->count() - 1; i >= 0; i--)
+            mainLayout->removeAt(i);
+    }
+
+    if (mainLayoutPolicy) {
+        delete mainLayoutPolicy;
+        mainLayoutPolicy = NULL;
+    }
+
+    if (connectingLabel) {
+        delete connectingLabel;
+        connectingLabel = NULL;
+    }
+
+    if (stopButton) {
+        delete stopButton;
+        stopButton = NULL;
+    }
+
+    mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Vertical);
+
+    mainLayoutPolicy->addItem(providerInfoItem, Qt::AlignTop);
+    mainLayoutPolicy->addItem(descriptionLabel, Qt::AlignTop);
+    mainLayoutPolicy->addItem(separator, Qt::AlignTop);
+    mainLayoutPolicy->addItem(credentialWidget, Qt::AlignTop);
+    mainLayoutPolicy->addStretch();
+    mainLayoutPolicy->addItem(questionLabel, Qt::AlignCenter | Qt::AlignBottom);
+    mainLayoutPolicy->addItem(subscribeLabel, Qt::AlignCenter | Qt::AlignBottom);
+}
+
+void GenericAccountSetupFormViewPrivate::hideCredentialWidgetAndShowProgress()
+{
+    if (mainLayoutPolicy) {
+        for (int i = mainLayoutPolicy->count() - 1; i >= 0; i--)
+            mainLayoutPolicy->removeAt(i);
+    }
+
+    if (mainLayout) {
+        for (int i = mainLayout->count() - 1; i >= 0; i--)
+            mainLayout->removeAt(i);
+    }
+
+    if (mainLayoutPolicy) {
+        delete mainLayoutPolicy;
+        mainLayoutPolicy = NULL;
+    }
+
+    mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Vertical);
+
+    mainLayoutPolicy->addItem(providerInfoItem, Qt::AlignTop);
+    mainLayoutPolicy->addItem(descriptionLabel, Qt::AlignTop);
+    mainLayoutPolicy->addItem(separator, Qt::AlignTop);
+    progressIndicator = new MProgressIndicator(NULL, MProgressIndicator::spinnerType);
+    progressIndicator->setUnknownDuration(true);
+
+    //% "Connecting"
+    connectingLabel = new MLabel("Connecting");
+    connectingLabel->setObjectName("connectingLabel");
+    connectingLabel->setAlignment(Qt::AlignCenter);
+
+    //% "STOP"
+    stopButton = new MButton(QLatin1String("STOP"));
+    stopButton->setStyleName("wgStopButton");
+    stopButton->setObjectName("CommonSingleButton");
+    QObject::connect(stopButton, SIGNAL(clicked()),
+                     controller, SIGNAL(stopButtonPressed()));
+
+    mainLayoutPolicy->addStretch();
+    mainLayoutPolicy->addItem(progressIndicator, Qt::AlignCenter);
+    mainLayoutPolicy->addItem(connectingLabel, Qt::AlignCenter);
+    mainLayoutPolicy->addItem(stopButton, Qt::AlignCenter);
+    mainLayoutPolicy->addStretch();
+}
 
 void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aProviderAccountDocument)
 {
@@ -115,13 +222,13 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     }
 
     // Provider info widgets
-    MContentItem *providerInfoItem =
+    providerInfoItem =
         new MContentItem(MContentItem::IconAndSingleTextLabel, controller);
     providerInfoItem->setObjectName("pluginProviderName");
     providerInfoItem->setTitle(providerName);
     providerInfoItem->setImageID(providerIconId);
 
-    MLabel *descriptionLabel = new MLabel(descriptionText);
+    descriptionLabel = new MLabel(descriptionText);
     descriptionLabel->setWordWrap(true);
     descriptionLabel->setWrapMode(QTextOption::WordWrap);
 
@@ -131,13 +238,13 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
         widgetModel = NULL;
     }
 
-    MSeparator *separator = new MSeparator();
+    separator = new MSeparator();
     separator->setOrientation(Qt::Horizontal);
 
     widgetModel = new CredentialWidgetModel();
     widgetModel->setDialogsVisabilityConfig(CredentialWidgetModel::LoginDialogVisible);
     widgetModel->setSignInButtonVisible(true);
-    CredentialWidget *credentialWidget = new CredentialWidget(widgetModel);
+    credentialWidget = new CredentialWidget(widgetModel);
     if (!authDomainSeparator.isEmpty() || !authDomainDefault.isEmpty())
         credentialWidget->setUsername(authDomainSeparator + authDomainDefault);
     QObject::connect(widgetModel, SIGNAL(signInClicked()), q_ptr , SLOT(signIn()));
@@ -154,13 +261,13 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     if (!registerNewLink.isEmpty()) {
 
         //% "Don't have a %1 account yet?"
-        MLabel *questionLabel = new MLabel(qtTrId("qtn_acc_login_new_to_x").arg(providerName));
+        questionLabel = new MLabel(qtTrId("qtn_acc_login_new_to_x").arg(providerName));
         questionLabel->setAlignment(Qt::AlignCenter);
         questionLabel->setObjectName("AccountsPrimaryInfoLabel");
 
         //% "Get one here"
         QString link("<a href=\"%1\"> " + qtTrId("qtn_acc_login_register_here") + "! </a>");
-        MLabel *subscribeLabel = new MLabel(link.arg(registerNewLink));
+        subscribeLabel = new MLabel(link.arg(registerNewLink));
         subscribeLabel->setTextFormat(Qt::RichText);
         subscribeLabel->setAlignment(Qt::AlignCenter);
         subscribeLabel->setObjectName("AccountsSecondaryInfoLabel");
@@ -222,15 +329,13 @@ void GenericAccountSetupFormView::updateDomDocument()
 
 void GenericAccountSetupFormView::updateData(const QList<const char*> &modifications)
 {
-    qDebug() << __PRETTY_FUNCTION__;
     Q_D(GenericAccountSetupFormView);
 
     MWidgetView::updateData(modifications);
 
     foreach(const char *member, modifications) {
         if (!qstrcmp(member, "providerAccountDocumentAsString") &&
-            d->isInDomDocumentUpdate == false)
-        {
+            d->isInDomDocumentUpdate == false) {
             QDomDocument providerAccountDocument;
             QString errorStr;
             int errorLine;
@@ -246,19 +351,23 @@ void GenericAccountSetupFormView::updateData(const QList<const char*> &modificat
                                   .arg(errorStr).toAscii());
             }
             d->createUiFromXml(providerAccountDocument);
+        } else if (!qstrcmp(member, "credentialWidgetEnabled")) {
+            if (model()->credentialWidgetEnabled()) {
+                d->showCredentialWidgetAndHideProgress();
+            } else {
+                d->hideCredentialWidgetAndShowProgress();
+            }
         }
     }
 }
 
 void GenericAccountSetupFormView::setupModel()
 {
-    qDebug() << __PRETTY_FUNCTION__;
     MWidgetView::setupModel();
 }
 
 void GenericAccountSetupFormView::signIn()
 {
-    qDebug()<<__PRETTY_FUNCTION__;
     Q_D(GenericAccountSetupFormView);
 
     if (d->widgetModel->username().isEmpty()) {

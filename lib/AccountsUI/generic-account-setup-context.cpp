@@ -76,6 +76,7 @@ public:
     GenericAccountSetupContextPrivate()
         : genericAccountSetupForm(0)
         , identity(0)
+        , authSession(0)
         , networkManager(0)
         , contextIsValidated(false)
         , identityCreated(false)
@@ -102,6 +103,7 @@ public:
 
     IdentityInfo identityInfo;
     Identity *identity;
+    AuthSession *authSession;
 
     NetworkSessionManager *networkManager;
 
@@ -383,7 +385,6 @@ void GenericAccountSetupContext::validate()
 void GenericAccountSetupContext::startAuthSession()
 {
     Q_D(GenericAccountSetupContext);
-    qDebug() << Q_FUNC_INFO;
 
     //check authsession part of provider file
     QDomDocument domDocument = d->genericAccountSetupForm->domDocument();
@@ -419,9 +420,11 @@ void GenericAccountSetupContext::startAuthSession()
     sessionData.setUserName(d->genericAccountSetupForm->username());
     sessionData.setSecret(d->genericAccountSetupForm->password());
 
-    AuthSession *authSession = d->identity->createSession(method);
+    if (!d->authSession) {
+        d->authSession = d->identity->createSession(method);
+    }
 
-    if (authSession == 0) {
+    if (!d->authSession) {
         qWarning() << QLatin1String("Try to make concurrent authentication");
         emit error(UnknownError,
                    QLatin1String("Could not create authetication session."));
@@ -433,18 +436,29 @@ void GenericAccountSetupContext::startAuthSession()
         return;
     }
 
-    connect(authSession, SIGNAL(response(const SignOn::SessionData &)),
+    connect(d->authSession, SIGNAL(response(const SignOn::SessionData &)),
             this, SLOT(authenticationDone(const SignOn::SessionData &)));
-    connect(authSession, SIGNAL(error(const SignOn::Error &)),
+    connect(d->authSession, SIGNAL(error(const SignOn::Error &)),
             this, SLOT(authSessionError(const SignOn::Error &)), Qt::QueuedConnection);
 
-    authSession->process(sessionData, mechanism);
+    d->authSession->process(sessionData, mechanism);
+}
+
+void GenericAccountSetupContext::stopAuthSession()
+{
+    Q_D(GenericAccountSetupContext);
+
+    disconnect(d->authSession, SIGNAL(response(const SignOn::SessionData &)),
+               this, SLOT(authenticationDone(const SignOn::SessionData &)));
+    disconnect(d->authSession, SIGNAL(error(const SignOn::Error &)),
+               this, SLOT(authSessionError(const SignOn::Error &)));
+
+    d->authSession->cancel();
+    d->networkManager->stopSession();
 }
 
 void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
 {
-    qDebug() << Q_FUNC_INFO;
-
     qDebug() << QString::fromLatin1("AUTHENTICATION ERROR type %1, message %2:")
         .arg(err.type()).arg(err.message());
 

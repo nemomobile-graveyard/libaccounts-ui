@@ -91,7 +91,13 @@ public:
      */
     QString pluginName();
 
-signals:
+public Q_SLOTS:
+    /*!
+     * Stops the plugin process.
+     */
+    void stopProcess();
+
+Q_SIGNALS:
     void created(int accountId);
     void edited();
     void failed();

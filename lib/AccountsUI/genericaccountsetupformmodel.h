@@ -35,6 +35,7 @@ class GenericAccountSetupFormModel : public MWidgetModel
     M_MODEL_PROPERTY(QString, password, Password, true, QString())
     M_MODEL_PROPERTY(QString, providerName, ProviderName, true, QString())
     M_MODEL_PROPERTY(bool, rememberMe, RememberMe, true, true)
+    M_MODEL_PROPERTY(bool, credentialWidgetEnabled, CredentialWidgetEnabled, true, true)
 };
 
 #endif // ACCOUNTSUI_GENERICACCOUNTSETUPFORMMODEL_H

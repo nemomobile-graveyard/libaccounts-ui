@@ -62,7 +62,6 @@ public:
     {};
 
     virtual ~ParameterText () {
-        qDebug() << __PRETTY_FUNCTION__;
     }
 
     virtual void store(GenericServiceSetupContext *context) {
@@ -98,7 +97,6 @@ public:
     : UiBuilder(parent), key(QString::null), editor(0) {};
 
     virtual ~ParameterInteger () {
-        qDebug() << __PRETTY_FUNCTION__;
     };
 
     virtual QGraphicsLayoutItem* ui(const QDomElement &node, GenericServiceSetupContext *context,
@@ -125,7 +123,6 @@ public:
     : UiBuilder(parent), key(QString::null), button(0) {};
 
     virtual ~ParameterBoolean () {
-        qDebug() << __PRETTY_FUNCTION__;
     };
 
     virtual QGraphicsLayoutItem* ui(const QDomElement &node, GenericServiceSetupContext *context,

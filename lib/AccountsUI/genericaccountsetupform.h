@@ -54,13 +54,9 @@ public:
     const QString providerName() const;
     bool rememberMe() const;
 
-private:
-    void setEnabledForm(bool enable);
-    void enableForm() { setEnabledForm(true); }
-    void disableForm() { setEnabledForm(false); }
-
 Q_SIGNALS:
     void validateSignal();
+    void stopButtonPressed();
 
 public Q_SLOTS:
     void validateCredentials();
