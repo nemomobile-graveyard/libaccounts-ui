@@ -135,7 +135,7 @@ void AccountSetupFinishedPage::createContent()
     //% "Go to %1"
     MButton *goToButton = new MButton(qtTrId("qtn_comm_go_to_x").arg(type->displayName()));
 
-    connect (goToButton, SIGNAL(clicked()), this, SLOT(goToApplication()));
+//    connect (goToButton, SIGNAL(clicked()), this, SLOT(goToApplication()));
     connect (goToButton, SIGNAL(clicked()), ProviderPluginProcess::instance(), SLOT(quit()));
     //% "Add more account"
     MButton *addMoreAccountButton = new MButton(qtTrId("qtn_acc_add_more_accounts"));
@@ -165,8 +165,8 @@ void AccountSetupFinishedPage::createContent()
 
 void AccountSetupFinishedPage::goToApplication()
 {
-    system("echo okkkkkkkkkkkkkkkkkk");
-    ProviderPluginProcess::instance()->emitQuitMainApp();
+//    system("echo okkkkkkkkkkkkkkkkkk");
+//    ProviderPluginProcess::instance()->emitQuitMainApp();
 }
 
 void AccountSetupFinishedPage::addMoreAccount()
