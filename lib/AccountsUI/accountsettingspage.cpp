@@ -58,8 +58,6 @@
 #include "abstract-account-setup-context.h"
 #include "accountsmanagersingleton.h"
 
-//sync-widget
-#include "AccountsSyncWidget.h"
 
 #define INFO_BANNER_TIMEOUT 3000
 
