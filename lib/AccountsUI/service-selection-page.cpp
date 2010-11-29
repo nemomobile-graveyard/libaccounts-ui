@@ -48,8 +48,6 @@
 #include <Accounts/Provider>
 #include <Accounts/Manager>
 
-//sync-widget
-#include "AccountsSyncWidget.h"
 
 namespace AccountsUI {
 
