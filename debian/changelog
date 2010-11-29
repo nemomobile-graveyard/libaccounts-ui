@@ -1,3 +1,9 @@
+libaccounts-ui (0.27-1) unstable; urgency=low
+
+  * Sync widget integration changes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 29 Nov 2010 10:02:22 +0300
+
 libaccounts-ui (0.27) unstable; urgency=low
 
   * Sync widget integration changes
