@@ -269,7 +269,7 @@ void CredentialWidgetView::recreateWidgets()
     Q_D(CredentialWidgetView);
 
     if (!d->mainLayout->isEmpty()) {
-        for (int i = d->mainLayout->count(); i >= 0; i--)
+        for (int i = d->mainLayout->count() - 1; i >= 0; i--)
             d->mainLayout->removeAt(i);
     }
 

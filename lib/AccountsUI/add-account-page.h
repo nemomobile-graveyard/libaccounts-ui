@@ -64,9 +64,10 @@ public:
 private slots:
     void navigateToServiceSelectionPage();
     void clearServiceContextList();
-    void startProgressIndicator();
-    void stopProgressIndicator();
+    void hideMenuBar();
+    void showMenuBar();
     void onSyncStateChanged(const SyncState &state);
+    void onError(AccountsUI::ErrorCode, const QString &);
 
 private:
     AddAccountPagePrivate *d_ptr;
