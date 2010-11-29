@@ -142,7 +142,6 @@ void AccountSettingsPage::setServicesToBeShown()
     /* iterate through the contexts we created for each service, and get the
      * UI widgets to embed */
     QMap<QString, bool> enabledServiceTypes;
-    d->panel = new MWidgetController();
     MLayout *layoutPanel = new MLayout(d->panel);
     d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
     foreach (AbstractServiceSetupContext *context, d->contexts) {
@@ -196,7 +195,7 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
     d->account = d->context->account();
     d->abstractContexts.append(d->context);
     d->serviceType = d->context->serviceType();
-
+    d->panel = new MWidgetController();
     d->syncHandler = new AccountSyncHandler(this);
     connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
@@ -259,10 +258,10 @@ void AccountSettingsPage::createContent()
 
             d->account->selectService(NULL);
             if ( d->account->enabled()) {
-		d->panel->setEnabled(true);
+                d->panel->setEnabled(true);
                 d->enableButton->setChecked(true);
 	    } else {
-		d->panel->setEnabled(false);
+                d->panel->setEnabled(false);
                 d->enableButton->setChecked(false);
 	    }
 
