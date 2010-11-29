@@ -28,6 +28,7 @@
 #include "sort-service-model.h"
 #include "provider-plugin-process.h"
 #include "account-sync-handler.h"
+#include "genericaccountsetupform.h"
 
 //Accounts
 #include <Accounts/Account>
@@ -93,6 +94,7 @@ void AddAccountPage::createContent()
 {
     Q_D(AddAccountPage);
     Q_ASSERT(centralWidget());
+
     //% "Add new account"
     setTitle(qtTrId("qtn_acc_add_new_account_title"));
 
@@ -100,6 +102,7 @@ void AddAccountPage::createContent()
     MLayout *layout = new MLayout(centralWidget());
     MLinearLayoutPolicy *layoutPolicy =
             new MLinearLayoutPolicy( layout, Qt::Vertical );
+
     // plugin widget has the provider info and credentials widget
     QGraphicsLayoutItem *pluginWidget = d->context->widget();
     layoutPolicy->addItem(pluginWidget);
@@ -110,12 +113,21 @@ void AddAccountPage::createContent()
         connect(nextButton, SIGNAL(clicked()), this, SLOT(navigateToServiceSelectionPage()));
         layoutPolicy->addItem(nextButton);
     }
-    // TODO : listen for rotation change and propagate it to the widget for correct layout policy
-    connect(d->context, SIGNAL(validated()), SLOT(navigateToServiceSelectionPage())); // login Ok, go to next page
+
+    // login Ok, go to next page
+    connect(d->context, SIGNAL(validated()), SLOT(navigateToServiceSelectionPage()));
+    connect(d->context, SIGNAL(validated()), SLOT(showMenuBar()));
+
     //process indicator
-    connect(d->context, SIGNAL(validating()), SLOT(startProgressIndicator()));
+    connect(d->context, SIGNAL(validating()), SLOT(hideMenuBar()));
     connect(d->context, SIGNAL(error(AccountsUI::ErrorCode, const QString &)),
-            this,  SLOT(stopProgressIndicator()));
+            this, SLOT(onError(AccountsUI::ErrorCode, const QString &)));
+
+    //cancelling
+    connect((GenericAccountSetupForm*)pluginWidget, SIGNAL(stopButtonPressed()),
+            d->context, SLOT(stopAuthSession()));
+    connect((GenericAccountSetupForm*)pluginWidget, SIGNAL(stopButtonPressed()),
+            d->context, SLOT(showMenuBar()));
 }
 
 void AddAccountPage::navigateToServiceSelectionPage()
@@ -199,11 +211,11 @@ void AddAccountPage::onSyncStateChanged(const SyncState &state)
     switch (state) {
         case NotValidated:
             qDebug() << Q_FUNC_INFO << __LINE__;
-            stopProgressIndicator();
+            showMenuBar();
             break;
         case NotStored:
             qDebug() << Q_FUNC_INFO << __LINE__;
-            stopProgressIndicator();
+            showMenuBar();
             break;
         case Validated:
             d->syncHandler->store(d->abstractContexts);
@@ -212,7 +224,7 @@ void AddAccountPage::onSyncStateChanged(const SyncState &state)
             connect(d->context->account(), SIGNAL(synced()),
                     ProviderPluginProcess::instance(), SLOT(quit()));
             d->context->account()->sync();
-            stopProgressIndicator();
+            showMenuBar();
             break;
         default:
             return;
@@ -225,16 +237,19 @@ void AddAccountPage::clearServiceContextList()
     d->serviceContextList.clear();
 }
 
-void AddAccountPage::startProgressIndicator()
+void AddAccountPage::hideMenuBar()
 {
-    qDebug() << Q_FUNC_INFO;
-    setProgressIndicatorVisible(true);
+    setComponentsDisplayMode(NavigationBar, MApplicationPageModel::Hide);
 }
 
-void AddAccountPage::stopProgressIndicator()
+void AddAccountPage::showMenuBar()
 {
-    qDebug() << Q_FUNC_INFO;
-    setProgressIndicatorVisible(false);
+    setComponentsDisplayMode(NavigationBar, MApplicationPageModel::Show);
+}
+
+void AddAccountPage::onError(AccountsUI::ErrorCode, const QString &)
+{
+    showMenuBar();
 }
 
 } //namespace

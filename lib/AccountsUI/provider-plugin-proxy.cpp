@@ -240,6 +240,12 @@ void ProviderPluginProxy::editAccount(Account *account,
     d->startProcess(provider, account->id(), serviceType);
 }
 
+void ProviderPluginProxy::stopProcess()
+{
+    Q_D(ProviderPluginProxy);
+    d->stopProcess();
+}
+
 bool ProviderPluginProxy::isPluginRunning()
 {
     Q_D(ProviderPluginProxy);

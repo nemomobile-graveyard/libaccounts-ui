@@ -58,6 +58,7 @@ protected:
 public Q_SLOTS:
     virtual void validate();
     void startAuthSession();
+    void stopAuthSession();
 
     void authenticationDone(const SignOn::SessionData &data);
     void credentialsStored(const quint32 id);
@@ -70,6 +71,7 @@ public Q_SLOTS:
 
 private:
     void storeAccount();
+
     GenericAccountSetupContextPrivate *d_ptr;
     Q_DISABLE_COPY(GenericAccountSetupContext)
     Q_DECLARE_PRIVATE(GenericAccountSetupContext)

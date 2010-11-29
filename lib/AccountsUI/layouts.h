@@ -44,7 +44,6 @@ public:
     ContextFreeLayout(QObject *parent):
         UiBuilder(parent) {};
     virtual ~ContextFreeLayout() {
-        qDebug() << __PRETTY_FUNCTION__;
     }
 protected:
     virtual QList<QGraphicsLayoutItem*> children(const QDomElement &node,
@@ -56,7 +55,6 @@ protected:
                             GenericServiceSetupContext *context,
                             Parser *parser,
                             bool showAllSettings = true) {
-        qDebug() << __PRETTY_FUNCTION__;
         return layout(children(node, context,  parser, showAllSettings));
     };
 };
@@ -77,7 +75,6 @@ protected:
     virtual MLayout *layout(const QList<QGraphicsLayoutItem*> &child_list);
 public:
     Q_INVOKABLE LayoutFlow(QObject *parent): ContextFreeLayout(parent) {
-        qDebug() << __PRETTY_FUNCTION__;
     };
 };
 

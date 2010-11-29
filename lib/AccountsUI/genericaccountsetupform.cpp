@@ -140,7 +140,7 @@ void GenericAccountSetupForm::validateCredentials()
     if (d->accountValidationInProgress == true)
         return;
 
-    disableForm();
+    model()->setCredentialWidgetEnabled(false);
     d->accountValidationInProgress = true;
     emit validateSignal();
 }
@@ -149,7 +149,7 @@ void GenericAccountSetupForm::validationOver()
 {
     Q_D(GenericAccountSetupForm);
     d->accountValidationInProgress = false;
-    enableForm();
+    model()->setCredentialWidgetEnabled(true);
 }
 
 void GenericAccountSetupForm::errorSlot()
@@ -161,19 +161,7 @@ void GenericAccountSetupForm::errorSlot()
 
     Q_D(GenericAccountSetupForm);
     d->accountValidationInProgress = false;
-    enableForm();
-}
-
-void GenericAccountSetupForm::setEnabledForm(bool enable)
-{
-    /*
-     * TODO: add enabling/disabling of account setup form elements
-     * */
-    if (enable) {
-        //nothing yet
-    } else {
-        //still nothing yet
-    }
+    model()->setCredentialWidgetEnabled(true);
 }
 
 M_REGISTER_WIDGET_NO_CREATE(GenericAccountSetupForm);
