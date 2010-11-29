@@ -80,15 +80,15 @@ AccountSetupFinishedPage::~AccountSetupFinishedPage()
     delete d_ptr;
 }
 
-AccountSetupFinishedPage *AccountSetupFinishedPage::instance()
-{
-    return plugin_instance;
-}
+//AccountSetupFinishedPage *AccountSetupFinishedPage::instance()
+//{
+//    return plugin_instance;
+//}
 
 void AccountSetupFinishedPage::createContent()
 {
     Q_D(AccountSetupFinishedPage);
-    plugin_instance = this;
+//    plugin_instance = this;
     MWidget* centralWidget = new MWidget();
     MLayout* layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
@@ -165,7 +165,8 @@ void AccountSetupFinishedPage::createContent()
 
 void AccountSetupFinishedPage::goToApplication()
 {
-    emit killAccountsUi();
+    system("echo okkkkkkkkkkkkkkkkkk");
+    ProviderPluginProcess::instance()->emitQuitMainApp();
 }
 
 void AccountSetupFinishedPage::addMoreAccount()

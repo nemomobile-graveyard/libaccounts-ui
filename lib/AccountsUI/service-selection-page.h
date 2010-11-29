@@ -39,7 +39,7 @@ namespace AccountsUI {
 
 class ServiceSelectionPagePrivate;
 
-class ServiceSelectionPage: public MApplicationPage
+class ACCOUNTSUI_EXPORT ServiceSelectionPage: public MApplicationPage
 {
     Q_OBJECT
 

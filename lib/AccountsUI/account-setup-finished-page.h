@@ -29,7 +29,7 @@ public:
 
     virtual void createContent();
 
-    static AccountSetupFinishedPage *instance();
+//    static AccountSetupFinishedPage *instance();
 
 public slots:
     void goToApplication();

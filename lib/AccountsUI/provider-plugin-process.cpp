@@ -231,4 +231,9 @@ AbstractAccountSetupContext *ProviderPluginProcess::accountSetupContext(
     return new GenericAccountSetupContext(account, type, parent);
 }
 
+void ProviderPluginProcess::emitQuitMainApp()
+{
+    emit quitMainApp();
+}
+
 } // namespace

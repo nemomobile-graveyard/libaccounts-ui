@@ -94,6 +94,11 @@ public:
                                                              SetupType type,
                                                              QObject *parent = 0);
 
+    void emitQuitMainApp();
+
+signals:
+    void quitMainApp();
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.
