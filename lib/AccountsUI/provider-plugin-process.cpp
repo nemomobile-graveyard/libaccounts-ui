@@ -164,7 +164,7 @@ MApplicationPage * ProviderPluginProcess::mainPage()
 
     AbstractAccountSetupContext *context = d->context();
 
-    if (context->setupType() == CreateNew);
+    if (context->setupType() == CreateNew)
         return new AddAccountPage(context, d->serviceType);
 
     if (context->setupType() == EditExisting)
@@ -231,9 +231,17 @@ AbstractAccountSetupContext *ProviderPluginProcess::accountSetupContext(
     return new GenericAccountSetupContext(account, type, parent);
 }
 
+<<<<<<< HEAD
 void ProviderPluginProcess::emitQuitMainApp()
 {
     emit quitMainApp();
 }
 
+=======
+QString ProviderPluginProcess::serviceType() const
+{
+    Q_D(const ProviderPluginProcess);
+    return d->serviceType;
+}
+>>>>>>> Success page added
 } // namespace

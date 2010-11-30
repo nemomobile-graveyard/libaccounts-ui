@@ -213,8 +213,9 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             d->syncHandler->store(d->abstractContexts);
             break;
         case Stored:
-//            connect(d->context->account(), SIGNAL(synced()),
-//                    ProviderPluginProcess::instance(), SLOT(quit()));
+            connect(d->context->account(), SIGNAL(synced()),
+                    ProviderPluginProcess::instance(), SLOT(quit()));
+            d->context->account()->sync();
             if (d->serviceType.isEmpty()) {
                 connect(d->context->account(), SIGNAL(synced()),
                         ProviderPluginProcess::instance(), SLOT(quit()));

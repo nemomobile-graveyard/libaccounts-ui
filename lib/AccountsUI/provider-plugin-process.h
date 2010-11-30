@@ -94,10 +94,10 @@ public:
                                                              SetupType type,
                                                              QObject *parent = 0);
 
-    void emitQuitMainApp();
-
-signals:
-    void quitMainApp();
+    /*!
+     * Returns the serviceType passed
+     */
+    QString serviceType() const;
 
 public Q_SLOTS:
     /*!

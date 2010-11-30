@@ -70,9 +70,6 @@ AccountSetupFinishedPage::AccountSetupFinishedPage(Accounts::Account *account, Q
     d->account = account;
     d->serviceType = serviceType;
     setObjectName("AccountSetupFinishedPage");
-//    if (plugin_instance != 0)
-//        qWarning() << "ProviderPluginProcess already instantiated";
-
 }
 
 AccountSetupFinishedPage::~AccountSetupFinishedPage()
@@ -80,15 +77,9 @@ AccountSetupFinishedPage::~AccountSetupFinishedPage()
     delete d_ptr;
 }
 
-//AccountSetupFinishedPage *AccountSetupFinishedPage::instance()
-//{
-//    return plugin_instance;
-//}
-
 void AccountSetupFinishedPage::createContent()
 {
     Q_D(AccountSetupFinishedPage);
-//    plugin_instance = this;
     MWidget* centralWidget = new MWidget();
     MLayout* layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
@@ -135,8 +126,7 @@ void AccountSetupFinishedPage::createContent()
     //% "Go to %1"
     MButton *goToButton = new MButton(qtTrId("qtn_comm_go_to_x").arg(type->displayName()));
 
-//    connect (goToButton, SIGNAL(clicked()), this, SLOT(goToApplication()));
-    connect (goToButton, SIGNAL(clicked()), ProviderPluginProcess::instance(), SLOT(quit()));
+    connect (goToButton, SIGNAL(clicked()), this, SLOT(goToApplication()));
     //% "Add more account"
     MButton *addMoreAccountButton = new MButton(qtTrId("qtn_acc_add_more_accounts"));
     connect (addMoreAccountButton, SIGNAL(clicked()), ProviderPluginProcess::instance(), SLOT(quit()));
@@ -165,10 +155,7 @@ void AccountSetupFinishedPage::createContent()
 
 void AccountSetupFinishedPage::goToApplication()
 {
-//    system("echo okkkkkkkkkkkkkkkkkk");
-//    ProviderPluginProcess::instance()->emitQuitMainApp();
+    QCoreApplication::exit(1);
 }
 
-void AccountSetupFinishedPage::addMoreAccount()
-{}
 }

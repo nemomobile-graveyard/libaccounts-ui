@@ -29,14 +29,8 @@ public:
 
     virtual void createContent();
 
-//    static AccountSetupFinishedPage *instance();
-
 public slots:
     void goToApplication();
-    void addMoreAccount();
-
-Q_SIGNALS:
-    void killAccountsUi();
 
 private:
     AccountSetupFinishedPagePrivate* d_ptr;
