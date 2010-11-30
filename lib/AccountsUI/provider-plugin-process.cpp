@@ -44,9 +44,8 @@ void ProviderPluginProcessPrivate::printAccountId()
     Accounts::Account *account = context()->account();
 
     QFile output;
-
     output.open(STDOUT_FILENO, QIODevice::WriteOnly);
-    QByteArray ba =QString("%1\n").arg(account->id()).toAscii();
+    QByteArray ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
     output.write(ba.constData());
     output.close();
 }
@@ -161,11 +160,10 @@ ProviderPluginProcess *ProviderPluginProcess::instance()
 MApplicationPage * ProviderPluginProcess::mainPage()
 {
     Q_D(ProviderPluginProcess);
-
     AbstractAccountSetupContext *context = d->context();
 
     if (context->setupType() == CreateNew)
-        return new AddAccountPage(context);
+        return new AddAccountPage(context, d->serviceType);
 
     if (context->setupType() == EditExisting)
         return new AccountSettingsPage(context);
@@ -232,4 +230,9 @@ AbstractAccountSetupContext *ProviderPluginProcess::accountSetupContext(
     return new GenericAccountSetupContext(account, type, parent);
 }
 
+void ProviderPluginProcess::setReturnToApp(bool returnToApp)
+{
+    Q_D(ProviderPluginProcess);
+    d->returnToApp = returnToApp;
+}
 } // namespace
