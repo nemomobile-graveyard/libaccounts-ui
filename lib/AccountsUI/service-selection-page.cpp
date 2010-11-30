@@ -25,6 +25,7 @@
 #include "provider-plugin-process.h"
 #include "service-settings-widget.h"
 #include "accountsmanagersingleton.h"
+#include "account-setup-finished-page.h"
 
 //Qt
 #include <QStringListModel>
@@ -72,6 +73,7 @@ public:
     QList<AbstractSetupContext*> abstractContexts;
     AccountSyncHandler *syncHandler;
     MLinearLayoutPolicy *mainLayoutPolicy;
+    QString serviceType;
 };
 
 ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
@@ -84,6 +86,7 @@ ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
     Q_D(ServiceSelectionPage);
     setStyleName("ServicePage");
     d->context = context;
+    d->serviceType = context->serviceType();
     d->context->account()->selectService(NULL);
     d->context->account()->setEnabled(true);
     d->serviceContextList = serviceContextList;
@@ -189,9 +192,15 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             d->syncHandler->store(d->abstractContexts);
             break;
         case Stored:
-            connect(d->context->account(), SIGNAL(synced()),
-                    ProviderPluginProcess::instance(), SLOT(quit()));
-            d->context->account()->sync();
+            if (d->serviceType.isEmpty()) {
+                connect(d->context->account(), SIGNAL(synced()),
+                        ProviderPluginProcess::instance(), SLOT(quit()));
+                d->context->account()->sync();
+            } else {
+                d->context->account()->sync();
+                AccountSetupFinishedPage *page = new AccountSetupFinishedPage(d->context);
+                page->appear();
+            }
             break;
         default:
             connect(d->doneAction,SIGNAL(triggered()),

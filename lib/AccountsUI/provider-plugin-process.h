@@ -94,6 +94,12 @@ public:
                                                              SetupType type,
                                                              QObject *parent = 0);
 
+    /*!
+     * sets whether we will return to the calling application or we will
+     * stay in accounts-ui
+     */
+    void setReturnToApp(bool returnToApp);
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.

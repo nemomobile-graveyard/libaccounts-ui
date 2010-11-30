@@ -70,6 +70,7 @@ public:
     QList<AbstractServiceSetupContext*> serviceContextList;
     AccountSyncHandler *syncHandler;
     QList<AbstractSetupContext*> abstractContexts;
+    QString serviceType;
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
@@ -82,6 +83,7 @@ AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
     setStyleName("AddAccountPage");
     setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
+    d->serviceType = context->serviceType();
 }
 
 AddAccountPage::~AddAccountPage()
@@ -130,6 +132,7 @@ void AddAccountPage::createContent()
             d->context, SLOT(showMenuBar()));
 }
 
+
 void AddAccountPage::navigateToServiceSelectionPage()
 {
     Q_D(AddAccountPage);
@@ -141,15 +144,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
     sortModel->setSourceModel(serviceModel);
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
-    QAbstractProxyModel *proxy = 0;
-    // selecting the service type
-    if (!d->context->serviceType().isEmpty()) {
-        FilterTypeServiceModel *filterServiceModel = new FilterTypeServiceModel(this);
-        filterServiceModel->setSourceModel(sortModel);
-        filterServiceModel->setFilterFixedString(d->context->serviceType());
-        proxy = filterServiceModel;
-    } else
-        proxy = sortModel;
+    QAbstractProxyModel *proxy = sortModel;
 
     for (int i = 0; i < proxy->rowCount(); i++) {
         QModelIndex index = proxy->index(i, 0);

@@ -98,7 +98,7 @@ public Q_SLOTS:
     void stopProcess();
 
 Q_SIGNALS:
-    void created(int accountId);
+    void created(int accountId, bool quitAccountsUI);
     void edited();
     void failed();
 
