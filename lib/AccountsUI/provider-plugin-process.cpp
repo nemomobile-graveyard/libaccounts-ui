@@ -165,7 +165,7 @@ MApplicationPage * ProviderPluginProcess::mainPage()
     AbstractAccountSetupContext *context = d->context();
 
     if (context->setupType() == CreateNew)
-        return new AddAccountPage(context);
+        return new AddAccountPage(context, d->serviceType);
 
     if (context->setupType() == EditExisting)
         return new AccountSettingsPage(context);
@@ -231,4 +231,9 @@ AbstractAccountSetupContext *ProviderPluginProcess::accountSetupContext(
     return new GenericAccountSetupContext(account, type, parent);
 }
 
+QString ProviderPluginProcess::serviceType() const
+{
+    Q_D(const ProviderPluginProcess);
+    return d->serviceType;
+}
 } // namespace

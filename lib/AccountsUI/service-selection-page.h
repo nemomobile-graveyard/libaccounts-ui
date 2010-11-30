@@ -39,7 +39,7 @@ namespace AccountsUI {
 
 class ServiceSelectionPagePrivate;
 
-class ServiceSelectionPage: public MApplicationPage
+class ACCOUNTSUI_EXPORT ServiceSelectionPage: public MApplicationPage
 {
     Q_OBJECT
 
@@ -47,6 +47,7 @@ public:
     explicit ServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
                                   QList<AccountsUI::AbstractServiceSetupContext*>
                                   &serviceContextList,
+                                  QString serviceType,
                                   QGraphicsItem *parent = 0);
     virtual ~ServiceSelectionPage();
     virtual void createContent();

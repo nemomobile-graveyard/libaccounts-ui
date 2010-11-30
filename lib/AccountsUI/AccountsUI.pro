@@ -10,7 +10,8 @@ VERSION = 1.0.0
 CONFIG += qt \
     meegotouch \
     link_pkgconfig
-QT += xml network
+QT += xml \
+    network
 
 # -----------------------------------------------------------------------------
 # dependencies
@@ -54,11 +55,11 @@ HEADERS += account-plugin-interface.h \
     service-settings-widget.h \
     common.h \
     network-session-manager.h \
-    network-session-manager-priv.h\
+    network-session-manager-priv.h \
     settings-page.h \
     sort-service-model.h \
-    account-sync-handler.h
-
+    account-sync-handler.h \
+    account-setup-finished-page.h
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
     abstract-setup-context.cpp \
@@ -87,8 +88,8 @@ SOURCES += abstract-account-setup-context.cpp \
     network-session-manager-priv.cpp \
     settings-page.cpp \
     sort-service-model.cpp \
-    account-sync-handler.cpp
-
+    account-sync-handler.cpp \
+    account-setup-finished-page.cpp
 MODEL_HEADERS += \
     credentialwidgetmodel.h \
     genericaccountsetupformmodel.h
@@ -146,7 +147,8 @@ headers.files += AccountPluginInterface \
     common.h \
     NetworkSessionManager \
     network-session-manager.h \
-    account-sync-handler.h
+    account-sync-handler.h \
+    account-setup-finished-page.h
 
 # -----------------------------------------------------------------------------
 # common installation setup
@@ -165,6 +167,6 @@ view_configuration.path = $${INSTALL_PREFIX}/share/themes/base/meegotouch/libAcc
 style_configuration.files = $${_PRO_FILE_PWD_}/libAccountPlugin.css
 style_configuration.path = $${INSTALL_PREFIX}/share/themes/base/meegotouch/libAccountPlugin/style
 INSTALLS += \
-	pkgconfig \
-        view_configuration \
-        style_configuration
+    pkgconfig \
+    view_configuration \
+    style_configuration

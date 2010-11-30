@@ -92,7 +92,7 @@ public:
     QString pluginName();
 
 signals:
-    void created(int accountId);
+    void created(int accountId, bool quitAccountsUI);
     void edited();
     void failed();
 

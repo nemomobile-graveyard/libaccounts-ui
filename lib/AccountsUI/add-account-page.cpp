@@ -28,6 +28,7 @@
 #include "sort-service-model.h"
 #include "provider-plugin-process.h"
 #include "account-sync-handler.h"
+#include "account-setup-finished-page.h"
 
 //Accounts
 #include <Accounts/Account>
@@ -69,9 +70,11 @@ public:
     QList<AbstractServiceSetupContext*> serviceContextList;
     AccountSyncHandler *syncHandler;
     QList<AbstractSetupContext*> abstractContexts;
+    QString serviceType;
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
+                               QString serviceType,
                                QGraphicsItem *parent)
         : MApplicationPage(parent)
         , d_ptr(new AddAccountPagePrivate())
@@ -81,6 +84,7 @@ AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
     setStyleName("AddAccountPage");
     setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
+    d->serviceType = serviceType;
 }
 
 AddAccountPage::~AddAccountPage()
@@ -118,6 +122,7 @@ void AddAccountPage::createContent()
             this,  SLOT(stopProgressIndicator()));
 }
 
+
 void AddAccountPage::navigateToServiceSelectionPage()
 {
     Q_D(AddAccountPage);
@@ -129,15 +134,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
     sortModel->setSourceModel(serviceModel);
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
-    QAbstractProxyModel *proxy = 0;
-    // selecting the service type
-    if (!d->context->serviceType().isEmpty()) {
-        FilterTypeServiceModel *filterServiceModel = new FilterTypeServiceModel(this);
-        filterServiceModel->setSourceModel(sortModel);
-        filterServiceModel->setFilterFixedString(d->context->serviceType());
-        proxy = filterServiceModel;
-    } else
-        proxy = sortModel;
+    QAbstractProxyModel *proxy = sortModel;
 
     for (int i = 0; i < proxy->rowCount(); i++) {
         QModelIndex index = proxy->index(i, 0);
@@ -173,7 +170,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
     }
 
     ServiceSelectionPage *serviceSelectionPage =
-        new ServiceSelectionPage(d->context, d->serviceContextList);
+        new ServiceSelectionPage(d->context, d->serviceContextList, d->serviceType);
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),
             this,SLOT(appear()));
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),

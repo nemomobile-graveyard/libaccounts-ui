@@ -94,6 +94,11 @@ public:
                                                              SetupType type,
                                                              QObject *parent = 0);
 
+    /*!
+     * Returns the serviceType passed
+     */
+    QString serviceType() const;
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.

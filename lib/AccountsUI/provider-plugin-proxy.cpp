@@ -163,8 +163,7 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
                                             QProcess::ExitStatus exitStatus)
 {
     Q_Q(ProviderPluginProxy);
-    Q_UNUSED(exitCode);
-
+    bool quitAcountsUI = false;
     PWATCHER_TRACE(pwatcher) << exitCode;
 
     if (exitStatus == QProcess::CrashExit) {
@@ -181,7 +180,9 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
 
         qDebug() << "Plugin output: " << result;
 
-        emit q->created(result);
+       if (exitCode)
+           quitAcountsUI = true;
+        emit q->created(result, quitAcountsUI);
     } else
         emit q->edited();
 
