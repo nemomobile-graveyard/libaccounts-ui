@@ -61,7 +61,7 @@ public:
     QString serviceType;
 };
 
-AccountSetupFinishedPage::AccountSetupFinishedPage(Accounts::Account *account, QString serviceType)
+AccountSetupFinishedPage::AccountSetupFinishedPage(Accounts::Account *account, const QString &serviceType)
         : MApplicationPage(),
           d_ptr(new AccountSetupFinishedPagePrivate())
 {
@@ -79,8 +79,8 @@ AccountSetupFinishedPage::~AccountSetupFinishedPage()
 void AccountSetupFinishedPage::createContent()
 {
     Q_D(AccountSetupFinishedPage);
-    MWidget* centralWidget = new MWidget();
-    MLayout* layout = new MLayout(centralWidget);
+    MWidget *centralWidget = new MWidget();
+    MLayout *layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
     layoutPolicy->setSpacing(0);
 

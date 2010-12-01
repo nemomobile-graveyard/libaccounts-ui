@@ -74,7 +74,7 @@ public:
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
-                               QString serviceType,
+                               const QString &serviceType,
                                QGraphicsItem *parent)
         : MApplicationPage(parent)
         , d_ptr(new AddAccountPagePrivate())

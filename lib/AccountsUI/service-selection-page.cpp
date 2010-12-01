@@ -76,7 +76,7 @@ public:
 ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
                                            QList<AbstractServiceSetupContext*>
                                            &serviceContextList,
-                                           QString serviceType,
+                                           const QString &serviceType,
                                            QGraphicsItem *parent)
         : MApplicationPage(parent),
         d_ptr(new ServiceSelectionPagePrivate())
@@ -221,7 +221,7 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
                 d->context->account()->sync();
                 AccountSetupFinishedPage *page = new AccountSetupFinishedPage(d->context->account(), d->serviceType);
                 page->appear();
-             }
+            }
             break;
         default:
             connect(d->doneAction,SIGNAL(triggered()),
