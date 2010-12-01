@@ -53,7 +53,6 @@ public:
      * Class constructor.
      */
     explicit AddAccountPage(AccountsUI::AbstractAccountSetupContext *context,
-                            const QString &serviceType,
                             QGraphicsItem *parent = 0);
     virtual ~AddAccountPage();
 

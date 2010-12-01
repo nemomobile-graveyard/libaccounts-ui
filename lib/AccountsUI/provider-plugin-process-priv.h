@@ -50,6 +50,7 @@ public:
         , m_context(0)
         , windowId(0)
         , serviceType(QString())
+        , returnToApp(false)
     {
         application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
@@ -145,6 +146,7 @@ private:
     Accounts::Account *account;
     SetupType setupType;
     QString serviceType;
+    bool returnToApp;
 };
 
 } // namespace

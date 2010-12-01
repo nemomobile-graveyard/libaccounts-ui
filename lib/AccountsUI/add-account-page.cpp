@@ -74,7 +74,6 @@ public:
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
-                               const QString &serviceType,
                                QGraphicsItem *parent)
         : MApplicationPage(parent)
         , d_ptr(new AddAccountPagePrivate())
@@ -84,7 +83,7 @@ AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
     setStyleName("AddAccountPage");
     setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
-    d->serviceType = serviceType;
+    d->serviceType = context->serviceType();
 }
 
 AddAccountPage::~AddAccountPage()
@@ -170,7 +169,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
     }
 
     ServiceSelectionPage *serviceSelectionPage =
-        new ServiceSelectionPage(d->context, d->serviceContextList, d->serviceType);
+        new ServiceSelectionPage(d->context, d->serviceContextList);
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),
             this,SLOT(appear()));
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),

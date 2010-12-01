@@ -163,7 +163,7 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
                                             QProcess::ExitStatus exitStatus)
 {
     Q_Q(ProviderPluginProxy);
-    bool quitAcountsUI = false;
+    Q_UNUSED(exitCode);
     PWATCHER_TRACE(pwatcher) << exitCode;
 
     if (exitStatus == QProcess::CrashExit) {
@@ -176,13 +176,14 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
     if (newAccountCreation) {
         char buffer[16];
         process->readLine(buffer, sizeof(buffer));
-        int result = QString::fromAscii(buffer).toInt();
+        QString value = QString::fromAscii(buffer);
+        QStringList resultList = value.split(" ");
+        int result = resultList.at(0).toInt();
+        int returnToApp = resultList.at(1).toInt();
 
         qDebug() << "Plugin output: " << result;
 
-       if (exitCode)
-           quitAcountsUI = true;
-        emit q->created(result, quitAcountsUI);
+        emit q->created(result, returnToApp);
     } else
         emit q->edited();
 

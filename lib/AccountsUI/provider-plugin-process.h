@@ -95,9 +95,10 @@ public:
                                                              QObject *parent = 0);
 
     /*!
-     * Returns the serviceType passed
+     * sets whether we will return to the calling application or we will
+     * stay in accounts-ui
      */
-    QString serviceType() const;
+    void setReturnToApp(bool returnToApp);
 
 public Q_SLOTS:
     /*!

@@ -24,7 +24,7 @@ class ACCOUNTSUI_EXPORT AccountSetupFinishedPage : public MApplicationPage
     Q_OBJECT
 
 public:
-    AccountSetupFinishedPage(Accounts::Account *account, const QString &serviceType);
+    AccountSetupFinishedPage(AbstractAccountSetupContext *context);
     ~AccountSetupFinishedPage();
 
     virtual void createContent();

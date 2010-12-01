@@ -61,13 +61,13 @@ public:
     QString serviceType;
 };
 
-AccountSetupFinishedPage::AccountSetupFinishedPage(Accounts::Account *account, const QString &serviceType)
+AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *context)
         : MApplicationPage(),
           d_ptr(new AccountSetupFinishedPagePrivate())
 {
     Q_D(AccountSetupFinishedPage);
-    d->account = account;
-    d->serviceType = serviceType;
+    d->account = context->account();
+    d->serviceType = context->serviceType();
     setObjectName("AccountSetupFinishedPage");
 }
 
@@ -107,14 +107,17 @@ void AccountSetupFinishedPage::createContent()
     // %"Success"
     MLabel *successLabel = new MLabel(qtTrId("qtn_acc_success"));
     successLabel->setStyleName("SuccessLabel");
+    successLabel->setAlignment(Qt::AlignCenter);
 
     // %"Your %1 account is connected!"
     MLabel *firstDescLabel = new MLabel(qtTrId("qtn_acc_account_connected").arg(providerName));
     firstDescLabel->setStyleName("FirstDescLabel");
+    firstDescLabel->setAlignment(Qt::AlignCenter);
 
     // %"Fetching your data"
     MLabel *secondDescLabel = new MLabel(qtTrId("qtn_acc_fetching_your_data"));
     secondDescLabel->setStyleName("SecondDescLabel");
+    secondDescLabel->setAlignment(Qt::AlignCenter);
 
     layoutPolicy->addItem(successLabel, Qt::AlignCenter);
     layoutPolicy->addItem(firstDescLabel, Qt::AlignCenter);
@@ -134,18 +137,21 @@ void AccountSetupFinishedPage::createContent()
     MLinearLayoutPolicy *landscapePolicy = new MLinearLayoutPolicy(buttonsLayout, Qt::Horizontal);
 
     portraitPolicy->addStretch();
-    landscapePolicy->addStretch();
     portraitPolicy->setSpacing(20);
     landscapePolicy->setSpacing(20);
 
     portraitPolicy->addItem(goToButton, Qt::AlignCenter);
+    portraitPolicy->addStretch();
     portraitPolicy->addItem(addMoreAccountButton, Qt::AlignCenter);
-    landscapePolicy->addItem(goToButton, Qt::AlignCenter);
+    landscapePolicy->addStretch();
+    landscapePolicy->addItem(goToButton, Qt::AlignRight);
+
     landscapePolicy->addItem(addMoreAccountButton, Qt::AlignCenter);
+    landscapePolicy->addStretch();
 
     buttonsLayout->setLandscapePolicy(landscapePolicy);
     buttonsLayout->setPortraitPolicy(portraitPolicy);
-
+    layoutPolicy->addStretch();
     layoutPolicy->addItem(buttonsLayout);
 
     setCentralWidget(centralWidget);
@@ -154,7 +160,8 @@ void AccountSetupFinishedPage::createContent()
 
 void AccountSetupFinishedPage::goToApplication()
 {
-    QCoreApplication::exit(1);
+    ProviderPluginProcess::instance()->setReturnToApp(true);
+    ProviderPluginProcess::instance()->quit();
 }
 
 }
