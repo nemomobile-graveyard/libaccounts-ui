@@ -79,7 +79,6 @@ public:
 ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
                                            QList<AbstractServiceSetupContext*>
                                            &serviceContextList,
-                                           const QString &serviceType,
                                            QGraphicsItem *parent)
         : MApplicationPage(parent),
         d_ptr(new ServiceSelectionPagePrivate())

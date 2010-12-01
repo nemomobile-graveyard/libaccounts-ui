@@ -74,7 +74,6 @@ public:
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
-                               const QString &serviceType,
                                QGraphicsItem *parent)
         : MApplicationPage(parent)
         , d_ptr(new AddAccountPagePrivate())
@@ -187,7 +186,7 @@ void AddAccountPage::openServiceSelectionPage(AccountsUI::AbstractAccountSetupCo
                                               QList<AccountsUI::AbstractServiceSetupContext *> &serviceContextList)
 {
     ServiceSelectionPage *serviceSelectionPage =
-        new ServiceSelectionPage(d->context, d->serviceContextList, d->serviceType);
+        new ServiceSelectionPage(d->context, d->serviceContextList);
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),
             this,SLOT(appear()));
     connect(serviceSelectionPage,SIGNAL(backButtonClicked()),

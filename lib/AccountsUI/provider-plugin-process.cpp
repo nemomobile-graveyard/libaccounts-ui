@@ -163,7 +163,7 @@ MApplicationPage * ProviderPluginProcess::mainPage()
     AbstractAccountSetupContext *context = d->context();
 
     if (context->setupType() == CreateNew)
-        return new AddAccountPage(context, d->serviceType);
+        return new AddAccountPage(context);
 
     if (context->setupType() == EditExisting)
         return new AccountSettingsPage(context);
