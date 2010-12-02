@@ -1,3 +1,9 @@
+libaccounts-ui (0.29) unstable; urgency=low
+
+  * Adding success page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 02 Dec 2010 10:48:22 +0300
+
 libaccounts-ui (0.28) unstable; urgency=low
 
   * Added STOP button for the sign in page.
