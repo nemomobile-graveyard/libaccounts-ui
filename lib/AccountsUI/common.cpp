@@ -22,7 +22,7 @@
 
 #include "common.h"
 
-#include <QTimer>
+#include <MBanner>
 
 namespace AccountsUI {
 
@@ -62,9 +62,11 @@ void showInfoBanner(const QString &text,
                     const MInfoBanner::BannerType type,
                     const quint32 disapperTimeout)
 {
-    MInfoBanner *banner = new MInfoBanner(type);
-    banner->setBodyText(text);
-    QTimer::singleShot(disapperTimeout, banner, SLOT(disappear()));
+    Q_UNUSED(type);
+    Q_UNUSED(disapperTimeout);
+
+    MBanner *banner = new MBanner();
+    banner->setTitle(text);
     banner->appear(MSceneWindow::DestroyWhenDone);
 }
 
