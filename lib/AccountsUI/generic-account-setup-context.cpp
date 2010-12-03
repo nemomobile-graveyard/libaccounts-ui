@@ -73,7 +73,7 @@ namespace AccountsUI {
 class GenericAccountSetupContextPrivate
 {
 public:
-    GenericAccountSetupContextPrivate()
+    GenericAccountSetupContextPrivate(QObject *obj)
         : genericAccountSetupForm(0)
         , identity(0)
         , authSession(0)
@@ -82,6 +82,7 @@ public:
         , identityCreated(false)
         , credentialsStored(false)
     {
+         parent = obj;
     }
 
     ~GenericAccountSetupContextPrivate()
@@ -98,6 +99,7 @@ public:
     bool storeAccountPassword(const QDomDocument &domDocument);
     bool rememberPassword(const QDomDocument &domDocument);
 
+    void disconnectAuthSessionSignals();
 public:
     GenericAccountSetupForm *genericAccountSetupForm;
 
@@ -110,6 +112,8 @@ public:
     bool contextIsValidated;
     bool identityCreated;
     bool credentialsStored;
+
+    QObject *parent;
 };
 
 bool GenericAccountSetupContextPrivate::storeAccountPassword(const QDomDocument &domDocument)
@@ -142,11 +146,21 @@ bool GenericAccountSetupContextPrivate::rememberPassword(const QDomDocument &dom
     return true;
 }
 
+void GenericAccountSetupContextPrivate::disconnectAuthSessionSignals()
+{
+    if(authSession && parent) {
+        QObject::disconnect(authSession, SIGNAL(response(const SignOn::SessionData &)),
+                            parent, SLOT(authenticationDone(const SignOn::SessionData &)));
+        QObject::disconnect(authSession, SIGNAL(error(const SignOn::Error &)),
+                            parent, SLOT(authSessionError(const SignOn::Error &)));
+    }
+}
+
 GenericAccountSetupContext::GenericAccountSetupContext(Account *account,
                                                      SetupType type,
                                                      QObject *parent)
     : AbstractAccountSetupContext(account, type, parent)
-    , d_ptr(new GenericAccountSetupContextPrivate())
+    , d_ptr(new GenericAccountSetupContextPrivate(parent))
 {
     Q_D(GenericAccountSetupContext);
 
@@ -448,11 +462,7 @@ void GenericAccountSetupContext::stopAuthSession()
 {
     Q_D(GenericAccountSetupContext);
 
-    disconnect(d->authSession, SIGNAL(response(const SignOn::SessionData &)),
-               this, SLOT(authenticationDone(const SignOn::SessionData &)));
-    disconnect(d->authSession, SIGNAL(error(const SignOn::Error &)),
-               this, SLOT(authSessionError(const SignOn::Error &)));
-
+    d->disconnectAuthSessionSignals();
     d->authSession->cancel();
     d->networkManager->stopSession();
 }
@@ -463,6 +473,8 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
         .arg(err.type()).arg(err.message());
 
     Q_D(GenericAccountSetupContext);
+
+    d->disconnectAuthSessionSignals();
 
     AuthSession *senderSession = qobject_cast<SignOn::AuthSession *>(sender());
     if (senderSession)
@@ -477,29 +489,31 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
 
 void GenericAccountSetupContext::authenticationDone(const SignOn::SessionData &data)
 {
-    qDebug() << Q_FUNC_INFO;
-
-    Q_D(GenericAccountSetupContext);
     Q_UNUSED(data);
+    Q_D(GenericAccountSetupContext);
+
+    d->disconnectAuthSessionSignals();
 
     AuthSession *authSession = qobject_cast< SignOn::AuthSession *>(sender());
     if (authSession)
         d->identity->destroySession(authSession);
 
-    qDebug() << Q_FUNC_INFO << __LINE__;
     d->contextIsValidated = true;
+
     emit validated();
 }
 
 void GenericAccountSetupContext::storeCredentialsError(const SignOn::Error &err)
 {
     Q_D(GenericAccountSetupContext);
-    qDebug() << Q_FUNC_INFO;
 
     qDebug() << "Error :" << err.type() << ":" << err.message();
     showInfoBanner(trIdFromSignonError(Error::StoreFailed));
 
     d->contextIsValidated = false;
+
+    d->disconnectAuthSessionSignals();
+
     emit error(UnknownError, err.message());
 }
 
@@ -511,6 +525,9 @@ void GenericAccountSetupContext::credentialsStored(const quint32 id)
     account()->setCredentialsId(id);
 
     d->credentialsStored = true;
+
+    d->disconnectAuthSessionSignals();
+
     emit stored();
 }
 
@@ -528,7 +545,9 @@ void GenericAccountSetupContext::credentialsReady(const quint32 id)
 
 void GenericAccountSetupContext::networkSessionError()
 {
-    qDebug() << Q_FUNC_INFO;
+    Q_D(GenericAccountSetupContext);
+
+    d->disconnectAuthSessionSignals();
 
     qDebug() << "NETWORK SESSION ERROR";
     //todo - optimize so that this is sent only if there

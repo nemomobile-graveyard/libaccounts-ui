@@ -104,14 +104,11 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
 
             d->containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
             d->containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
-            d->containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
 
             if (d->context->widget(0)) {
+                d->containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
                 connect(serviceInfo, SIGNAL(clicked()),
                         this, SLOT(openSettingsPage()));
-            } else {
-                //make the arrow look disabled
-                sideImage->setOpacity(0.2);
             }
         }
     }
