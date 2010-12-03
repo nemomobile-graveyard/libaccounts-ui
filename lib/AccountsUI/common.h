@@ -31,7 +31,9 @@
 #include <SignOn/Error>
 
 //M
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
 #include <MInfoBanner>
+#endif
 
 #define ACCOUNTSUI_EXPORT Q_DECL_EXPORT
 
@@ -51,16 +53,22 @@ const QString trIdFromSignonError(const SignonErrType err);
  */
 const QString trIdFromSignonError(const int err);
 
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
 /*!
  * Displays an information banner.
  * @param text Text to be displayed.
  * @param type The type of the info banner
  * @param disapperTimeout Amount of seconds after which the banner disappears.
+ *
+ * @deprecated This function is deprecated and will be removed in a future
+ * version.
  */
 ACCOUNTSUI_EXPORT
 void showInfoBanner(const QString &text,
                     const MInfoBanner::BannerType type = MInfoBanner::Information,
                     const quint32 disapperTimeout = 3000);
+#endif
+
 }
 
 #endif // ACCOUNTSUI_COMMON_H
