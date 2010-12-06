@@ -227,7 +227,7 @@ AbstractAccountSetupContext *ProviderPluginProcess::accountSetupContext(
             SetupType type,
             QObject *parent)
 {
-    return new GenericAccountSetupContext(account, type, parent);
+    return new GenericAccountSetupContext(account, type);
 }
 
 void ProviderPluginProcess::setReturnToApp(bool returnToApp)

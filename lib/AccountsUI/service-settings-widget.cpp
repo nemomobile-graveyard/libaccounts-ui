@@ -46,14 +46,15 @@ class ServiceSettingsWidgetPrivate
 {
 public:
     ServiceSettingsWidgetPrivate()
-            : enableServiceButton(0)
-            , context(0)
-            , containerMainPolicy(0)
-            {}
-    ~ServiceSettingsWidgetPrivate() {}
-    MButton *enableServiceButton;
+        : context(0)
+         ,enableServiceButton(0)
+    {}
+
+    ~ServiceSettingsWidgetPrivate()
+    {}
+
     AbstractServiceSetupContext *context;
-    MLinearLayoutPolicy *containerMainPolicy;
+    MButton *enableServiceButton;
 };
 
 ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *context,
@@ -74,16 +75,22 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     }
 
     MLayout *containerMainLayout = new MLayout(this);
-    d->containerMainPolicy = new MLinearLayoutPolicy(containerMainLayout, Qt::Horizontal);
-    d->containerMainPolicy->setSpacing(0);
-    d->containerMainPolicy->setContentsMargins(0,0,0,0);
+    MLinearLayoutPolicy *mainPolicy = new MLinearLayoutPolicy(containerMainLayout, Qt::Vertical);
+    mainPolicy->setSpacing(0);
+    mainPolicy->setContentsMargins(0,0,0,0);
+
+    MWidget *upperWidget = new MWidget(this);
+    MLayout *upperLayout = new MLayout(upperWidget);
+    MLinearLayoutPolicy *containerMainPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
+    containerMainPolicy->setSpacing(0);
+    containerMainPolicy->setContentsMargins(0,0,0,0);
 
     if (settingsConf & EnableButton) {
-        d->enableServiceButton = new MButton(this);
-        d->enableServiceButton->setViewType(MButton::switchType);
-        d->enableServiceButton->setCheckable(true);
-
         if (context) {
+            d->enableServiceButton = new MButton(this);
+            d->enableServiceButton->setViewType(MButton::switchType);
+            d->enableServiceButton->setCheckable(true);
+
             ServiceHelper *serviceHepler =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
 
@@ -102,14 +109,15 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            d->containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
-            d->containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
+            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
+            containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
 
             if (d->context->widget(0)) {
-                d->containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+                containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
                 connect(serviceInfo, SIGNAL(clicked()),
                         this, SLOT(openSettingsPage()));
             }
+            mainPolicy->addItem(upperWidget);
         }
     }
 
@@ -118,7 +126,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             (settingsConf & MandatorySettings)) {
             MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
             if (widget) {
-                d->containerMainPolicy->addItem(widget);
+                mainPolicy->addItem(widget);
             }
         }
     }

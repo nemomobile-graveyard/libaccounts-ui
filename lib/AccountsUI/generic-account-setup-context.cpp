@@ -73,7 +73,7 @@ namespace AccountsUI {
 class GenericAccountSetupContextPrivate
 {
 public:
-    GenericAccountSetupContextPrivate(QObject *obj)
+    GenericAccountSetupContextPrivate(GenericAccountSetupContext *parent)
         : genericAccountSetupForm(0)
         , identity(0)
         , authSession(0)
@@ -81,9 +81,8 @@ public:
         , contextIsValidated(false)
         , identityCreated(false)
         , credentialsStored(false)
-    {
-         parent = obj;
-    }
+        , q_ptr(parent)
+    {}
 
     ~GenericAccountSetupContextPrivate()
     {
@@ -98,8 +97,8 @@ public:
 
     bool storeAccountPassword(const QDomDocument &domDocument);
     bool rememberPassword(const QDomDocument &domDocument);
-
     void disconnectAuthSessionSignals();
+
 public:
     GenericAccountSetupForm *genericAccountSetupForm;
 
@@ -113,7 +112,9 @@ public:
     bool identityCreated;
     bool credentialsStored;
 
-    QObject *parent;
+private:
+    GenericAccountSetupContext *q_ptr;
+    Q_DECLARE_PUBLIC(GenericAccountSetupContext)
 };
 
 bool GenericAccountSetupContextPrivate::storeAccountPassword(const QDomDocument &domDocument)
@@ -121,6 +122,7 @@ bool GenericAccountSetupContextPrivate::storeAccountPassword(const QDomDocument 
     QDomElement root = domDocument.documentElement();
     QDomElement element = root.firstChildElement("account-setup");
     QDomElement child = element.firstChildElement("setting");
+
     while (!child.isNull()) {
         if (!child.attribute("name").compare("store_password_in_accounts")) {
             if (!child.attribute("default_value").compare("true"))
@@ -128,6 +130,7 @@ bool GenericAccountSetupContextPrivate::storeAccountPassword(const QDomDocument 
         }
         child = child.nextSiblingElement("setting");
     }
+
     return false;
 }
 
@@ -148,11 +151,13 @@ bool GenericAccountSetupContextPrivate::rememberPassword(const QDomDocument &dom
 
 void GenericAccountSetupContextPrivate::disconnectAuthSessionSignals()
 {
-    if(authSession && parent) {
+    Q_Q(GenericAccountSetupContext);
+
+    if(authSession && q) {
         QObject::disconnect(authSession, SIGNAL(response(const SignOn::SessionData &)),
-                            parent, SLOT(authenticationDone(const SignOn::SessionData &)));
+                            q, SLOT(authenticationDone(const SignOn::SessionData &)));
         QObject::disconnect(authSession, SIGNAL(error(const SignOn::Error &)),
-                            parent, SLOT(authSessionError(const SignOn::Error &)));
+                            q, SLOT(authSessionError(const SignOn::Error &)));
     }
 }
 
@@ -160,7 +165,7 @@ GenericAccountSetupContext::GenericAccountSetupContext(Account *account,
                                                      SetupType type,
                                                      QObject *parent)
     : AbstractAccountSetupContext(account, type, parent)
-    , d_ptr(new GenericAccountSetupContextPrivate(parent))
+    , d_ptr(new GenericAccountSetupContextPrivate(this))
 {
     Q_D(GenericAccountSetupContext);
 

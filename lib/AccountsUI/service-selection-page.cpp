@@ -257,7 +257,9 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
 void ServiceSelectionPage::setWidget(MWidget *widget)
 {
      Q_D(ServiceSelectionPage);
-     d->mainLayoutPolicy->addItem(widget);
+
+     if(d->mainLayoutPolicy && widget)
+        d->mainLayoutPolicy->addItem(widget);
 }
 
 } //namespace

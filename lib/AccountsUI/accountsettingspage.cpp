@@ -356,11 +356,10 @@ void AccountSettingsPage::enable(bool state)
     d->context->account()->selectService(NULL);
     if (state) {
         if (d->usernameAndStatus)
-            d->usernameAndStatus->setSubtitle(d->context->account()->displayName());
+            d->usernameAndStatus->setSubtitleLabelEnabled(true);
     } else {
         if (d->usernameAndStatus)
-            //TODO: as the qtn_acc_disabled is removed we are still waiting how we show disabled account
-            d->usernameAndStatus->setSubtitle(QLatin1String("Disabled"));
+            d->usernameAndStatus->setSubtitleLabelEnabled(false);
     }
 
     d->account->setEnabled(state);
