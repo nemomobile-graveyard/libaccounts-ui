@@ -123,6 +123,7 @@ public:
 
     ~ProviderPluginProcessPrivate()
     {
+        delete application;
         delete m_context;
     }
 
