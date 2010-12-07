@@ -81,7 +81,8 @@ public:
             panel(0),
             layout(0),
             layoutPolicy(0),
-            panelPolicy(0)
+            panelPolicy(0),
+            settingsExist(false)
     {}
 
     ~AccountSettingsPagePrivate() {}
@@ -105,6 +106,7 @@ public:
     MLayout *layout;
     MLinearLayoutPolicy *layoutPolicy;
     MLinearLayoutPolicy *panelPolicy;
+    bool settingsExist;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -181,6 +183,10 @@ void AccountSettingsPage::setServicesToBeShown()
     /*
      * no need in extra processing of any signals during content creation
      * */
+
+    if (d->settingsWidgets.count() > 1)
+        d->settingsExist = true;
+
     foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets)
         connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
                  this, SLOT(disableSameServiceTypes(const QString&)));
@@ -318,11 +324,12 @@ void AccountSettingsPage::createContent()
         }
     }
 
-    MSeparator *separatorBottom = new MSeparator(this);
-    separatorBottom->setOrientation(Qt::Horizontal);
-
     d->layoutPolicy->addItem(serviceWidget);
-    d->layoutPolicy->addItem(separatorBottom);
+    if (d->settingsExist) {
+        MSeparator *separatorBottom = new MSeparator(this);
+        separatorBottom->setOrientation(Qt::Horizontal);
+        d->layoutServicePolicy->addItem(separatorBottom);
+    }
     d->layoutPolicy->addStretch();
 
     //Saving the settings on back button press
