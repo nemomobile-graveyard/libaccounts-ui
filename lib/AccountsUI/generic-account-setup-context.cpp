@@ -465,8 +465,12 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
     Q_D(GenericAccountSetupContext);
 
     AuthSession *senderSession = qobject_cast<SignOn::AuthSession *>(sender());
-    if (senderSession)
+    if (senderSession) {
         d->identity->destroySession(senderSession);
+        if (senderSession == d->authSession)
+            d->authSession = NULL;
+    }
+    //TODO handle user cancel in case of url or captcha popup !!!!!
 
     //Connection errors should be handled by Connectivity, but their Ui
     //is not quite in the proper shape
@@ -483,8 +487,11 @@ void GenericAccountSetupContext::authenticationDone(const SignOn::SessionData &d
     Q_UNUSED(data);
 
     AuthSession *authSession = qobject_cast< SignOn::AuthSession *>(sender());
-    if (authSession)
+    if (authSession) {
         d->identity->destroySession(authSession);
+        if (authSession == d->authSession)
+            d->authSession = NULL;
+    }
 
     qDebug() << Q_FUNC_INFO << __LINE__;
     d->contextIsValidated = true;
