@@ -59,7 +59,9 @@ HEADERS += account-plugin-interface.h \
     settings-page.h \
     sort-service-model.h \
     account-sync-handler.h \
-    account-setup-finished-page.h
+    account-setup-finished-page.h \
+    accountlistitem.h
+
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
     abstract-setup-context.cpp \
@@ -89,7 +91,9 @@ SOURCES += abstract-account-setup-context.cpp \
     settings-page.cpp \
     sort-service-model.cpp \
     account-sync-handler.cpp \
-    account-setup-finished-page.cpp
+    account-setup-finished-page.cpp \
+    accountlistitem.cpp
+
 MODEL_HEADERS += \
     credentialwidgetmodel.h \
     genericaccountsetupformmodel.h

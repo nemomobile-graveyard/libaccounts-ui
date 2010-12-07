@@ -28,6 +28,7 @@
 #include "service-model.h"
 #include "sort-service-model.h"
 #include "account-sync-handler.h"
+#include "accountlistitem.h"
 
 //Accounts
 #include <Accounts/Account>
@@ -80,7 +81,8 @@ public:
             panel(0),
             layout(0),
             layoutPolicy(0),
-            panelPolicy(0)
+            panelPolicy(0),
+            settingsExist(false)
     {}
 
     ~AccountSettingsPagePrivate() {}
@@ -90,7 +92,7 @@ public:
     Accounts::Account* account;
     QList<AbstractServiceSetupContext *> contexts;
     MAction *showAllServices;
-    MContentItem *usernameAndStatus;
+    AccountListItem *usernameAndStatus;
     QString serviceType;
     MLayout *serviceSettingLayout;
     MLinearLayoutPolicy *layoutServicePolicy;
@@ -104,6 +106,7 @@ public:
     MLayout *layout;
     MLinearLayoutPolicy *layoutPolicy;
     MLinearLayoutPolicy *panelPolicy;
+    bool settingsExist;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -144,6 +147,7 @@ void AccountSettingsPage::setServicesToBeShown()
     QMap<QString, bool> enabledServiceTypes;
     MLayout *layoutPanel = new MLayout(d->panel);
     d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
+
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
         d->service = context->service();
@@ -179,6 +183,10 @@ void AccountSettingsPage::setServicesToBeShown()
     /*
      * no need in extra processing of any signals during content creation
      * */
+
+    if (d->settingsWidgets.count() > 1)
+        d->settingsExist = true;
+
     foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets)
         connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
                  this, SLOT(disableSameServiceTypes(const QString&)));
@@ -242,8 +250,8 @@ void AccountSettingsPage::createContent()
                 providerIconId = providerIcon.text();
             }
 
-            d->usernameAndStatus = new MContentItem(MContentItem::IconAndTwoTextLabels, this);
-            d->usernameAndStatus->setImageID(providerIconId);
+            d->usernameAndStatus = new AccountListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons);
+            d->usernameAndStatus->imageWidget()->setImage(providerIconId);
             d->usernameAndStatus->setTitle(providerName);
             d->usernameAndStatus->setSubtitle(d->context->account()->displayName());
 
@@ -260,10 +268,12 @@ void AccountSettingsPage::createContent()
             if ( d->account->enabled()) {
                 d->panel->setEnabled(true);
                 d->enableButton->setChecked(true);
-	    } else {
+                d->usernameAndStatus->setSubtitleLabelEnabled(true);
+            } else {
                 d->panel->setEnabled(false);
                 d->enableButton->setChecked(false);
-	    }
+                d->usernameAndStatus->setSubtitleLabelEnabled(false);
+            }
 
             connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
 
@@ -291,11 +301,9 @@ void AccountSettingsPage::createContent()
     setCentralWidget(centralWidget);
 
     //% "Delete"
-    MAction *action = new MAction(QLatin1String("icon-m-toolbar-delete"),
-                                  qtTrId("qtn_comm_command_delete"), this);
-    action->setLocation(MAction::ToolBarLocation);
+    MAction *action = new MAction(qtTrId("qtn_comm_command_delete"),this);
+    action->setLocation(MAction::ApplicationMenuLocation);
     addAction(action);
-
     connect(action, SIGNAL(triggered()),
             this, SLOT(removeAccount()));
 
@@ -316,11 +324,12 @@ void AccountSettingsPage::createContent()
         }
     }
 
-    MSeparator *separatorBottom = new MSeparator(this);
-    separatorBottom->setOrientation(Qt::Horizontal);
-
     d->layoutPolicy->addItem(serviceWidget);
-    d->layoutPolicy->addItem(separatorBottom);
+    if (d->settingsExist) {
+        MSeparator *separatorBottom = new MSeparator(this);
+        separatorBottom->setOrientation(Qt::Horizontal);
+        d->layoutServicePolicy->addItem(separatorBottom);
+    }
     d->layoutPolicy->addStretch();
 
     //Saving the settings on back button press
@@ -347,11 +356,10 @@ void AccountSettingsPage::enable(bool state)
     d->context->account()->selectService(NULL);
     if (state) {
         if (d->usernameAndStatus)
-            d->usernameAndStatus->setSubtitle(QString::null);
+            d->usernameAndStatus->setSubtitleLabelEnabled(true);
     } else {
         if (d->usernameAndStatus)
-            //TODO: as the qtn_acc_disabled is removed we are still waiting how we show disabled account
-            d->usernameAndStatus->setSubtitle(QLatin1String("Disabled"));
+            d->usernameAndStatus->setSubtitleLabelEnabled(false);
     }
 
     d->account->setEnabled(state);
