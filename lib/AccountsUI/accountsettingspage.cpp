@@ -295,9 +295,8 @@ void AccountSettingsPage::createContent()
     setCentralWidget(centralWidget);
 
     //% "Delete"
-    MAction *action = new MAction(QLatin1String("icon-m-toolbar-delete"),
-                                  qtTrId("qtn_comm_command_delete"), this);
-    action->setLocation(MAction::ToolBarLocation);
+    MAction *action = new MAction(qtTrId("qtn_comm_command_delete"),this);
+    action->setLocation(MAction::ApplicationMenuLocation);
     addAction(action);
     connect(action, SIGNAL(triggered()),
             this, SLOT(removeAccount()));
