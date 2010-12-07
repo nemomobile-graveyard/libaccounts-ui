@@ -1,3 +1,9 @@
+libaccounts-ui (0.32-1) unstable; urgency=low
+
+  * Fixes: NB#208918 - wrong info. note and crashes observed,while entering wrong credentials in certain scenario 
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Tue, 07 Dec 2010 13:05:16 +0200
+
 libaccounts-ui (0.31-1) unstable; urgency=low
 
   * Fixes: NB#204793 - Layout of the Google Talk Service is not proper in
