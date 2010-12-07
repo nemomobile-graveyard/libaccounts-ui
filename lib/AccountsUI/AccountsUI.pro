@@ -148,7 +148,10 @@ headers.files += AccountPluginInterface \
     NetworkSessionManager \
     network-session-manager.h \
     account-sync-handler.h \
-    account-setup-finished-page.h
+    account-setup-finished-page.h \
+    service-selection-page.h \
+    ServiceSelectionPage
+
 
 # -----------------------------------------------------------------------------
 # common installation setup
