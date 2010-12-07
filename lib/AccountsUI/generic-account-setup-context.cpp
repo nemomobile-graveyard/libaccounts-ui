@@ -117,6 +117,7 @@ bool GenericAccountSetupContextPrivate::storeAccountPassword(const QDomDocument 
     QDomElement root = domDocument.documentElement();
     QDomElement element = root.firstChildElement("account-setup");
     QDomElement child = element.firstChildElement("setting");
+
     while (!child.isNull()) {
         if (!child.attribute("name").compare("store_password_in_accounts")) {
             if (!child.attribute("default_value").compare("true"))
@@ -124,6 +125,7 @@ bool GenericAccountSetupContextPrivate::storeAccountPassword(const QDomDocument 
         }
         child = child.nextSiblingElement("setting");
     }
+
     return false;
 }
 
@@ -486,15 +488,14 @@ void GenericAccountSetupContext::authenticationDone(const SignOn::SessionData &d
     if (authSession)
         d->identity->destroySession(authSession);
 
-    qDebug() << Q_FUNC_INFO << __LINE__;
     d->contextIsValidated = true;
+
     emit validated();
 }
 
 void GenericAccountSetupContext::storeCredentialsError(const SignOn::Error &err)
 {
     Q_D(GenericAccountSetupContext);
-    qDebug() << Q_FUNC_INFO;
 
     qDebug() << "Error :" << err.type() << ":" << err.message();
     showInfoBanner(trIdFromSignonError(Error::StoreFailed));

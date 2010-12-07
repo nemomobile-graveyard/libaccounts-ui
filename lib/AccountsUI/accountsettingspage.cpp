@@ -145,6 +145,7 @@ void AccountSettingsPage::setServicesToBeShown()
     QMap<QString, bool> enabledServiceTypes;
     MLayout *layoutPanel = new MLayout(d->panel);
     d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
+
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
         d->service = context->service();
@@ -298,7 +299,6 @@ void AccountSettingsPage::createContent()
                                   qtTrId("qtn_comm_command_delete"), this);
     action->setLocation(MAction::ToolBarLocation);
     addAction(action);
-
     connect(action, SIGNAL(triggered()),
             this, SLOT(removeAccount()));
 
