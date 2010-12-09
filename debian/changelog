@@ -11,8 +11,6 @@ libaccounts-ui (0.31-1) unstable; urgency=low
   * Fixes: NB#204968 - Cancel Button is missing in Service Selection View
   * Fixes: NB#206359 - Account Username in account settings view is not shown
     after disabling and enabling the account
-  * Fixes: NB#204926 - Initial accounts view is painted again when tapped on
-    'start' button
   * Fixes: NB#206460 - Layout is not proper for Account settings view of
     Simple Accounts
   * Fixes: NB#208404 - Delete option in Accounts settings view must be present
