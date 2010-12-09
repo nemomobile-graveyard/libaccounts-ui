@@ -200,7 +200,7 @@ void ServiceSelectionPage::onAccountInstallButton()
     disconnect(d->doneAction,SIGNAL(triggered()),
                this, SLOT(onAccountInstallButton()));
     setProgressIndicatorVisible(true);
-    d->syncHandler->validate(d->abstractContexts);
+    d->syncHandler->store(d->abstractContexts);
 }
 
 void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
