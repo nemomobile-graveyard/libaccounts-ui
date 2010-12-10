@@ -349,7 +349,7 @@ void CredentialWidgetView::recreateWidgets()
 
     if (d->signInButton == NULL) {
         //% "CONNECT"
-        d->signInButton = new MButton(QLatin1String("CONNECT"));
+        d->signInButton = new MButton(qtTrId("qtn_acc_auth_dial_button"));
         d->signInButton->setStyleName("wgSignInButton");
         d->signInButton->setObjectName("CommonSingleButton");
 
