@@ -18,3 +18,11 @@ MApplicationPage MLableStyle#SecondDescLabel {
     font: "Nokia Standard Light" 36;
     color: #8C8C8C;
 }
+
+MApplicationPage MLabelStyle#EnabledAccountState {
+    color : black
+}
+
+MApplicationPage MLabelStyle#DisabledAccountState {
+    color : gray
+}

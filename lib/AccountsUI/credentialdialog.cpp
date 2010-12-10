@@ -21,15 +21,13 @@
  * 02110-1301 USA
  */
 
-//Qt
-#include <QTimer>
-
 //libAccountsUI
 #include "credentialdialog.h"
 
-namespace AccountsUI {
+//M
+#include <MBanner>
 
-#define INFO_BANNER_TIMEOUT 3000
+namespace AccountsUI {
 
 CredentialDialog::CredentialDialog(const qint32 credentialsId, CredentialDialogType type)
         :MDialog()
@@ -237,12 +235,11 @@ void CredentialDialog::error(const SignOn::Error &err)
     qDebug() << Q_FUNC_INFO;
     Q_UNUSED(err)
 
-    MInfoBanner *infoBanner = new MInfoBanner();
+    MBanner *banner = new MBanner();
 
     //% "Database error. Please retry."
-    infoBanner->setBodyText(qtTrId("qtn_database_error"));
-    infoBanner->appear(MSceneWindow::DestroyWhenDone);
-    QTimer::singleShot(INFO_BANNER_TIMEOUT, infoBanner, SLOT(disappear()));
+    banner->setTitle(qtTrId("qtn_database_error"));
+    banner->appear(scene(), MSceneWindow::DestroyWhenDone);
 
     emit safeToDeleteMe(this);
 }

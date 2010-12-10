@@ -1,3 +1,33 @@
+libaccounts-ui (0.32-1) unstable; urgency=low
+
+  * Fixes: NB#208918 - wrong info. note and crashes observed,while entering wrong credentials in certain scenario 
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Tue, 07 Dec 2010 13:05:16 +0200
+
+libaccounts-ui (0.31-1) unstable; urgency=low
+
+  * Fixes: NB#204793 - Layout of the Google Talk Service is not proper in
+    Service Selection view
+  * Fixes: NB#204968 - Cancel Button is missing in Service Selection View
+  * Fixes: NB#206359 - Account Username in account settings view is not shown
+    after disabling and enabling the account
+  * Fixes: NB#206460 - Layout is not proper for Account settings view of
+    Simple Accounts
+  * Fixes: NB#208404 - Delete option in Accounts settings view must be present
+    in View Menu
+  * Delete the MApplication when exiting plugin
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 07 Dec 2010 11:35:16 +0200
+
+libaccounts-ui (0.30-1) unstable; urgency=low
+
+  * Fixes: NB#207468 - libAccountPlugin.so.1.0.0 using deprecated component
+    MInfoBanner
+  * Revert latest break in the signature of ProviderPluginProxy::created()
+    signal.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Fri, 03 Dec 2010 12:00:23 +0200
+
 libaccounts-ui (0.29) unstable; urgency=low
 
   * Adding success page

@@ -180,6 +180,11 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
         QStringList resultList = value.split(" ");
         int result = resultList.at(0).toInt();
         int returnToApp = resultList.at(1).toInt();
+        /* TODO: do we need the returnToApp value?
+         * - if not, remove it completely (and from ProviderPluginProcess
+         * - if yes, consider exposing it as an additional method
+         */
+        Q_UNUSED(returnToApp);
 
         qDebug() << "Plugin output: " << result;
 
