@@ -60,18 +60,25 @@ class ServiceSelectionPagePrivate
 public:
     ServiceSelectionPagePrivate()
         : serviceList(0),
-        doneAction(0),
+        saveAction(0),
+        cancelAction(0),
         context(0),
         syncHandler(0),
+        layout(0),
+        layoutPolicy(0),
         mainLayoutPolicy(0)
         {}
     ~ServiceSelectionPagePrivate() {}
+
     MList *serviceList;
-    MAction *doneAction;
+    MAction *saveAction;
+    MAction *cancelAction;
     AbstractAccountSetupContext *context;
     QList<AbstractServiceSetupContext*> serviceContextList;
     QList<AbstractSetupContext*> abstractContexts;
     AccountSyncHandler *syncHandler;
+    MLayout *layout;
+    MLinearLayoutPolicy *layoutPolicy;
     MLinearLayoutPolicy *mainLayoutPolicy;
     QString serviceType;
 };
@@ -113,50 +120,74 @@ void ServiceSelectionPage::createContent()
 {
     Q_D(ServiceSelectionPage);
 
-    MWidget *centralWidget = new MWidget(this);
-    MLayout *mainLayout = new MLayout(centralWidget);
-    d->mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Vertical);
-    d->mainLayoutPolicy->setSpacing(0);
+    setComponentsDisplayMode(EscapeButton, MApplicationPageModel::Hide);
 
-    QString providerName(d->context->account()->providerName());
-    // xml file that describes the ui elements for the provider
-    Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
-    if (provider) {
-        QDomElement root = provider->domDocument().documentElement();
-        QDomElement providerIcon = root.firstChildElement("icon");
-        QString providerIconId = providerIcon.text();
+    //we need a central widget to get the right layout size under the menubar
+    MWidget *centralWidget = new MWidget();
+    setCentralWidget(centralWidget);
+    d->layout = new MLayout(centralWidget);
+    d->layoutPolicy = new MLinearLayoutPolicy(d->layout, Qt::Vertical);
+    d->layoutPolicy->setSpacing(0);
 
-        // Provider info widgets
-        MContentItem *providerInfoItem =
+    if (d->context) {
+        MWidget *upperWidget = new MWidget(this);
+        MLayout *upperLayout = new MLayout(upperWidget);
+        MLinearLayoutPolicy *upperLayoutPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
+        upperLayoutPolicy->setSpacing(0);
+
+        MLayout *horizontalLayout = new MLayout();
+        MLinearLayoutPolicy *horizontalLayoutPolicy = new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
+        horizontalLayoutPolicy->setSpacing(0);
+
+        QString providerName(d->context->account()->providerName());
+        // xml file that describes the ui elements for the provider
+        Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
+        if (provider) {
+            QDomElement root = provider->domDocument().documentElement();
+            QDomElement providerIcon = root.firstChildElement("icon");
+            QString providerIconId = providerIcon.text();
+
+            // Provider info widgets
+            MContentItem *providerInfoItem =
                 new MContentItem(MContentItem::IconAndTwoTextLabels, this);
-        providerInfoItem->setObjectName("pluginProviderName");
-        providerInfoItem->setTitle(providerName);
-        providerInfoItem->setSubtitle(d->context->account()->displayName());
-        providerInfoItem->setImageID(providerIconId);
-        d->mainLayoutPolicy->addItem(providerInfoItem);
+            providerInfoItem->setObjectName("pluginProviderName");
+            providerInfoItem->setTitle(providerName);
+            providerInfoItem->setSubtitle(d->context->account()->displayName());
+            providerInfoItem->setImageID(providerIconId);
+            horizontalLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
+        }
+
+        MSeparator *separatorTop = new MSeparator(this);
+        separatorTop->setOrientation(Qt::Horizontal);
+
+        upperLayoutPolicy->addItem(horizontalLayout);
+        upperLayoutPolicy->addItem(separatorTop);
+
+        d->layoutPolicy->addItem(upperWidget);
     }
 
-    MSeparator *separatorTop = new MSeparator(this);
-    separatorTop->setOrientation(Qt::Horizontal);
-    d->mainLayoutPolicy->addItem(separatorTop);
-    d->mainLayoutPolicy->setSpacing(0);
-    d->mainLayoutPolicy->setContentsMargins(0,0,0,0);
+    MWidget *serviceWidget = new MWidget();
+    MLayout *serviceSettingLayout = new MLayout(serviceWidget);
+    MLinearLayoutPolicy *layoutServicePolicy = new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
+    layoutServicePolicy->setSpacing(0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         //ServiceSettingsWidget sets the display widget of the changing settings
         ServiceSettingsWidget *settingsWidget =
-                new ServiceSettingsWidget(d->serviceContextList.at(i), this,
-                                          ServiceSettingsWidget::MandatorySettings |
-                                          ServiceSettingsWidget::EnableButton,
-                                          true);
-        d->mainLayoutPolicy->addItem(settingsWidget);
+            new ServiceSettingsWidget(d->serviceContextList.at(i), serviceWidget,
+                                      ServiceSettingsWidget::MandatorySettings |
+                                      ServiceSettingsWidget::EnableButton,
+                                      true);
 
         d->abstractContexts.append(d->serviceContextList.at(i));
+        layoutServicePolicy->addItem(settingsWidget);
     }
+
+    d->layoutPolicy->addItem(serviceWidget);
 
     MSeparator *separatorBottom = new MSeparator(this);
     separatorBottom->setOrientation(Qt::Horizontal);
-    d->mainLayoutPolicy->addItem(separatorBottom);
+    layoutServicePolicy->addItem(separatorBottom);
 
     //% "DONE"
     d->saveAction = new MAction(qtTrId("qtn_comm_command_done"), centralWidget);
@@ -167,11 +198,15 @@ void ServiceSelectionPage::createContent()
     d->cancelAction = new MAction(qtTrId("qtn_comm_cancel"), centralWidget);
     d->cancelAction->setLocation(MAction::ToolBarLocation);
     addAction(d->cancelAction);
+    d->layoutPolicy->addStretch();
 
-    connect(d->doneAction,SIGNAL(triggered()),
+    connect(d->saveAction, SIGNAL(triggered()),
             this, SLOT(onAccountInstallButton()));
-    connect(d->serviceList,SIGNAL(itemClicked(QModelIndex)),
+    connect(d->cancelAction, SIGNAL(triggered()),
+            this, SLOT(close()));
+    connect(d->serviceList, SIGNAL(itemClicked(QModelIndex)),
             this,SLOT(serviceSelected(QModelIndex)));
+
     connect(this, SIGNAL(backButtonClicked()),
             this, SLOT(close()));
 }
@@ -179,8 +214,12 @@ void ServiceSelectionPage::createContent()
 void ServiceSelectionPage::onAccountInstallButton()
 {
     Q_D(ServiceSelectionPage);
-    disconnect(d->doneAction,SIGNAL(triggered()),
+
+    disconnect(d->saveAction, SIGNAL(triggered()),
                this, SLOT(onAccountInstallButton()));
+    disconnect(d->cancelAction, SIGNAL(triggered()),
+               this, SLOT(close()));
+
     setProgressIndicatorVisible(true);
     d->syncHandler->validate(d->abstractContexts);
 }
@@ -205,8 +244,10 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             }
             break;
         default:
-            connect(d->doneAction,SIGNAL(triggered()),
+            connect(d->saveAction, SIGNAL(triggered()),
                     this, SLOT(onAccountInstallButton()));
+            connect(d->cancelAction, SIGNAL(triggered()),
+                    this, SLOT(close()));
             setProgressIndicatorVisible(false);
             return;
     }
@@ -215,7 +256,9 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
 void ServiceSelectionPage::setWidget(MWidget *widget)
 {
      Q_D(ServiceSelectionPage);
-     d->mainLayoutPolicy->addItem(widget);
+
+     if(d->mainLayoutPolicy && widget)
+        d->mainLayoutPolicy->addItem(widget);
 }
 
 } //namespace

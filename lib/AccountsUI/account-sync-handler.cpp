@@ -22,12 +22,9 @@
 
 #include "account-sync-handler.h"
 //Meegotouch
-#include <MInfoBanner>
+#include <MBanner>
 //Qt
-#include <QTimer>
 #include <QDebug>
-
-static const int INFO_BANNER_TIMEOUT = 3000;
 
 namespace AccountsUI {
 
@@ -164,10 +161,9 @@ void AccountSyncHandler::onContextValidateError(AccountsUI::ErrorCode code,
 
         qDebug() << errMessage;
 
-        MInfoBanner* infoBanner = new MInfoBanner();
-        infoBanner->setBodyText(errMessage);
-        infoBanner->appear(MSceneWindow::DestroyWhenDone);
-        QTimer::singleShot(INFO_BANNER_TIMEOUT, infoBanner, SLOT(disappear()));
+        MBanner *banner = new MBanner();
+        banner->setTitle(errMessage);
+        banner->appear(MSceneWindow::DestroyWhenDone);
 
         releaseValidateLock(serviceContext);
 
@@ -228,10 +224,9 @@ void AccountSyncHandler::onContextError(AccountsUI::ErrorCode code,
 
     qDebug() << message;
 
-    MInfoBanner* infoBanner = new MInfoBanner();
-    infoBanner->setBodyText(errMessage);
-    infoBanner->appear(MSceneWindow::DestroyWhenDone);
-    QTimer::singleShot(INFO_BANNER_TIMEOUT, infoBanner, SLOT(disappear()));
+    MBanner *banner = new MBanner();
+    banner->setTitle(errMessage);
+    banner->appear(MSceneWindow::DestroyWhenDone);
 
     releaseStoreLock(context);
 }
