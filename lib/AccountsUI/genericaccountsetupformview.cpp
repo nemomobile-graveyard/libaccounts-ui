@@ -170,12 +170,12 @@ void GenericAccountSetupFormViewPrivate::hideCredentialWidgetAndShowProgress()
     progressIndicator->setUnknownDuration(true);
 
     //% "Connecting"
-    connectingLabel = new MLabel("Connecting");
+    connectingLabel = new MLabel(qtTrId("qtn_acc_connecting"));
     connectingLabel->setObjectName("connectingLabel");
     connectingLabel->setAlignment(Qt::AlignCenter);
 
     //% "STOP"
-    stopButton = new MButton(QLatin1String("STOP"));
+    stopButton = new MButton(qtTrId("qtn_comm_stop"));
     stopButton->setStyleName("wgStopButton");
     stopButton->setObjectName("CommonSingleButton");
     QObject::connect(stopButton, SIGNAL(clicked()),

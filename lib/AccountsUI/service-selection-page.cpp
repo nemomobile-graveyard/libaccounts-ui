@@ -159,12 +159,14 @@ void ServiceSelectionPage::createContent()
     d->mainLayoutPolicy->addItem(separatorBottom);
 
     //% "DONE"
-    d->doneAction = new MAction(qtTrId("qtn_comm_command_done"),centralWidget);
-    d->doneAction->setLocation(MAction::ToolBarLocation);
-    addAction(d->doneAction);
+    d->saveAction = new MAction(qtTrId("qtn_comm_command_done"), centralWidget);
+    d->saveAction->setLocation(MAction::ToolBarLocation);
+    addAction(d->saveAction);
 
-    d->mainLayoutPolicy->addStretch();
-    setCentralWidget(centralWidget);
+    //% "CANCEL"
+    d->cancelAction = new MAction(qtTrId("qtn_comm_cancel"), centralWidget);
+    d->cancelAction->setLocation(MAction::ToolBarLocation);
+    addAction(d->cancelAction);
 
     connect(d->doneAction,SIGNAL(triggered()),
             this, SLOT(onAccountInstallButton()));
