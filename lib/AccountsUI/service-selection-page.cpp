@@ -192,12 +192,12 @@ void ServiceSelectionPage::createContent()
     d->layoutPolicy->addStretch();
 
     //% "SAVE"
-    d->saveAction = new MAction(QLatin1String("SAVE"), centralWidget);
+    d->saveAction = new MAction(qtTrId("qtn_comm_command_done"), centralWidget);
     d->saveAction->setLocation(MAction::ToolBarLocation);
     addAction(d->saveAction);
 
     //% "CANCEL"
-    d->cancelAction = new MAction(QLatin1String("CANCEL"), centralWidget);
+    d->cancelAction = new MAction(qtTrId("qtn_comm_cancel"), centralWidget);
     d->cancelAction->setLocation(MAction::ToolBarLocation);
     addAction(d->cancelAction);
 
