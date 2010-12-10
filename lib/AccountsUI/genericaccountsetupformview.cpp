@@ -200,12 +200,18 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QDomElement root = aProviderAccountDocument.documentElement();
     QDomElement descriptionElement = root.firstChildElement("description");
     QDomElement providerIcon = root.firstChildElement("icon");
+    QDomElement catalog = root.firstChildElement("translations");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
     QString providerName = root.firstChildElement("name").text();
     if (q->model() != NULL) {
         q->model()->setProviderName(providerName);
     }
 
+    if (!catalog.text().isEmpty()) {
+        MLocale locale;
+        locale.installTrCatalog(catalog.text());
+        MLocale::setDefault(locale);
+    }
     QString descriptionText = descriptionElement.text();
     QString providerIconId = providerIcon.text();
     registerNewLink = signUpLink.text();
