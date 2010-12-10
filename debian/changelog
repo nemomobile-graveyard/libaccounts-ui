@@ -1,3 +1,11 @@
+libaccounts-ui (0.33-1) unstable; urgency=low
+
+  * Fixes: NB#210659 - H-Accounts& SSO: §qtn_acc_auth_dial_button§ is hard coded
+  * Fixes: NB#202520 - Hard coded lables are shown in Accounts-ui
+  * Installing the catalog for providers to fix bug 208204 but we need logical ids for our plugins
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 10 Dec 2010 17:51:22 +0300
+
 libaccounts-ui (0.32-1) unstable; urgency=low
 
   * Fixes: NB#208918 - wrong info. note and crashes observed,while entering wrong credentials in certain scenario 
