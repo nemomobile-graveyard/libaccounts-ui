@@ -25,9 +25,12 @@
 
 #include <QProcess>
 #include <QDebug>
+#include <QLocalServer>
+#include <QLocalSocket>
 
 using namespace Accounts;
 using namespace AccountsUI;
+
 
 ProviderPluginProxyPrivate::~ProviderPluginProxyPrivate()
 {
@@ -81,6 +84,8 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
 
     QString processArguments;
     Qt::HANDLE windowId = MApplication::instance()->activeWindow()->winId();
+    pid_t pid = getpid();
+    serverName = providerId + QString::number(pid);
 
     if (accountId != 0) {
         processArguments = QString::fromLatin1("%1 --edit %2 --windowId %3")
@@ -90,10 +95,11 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
 
         newAccountCreation = false;
     } else {
-        processArguments = QString::fromLatin1("%1 --create %2 --windowId %3")
+        processArguments = QString::fromLatin1("%1 --create %2 --windowId %3 --serverName %4")
             .arg(pluginFileInfo.canonicalFilePath())
             .arg(providerId)
-            .arg(windowId);
+            .arg(windowId)
+            .arg(serverName);
 
         newAccountCreation = true;
     }
@@ -122,10 +128,40 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
             this, SLOT(onError(QProcess::ProcessError)));
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(onFinished(int, QProcess::ExitStatus)));
+    connect(process, SIGNAL(started()), this, SLOT(setCommunicationChannel()));
 
     process->start(processArguments);
     PWATCHER_TRACE(pwatcher);
 }
+
+void ProviderPluginProxyPrivate::setCommunicationChannel()
+{
+    QLocalServer *server = new QLocalServer();
+    QLocalServer::removeServer(serverName);
+    if (!server->listen(serverName))
+        system( "echo Server not up");
+    else
+        connect(server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+}
+
+void ProviderPluginProxyPrivate::onNewConnection()
+{
+    QLocalServer *server = qobject_cast<QLocalServer*>(sender());
+    QLocalSocket *socket = server->nextPendingConnection();
+    if (!socket->waitForConnected()) {
+        qWarning() << "Server Connection not established";
+        return;
+    }
+    if (!socket->waitForReadyRead()) {
+        qWarning() << "Server data not available for reading";
+        return;
+    }
+    QByteArray ba = socket->readAll();
+    QString data(ba);
+    accountInfo = data;
+    socket->close();
+}
+
 
 bool ProviderPluginProxyPrivate::stopProcess()
 {
@@ -174,9 +210,14 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
     }
 
     if (newAccountCreation) {
-        char buffer[16];
-        process->readLine(buffer, sizeof(buffer));
-        QString value = QString::fromAscii(buffer);
+        QString value;
+        if (!serverName.isEmpty())
+            value = accountInfo;
+        else {
+            char buffer[16];
+            process->readLine(buffer, sizeof(buffer));
+            value = QString::fromAscii(buffer);
+        }
         QStringList resultList = value.split(" ");
         int result = resultList.at(0).toInt();
         int returnToApp = resultList.at(1).toInt();
@@ -188,7 +229,7 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
 
         qDebug() << "Plugin output: " << result;
 
-        emit q->created(result, returnToApp);
+        emit q->created(result);
     } else
         emit q->edited();
 

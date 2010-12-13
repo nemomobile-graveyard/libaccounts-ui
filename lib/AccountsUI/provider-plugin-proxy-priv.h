@@ -35,6 +35,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
+#include <QLocalServer>
 
 //M
 #include <MApplication>
@@ -55,7 +56,9 @@ class ProviderPluginProxyPrivate: public QObject
 public:
     ProviderPluginProxyPrivate():
         pluginName(),
-        process(0)
+        process(0),
+        serverName(QString ()),
+        accountInfo(QString ())
     {}
     ~ProviderPluginProxyPrivate();
 
@@ -67,12 +70,16 @@ private Q_SLOTS:
     void onReadStandardError();
     void onError(QProcess::ProcessError);
     void onFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onNewConnection();
+    void setCommunicationChannel();
 
 private:
     mutable ProviderPluginProxy *q_ptr;
     bool newAccountCreation;
     QString pluginName;
     QProcess *process;
+    QString serverName;
+    QString accountInfo;
 };
 
 }; // namespace
