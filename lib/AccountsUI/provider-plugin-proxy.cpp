@@ -220,7 +220,7 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
             process->readLine(buffer, sizeof(buffer));
             value = QString::fromAscii(buffer);
         }
-        if (!value.isEmpty()) { /* only execute if  socket writes anything or any debug statements are there */
+        if (!value.isEmpty()) {
             QStringList resultList = value.split(" ");
             result = resultList.at(0).toInt();
             if (resultList.count() > 1)
