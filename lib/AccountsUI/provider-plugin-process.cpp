@@ -47,25 +47,24 @@ void ProviderPluginProcessPrivate::printAccountId()
     QByteArray ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
     if (!serverName.isEmpty()) {
         QLocalSocket *socket = new QLocalSocket();
-        socket->abort();
         connect(socket, SIGNAL(error(QLocalSocket::LocalSocketError)),
                 this, SLOT(errorHappened(QLocalSocket::LocalSocketError)));
         socket->connectToServer(serverName);
-        socket->write(ba.constData());
+        socket->write(ba);
         socket->flush();
         socket->close();
-    } else {
-        /*Server name is the plugin name so this will be never called and we can remove it*/
-        QFile output;
-        output.open(STDOUT_FILENO, QIODevice::WriteOnly);
-        output.write(ba.constData());
-        output.close();
     }
 }
 
 void ProviderPluginProcessPrivate::socketConnectionError(QLocalSocket::LocalSocketError status)
 {
     qDebug() << Q_FUNC_INFO << status;
+    QByteArray ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
+    QFile output;
+    output.open(STDOUT_FILENO, QIODevice::WriteOnly);
+    output.write(ba.constData());
+    output.close();
+
 }
 
 

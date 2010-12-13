@@ -84,6 +84,8 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
 
     QString processArguments;
     Qt::HANDLE windowId = MApplication::instance()->activeWindow()->winId();
+    pid_t pid = getpid();
+    serverName = providerId + QString::number(pid);
 
     if (accountId != 0) {
         processArguments = QString::fromLatin1("%1 --edit %2 --windowId %3")
@@ -93,10 +95,11 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
 
         newAccountCreation = false;
     } else {
-        processArguments = QString::fromLatin1("%1 --create %2 --windowId %3")
+        processArguments = QString::fromLatin1("%1 --create %2 --windowId %3 --serverName %4")
             .arg(pluginFileInfo.canonicalFilePath())
             .arg(providerId)
-            .arg(windowId);
+            .arg(windowId)
+            .arg(serverName);
 
         newAccountCreation = true;
     }
@@ -116,7 +119,6 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
     }
 
     pluginName = pluginFileName;
-    serverName = providerId;
 
     qDebug() << __TIME__ <<__FILE__ << __func__ << processArguments;
 
@@ -134,22 +136,26 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
 
 void ProviderPluginProxyPrivate::setCommunicationChannel()
 {
-    QLocalServer *server  = new QLocalServer();
+    QLocalServer *server = new QLocalServer();
     QLocalServer::removeServer(serverName);
     if (!server->listen(serverName))
-        qDebug()<<"Server not up";
+        system( "echo Server not up");
     else
-        connect(server, SIGNAL(newConnection()), this, SLOT(readDataSent()));
+        connect(server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 }
 
-void ProviderPluginProxyPrivate::readDataSent()
+void ProviderPluginProxyPrivate::onNewConnection()
 {
     QLocalServer *server = qobject_cast<QLocalServer*>(sender());
     QLocalSocket *socket = server->nextPendingConnection();
-    if(!socket->waitForConnected())
+    if (!socket->waitForConnected()) {
+        qWarning() << "Server Connection not established";
         return;
-    if(!socket->waitForReadyRead())
+    }
+    if (!socket->waitForReadyRead()) {
+        qWarning() << "Server data not available for reading";
         return;
+    }
     QByteArray ba = socket->readAll();
     QString data(ba);
     accountInfo = data;

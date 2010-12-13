@@ -37,6 +37,7 @@
 #include <MComponentData>
 #include <MLocale>
 
+//Qt
 #include <QLocalSocket>
 
 namespace AccountsUI {
@@ -83,7 +84,6 @@ public:
                 i++;
                 if (i < argc) {
                     account = manager->createAccount(argv[i]);
-                    serverName = argv[i];
                 }
             }
             else if ((strcmp(argv[i], "--edit") == 0) && !type_set)
@@ -101,6 +101,13 @@ public:
                 if (i < argc)
                     windowId = atoi(argv[i]);
                 Q_ASSERT(windowId != 0);
+            }
+            else if (strcmp(argv[i], "--serverName") == 0)
+            {
+                i++;
+                if (i < argc)
+                    serverName = argv[i];
+                Q_ASSERT(serverName != 0);
             }
             else if (strcmp(argv[i], "--serviceType") == 0)
             {
