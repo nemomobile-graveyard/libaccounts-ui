@@ -37,6 +37,8 @@
 #include <MComponentData>
 #include <MLocale>
 
+#include <QLocalSocket>
+
 namespace AccountsUI {
 
 class ProviderPluginProcessPrivate : public QObject
@@ -51,6 +53,7 @@ public:
         , windowId(0)
         , serviceType(QString())
         , returnToApp(false)
+        , serverName(QString())
     {
         application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
@@ -78,8 +81,10 @@ public:
                 type_set = true;
 
                 i++;
-                if (i < argc)
+                if (i < argc) {
                     account = manager->createAccount(argv[i]);
+                    serverName = argv[i];
+                }
             }
             else if ((strcmp(argv[i], "--edit") == 0) && !type_set)
             {
@@ -134,6 +139,7 @@ public:
 
 public Q_SLOTS:
     void accountSaved();
+    void socketConnectionError(QLocalSocket::LocalSocketError errorStatus);
 
 private:
     mutable ProviderPluginProcess *q_ptr;
@@ -148,6 +154,7 @@ private:
     SetupType setupType;
     QString serviceType;
     bool returnToApp;
+    QString serverName;
 };
 
 } // namespace

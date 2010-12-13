@@ -25,9 +25,12 @@
 
 #include <QProcess>
 #include <QDebug>
+#include <QLocalServer>
+#include <QLocalSocket>
 
 using namespace Accounts;
 using namespace AccountsUI;
+
 
 ProviderPluginProxyPrivate::~ProviderPluginProxyPrivate()
 {
@@ -113,6 +116,7 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
     }
 
     pluginName = pluginFileName;
+    serverName = providerId;
 
     qDebug() << __TIME__ <<__FILE__ << __func__ << processArguments;
 
@@ -122,10 +126,36 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
             this, SLOT(onError(QProcess::ProcessError)));
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(onFinished(int, QProcess::ExitStatus)));
+    connect(process, SIGNAL(started()), this, SLOT(setCommunicationChannel()));
 
     process->start(processArguments);
     PWATCHER_TRACE(pwatcher);
 }
+
+void ProviderPluginProxyPrivate::setCommunicationChannel()
+{
+    QLocalServer *server  = new QLocalServer();
+    QLocalServer::removeServer(serverName);
+    if (!server->listen(serverName))
+        qDebug()<<"Server not up";
+    else
+        connect(server, SIGNAL(newConnection()), this, SLOT(readDataSent()));
+}
+
+void ProviderPluginProxyPrivate::readDataSent()
+{
+    QLocalServer *server = qobject_cast<QLocalServer*>(sender());
+    QLocalSocket *socket = server->nextPendingConnection();
+    if(!socket->waitForConnected())
+        return;
+    if(!socket->waitForReadyRead())
+        return;
+    QByteArray ba = socket->readAll();
+    QString data(ba);
+    accountInfo = data;
+    socket->close();
+}
+
 
 bool ProviderPluginProxyPrivate::stopProcess()
 {
@@ -174,9 +204,14 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
     }
 
     if (newAccountCreation) {
-        char buffer[16];
-        process->readLine(buffer, sizeof(buffer));
-        QString value = QString::fromAscii(buffer);
+        QString value;
+        if (!serverName.isEmpty())
+            value = accountInfo;
+        else {
+            char buffer[16];
+            process->readLine(buffer, sizeof(buffer));
+            value = QString::fromAscii(buffer);
+        }
         QStringList resultList = value.split(" ");
         int result = resultList.at(0).toInt();
         int returnToApp = resultList.at(1).toInt();
@@ -188,7 +223,7 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
 
         qDebug() << "Plugin output: " << result;
 
-        emit q->created(result, returnToApp);
+        emit q->created(result);
     } else
         emit q->edited();
 

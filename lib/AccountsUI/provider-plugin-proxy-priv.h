@@ -35,6 +35,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QDir>
+#include <QLocalServer>
 
 //M
 #include <MApplication>
@@ -67,12 +68,16 @@ private Q_SLOTS:
     void onReadStandardError();
     void onError(QProcess::ProcessError);
     void onFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void readDataSent();
+    void setCommunicationChannel();
 
 private:
     mutable ProviderPluginProxy *q_ptr;
     bool newAccountCreation;
     QString pluginName;
     QProcess *process;
+    QString serverName;
+    QString accountInfo;
 };
 
 }; // namespace
