@@ -211,7 +211,7 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
 
     if (newAccountCreation) {
         QString value;
-        if (!serverName.isEmpty())
+        if (!accountInfo.isEmpty())
             value = accountInfo;
         else {
             char buffer[16];
