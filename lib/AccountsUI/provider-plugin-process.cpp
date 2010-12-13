@@ -34,6 +34,7 @@
 #include <MApplicationWindow>
 
 #include <QDebug>
+#include <QLocalSocket>
 
 namespace AccountsUI {
 
@@ -43,11 +44,27 @@ void ProviderPluginProcessPrivate::printAccountId()
 {
     Accounts::Account *account = context()->account();
 
-    QFile output;
-    output.open(STDOUT_FILENO, QIODevice::WriteOnly);
     QByteArray ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
-    output.write(ba.constData());
-    output.close();
+    if (!serverName.isEmpty()) {
+        QLocalSocket *socket = new QLocalSocket();
+        socket->abort();
+        connect(socket, SIGNAL(error(QLocalSocket::LocalSocketError)),
+                this, SLOT(errorHappened(QLocalSocket::LocalSocketError)));
+        socket->connectToServer(serverName);
+        socket->write(ba.constData());
+        socket->flush();
+        socket->close();
+    } else {
+        QFile output;
+        output.open(STDOUT_FILENO, QIODevice::WriteOnly);
+        output.write(ba.constData());
+        output.close();
+    }
+}
+
+void ProviderPluginProcessPrivate::socketConnectionError(QLocalSocket::LocalSocketError status)
+{
+    qDebug() << Q_FUNC_INFO << status;
 }
 
 AbstractAccountSetupContext *ProviderPluginProcessPrivate::context() const
