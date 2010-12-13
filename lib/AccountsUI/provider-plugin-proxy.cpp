@@ -195,6 +195,8 @@ void ProviderPluginProxyPrivate::onFinished(int exitCode,
     Q_Q(ProviderPluginProxy);
     Q_UNUSED(exitCode);
     PWATCHER_TRACE(pwatcher) << exitCode;
+    int returnToApp = 0;
+    int result = 0;
 
     if (exitStatus == QProcess::CrashExit) {
         emit q->failed();
