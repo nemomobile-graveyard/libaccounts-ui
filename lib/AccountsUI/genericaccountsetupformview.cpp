@@ -45,6 +45,8 @@
 #include <QUrl>
 #include <QTimer>
 
+const int BinaryTextVariantSeparator = 0x9c;
+
 class GenericAccountSetupFormViewPrivate
 {
 public:
@@ -273,6 +275,9 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
 
         //% "Get one here"
         QString link("<a href=\"%1\"> " + qtTrId("qtn_acc_login_register_here") + "! </a>");
+        /* fetch the first lenght variant as qt doesnt provide
+            support for length variants for rich text */
+        link = link.left(link.indexOf(QChar(BinaryTextVariantSeparator)));
         subscribeLabel = new MLabel(link.arg(registerNewLink));
         subscribeLabel->setTextFormat(Qt::RichText);
         subscribeLabel->setAlignment(Qt::AlignCenter);
