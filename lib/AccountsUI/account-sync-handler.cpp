@@ -21,8 +21,6 @@
  */
 
 #include "account-sync-handler.h"
-//Meegotouch
-#include <MBanner>
 //Qt
 #include <QDebug>
 
@@ -161,9 +159,7 @@ void AccountSyncHandler::onContextValidateError(AccountsUI::ErrorCode code,
 
         qDebug() << errMessage;
 
-        MBanner *banner = new MBanner();
-        banner->setTitle(errMessage);
-        banner->appear(MSceneWindow::DestroyWhenDone);
+        showInfoBanner(errMessage);
 
         releaseValidateLock(serviceContext);
 
@@ -224,9 +220,7 @@ void AccountSyncHandler::onContextError(AccountsUI::ErrorCode code,
 
     qDebug() << message;
 
-    MBanner *banner = new MBanner();
-    banner->setTitle(errMessage);
-    banner->appear(MSceneWindow::DestroyWhenDone);
+    showInfoBanner(errMessage);
 
     releaseStoreLock(context);
 }

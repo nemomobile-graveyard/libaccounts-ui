@@ -238,6 +238,7 @@ void CredentialDialog::error(const SignOn::Error &err)
     MBanner *banner = new MBanner();
 
     //% "Database error. Please retry."
+    banner->setStyleName("InformationBanner");
     banner->setTitle(qtTrId("qtn_database_error"));
     banner->appear(scene(), MSceneWindow::DestroyWhenDone);
 
