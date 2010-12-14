@@ -189,9 +189,7 @@ void ServiceSelectionPage::createContent()
     separatorBottom->setOrientation(Qt::Horizontal);
     layoutServicePolicy->addItem(separatorBottom);
 
-    d->layoutPolicy->addStretch();
-
-    //% "SAVE"
+    //% "DONE"
     d->saveAction = new MAction(qtTrId("qtn_comm_command_done"), centralWidget);
     d->saveAction->setLocation(MAction::ToolBarLocation);
     addAction(d->saveAction);
@@ -200,6 +198,7 @@ void ServiceSelectionPage::createContent()
     d->cancelAction = new MAction(qtTrId("qtn_comm_cancel"), centralWidget);
     d->cancelAction->setLocation(MAction::ToolBarLocation);
     addAction(d->cancelAction);
+    d->layoutPolicy->addStretch();
 
     connect(d->saveAction, SIGNAL(triggered()),
             this, SLOT(onAccountInstallButton()));

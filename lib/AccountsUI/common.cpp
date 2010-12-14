@@ -66,6 +66,7 @@ void showInfoBanner(const QString &text,
     Q_UNUSED(disapperTimeout);
 
     MBanner *banner = new MBanner();
+    banner->setStyleName("InformationBanner");
     banner->setTitle(text);
     banner->appear(MSceneWindow::DestroyWhenDone);
 }
