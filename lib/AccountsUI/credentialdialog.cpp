@@ -27,6 +27,9 @@
 //M
 #include <MBanner>
 
+//Qt
+#include <QDebug>
+
 namespace AccountsUI {
 
 CredentialDialog::CredentialDialog(const qint32 credentialsId, CredentialDialogType type)
