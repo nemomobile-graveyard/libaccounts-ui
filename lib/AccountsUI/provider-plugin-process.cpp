@@ -47,11 +47,10 @@ void ProviderPluginProcessPrivate::printAccountId()
     QByteArray ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
     if (!serverName.isEmpty()) {
         QLocalSocket *socket = new QLocalSocket();
-        socket->abort();
         connect(socket, SIGNAL(error(QLocalSocket::LocalSocketError)),
                 this, SLOT(errorHappened(QLocalSocket::LocalSocketError)));
         socket->connectToServer(serverName);
-        socket->write(ba.constData());
+        socket->write(ba);
         socket->flush();
         socket->close();
     } else {
