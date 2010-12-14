@@ -1,3 +1,10 @@
+libaccounts-ui (0.36-1) unstable; urgency=low
+
+  * Fixes: NB#209944 - Get a new account here appears twice and with unwanted
+    characters
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 14 Dec 2010 12:45:29 +0200
+
 libaccounts-ui (0.35-1) unstable; urgency=low
 
   * Fixes: NB#209962 - Banner truncated
