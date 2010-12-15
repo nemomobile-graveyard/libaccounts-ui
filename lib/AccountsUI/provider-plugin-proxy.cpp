@@ -119,7 +119,6 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
     }
 
     pluginName = pluginFileName;
-    serverName = providerId;
 
     qDebug() << __TIME__ <<__FILE__ << __func__ << processArguments;
 
