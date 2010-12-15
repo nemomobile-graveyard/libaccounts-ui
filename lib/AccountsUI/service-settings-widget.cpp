@@ -116,7 +116,10 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                 containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
                 connect(serviceInfo, SIGNAL(clicked()),
                         this, SLOT(openSettingsPage()));
+            } else {
+                serviceInfo->setEnabled(false);
             }
+
             mainPolicy->addItem(upperWidget);
         }
     }
