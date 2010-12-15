@@ -205,6 +205,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QDomElement catalog = root.firstChildElement("translations");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
     QString providerName = root.firstChildElement("name").text();
+
     if (q->model() != NULL) {
         q->model()->setProviderName(providerName);
     }
@@ -230,8 +231,8 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     }
 
     // Provider info widgets
-    providerInfoItem =
-        new MContentItem(MContentItem::IconAndSingleTextLabel, controller);
+    providerInfoItem = new MContentItem(MContentItem::IconAndSingleTextLabel,
+                                        controller);
     providerInfoItem->setObjectName("pluginProviderName");
     providerInfoItem->setTitle(providerName);
     providerInfoItem->setImageID(providerIconId);
@@ -252,12 +253,14 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     widgetModel = new CredentialWidgetModel();
     widgetModel->setDialogsVisabilityConfig(CredentialWidgetModel::LoginDialogVisible);
     widgetModel->setSignInButtonVisible(true);
-    credentialWidget = new CredentialWidget(widgetModel);
-    if (!authDomainSeparator.isEmpty() || !authDomainDefault.isEmpty())
-        credentialWidget->setUsername(authDomainSeparator + authDomainDefault);
+
     QObject::connect(widgetModel, SIGNAL(signInClicked()), q_ptr , SLOT(signIn()));
     QObject::connect(widgetModel, SIGNAL(modified(QList<const char*>)),
                      q_ptr, SLOT(updateModel(QList<const char*>)));
+
+    credentialWidget = new CredentialWidget(widgetModel);
+    if (!authDomainSeparator.isEmpty() || !authDomainDefault.isEmpty())
+        credentialWidget->setUsername(authDomainSeparator + authDomainDefault);
 
     // add the widgets to the layout
     mainLayoutPolicy->addItem(providerInfoItem);
