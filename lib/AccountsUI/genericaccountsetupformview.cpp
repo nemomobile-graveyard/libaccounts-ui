@@ -184,10 +184,14 @@ void GenericAccountSetupFormViewPrivate::hideCredentialWidgetAndShowProgress()
                      controller, SIGNAL(stopButtonPressed()));
 
     mainLayoutPolicy->addStretch();
+    mainLayoutPolicy->addStretch(10);
     mainLayoutPolicy->addItem(progressIndicator, Qt::AlignCenter);
+    mainLayoutPolicy->addStretch(2);
     mainLayoutPolicy->addItem(connectingLabel, Qt::AlignCenter);
+    mainLayoutPolicy->addStretch(2);
     mainLayoutPolicy->addItem(stopButton, Qt::AlignCenter);
     mainLayoutPolicy->addStretch();
+    mainLayoutPolicy->addStretch(10);
 }
 
 void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aProviderAccountDocument)
