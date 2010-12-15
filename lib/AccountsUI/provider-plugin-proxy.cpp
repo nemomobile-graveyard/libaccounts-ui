@@ -119,7 +119,6 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
     }
 
     pluginName = pluginFileName;
-    serverName = providerId;
 
     qDebug() << __TIME__ <<__FILE__ << __func__ << processArguments;
 
@@ -140,7 +139,7 @@ void ProviderPluginProxyPrivate::setCommunicationChannel()
     QLocalServer *server = new QLocalServer();
     QLocalServer::removeServer(serverName);
     if (!server->listen(serverName))
-        system( "echo Server not up");
+        qWarning() << "Server not up";
     else
         connect(server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 }

@@ -468,8 +468,10 @@ void GenericAccountSetupContext::stopAuthSession()
     Q_D(GenericAccountSetupContext);
 
     d->disconnectAuthSessionSignals();
-    d->authSession->cancel();
-    d->networkManager->stopSession();
+    if  (d->authSession)
+        d->authSession->cancel();
+    if (d->networkManager)
+        d->networkManager->stopSession();
 }
 
 void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
