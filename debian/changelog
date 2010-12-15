@@ -1,3 +1,12 @@
+libaccounts-ui (0.37-1) unstable; urgency=low
+
+  * Fixes: NB#211130 - Plugins crash when tapped on 'Stop',while its trying to
+    sign-in without connectivity
+  * Fixes: NB#211934 - Not able to configure/edit any account after
+    configuring another account (without closing the accounts-ui)
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Wed, 15 Dec 2010 12:00:22 +0200
+
 libaccounts-ui (0.36-1) unstable; urgency=low
 
   * Fixes: NB#209944 - Get a new account here appears twice and with unwanted
