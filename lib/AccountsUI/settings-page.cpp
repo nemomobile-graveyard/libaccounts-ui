@@ -116,7 +116,7 @@ void SettingsPage::createContent()
 
     d->context->account()->selectService(d->context->service());
 
-    if ( d->context->account()->enabled())
+    if (d->buttonModel->checked())
         enableButton->setChecked(true);
     else
         enableButton->setChecked(false);
