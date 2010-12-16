@@ -1,3 +1,11 @@
+libaccounts-ui (0.39-1) unstable; urgency=low
+
+  * UNRELEASED
+  * Fixes: NB#212246 - Cropped text in Setup your Google account view in
+    portrait mode
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 16 Dec 2010 12:21:36 +0200
+
 libaccounts-ui (0.38-1) unstable; urgency=low
 
   * Changed drill-down icon on service settings widget with a proper one.
