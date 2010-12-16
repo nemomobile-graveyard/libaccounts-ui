@@ -1,7 +1,5 @@
 libaccounts-ui (0.37-1) unstable; urgency=low
 
-  * Fixes: NB#211130 - Plugins crash when tapped on 'Stop',while its trying to
-    sign-in without connectivity
   * Fixes: NB#211934 - Not able to configure/edit any account after
     configuring another account (without closing the accounts-ui)
 
