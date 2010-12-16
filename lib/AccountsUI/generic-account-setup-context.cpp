@@ -23,9 +23,9 @@
 #include "generic-account-setup-context.h"
 
 //project library
-#include <AccountsUI/AccountsManagerSingleton>
-#include <AccountsUI/NetworkSessionManager>
-#include <AccountsUI/Common>
+#include <AccountsUI/accountsmanagersingleton.h>
+#include <AccountsUI/network-session-manager.h>
+#include <AccountsUI/common.h>
 #include "genericaccountsetupform.h"
 
 //signon
