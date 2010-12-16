@@ -123,15 +123,7 @@ void AccountSettingsPage::setServicesToBeShown()
     sortModel->setEnabledServices(d->context->account()->enabledServices());
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
-    QAbstractProxyModel *proxy = 0;
-    // selecting the service type
-    if (!d->context->serviceType().isEmpty()) {
-        FilterTypeServiceModel *filterServiceModel = new FilterTypeServiceModel(this);
-        filterServiceModel->setSourceModel(sortModel);
-        filterServiceModel->setFilterFixedString(d->context->serviceType());
-        proxy = filterServiceModel;
-    } else
-        proxy = sortModel;
+    QAbstractProxyModel *proxy = sortModel;
 
     for (int i = 0; i < proxy->rowCount(); i++) {
         QModelIndex index = proxy->index(i, 0);
@@ -314,14 +306,6 @@ void AccountSettingsPage::createContent()
             serviceType.append(service->serviceType());
         }
         serviceType.removeDuplicates();
-        if (serviceType.count() > 1) {
-            //% "All Services"
-            d->showAllServices = new MAction(qtTrId("qtn_acc_settings_all_services"), this);
-            d->showAllServices->setLocation(MAction::ApplicationMenuLocation);
-            addAction(d->showAllServices);
-            connect(d->showAllServices, SIGNAL(triggered()),
-                    this, SLOT(showAllServices()));
-        }
     }
 
     d->layoutPolicy->addItem(serviceWidget);
@@ -458,14 +442,6 @@ void AccountSettingsPage::deleteCredentialsDialog()
     if (sender() != NULL &&
         (credentialDialog = qobject_cast<CredentialDialog *>(sender())) != NULL)
         credentialDialog->deleteLater();
-}
-
-void AccountSettingsPage::showAllServices()
-{
-    Q_D(AccountSettingsPage);
-    d->serviceType = QLatin1String("");
-    setServicesToBeShown();
-    d->showAllServices->setVisible(false);
 }
 
 

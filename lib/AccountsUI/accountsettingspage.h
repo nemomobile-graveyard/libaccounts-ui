@@ -100,7 +100,6 @@ public slots:
 private slots:
     void saveSettings();
     void openChangePasswordDialog();
-    void showAllServices();
     void onSyncStateChanged(const SyncState &state);
     void deleteCredentialsDialog();
     void disableSameServiceTypes(const QString &serviceType);
