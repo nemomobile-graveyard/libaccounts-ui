@@ -60,7 +60,8 @@ HEADERS += account-plugin-interface.h \
     sort-service-model.h \
     account-sync-handler.h \
     account-setup-finished-page.h \
-    accountlistitem.h
+    accountlistitem.h \
+    validation-data.h
 
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
@@ -154,7 +155,9 @@ headers.files += AccountPluginInterface \
     account-sync-handler.h \
     ServiceSelectionPage \
     service-selection-page.h \
-    account-setup-finished-page.h
+    account-setup-finished-page.h \
+    ValidationData \
+    validation-data.h
 
 # -----------------------------------------------------------------------------
 # common installation setup

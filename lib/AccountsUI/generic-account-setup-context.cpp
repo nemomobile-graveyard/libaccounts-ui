@@ -23,9 +23,10 @@
 #include "generic-account-setup-context.h"
 
 //project library
-#include <AccountsUI/AccountsManagerSingleton>
-#include <AccountsUI/NetworkSessionManager>
-#include <AccountsUI/Common>
+#include <AccountsUI/accountsmanagersingleton.h>
+#include <AccountsUI/network-session-manager.h>
+#include <AccountsUI/common.h>
+#include <AccountsUI/validation-data.h>
 #include "genericaccountsetupform.h"
 
 //signon
@@ -81,6 +82,7 @@ public:
         , contextIsValidated(false)
         , identityCreated(false)
         , credentialsStored(false)
+        , validationData(QString(), QString(), QVariantMap())
         , q_ptr(parent)
     {}
 
@@ -98,6 +100,7 @@ public:
     bool storeAccountPassword(const QDomDocument &domDocument);
     bool rememberPassword(const QDomDocument &domDocument);
     void disconnectAuthSessionSignals();
+    void readValidationDataFromXML();
 
 public:
     GenericAccountSetupForm *genericAccountSetupForm;
@@ -111,6 +114,8 @@ public:
     bool contextIsValidated;
     bool identityCreated;
     bool credentialsStored;
+
+    ValidationData validationData;
 
 private:
     GenericAccountSetupContext *q_ptr;
@@ -159,6 +164,39 @@ void GenericAccountSetupContextPrivate::disconnectAuthSessionSignals()
         QObject::disconnect(authSession, SIGNAL(error(const SignOn::Error &)),
                             q, SLOT(authSessionError(const SignOn::Error &)));
     }
+}
+
+void GenericAccountSetupContextPrivate::readValidationDataFromXML()
+{
+    //check authsession part of provider file
+    QDomDocument domDocument = genericAccountSetupForm->domDocument();
+    QDomElement root = domDocument.documentElement();
+    QDomElement element = root.firstChildElement("account-setup");
+    QDomElement authSection = element.firstChildElement("authsession");
+
+    QString method = QString();
+    QString mechanism = QString();
+    QVariantMap data;
+    //first check parameters how to validate credentials
+    QDomElement child = authSection.firstChildElement("validate");
+    if (!child.isNull()) {
+        QDomNamedNodeMap attribs = child.attributes();
+        for (int i=0; i<attribs.count(); i++) {
+            QString name = attribs.item(i).nodeName();
+            QString value = attribs.item(i).nodeValue();
+            qDebug() << Q_FUNC_INFO << "name: " << name;
+            qDebug() << Q_FUNC_INFO << "value: " << value;
+            if (name == QLatin1String("method")) {
+                method = value;
+            } else if (name == QLatin1String("mechanism")) {
+                mechanism = value;
+            } else { //give rest of params to plugin as they are
+                data.insert(name, value);
+            }
+        }
+    }
+
+    validationData = ValidationData(method, mechanism, data);
 }
 
 GenericAccountSetupContext::GenericAccountSetupContext(Account *account,
@@ -337,6 +375,14 @@ MWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
     return d->genericAccountSetupForm;
 }
 
+void GenericAccountSetupContext::setValidationData(const ValidationData
+                                                   &validationData)
+{
+    Q_D(GenericAccountSetupContext);
+
+    d->validationData = validationData;
+}
+
 SignOn::Identity *GenericAccountSetupContext::identity() const
 {
     Q_D(const GenericAccountSetupContext);
@@ -405,42 +451,21 @@ void GenericAccountSetupContext::startAuthSession()
 {
     Q_D(GenericAccountSetupContext);
 
-    //check authsession part of provider file
-    QDomDocument domDocument = d->genericAccountSetupForm->domDocument();
-    QDomElement root = domDocument.documentElement();
-    QDomElement element = root.firstChildElement("account-setup");
-    QDomElement authSection = element.firstChildElement("authsession");
+    if (d->validationData.isNull()) {
+        d->readValidationDataFromXML();
 
-    QString method = QString();
-    QString mechanism = QString();
-    QVariantMap data;
-    //first check parameters how to validate credentials
-    QDomElement child = authSection.firstChildElement("validate");
-    if (!child.isNull()) {
-        QDomNamedNodeMap attribs = child.attributes();
-        for (int i=0; i<attribs.count(); i++) {
-            QString name = attribs.item(i).nodeName();
-            QString value = attribs.item(i).nodeValue();
-            qDebug() << Q_FUNC_INFO << "name: " << name;
-            qDebug() << Q_FUNC_INFO << "value: " << value;
-            if (name == QLatin1String("method")) {
-                method = value;
-            } else if (name == QLatin1String("mechanism")) {
-                mechanism = value;
-            } else { //give rest of params to plugin as they are
-                data.insert(name, value);
-            }
-        }
+        if (d->validationData.isNull())
+            qWarning() << "Validation data was not provided";
     }
 
-    SignOn::SessionData sessionData(data);
+    SignOn::SessionData sessionData(d->validationData.sessionData());
 
     sessionData.setUiPolicy(SignOn::ValidationPolicy);
     sessionData.setUserName(d->genericAccountSetupForm->username());
     sessionData.setSecret(d->genericAccountSetupForm->password());
 
     if (!d->authSession) {
-        d->authSession = d->identity->createSession(method);
+        d->authSession = d->identity->createSession(d->validationData.method());
     }
 
     if (!d->authSession) {
@@ -460,7 +485,7 @@ void GenericAccountSetupContext::startAuthSession()
     connect(d->authSession, SIGNAL(error(const SignOn::Error &)),
             this, SLOT(authSessionError(const SignOn::Error &)), Qt::QueuedConnection);
 
-    d->authSession->process(sessionData, mechanism);
+    d->authSession->process(sessionData, d->validationData.mechanism());
 }
 
 void GenericAccountSetupContext::stopAuthSession()

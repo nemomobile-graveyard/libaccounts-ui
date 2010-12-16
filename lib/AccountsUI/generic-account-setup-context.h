@@ -33,6 +33,8 @@
 
 namespace AccountsUI {
 
+class ValidationData;
+
 class GenericAccountSetupContextPrivate;
 
 class ACCOUNTSUI_EXPORT GenericAccountSetupContext :
@@ -50,6 +52,14 @@ public:
 
     void store();
     MWidget *widget(QGraphicsItem *parent);
+
+    /*!
+     * Call this method to specify the method, mechanism and session data for
+     * the validation process. If you don't call this method, this information
+     * is fetched from the provider XML file.
+     * @param validationData Description of the validation process.
+     */
+    void setValidationData(const ValidationData &validationData);
 
 protected:
     SignOn::Identity *identity() const;
