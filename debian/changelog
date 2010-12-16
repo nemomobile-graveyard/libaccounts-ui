@@ -1,6 +1,8 @@
 libaccounts-ui (0.39-1) unstable; urgency=low
 
-  * UNRELEASED
+  * Allow plugins to easily specify validation data
+  * Fixes: NB#211282 - Back button should not be there in Account setup finished
+    view
   * Fixes: NB#212246 - Cropped text in Setup your Google account view in
     portrait mode
 
