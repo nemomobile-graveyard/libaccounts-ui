@@ -99,9 +99,6 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             serviceInfo->setTitle(serviceHepler->prettyName());
             serviceInfo->setSubtitle(serviceHepler->description());
 
-            MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
-            sideImage->setStyleName( "CommonSwitchIcon" );
-
             /*
              * no signals during widget creation
              * */
@@ -113,10 +110,16 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
 
             if (d->context->widget(0)) {
+                MImageWidget *sideImage = new MImageWidget("icon-m-common-drilldown-arrow", upperWidget);
+                sideImage->setStyleName("CommonDrillDownIcon");
                 containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+
                 connect(serviceInfo, SIGNAL(clicked()),
                         this, SLOT(openSettingsPage()));
+            } else {
+                serviceInfo->setEnabled(false);
             }
+
             mainPolicy->addItem(upperWidget);
         }
     }
