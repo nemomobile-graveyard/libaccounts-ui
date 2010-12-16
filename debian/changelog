@@ -1,3 +1,12 @@
+libaccounts-ui (0.38-1) unstable; urgency=low
+
+  * Changed drill-down icon on service settings widget with a proper one.
+  * Added some spaces between the progress indicator, STOP button and the label in the sign in view, according to the UI spec.
+  * Indentation fixes.
+  * Fixes: NB#209137 - List items without drill down icon should not be highlighted after tapping on it.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Thu, 16 Dec 2010 12:10:00 +0300
+
 libaccounts-ui (0.37-1) unstable; urgency=low
 
   * Fixes: NB#211130 - Plugins crash when tapped on 'Stop',while its trying to
