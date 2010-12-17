@@ -48,7 +48,6 @@ public:
     ServiceSettingsWidgetPrivate()
         : context(0)
          ,enableServiceButton(0)
-         ,serviceInfo(0)
     {}
 
     ~ServiceSettingsWidgetPrivate()
