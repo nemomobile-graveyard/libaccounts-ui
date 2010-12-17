@@ -1,3 +1,38 @@
+libaccounts-ui (0.40-1) unstable; urgency=low
+
+  * Fixes: NB#204790 - Tapping on Google talk Service in the Service Selection view disables the Google Talk Service.
+  * Creating the settings widget only once. Removing double creation of the settings widget.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Fri, 17 Dec 2010 13:45:00 +0300
+
+libaccounts-ui (0.39-1) unstable; urgency=low
+
+  * Allow plugins to easily specify validation data
+  * Fixes: NB#211282 - Back button should not be there in Account setup finished
+    view
+  * Fixes: NB#212246 - Cropped text in Setup your Google account view in
+    portrait mode
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 16 Dec 2010 12:21:36 +0200
+
+libaccounts-ui (0.38-1) unstable; urgency=low
+
+  * Changed drill-down icon on service settings widget with a proper one.
+  * Added some spaces between the progress indicator, STOP button and the label in the sign in view, according to the UI spec.
+  * Indentation fixes.
+  * Fixes: NB#209137 - List items without drill down icon should not be highlighted after tapping on it.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Thu, 16 Dec 2010 12:10:00 +0300
+
+libaccounts-ui (0.37-1) unstable; urgency=low
+
+  * Fixes: NB#211130 - Plugins crash when tapped on 'Stop',while its trying to
+    sign-in without connectivity
+  * Fixes: NB#211934 - Not able to configure/edit any account after
+    configuring another account (without closing the accounts-ui)
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Wed, 15 Dec 2010 12:00:22 +0200
+
 libaccounts-ui (0.36-1) unstable; urgency=low
 
   * Fixes: NB#209944 - Get a new account here appears twice and with unwanted

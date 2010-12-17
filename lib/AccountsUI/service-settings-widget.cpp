@@ -85,6 +85,8 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
 
+    MContentItem *serviceInfo = 0;
+
     if (settingsConf & EnableButton) {
         if (context) {
             d->enableServiceButton = new MButton(this);
@@ -94,13 +96,9 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             ServiceHelper *serviceHepler =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
 
-            MContentItem *serviceInfo =
-                    new MContentItem(MContentItem::TwoTextLabels);
+            serviceInfo = new MContentItem(MContentItem::TwoTextLabels);
             serviceInfo->setTitle(serviceHepler->prettyName());
             serviceInfo->setSubtitle(serviceHepler->description());
-
-            MImageWidget *sideImage = new MImageWidget( "icon-m-common-next" );
-            sideImage->setStyleName( "CommonSwitchIcon" );
 
             /*
              * no signals during widget creation
@@ -112,22 +110,26 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
             containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
 
-            if (d->context->widget(0)) {
-                containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
-                connect(serviceInfo, SIGNAL(clicked()),
-                        this, SLOT(openSettingsPage()));
-            }
             mainPolicy->addItem(upperWidget);
         }
     }
 
-    if (context) {
-        if ((settingsConf & NonMandatorySettings) ||
-            (settingsConf & MandatorySettings)) {
-            MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
-            if (widget) {
-                mainPolicy->addItem(widget);
+    if (context && serviceInfo) {
+        MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
+
+        if (widget) {
+            MImageWidget *sideImage = new MImageWidget("icon-m-common-drilldown-arrow", upperWidget);
+            sideImage->setStyleName("CommonDrillDownIcon");
+            containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
+            connect(serviceInfo, SIGNAL(clicked()),
+                    this, SLOT(openSettingsPage()));
+
+            if ((settingsConf & NonMandatorySettings) ||
+                (settingsConf & MandatorySettings)) {
+                    mainPolicy->addItem(widget);
             }
+        } else {
+            serviceInfo->setEnabled(false);
         }
     }
 }

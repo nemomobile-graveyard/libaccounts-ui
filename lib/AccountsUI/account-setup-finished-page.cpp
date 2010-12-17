@@ -79,6 +79,9 @@ AccountSetupFinishedPage::~AccountSetupFinishedPage()
 void AccountSetupFinishedPage::createContent()
 {
     Q_D(AccountSetupFinishedPage);
+
+    setComponentsDisplayMode(EscapeButton, MApplicationPageModel::Hide);
+
     MWidget *centralWidget = new MWidget();
     MLayout *layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);

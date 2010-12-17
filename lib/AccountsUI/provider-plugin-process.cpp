@@ -48,7 +48,7 @@ void ProviderPluginProcessPrivate::printAccountId()
     if (!serverName.isEmpty()) {
         QLocalSocket *socket = new QLocalSocket();
         connect(socket, SIGNAL(error(QLocalSocket::LocalSocketError)),
-                this, SLOT(errorHappened(QLocalSocket::LocalSocketError)));
+                this, SLOT(socketConnectionError(QLocalSocket::LocalSocketError)));
         socket->connectToServer(serverName);
         socket->write(ba);
         socket->flush();
@@ -65,6 +65,7 @@ void ProviderPluginProcessPrivate::socketConnectionError(QLocalSocket::LocalSock
 {
     qDebug() << Q_FUNC_INFO << status;
 }
+
 
 AbstractAccountSetupContext *ProviderPluginProcessPrivate::context() const
 {
