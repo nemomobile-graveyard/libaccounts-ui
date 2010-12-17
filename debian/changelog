@@ -1,3 +1,9 @@
+libaccounts-ui (0.41-1) unstable; urgency=low
+
+  * Fixes: NB#212967 - Filtering of services should be removed from Accounts settings page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 17 Dec 2010 17:07:22 +0300
+
 libaccounts-ui (0.40-1) unstable; urgency=low
 
   * Fixes: NB#204790 - Tapping on Google talk Service in the Service Selection view disables the Google Talk Service.
