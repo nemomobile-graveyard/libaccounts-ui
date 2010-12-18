@@ -197,6 +197,9 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
     d->serviceType = d->context->serviceType();
     d->panel = new MWidgetController();
     d->syncHandler = new AccountSyncHandler(this);
+    //Saving the settings on back button press
+    connect(this, SIGNAL(backButtonClicked()),
+                 this, SLOT(saveSettings()));
     connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
     setStyleName("AccountSettingsPage");
@@ -315,10 +318,6 @@ void AccountSettingsPage::createContent()
         d->layoutServicePolicy->addItem(separatorBottom);
     }
     d->layoutPolicy->addStretch();
-
-    //Saving the settings on back button press
-    connect(this, SIGNAL(backButtonClicked()),
-            this, SLOT(saveSettings()));
 }
 
 const AbstractAccountSetupContext *AccountSettingsPage::context()
@@ -368,6 +367,7 @@ void AccountSettingsPage::removeAccount()
 void AccountSettingsPage::saveSettings()
 {
     Q_D(AccountSettingsPage);
+    disconnect(this , SIGNAL(backButtonClicked()), 0, 0);
     setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
 
