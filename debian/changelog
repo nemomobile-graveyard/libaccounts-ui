@@ -1,3 +1,9 @@
+libaccounts-ui (0.42-1) unstable; urgency=low
+
+  * Fixes: NB#188789 - Cannot disable /re-enable accounts
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 20 Dec 2010 11:07:22 +0300
+
 libaccounts-ui (0.41-1) unstable; urgency=low
 
   * Fixes: NB#212967 - Filtering of services should be removed from Accounts settings page
