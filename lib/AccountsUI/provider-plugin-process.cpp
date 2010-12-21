@@ -30,11 +30,12 @@
 #include <Accounts/Manager>
 #include <MComponentCache>
 #include <MApplication>
-#include <MApplicationIfProxy>
 #include <MApplicationWindow>
 
 #include <QDebug>
+#include <QFile>
 #include <QLocalSocket>
+#include <QProcess>
 
 namespace AccountsUI {
 
@@ -217,16 +218,6 @@ int ProviderPluginProcess::exec()
 void ProviderPluginProcess::quit()
 {
     Q_D(ProviderPluginProcess);
-
-    if (d->windowId != 0)
-    {
-        MApplicationIfProxy mApplicationIfProxy("com.nokia.accounts-ui",
-                this);
-
-        if (mApplicationIfProxy.connection().isConnected()) {
-            mApplicationIfProxy.launch();
-        }
-    }
 
     d->printAccountId();
 
