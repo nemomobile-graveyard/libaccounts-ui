@@ -1,3 +1,9 @@
+libaccounts-ui (0.43-1) unstable; urgency=low
+
+  * Fixes: NB#213774 - Account settings options for Other mail account is not shown in Account settings view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 21 Dec 2010 12:37:22 +0300
+
 libaccounts-ui (0.42-1) unstable; urgency=low
 
   * Fixes: NB#188789 - Cannot disable /re-enable accounts
