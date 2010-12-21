@@ -39,6 +39,7 @@ HEADERS += account-plugin-interface.h \
     generic-service-plugin.h \
     accountsmanagersingleton.h \
     service-helper.h \
+    last-page-actions.h \
     provider-plugin-process.h \
     provider-plugin-process-priv.h \
     provider-plugin-proxy.h \
@@ -75,6 +76,7 @@ SOURCES += abstract-account-setup-context.cpp \
     generic-service-plugin.cpp \
     accountsmanagersingleton.cpp \
     service-helper.cpp \
+    last-page-actions.cpp \
     provider-plugin-process.cpp \
     provider-plugin-proxy.cpp \
     add-account-page.cpp \
@@ -140,6 +142,8 @@ headers.files += AccountPluginInterface \
     accountsmanagersingleton.h \
     GenericServiceSetupContext \
     generic-service-setup-context.h \
+    LastPageActions \
+    last-page-actions.h \
     Parser \
     parser.h \
     UiBuilder \
