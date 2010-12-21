@@ -241,7 +241,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     providerInfoItem->setTitle(providerName);
     providerInfoItem->setImageID(providerIconId);
 
-    descriptionLabel = new MLabel(descriptionText);
+    descriptionLabel = new MLabel(qtTrId(descriptionText.toLatin1()));
     descriptionLabel->setWordWrap(true);
     descriptionLabel->setWrapMode(QTextOption::WordWrap);
 
