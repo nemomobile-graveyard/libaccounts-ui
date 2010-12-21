@@ -1,3 +1,9 @@
+libaccounts-ui (0.44-1) unstable; urgency=low
+
+  * Fixes: NB#209957 - Accounts SSO; Clipping in calDAV body text §qtn_caln_caldav_calendars§
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 21 Dec 2010 17:05:22 +0300
+
 libaccounts-ui (0.43-1) unstable; urgency=low
 
   * Fixes: NB#213774 - Account settings options for Other mail account is not shown in Account settings view
