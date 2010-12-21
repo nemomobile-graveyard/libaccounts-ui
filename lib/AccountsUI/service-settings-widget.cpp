@@ -114,22 +114,24 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
         }
     }
 
-    if (context && serviceInfo) {
+    if (context) {
         MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
 
         if (widget) {
             MImageWidget *sideImage = new MImageWidget("icon-m-common-drilldown-arrow", upperWidget);
             sideImage->setStyleName("CommonDrillDownIcon");
             containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
-            connect(serviceInfo, SIGNAL(clicked()),
-                    this, SLOT(openSettingsPage()));
+            if (serviceInfo)
+                connect(serviceInfo, SIGNAL(clicked()),
+                        this, SLOT(openSettingsPage()));
 
             if ((settingsConf & NonMandatorySettings) ||
                 (settingsConf & MandatorySettings)) {
                     mainPolicy->addItem(widget);
             }
         } else {
-            serviceInfo->setEnabled(false);
+            if (serviceInfo)
+                serviceInfo->setEnabled(false);
         }
     }
 }
