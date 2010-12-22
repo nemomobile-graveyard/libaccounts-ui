@@ -28,6 +28,8 @@ HEADERS += account-plugin-interface.h \
     abstract-account-setup-context.h \
     abstract-service-setup-context.h \
     abstract-setup-context.h \
+    account-setup-finished-page.h \
+    account-setup-finished-page-priv.h \
     credentialdialog.h \
     credentialwidget.h \
     credentialwidgetview.h \
@@ -60,7 +62,6 @@ HEADERS += account-plugin-interface.h \
     settings-page.h \
     sort-service-model.h \
     account-sync-handler.h \
-    account-setup-finished-page.h \
     accountlistitem.h \
     validation-data.h
 

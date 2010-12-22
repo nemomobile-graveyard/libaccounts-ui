@@ -42,30 +42,18 @@
 #include <QDebug>
 
 //Accounts-Ui
-#include "account-setup-finished-page.h"
+#include "account-setup-finished-page-priv.h"
 #include "accountsmanagersingleton.h"
 #include "provider-plugin-process.h"
 
 namespace AccountsUI {
-
-
-class AccountSetupFinishedPagePrivate
-{
-public:
-    AccountSetupFinishedPagePrivate()
-            : account(0)
-    {}
-
-    ~AccountSetupFinishedPagePrivate() {}
-    Accounts::Account *account;
-    QString serviceType;
-};
 
 AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *context)
         : MApplicationPage(),
           d_ptr(new AccountSetupFinishedPagePrivate())
 {
     Q_D(AccountSetupFinishedPage);
+    d->q_ptr = this;
     d->account = context->account();
     d->serviceType = context->serviceType();
     setObjectName("AccountSetupFinishedPage");
