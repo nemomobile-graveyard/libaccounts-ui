@@ -243,4 +243,11 @@ void ProviderPluginProcess::setReturnToApp(bool returnToApp)
     Q_D(ProviderPluginProcess);
     d->returnToApp = returnToApp;
 }
+
+const LastPageActions &ProviderPluginProcess::lastPageActions() const
+{
+    Q_D(const ProviderPluginProcess);
+    return d->lastPageActions;
+}
+
 } // namespace

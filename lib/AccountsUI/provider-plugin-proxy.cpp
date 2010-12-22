@@ -41,9 +41,23 @@ ProviderPluginProxyPrivate::~ProviderPluginProxyPrivate()
     }
 }
 
+void ProviderPluginProxyPrivate::addLastPageArguments(QStringList &arguments,
+                                                      const LastPageActions
+                                                      *lastPageActions)
+{
+    const LastPageActions::ServiceActionList actions =
+        lastPageActions->serviceActions();
+    foreach (LastPageActions::ServiceAction action, actions) {
+        arguments << QLatin1String("--action")
+            << action.title()
+            << action.serviceName();
+    }
+}
+
 void ProviderPluginProxyPrivate::startProcess(Provider *provider,
                                               AccountId accountId,
-                                              const QString &serviceType)
+                                              const QString &serviceType,
+                                              const LastPageActions *lastPageActions)
 {
     Q_Q(ProviderPluginProxy);
 
@@ -101,6 +115,9 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
 
     if (!serviceType.isEmpty())
         arguments << QLatin1String("--serviceType") << serviceType;
+
+    if (lastPageActions != 0)
+        addLastPageArguments(arguments, lastPageActions);
 
 #ifndef QT_NO_DEBUG_OUTPUT
     arguments << QLatin1String("-output-level") << QLatin1String("debug");
@@ -258,6 +275,14 @@ ProviderPluginProxy::~ProviderPluginProxy()
 void ProviderPluginProxy::createAccount(Provider *provider,
                                         const QString &serviceType)
 {
+    LastPageActions lastPageActions;
+    return createAccount(provider, serviceType, lastPageActions);
+}
+
+void ProviderPluginProxy::createAccount(Provider *provider,
+                                        const QString &serviceType,
+                                        const LastPageActions &lastPageActions)
+{
     Q_D(ProviderPluginProxy);
     PWATCHER_TRACE(pwatcher);
 
@@ -267,7 +292,7 @@ void ProviderPluginProxy::createAccount(Provider *provider,
         return;
     }
 
-    d->startProcess(provider, 0, serviceType);
+    d->startProcess(provider, 0, serviceType, &lastPageActions);
 }
 
 void ProviderPluginProxy::editAccount(Account *account,
