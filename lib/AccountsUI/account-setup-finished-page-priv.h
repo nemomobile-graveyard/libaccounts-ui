@@ -41,6 +41,9 @@ public:
 
     ~AccountSetupFinishedPagePrivate() {}
 
+public Q_SLOTS:
+    void actionButtonClicked();
+
 private:
     mutable AccountSetupFinishedPage *q_ptr;
     Accounts::Account *account;
