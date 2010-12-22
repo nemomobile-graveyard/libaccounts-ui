@@ -82,34 +82,28 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
         return;
     }
 
-    QString processArguments;
     Qt::HANDLE windowId = MApplication::instance()->activeWindow()->winId();
     pid_t pid = getpid();
     serverName = providerId + QString::number(pid);
 
-    if (accountId != 0) {
-        processArguments = QString::fromLatin1("%1 --edit %2 --windowId %3")
-            .arg(pluginFileInfo.canonicalFilePath())
-            .arg(accountId)
-            .arg(windowId);
+    QString processName = pluginFileInfo.canonicalFilePath();
+    QStringList arguments;
+    arguments << QLatin1String("--serverName") << serverName;
+    arguments << QLatin1String("--windowId") << QString::number(windowId);
 
+    if (accountId != 0) {
+        arguments << QLatin1String("--edit") << QString::number(accountId);
         newAccountCreation = false;
     } else {
-        processArguments = QString::fromLatin1("%1 --create %2 --windowId %3 --serverName %4")
-            .arg(pluginFileInfo.canonicalFilePath())
-            .arg(providerId)
-            .arg(windowId)
-            .arg(serverName);
-
+        arguments << QLatin1String("--create") << providerId;
         newAccountCreation = true;
     }
 
     if (!serviceType.isEmpty())
-        processArguments.append(QString::fromLatin1(" --serviceType %1")
-                                .arg(serviceType));
+        arguments << QLatin1String("--serviceType") << serviceType;
 
 #ifndef QT_NO_DEBUG_OUTPUT
-    processArguments.append(QString::fromLatin1(" -output-level debug"));
+    arguments << QLatin1String("-output-level") << QLatin1String("debug");
 #endif
 
     if (!process &&
@@ -120,7 +114,7 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
 
     pluginName = pluginFileName;
 
-    qDebug() << __TIME__ <<__FILE__ << __func__ << processArguments;
+    qDebug() << Q_FUNC_INFO << processName << arguments;
 
     connect(process, SIGNAL(readyReadStandardError()),
             this, SLOT(onReadStandardError()));
@@ -130,7 +124,7 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
             this, SLOT(onFinished(int, QProcess::ExitStatus)));
     connect(process, SIGNAL(started()), this, SLOT(setCommunicationChannel()));
 
-    process->start(processArguments);
+    process->start(processName, arguments);
     PWATCHER_TRACE(pwatcher);
 }
 
