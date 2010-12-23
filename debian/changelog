@@ -1,3 +1,9 @@
+libaccounts-ui (0.46-1) unstable; urgency=low
+
+  * Adding the method to return list of service contexts of any account
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 23 Dec 2010 15:44:22 +0300
+
 libaccounts-ui (0.45-1) unstable; urgency=low
 
   * Fixes: NB#206428 - §qtn_acc_remove_account_statement§ correct delete statement is not shown
