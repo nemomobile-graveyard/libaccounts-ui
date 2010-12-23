@@ -123,16 +123,7 @@ void AccountSettingsPage::setServicesToBeShown()
     sortModel->setEnabledServices(d->context->account()->enabledServices());
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
-    QAbstractProxyModel *proxy = sortModel;
-
-    for (int i = 0; i < proxy->rowCount(); i++) {
-        QModelIndex index = proxy->index(i, 0);
-        const QVariant vServiceHelper = index.data(ServiceModel::ServiceHelperColumn);
-        ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
-        AbstractServiceSetupContext *context =
-            serviceHelper->serviceSetupContext(d->context, this);
-        d->contexts.append(context);
-    }
+    d->contexts = ServiceModel::createServiceContexts(sortModel, d->context, this);
 
     /* iterate through the contexts we created for each service, and get the
      * UI widgets to embed */
