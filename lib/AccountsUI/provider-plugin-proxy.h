@@ -35,6 +35,7 @@
 
 namespace AccountsUI {
 
+class LastPageActions;
 class ProviderPluginProxyPrivate;
 
 /*!
@@ -69,6 +70,19 @@ public:
      */
     void createAccount(Accounts::Provider *provider,
                        const QString &serviceType);
+    /*!
+     * Runs the account plugin to create an account.
+     *
+     * @param provider The Accounts::Provider for the account to be created.
+     * @param serviceType The main service type the user is interested in, or
+     * empty string.
+     * @param lastPageActions Structure describing what should be offered to
+     * the user in the last page of a successful account creation.
+     */
+    void createAccount(Accounts::Provider *provider,
+                       const QString &serviceType,
+                       const LastPageActions &lastPageActions);
+
     /*!
      * Runs the account plugin to edit an account.
      *

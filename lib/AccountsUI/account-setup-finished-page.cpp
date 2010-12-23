@@ -42,30 +42,27 @@
 #include <QDebug>
 
 //Accounts-Ui
-#include "account-setup-finished-page.h"
+#include "account-setup-finished-page-priv.h"
 #include "accountsmanagersingleton.h"
+#include "last-page-actions.h"
 #include "provider-plugin-process.h"
 
 namespace AccountsUI {
 
-
-class AccountSetupFinishedPagePrivate
+void AccountSetupFinishedPagePrivate::actionButtonClicked()
 {
-public:
-    AccountSetupFinishedPagePrivate()
-            : account(0)
-    {}
-
-    ~AccountSetupFinishedPagePrivate() {}
-    Accounts::Account *account;
-    QString serviceType;
-};
+    QString serviceName = sender()->property("serviceName").toString();
+    qDebug() << "Invoking service" << serviceName;
+    LastPageActions::executeService(serviceName);
+    ProviderPluginProcess::instance()->quit();
+}
 
 AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *context)
         : MApplicationPage(),
           d_ptr(new AccountSetupFinishedPagePrivate())
 {
     Q_D(AccountSetupFinishedPage);
+    d->q_ptr = this;
     d->account = context->account();
     d->serviceType = context->serviceType();
     setObjectName("AccountSetupFinishedPage");
@@ -126,12 +123,6 @@ void AccountSetupFinishedPage::createContent()
     layoutPolicy->addItem(firstDescLabel, Qt::AlignCenter);
     layoutPolicy->addItem(secondDescLabel, Qt::AlignCenter);
 
-    Accounts::ServiceType *type = AccountsManager::instance()->serviceType(d->serviceType);
-
-    //% "Go to %1"
-    MButton *goToButton = new MButton(qtTrId("qtn_comm_go_to_x").arg(type->displayName()));
-
-    connect (goToButton, SIGNAL(clicked()), this, SLOT(goToApplication()));
     //% "Add more account"
     MButton *addMoreAccountButton = new MButton(qtTrId("qtn_acc_add_more_accounts"));
     connect (addMoreAccountButton, SIGNAL(clicked()), ProviderPluginProcess::instance(), SLOT(quit()));
@@ -141,15 +132,27 @@ void AccountSetupFinishedPage::createContent()
 
     portraitPolicy->addStretch();
     portraitPolicy->setSpacing(20);
+    landscapePolicy->addStretch();
     landscapePolicy->setSpacing(20);
 
-    portraitPolicy->addItem(goToButton, Qt::AlignCenter);
-    portraitPolicy->addStretch();
-    portraitPolicy->addItem(addMoreAccountButton, Qt::AlignCenter);
-    landscapePolicy->addStretch();
-    landscapePolicy->addItem(goToButton, Qt::AlignRight);
+    const LastPageActions &lastPageActions =
+        ProviderPluginProcess::instance()->lastPageActions();
+    const LastPageActions::ServiceActionList actions =
+        lastPageActions.serviceActions();
+    foreach (LastPageActions::ServiceAction action, actions) {
+        MButton *button = new MButton(qtTrId("qtn_comm_go_to_x").
+                                      arg(action.title()));
+        button->setProperty("serviceName", action.serviceName());
+        connect(button, SIGNAL(clicked()), d, SLOT(actionButtonClicked()));
 
+        landscapePolicy->addItem(button, Qt::AlignRight);
+        portraitPolicy->addItem(button, Qt::AlignCenter);
+    }
+
+    portraitPolicy->addItem(addMoreAccountButton, Qt::AlignCenter);
     landscapePolicy->addItem(addMoreAccountButton, Qt::AlignCenter);
+
+    portraitPolicy->addStretch();
     landscapePolicy->addStretch();
 
     buttonsLayout->setLandscapePolicy(landscapePolicy);
@@ -163,8 +166,7 @@ void AccountSetupFinishedPage::createContent()
 
 void AccountSetupFinishedPage::goToApplication()
 {
-    ProviderPluginProcess::instance()->setReturnToApp(true);
-    ProviderPluginProcess::instance()->quit();
+    /* this slot is deprecated */
 }
 
 }

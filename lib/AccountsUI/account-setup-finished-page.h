@@ -30,7 +30,9 @@ public:
     virtual void createContent();
 
 public slots:
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
     void goToApplication();
+#endif
 
 private:
     AccountSetupFinishedPagePrivate *d_ptr;

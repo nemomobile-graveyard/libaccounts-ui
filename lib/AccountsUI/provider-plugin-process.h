@@ -33,6 +33,7 @@
 
 namespace AccountsUI {
 
+class LastPageActions;
 class ProviderPluginProcessPrivate;
 
 /*!
@@ -99,6 +100,12 @@ public:
      * stay in accounts-ui
      */
     void setReturnToApp(bool returnToApp);
+
+    /*!
+     * Gets the LastPageActions data, which describes the possible actions to
+     * be displayed on the last page of a successful account setup.
+     */
+    const LastPageActions &lastPageActions() const;
 
 public Q_SLOTS:
     /*!
