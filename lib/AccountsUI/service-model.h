@@ -43,7 +43,7 @@ class ServiceModelPrivate;
  * It looks into a directory where are the xml files for every kind of account profiles.
  */
 
-class ServiceModel : public QAbstractTableModel
+class ACCOUNTSUI_EXPORT ServiceModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -134,6 +134,14 @@ public:
      */
     void refresh();
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+
+    /*!
+     * Returns the service Contexts of all the services for an account.
+     */
+    static QList<AbstractServiceSetupContext*> createServiceContexts(
+        QAbstractItemModel *model,
+        AbstractAccountSetupContext *context,
+        QObject *parent = 0);
 
 
 private:

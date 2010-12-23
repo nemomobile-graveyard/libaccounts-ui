@@ -155,3 +155,20 @@ QVariant ServiceModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
+QList<AbstractServiceSetupContext*> ServiceModel::createServiceContexts(
+    QAbstractItemModel *model,
+    AbstractAccountSetupContext *context,
+    QObject *parent)
+{
+    QList<AbstractServiceSetupContext*>  serviceContextlist;
+    for (int i = 0; i<  model->rowCount(); i++) {
+        QModelIndex index = model->index(i, 0);
+        const QVariant vServiceHelper = index.data(ServiceModel::ServiceHelperColumn);
+        ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
+        AbstractServiceSetupContext *serviceContext =
+            serviceHelper->serviceSetupContext(context, parent);
+        serviceContextlist.append(serviceContext);
+    }
+    return serviceContextlist;
+}
+

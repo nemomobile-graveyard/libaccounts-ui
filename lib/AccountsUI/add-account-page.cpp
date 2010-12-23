@@ -144,16 +144,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
     sortModel->setSourceModel(serviceModel);
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
-    QAbstractProxyModel *proxy = sortModel;
-
-    for (int i = 0; i < proxy->rowCount(); i++) {
-        QModelIndex index = proxy->index(i, 0);
-        const QVariant vServiceHelper = index.data(ServiceModel::ServiceHelperColumn);
-        ServiceHelper *serviceHelper = vServiceHelper.value<ServiceHelper *>();
-        AbstractServiceSetupContext *context =
-            serviceHelper->serviceSetupContext(d->context, this);
-        d->serviceContextList.append(context);
-    }
+    d->serviceContextList = ServiceModel::createServiceContexts(sortModel, d->context, this);
 
     if (d->serviceContextList.count() == 0 ||
         (d->serviceContextList.count() == 1 &&
