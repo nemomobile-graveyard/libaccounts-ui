@@ -36,6 +36,7 @@ class AccountSetupFinishedPagePrivate: public QObject
 public:
     AccountSetupFinishedPagePrivate():
         QObject(0),
+        q_ptr(0),
         account(0)
     {}
 

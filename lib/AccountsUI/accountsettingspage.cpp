@@ -413,12 +413,11 @@ void AccountSettingsPage::openChangePasswordDialog()
     d->changePasswordDialogStarted = true;
 
     CredentialDialog *credentialDialog = new CredentialDialog(d->account->credentialsId());
-    credentialDialog->setParent(this);
-
     if (!credentialDialog) {
         qCritical() << "Cannot create change password dialog";
         return;
     }
+    credentialDialog->setParent(this);
     connect (credentialDialog, SIGNAL(safeToDeleteMe(CredentialDialog*)),
              this, SLOT(deleteCredentialsDialog()));
     //% "Change Password"
