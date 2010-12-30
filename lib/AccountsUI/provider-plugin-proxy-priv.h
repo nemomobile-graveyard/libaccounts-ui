@@ -24,8 +24,9 @@
 #define ACCOUNTSUI_PROVIDER_PLUGIN_PROXY_PRIV_H
 
 //libAccountsUI
-#include <AccountsUI/provider-plugin-proxy.h>
-#include <AccountsUI/debug.h>
+#include "debug.h"
+#include "last-page-actions.h"
+#include "provider-plugin-proxy.h"
 
 //Accounts
 #include <Accounts/Manager>
@@ -62,8 +63,12 @@ public:
     {}
     ~ProviderPluginProxyPrivate();
 
+    void addLastPageArguments(QStringList &arguments,
+                              const LastPageActions *lastPageActions);
+
     void startProcess(Provider *provider, AccountId accountId,
-                      const QString &serviceType);
+                      const QString &serviceType,
+                      const LastPageActions *lastPageActions = 0);
     bool stopProcess();
 
 private Q_SLOTS:

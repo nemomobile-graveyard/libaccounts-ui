@@ -24,6 +24,7 @@
 #define ACCOUNTSUI_PROVIDER_PLUGIN_PROCESS_PRIV_H
 
 //libAccountsUI
+#include <AccountsUI/last-page-actions.h>
 #include <AccountsUI/provider-plugin-process.h>
 
 //Accounts
@@ -116,6 +117,13 @@ public:
                     serviceType = argv[i];
                 Q_ASSERT(serviceType != 0);
             }
+            else if (strcmp(argv[i], "--action") == 0)
+            {
+                Q_ASSERT (i + 2 < argc);
+                lastPageActions.addServiceAction(QString::fromUtf8(argv[i + 1]),
+                                                 QLatin1String(argv[i + 2]));
+                i += 2;
+            }
         }
 
         if (account != 0)
@@ -162,6 +170,7 @@ private:
     QString serviceType;
     bool returnToApp;
     QString serverName;
+    LastPageActions lastPageActions;
 };
 
 } // namespace
