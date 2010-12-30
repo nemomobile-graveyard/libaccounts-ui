@@ -1,3 +1,9 @@
+libaccounts-ui (0.46-2) unstable; urgency=low
+
+  * merging missing changes
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Thu, 30 Dec 2010 10:24:22 +0300
+
 libaccounts-ui (0.46-1) unstable; urgency=low
 
   * Adding the method to return list of service contexts of any account
