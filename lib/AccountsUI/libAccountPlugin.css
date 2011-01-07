@@ -5,8 +5,8 @@ MApplicationPage MLabelStyle#connectingLabel {
 }
 
 MApplicationPage MLableStyle#SuccessLabel {
-    font: "Nokia Standard Light" 36;
-    color: #8C8C8C;
+    font: "Nokia Standard Light" bold 62;
+    color: #1080DD;
 }
 
 MApplicationPage MLableStyle#FirstDescLabel {
