@@ -1,3 +1,9 @@
+libaccounts-ui (0.47-1) unstable; urgency=low
+
+  * Fixes: NB#207001 - COREWEB: /usr/bin/accounts-ui '__poll g_main_context_poll g_main_context_iterate g_main_context_iteration QEventDispatcherGlib::processEvents'
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 10 Jan 2010 13:59:22 +0300
+
 libaccounts-ui (0.46-2) unstable; urgency=low
 
   * merging missing changes
