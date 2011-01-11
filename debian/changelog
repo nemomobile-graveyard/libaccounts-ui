@@ -3,6 +3,13 @@ libaccounts-ui (0.47-1) unstable; urgency=low
   * Fixes: NB#207001 - COREWEB: /usr/bin/accounts-ui '__poll g_main_context_poll g_main_context_iterate g_main_context_iteration QEventDispatcherGlib::processEvents'
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 10 Jan 2010 13:59:22 +0300
+libaccounts-ui (0.46-3) unstable; urgency=low
+
+  * Fixes: NB#215004 - Facebook: The account UI shows "Unknown Error" while configuring Facebook Account
+  * Fixes: NB#212882 - Account setup finished view label font size is not proper
+  * Fixes: NB#207001 - fixing metabug about deletion order
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Tue, 11 Jan 2011 04:57:37 -0500
 
 libaccounts-ui (0.46-2) unstable; urgency=low
 

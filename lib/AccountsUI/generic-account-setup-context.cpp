@@ -82,6 +82,7 @@ public:
         , contextIsValidated(false)
         , identityCreated(false)
         , credentialsStored(false)
+        , authSessionStopped(false)
         , validationData(QString(), QString(), QVariantMap())
         , q_ptr(parent)
     {}
@@ -114,6 +115,7 @@ public:
     bool contextIsValidated;
     bool identityCreated;
     bool credentialsStored;
+    bool authSessionStopped;
 
     ValidationData validationData;
 
@@ -279,6 +281,7 @@ void GenericAccountSetupContext::storeIdentity()
     d->identityInfo.setSecret(d->genericAccountSetupForm->password(),
                                storePassword);
     d->identityInfo.setStoreSecret(storePassword);
+    d->authSessionStopped = false;
 
     if (d->identityCreated) {
         d->identity->storeCredentials(d->identityInfo);
@@ -451,6 +454,11 @@ void GenericAccountSetupContext::startAuthSession()
 {
     Q_D(GenericAccountSetupContext);
 
+    if (d->authSessionStopped) {
+        qDebug() << "Account validation already stopped - returning";
+        return;
+    }
+
     if (d->validationData.isNull()) {
         d->readValidationDataFromXML();
 
@@ -491,6 +499,8 @@ void GenericAccountSetupContext::startAuthSession()
 void GenericAccountSetupContext::stopAuthSession()
 {
     Q_D(GenericAccountSetupContext);
+
+    d->authSessionStopped = true;
 
     d->disconnectAuthSessionSignals();
     if  (d->authSession)
