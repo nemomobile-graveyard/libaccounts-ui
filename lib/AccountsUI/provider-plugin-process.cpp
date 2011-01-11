@@ -212,7 +212,11 @@ int ProviderPluginProcess::exec()
 
     page->appear(d->window);
 
-    return d->application->exec();
+    int result = d->application->exec();
+    delete page;
+    delete d->window;
+    delete d->application;
+    return result;
 }
 
 void ProviderPluginProcess::quit()
