@@ -1,3 +1,9 @@
+libaccounts-ui (0.48-1) unstable; urgency=low
+
+  * removed deletion of page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 11 Jan 2010 12:40:22 +0300
+
 libaccounts-ui (0.47-1) unstable; urgency=low
 
   * Fixes: NB#207001 - COREWEB: /usr/bin/accounts-ui '__poll g_main_context_poll g_main_context_iterate g_main_context_iteration QEventDispatcherGlib::processEvents'
