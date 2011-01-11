@@ -162,7 +162,8 @@ headers.files += AccountPluginInterface \
     service-selection-page.h \
     account-setup-finished-page.h \
     ValidationData \
-    validation-data.h
+    validation-data.h \
+    service-model.h
 
 # -----------------------------------------------------------------------------
 # common installation setup
