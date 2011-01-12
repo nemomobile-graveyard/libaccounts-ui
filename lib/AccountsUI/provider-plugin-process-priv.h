@@ -143,8 +143,9 @@ public:
 
     ~ProviderPluginProcessPrivate()
     {
-        delete application;
         delete m_context;
+        delete window;
+        delete application;
     }
 
     void printAccountId();
