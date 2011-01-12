@@ -123,7 +123,7 @@ binary-arch: build install
 #	dh_installinfo
 #	dh_installman
 	dh_link
-	dh_strip --dbg-package=libaccountplugin0-dbg --exclude=tests/ --exclude=lib/tests/ --exclude=lib/
+	dh_strip --dbg-package=libaccountplugin0-dbg --exclude=tests/ --exclude=lib/tests/
 	dh_compress --exclude=doc/$(PROJECT_NAME)/  # don't compress our documentation
 	dh_fixperms
 #	dh_perl
