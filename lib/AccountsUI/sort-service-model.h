@@ -23,6 +23,9 @@
 #ifndef ACCOUNTSUI_SORT_SERVICE_MODEL_H
 #define ACCOUNTSUI_SORT_SERVICE_MODEL_H
 
+//libAccountsUI
+#include <AccountsUI/common.h>
+
 //Accounts
 #include <Accounts/Account>
 
@@ -30,7 +33,7 @@
 #include <QSortFilterProxyModel>
 #include <QStringList>
 
-class FilterTypeServiceModel : public QSortFilterProxyModel
+class ACCOUNTSUI_EXPORT FilterTypeServiceModel : public QSortFilterProxyModel
 {
 public:
     FilterTypeServiceModel(QObject *parent = 0) : QSortFilterProxyModel(parent)
@@ -41,7 +44,15 @@ protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 };
 
-class SortServiceModel : public QSortFilterProxyModel
+/*!
+ * @class ServiceModel
+ * @headerfile AccountsUI/service-model.h AccountsUI/ServiceModel
+ *
+ * Sorts/filters the ServiceModel items according to the configuration files
+ * stored in the /etc/accounts-ui/service-sorting.d/ and
+ * ~/.config/accounts-ui/service-sorting.d/ directories.
+ */
+class ACCOUNTSUI_EXPORT SortServiceModel : public QSortFilterProxyModel
 {
 public:
     SortServiceModel(QObject *parent = 0);

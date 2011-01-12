@@ -138,6 +138,9 @@ headers.files += AccountPluginInterface \
     debug.h \
     GenericAccountSetupContext \
     generic-account-setup-context.h \
+    genericaccountsetupform.h \
+    genericaccountsetupformmodel.h \
+    genericaccountsetupformstyle.h \
     GenericServicePlugin \
     generic-service-plugin.h \
     GenericServiceSetupContext \
@@ -154,11 +157,14 @@ headers.files += AccountPluginInterface \
     provider-plugin-proxy.h \
     ServiceHelper \
     service-helper.h \
+    ServiceModel \
     service-model.h \
     ServicePluginInterface \
     service-plugin-interface.h \
     ServiceSelectionPage \
     service-selection-page.h \
+    SortServiceModel \
+    sort-service-model.h \
     UiBuilder \
     ui-builder.h \
     ValidationData \
