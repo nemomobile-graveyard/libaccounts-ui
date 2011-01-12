@@ -25,6 +25,11 @@
 #include "genericaccountsetupform.h"
 #include "genericaccountsetupformview.h"
 #include "common.h"
+#include "accountsmanagersingleton.h"
+#include "provider-plugin-process.h"
+#include "accountsettingspage.h"
+#include "generic-account-setup-context.h"
+
 
 //M
 #include <MLayout>
@@ -38,6 +43,7 @@
 #include <MSeparator>
 #include <MLabel>
 #include <MProgressIndicator>
+#include <MMessageBox>
 
 //Qt
 #include <QDebug>
@@ -45,6 +51,7 @@
 #include <QUrl>
 #include <QTimer>
 
+using namespace Accounts;
 const int BinaryTextVariantSeparator = 0x9c;
 
 class GenericAccountSetupFormViewPrivate
@@ -102,6 +109,7 @@ public:
     QString registerNewLink;
     QString authDomainSeparator;
     QString authDomainDefault;
+    QString provider;
 
 protected:
     Q_DECLARE_PUBLIC(GenericAccountSetupFormView);
@@ -209,6 +217,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QDomElement catalog = root.firstChildElement("translations");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
     QString providerName = root.firstChildElement("name").text();
+    provider = root.attribute("id");
 
     if (q->model() != NULL) {
         q->model()->setProviderName(providerName);
@@ -407,6 +416,28 @@ void GenericAccountSetupFormView::signIn()
         //% "Fill in username@example.com"
         showInfoBanner(qtTrId("qtn_acc_fill_in_username_with_domain_infobanner"));
         return;
+    }
+
+    AccountIdList idList = AccountsManager::instance()->accountList();
+    for (int i = 0; i < idList.count(); i++) {
+        Accounts::Account *account = AccountsManager::instance()->account(idList.at(i));
+        if ((d->widgetModel->username() == account->displayName()) &&
+            (d->provider == account->providerName())) {
+            MMessageBox queryBox(qtTrId("qtn_acc_account_exists"), qtTrId("qtn_acc_tune_it_in_accounts"), 0);
+            MButton *continueButton = new MButton(qtTrId("qtn_comm_command_continue"));
+            MButton *cancelButton = new MButton(qtTrId("qtn_comm_cancel"));
+            queryBox.addButton(continueButton->model());
+            queryBox.addButton(cancelButton->model());
+            queryBox.exec();
+            if (queryBox.clickedButton() == continueButton->model()) {
+                GenericAccountSetupContext *context = new GenericAccountSetupContext(account, EditExisting);
+                AccountSettingsPage *page = new AccountSettingsPage(context);
+                this->hide();
+                page->appear();
+            } else if (queryBox.clickedButton() == cancelButton->model()) {
+                AccountsUI::ProviderPluginProcess::instance()->quit();
+            }
+        }
     }
 
     model()->setRememberMe(d->widgetModel->checkboxPressed());
