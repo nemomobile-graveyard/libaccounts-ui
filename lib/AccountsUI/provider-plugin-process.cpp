@@ -165,9 +165,6 @@ void ProviderPluginProcess::init(int &argc, char **argv)
 
 ProviderPluginProcess::~ProviderPluginProcess()
 {
-    Q_D(ProviderPluginProcess);
-
-    delete d;
 }
 
 ProviderPluginProcess *ProviderPluginProcess::instance()
@@ -213,6 +210,7 @@ int ProviderPluginProcess::exec()
     page->appear(d->window);
 
     int result = d->application->exec();
+    delete page;
     delete d->window;
     delete d->application;
     return result;
