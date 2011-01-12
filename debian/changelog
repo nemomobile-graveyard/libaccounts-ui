@@ -1,3 +1,9 @@
+libaccounts-ui (0.51-1) unstable; urgency=low
+
+  * Fixes: NB#218093 - First account configured is not shown in accounts view and plugin crashes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 12 Jan 2011 13:35:22 +0300
+
 libaccounts-ui (0.50-1) unstable; urgency=low
 
   * Fixes: NB#202650 - libaccounts-ui: non stripped library in binary package.
