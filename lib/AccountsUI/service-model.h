@@ -36,7 +36,8 @@ using namespace AccountsUI;
 class ServiceModelPrivate;
 
 /*!
- * @internal
+ * @class ServiceModel
+ * @headerfile AccountsUI/service-model.h AccountsUI/ServiceModel
  *
  * The ServiceModel is a model which provide an interface to all available
  * services

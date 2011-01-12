@@ -112,16 +112,23 @@ HEADERS += $$STYLE_HEADERS
 # headers are the files which will be installed with "make install"
 headers.files += AccountPluginInterface \
     account-plugin-interface.h \
-    ServicePluginInterface \
-    service-plugin-interface.h \
     AbstractAccountSetupContext \
     abstract-account-setup-context.h \
     AbstractServiceSetupContext \
     abstract-service-setup-context.h \
     AbstractSetupContext \
     abstract-setup-context.h \
+    AccountSettingsPage \
+    accountsettingspage.h \
+    account-setup-finished-page.h \
     AccountSyncHandler \
     account-sync-handler.h \
+    AccountsManagerSingleton \
+    accountsmanagersingleton.h \
+    AddAccountPage \
+    add-account-page.h \
+    Common \
+    common.h \
     CredentialDialog \
     credentialdialog.h \
     CredentialWidget \
@@ -131,36 +138,35 @@ headers.files += AccountPluginInterface \
     debug.h \
     GenericAccountSetupContext \
     generic-account-setup-context.h \
-    ServiceHelper \
-    service-helper.h \
-    ProviderPluginProcess \
-    provider-plugin-process.h \
-    ProviderPluginProxy \
-    provider-plugin-proxy.h \
-    AddAccountPage \
-    add-account-page.h \
-    AccountsManagerSingleton \
-    accountsmanagersingleton.h \
+    genericaccountsetupform.h \
+    genericaccountsetupformmodel.h \
+    genericaccountsetupformstyle.h \
+    GenericServicePlugin \
+    generic-service-plugin.h \
     GenericServiceSetupContext \
     generic-service-setup-context.h \
     LastPageActions \
     last-page-actions.h \
-    Parser \
-    parser.h \
-    UiBuilder \
-    ui-builder.h \
-    GenericServicePlugin \
-    generic-service-plugin.h \
-    AccountSettingsPage \
-    accountsettingspage.h \
-    Common \
-    common.h \
     NetworkSessionManager \
     network-session-manager.h \
-    account-sync-handler.h \
+    Parser \
+    parser.h \
+    ProviderPluginProcess \
+    provider-plugin-process.h \
+    ProviderPluginProxy \
+    provider-plugin-proxy.h \
+    ServiceHelper \
+    service-helper.h \
+    ServiceModel \
+    service-model.h \
+    ServicePluginInterface \
+    service-plugin-interface.h \
     ServiceSelectionPage \
     service-selection-page.h \
-    account-setup-finished-page.h \
+    SortServiceModel \
+    sort-service-model.h \
+    UiBuilder \
+    ui-builder.h \
     ValidationData \
     validation-data.h \
     service-model.h
