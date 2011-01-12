@@ -23,15 +23,18 @@
 #ifndef ACCOUNTSUI_GENERICACCOUNTSETUPFORMSTYLE_H
 #define ACCOUNTSUI_GENERICACCOUNTSETUPFORMSTYLE_H
 
+#include <AccountsUI/common.h>
+
 #include <MWidgetStyle>
 
-class GenericAccountSetupFormStyle : public MWidgetStyle
+class ACCOUNTSUI_EXPORT GenericAccountSetupFormStyle : public MWidgetStyle
 {
     Q_OBJECT
     M_STYLE(GenericAccountSetupFormStyle)
 };
 
-class GenericAccountSetupFormStyleContainer : public MWidgetStyleContainer
+class ACCOUNTSUI_EXPORT GenericAccountSetupFormStyleContainer :
+    public MWidgetStyleContainer
 {
     M_STYLE_CONTAINER(GenericAccountSetupFormStyle)
 };

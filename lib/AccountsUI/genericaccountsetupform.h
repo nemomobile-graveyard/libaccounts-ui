@@ -36,7 +36,7 @@
 class GenericAccountSetupFormPrivate;
 using namespace AccountsUI;
 
-class GenericAccountSetupForm : public MWidgetController
+class ACCOUNTSUI_EXPORT GenericAccountSetupForm : public MWidgetController
 {
     Q_OBJECT
     M_CONTROLLER(GenericAccountSetupForm)
