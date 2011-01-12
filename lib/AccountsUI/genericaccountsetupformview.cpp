@@ -29,7 +29,7 @@
 #include "provider-plugin-process.h"
 #include "accountsettingspage.h"
 #include "generic-account-setup-context.h"
-
+#include "provider-plugin-proxy.h"
 
 //M
 #include <MLayout>
@@ -419,8 +419,8 @@ void GenericAccountSetupFormView::signIn()
     }
 
     AccountIdList idList = AccountsManager::instance()->accountList();
-    for (int i = 0; i < idList.count(); i++) {
-        Accounts::Account *account = AccountsManager::instance()->account(idList.at(i));
+    foreach (Accounts::AccountId id, idList) {
+        Accounts::Account *account = AccountsManager::instance()->account(id);
         if ((d->widgetModel->username() == account->displayName()) &&
             (d->provider == account->providerName())) {
             MMessageBox queryBox(qtTrId("qtn_acc_account_exists"), qtTrId("qtn_acc_tune_it_in_accounts"), 0);
@@ -430,12 +430,11 @@ void GenericAccountSetupFormView::signIn()
             queryBox.addButton(cancelButton->model());
             queryBox.exec();
             if (queryBox.clickedButton() == continueButton->model()) {
-                GenericAccountSetupContext *context = new GenericAccountSetupContext(account, EditExisting);
-                AccountSettingsPage *page = new AccountSettingsPage(context);
-                this->hide();
-                page->appear();
+                ProviderPluginProcess::instance()->quit();
+                ProviderPluginProxy *pluginProcess = new ProviderPluginProxy();
+                pluginProcess->editAccount(account, QString());
             } else if (queryBox.clickedButton() == cancelButton->model()) {
-                AccountsUI::ProviderPluginProcess::instance()->quit();
+                ProviderPluginProcess::instance()->quit();
             }
         }
     }
