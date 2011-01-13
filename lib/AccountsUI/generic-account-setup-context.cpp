@@ -93,6 +93,7 @@ public:
             identity->deleteLater();
 
         if (networkManager) {
+            networkManager->disconnect();
             networkManager->stopSession();
             networkManager->deleteLater();
         }
