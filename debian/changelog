@@ -1,3 +1,10 @@
+libaccounts-ui (0.52-1) unstable; urgency=low
+
+  * Fixes: NB#217199 - accounts-ui and libaccounts-ui should export some
+    classes.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 13 Jan 2011 10:02:33 +0200
+
 libaccounts-ui (0.51-1) unstable; urgency=low
 
   * Fixes: NB#218093 - First account configured is not shown in accounts view and plugin crashes
