@@ -23,9 +23,11 @@
 #ifndef ACCOUNTSUI_GENERICACCOUNTSETUPFORMMODEL_H
 #define ACCOUNTSUI_GENERICACCOUNTSETUPFORMMODEL_H
 
+#include <AccountsUI/common.h>
+
 #include <MWidgetModel>
 
-class GenericAccountSetupFormModel : public MWidgetModel
+class ACCOUNTSUI_EXPORT GenericAccountSetupFormModel : public MWidgetModel
 {
     Q_OBJECT
     M_MODEL(GenericAccountSetupFormModel)
