@@ -1,3 +1,9 @@
+libaccounts-ui (0.53-1) unstable; urgency=low
+
+  * Added "Forgot my password" option to credentials dialog.
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Fri, 14 Jan 2011 11:41:29 +0200
+
 libaccounts-ui (0.52-2) unstable; urgency=low
 
   * Fixes: NB#215884 - Facebook plugin crash is encountered sometimes while trying to configure facebook account
