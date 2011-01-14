@@ -60,6 +60,24 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     M_MODEL_PROPERTY(bool, focusOnPasswordField, FocusOnPasswordField, true, true)
 
     /*!
+        \property CredentialWidgetModel::ForgotPassword
+        \brief .
+    */
+    M_MODEL_PROPERTY(QString, forgotPassword, ForgotPassword, true, QString())
+
+    /*!
+        \property CredentialWidgetModel::forgotPasswordVisible
+        \brief .
+    */
+    M_MODEL_PROPERTY(bool, forgotPasswordVisible, ForgotPasswordVisible, true, false)
+
+    /*!
+        \property CredentialWidgetModel::ForgotPasswordUrl
+        \brief .
+    */
+    M_MODEL_PROPERTY(QString, forgotPasswordUrl, ForgotPasswordUrl, true, QString())
+
+    /*!
         \property CredentialWidgetModel::checkboxVisible
         \brief .
     */
@@ -108,6 +126,12 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     M_MODEL_PROPERTY(bool, nextButtonVisible, NextButtonVisible, true, false)
 
     /*!
+        \property CredentialWidgetModel::cancelButtonVisible
+        \brief .
+    */
+    M_MODEL_PROPERTY(bool, cancelButtonVisible, CancelButtonVisible, true, false)
+
+    /*!
         \property CredentialWidgetModel::enabled
         \brief .Property holdig whether the whole widget is enabled or not
     */
@@ -125,6 +149,10 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
             emit captchaClicked();
         }
 
+        void forgotPasswordClick(QString link) {
+            emit forgotPasswordClicked(link);
+        }
+
         bool loginDialogVisible() {
             return (dialogsVisabilityConfig() & CredentialWidgetModel::LoginDialogVisible);
         }
@@ -137,6 +165,8 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
         void captchaClicked();
         void signInClicked();
         void nextClicked();
+        void cancelClicked();
+        void forgotPasswordClicked(QString);
 };
 
 
