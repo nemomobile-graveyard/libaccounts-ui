@@ -111,6 +111,9 @@ void ProviderPluginProxyPrivate::startProcess(Provider *provider,
     } else {
         arguments << QLatin1String("--create") << providerId;
         newAccountCreation = true;
+
+        if (!accountInfo.isEmpty())
+            accountInfo.clear();
     }
 
     if (!serviceType.isEmpty())
