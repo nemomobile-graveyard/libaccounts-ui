@@ -70,6 +70,7 @@ private Q_SLOTS:
     void infoReadySlot(const SignOn::IdentityInfo &info);
     void itemPickedSlot(quint32 credentialsId);
     void captchaImageClicked();
+    void forgotPasswordClicked(QString link);
     void setEnabled(bool isWidgetEnabled);
 
 private:
