@@ -1,3 +1,9 @@
+libaccounts-ui (0.53-2) unstable; urgency=low
+
+  * Fixes: NB#212817 - After an account configuration,the transition is fast forwarded to Accounts view from Login View
+
+ -- K Prasanna Kumar <k-prasanna.kumar@nokia.com>  Fri, 14 Jan 2011 15:31:33 +0530
+
 libaccounts-ui (0.53-1) unstable; urgency=low
 
   * Added "Forgot my password" option to credentials dialog.
