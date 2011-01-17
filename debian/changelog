@@ -1,3 +1,9 @@
+libaccounts-ui (0.54-1) unstable; urgency=low
+
+  * Fixes: NB#219527 - Unable to setting widget to service-selection-page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 17 Jan 2011 11:27:22 +0300
+
 libaccounts-ui (0.53-2) unstable; urgency=low
 
   * Fixes: NB#212817 - After an account configuration,the transition is fast forwarded to Accounts view from Login View
