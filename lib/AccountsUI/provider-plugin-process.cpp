@@ -44,8 +44,11 @@ static ProviderPluginProcess *plugin_instance = 0;
 void ProviderPluginProcessPrivate::printAccountId()
 {
     Accounts::Account *account = context()->account();
-
-    QByteArray ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
+    QByteArray ba;
+    if (!continueClicked)
+        ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
+    else
+        ba = QString("-1").toAscii();
     if (!serverName.isEmpty()) {
         QLocalSocket *socket = new QLocalSocket();
         connect(socket, SIGNAL(error(QLocalSocket::LocalSocketError)),
@@ -248,6 +251,13 @@ const LastPageActions &ProviderPluginProcess::lastPageActions() const
 {
     Q_D(const ProviderPluginProcess);
     return d->lastPageActions;
+}
+
+void ProviderPluginProcess::onContinueClicked(bool value)
+{
+    Q_D(ProviderPluginProcess);
+    d->continueClicked = value;
+    this->quit();
 }
 
 } // namespace

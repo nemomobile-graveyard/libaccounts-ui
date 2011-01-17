@@ -56,6 +56,7 @@ public:
         , serviceType(QString())
         , returnToApp(false)
         , serverName(QString())
+        , continueClicked(false)
     {
         application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
@@ -172,6 +173,7 @@ private:
     bool returnToApp;
     QString serverName;
     LastPageActions lastPageActions;
+    bool continueClicked;
 };
 
 } // namespace

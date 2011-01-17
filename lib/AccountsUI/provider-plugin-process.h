@@ -107,6 +107,12 @@ public:
      */
     const LastPageActions &lastPageActions() const;
 
+    /*!
+      * Sets the variable to go to accountspage for duplicate accounts, if the
+      * parameter is true.
+      */
+    void onContinueClicked(bool value);
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.
