@@ -65,8 +65,7 @@ public:
         context(0),
         syncHandler(0),
         layout(0),
-        layoutPolicy(0),
-        mainLayoutPolicy(0)
+        layoutPolicy(0)
         {}
     ~ServiceSelectionPagePrivate() {}
 
@@ -79,7 +78,6 @@ public:
     AccountSyncHandler *syncHandler;
     MLayout *layout;
     MLinearLayoutPolicy *layoutPolicy;
-    MLinearLayoutPolicy *mainLayoutPolicy;
     QString serviceType;
 };
 
@@ -257,8 +255,8 @@ void ServiceSelectionPage::setWidget(MWidget *widget)
 {
      Q_D(ServiceSelectionPage);
 
-     if(d->mainLayoutPolicy && widget)
-        d->mainLayoutPolicy->addItem(widget);
+     if(d->layoutPolicy && widget)
+        d->layoutPolicy->addItem(widget);
 }
 
 } //namespace
