@@ -71,6 +71,7 @@ public:
     AccountSyncHandler *syncHandler;
     QList<AbstractSetupContext*> abstractContexts;
     QString serviceType;
+    Accounts::ServiceList hiddenServiceList;
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
@@ -132,6 +133,11 @@ void AddAccountPage::createContent()
             d->context, SLOT(showMenuBar()));
 }
 
+void AddAccountPage::setHiddenServices(const Accounts::ServiceList &hiddenServices)
+{
+    Q_D(AddAccountPage);
+    d->hiddenServiceList = hiddenServices;
+}
 
 void AddAccountPage::navigateToServiceSelectionPage()
 {
@@ -142,6 +148,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
 
     SortServiceModel *sortModel = new SortServiceModel(this);
     sortModel->setSourceModel(serviceModel);
+    sortModel->setHiddenServices(d->hiddenServiceList);
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
     d->serviceContextList = ServiceModel::createServiceContexts(sortModel, d->context, this);

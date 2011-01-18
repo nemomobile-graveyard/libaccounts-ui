@@ -75,6 +75,16 @@ void SortServiceModel::setEnabledServices(const Accounts::ServiceList &enabledSe
         enabledServicesName.append(service->name());
 }
 
+void SortServiceModel::setHiddenServices(const Accounts::ServiceList &hiddenServices)
+{
+    qDebug() << Q_FUNC_INFO;
+    foreach (Accounts::Service *service, hiddenServices) {
+        QString serviceName = service->name();
+        if (!hiddenService.contains(serviceName))
+            hiddenService.append(serviceName);
+    }
+}
+
 void SortServiceModel::createPriorities(const QString &fileName)
 {
     qDebug()<<__PRETTY_FUNCTION__;

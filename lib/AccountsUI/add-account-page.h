@@ -61,6 +61,11 @@ public:
      */
     virtual void createContent();
 
+    /*!
+     * Allows clients to hide services from service selection screen.
+     */
+    void setHiddenServices(const Accounts::ServiceList &hiddenServices);
+
 private slots:
     void navigateToServiceSelectionPage();
     void clearServiceContextList();

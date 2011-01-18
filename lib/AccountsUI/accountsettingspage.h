@@ -82,6 +82,11 @@ public:
 
 void setWidget(MWidget *widget);
 
+    /*!
+     * Allows clients to hide services from service selection screen.
+     */
+    void setHiddenServices(const Accounts::ServiceList &hiddenServices);
+
 public slots:
     /*!
      * Called when the user toggles the enable button for the account.
