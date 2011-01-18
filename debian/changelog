@@ -1,3 +1,10 @@
+libaccounts-ui (0.55-1) unstable; urgency=low
+
+  * Fixes: NB#219274 - [TASK] Support for hidding services in default
+    implementation of service list ui.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 18 Jan 2011 15:52:06 +0200
+
 libaccounts-ui (0.54-1) unstable; urgency=low
 
   * Fixes: NB#219527 - Unable to setting widget to service-selection-page
