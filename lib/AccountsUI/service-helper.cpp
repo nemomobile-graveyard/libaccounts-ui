@@ -95,6 +95,13 @@ ServiceHelper::ServiceHelper(Accounts::Service *service, QObject *parent)
     : QObject(parent),
     d_ptr(new ServiceHelperPrivate(service))
 {
+    Q_D(ServiceHelper);
+    QString catalog = d->service->trCatalog();
+    if (!catalog.isEmpty()) {
+        MLocale locale;
+        locale.installTrCatalog(catalog);
+        MLocale::setDefault(locale);
+    }
 }
 
 ServiceHelper::~ServiceHelper()
@@ -137,20 +144,14 @@ MWidget *ServiceHelper::iconWidget(QGraphicsItem *parent)
     return new MImageWidget(iconElement.text(), parent);
 }
 
+
 QString ServiceHelper::prettyName()
 {
     Q_D(ServiceHelper);
 
     /* TODO: support for dynamic prettyName from the plugin */
     QString name = d->service->displayName();
-    QString catalog = d->service->trCatalog();
-    if (!catalog.isEmpty()) {
-        MLocale locale;
-        locale.installTrCatalog(catalog);
-        MLocale::setDefault(locale);
-        return qtTrId(name.toLatin1());
-    }
-    return name;
+    return qtTrId(name.toLatin1());
 }
 
 QString ServiceHelper::description()
@@ -159,7 +160,7 @@ QString ServiceHelper::description()
     QDomElement root = d->domDocument.documentElement();
     QDomElement descriptionElement = root.firstChildElement("description");
     if (!descriptionElement.isNull())
-        return descriptionElement.text();
+        return qtTrId(descriptionElement.text().toLatin1());
     else
         return 0;
 }
