@@ -58,6 +58,7 @@ public:
     SortServiceModel(QObject *parent = 0);
     virtual ~SortServiceModel() {};
     void setEnabledServices(const Accounts::ServiceList &enabledServices);
+    void setHiddenServices(const Accounts::ServiceList &hiddenServices);
 
 protected:
     virtual bool lessThan(const QModelIndex &left,

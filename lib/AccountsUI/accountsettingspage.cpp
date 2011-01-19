@@ -107,6 +107,7 @@ public:
     MLinearLayoutPolicy *layoutPolicy;
     MLinearLayoutPolicy *panelPolicy;
     bool settingsExist;
+    Accounts::ServiceList hiddenServiceList;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -121,6 +122,7 @@ void AccountSettingsPage::setServicesToBeShown()
     SortServiceModel *sortModel = new SortServiceModel(this);
     sortModel->setSourceModel(serviceModel);
     sortModel->setEnabledServices(d->context->account()->enabledServices());
+    sortModel->setHiddenServices(d->hiddenServiceList);
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
     d->contexts = ServiceModel::createServiceContexts(sortModel, d->context, this);
@@ -464,6 +466,12 @@ void AccountSettingsPage::setWidget(MWidget *widget)
 {
      Q_D(AccountSettingsPage);
      d->panelPolicy->addItem(widget);
+}
+
+void AccountSettingsPage::setHiddenServices(const Accounts::ServiceList &hiddenServices)
+{
+    Q_D(AccountSettingsPage);
+    d->hiddenServiceList = hiddenServices;
 }
 
 } // namespace
