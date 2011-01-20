@@ -64,7 +64,7 @@ HEADERS += account-plugin-interface.h \
     account-sync-handler.h \
     accountlistitem.h \
     validation-data.h \
-    accountsetupfinishedwidget.h
+    account-setup-finished-widget.h
 
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
@@ -98,7 +98,7 @@ SOURCES += abstract-account-setup-context.cpp \
     account-sync-handler.cpp \
     account-setup-finished-page.cpp \
     accountlistitem.cpp \
-    accountsetupfinishedwidget.cpp
+    account-setup-finished-widget.cpp
 
 MODEL_HEADERS += \
     credentialwidgetmodel.h \

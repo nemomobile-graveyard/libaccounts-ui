@@ -46,7 +46,7 @@
 #include "accountsmanagersingleton.h"
 #include "last-page-actions.h"
 #include "provider-plugin-process.h"
-#include "accountsetupfinishedwidget.h"
+#include "account-setup-finished-widget.h"
 
 namespace AccountsUI {
 
