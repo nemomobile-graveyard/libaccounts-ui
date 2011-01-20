@@ -1,3 +1,9 @@
+libaccounts-ui (0.57-1) unstable; urgency=low
+
+  * Fixes: NB#212882 - Account setup finished view label font size is not proper
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 20 Jan 2011 11:20:22 +0300
+
 libaccounts-ui (0.56-1) unstable; urgency=low
 
   * Fixes: NB#219564 - Logical ids shown for Youtube sharing service
