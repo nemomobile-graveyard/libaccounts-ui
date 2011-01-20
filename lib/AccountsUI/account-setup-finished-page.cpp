@@ -46,6 +46,7 @@
 #include "accountsmanagersingleton.h"
 #include "last-page-actions.h"
 #include "provider-plugin-process.h"
+#include "account-setup-finished-widget.h"
 
 namespace AccountsUI {
 
@@ -104,24 +105,8 @@ void AccountSetupFinishedPage::createContent()
 
     layoutPolicy->addItem(separatorTop);
 
-    // %"Success"
-    MLabel *successLabel = new MLabel(qtTrId("qtn_acc_success"));
-    successLabel->setStyleName("SuccessLabel");
-    successLabel->setAlignment(Qt::AlignCenter);
-
-    // %"Your %1 account is connected!"
-    MLabel *firstDescLabel = new MLabel(qtTrId("qtn_acc_account_connected").arg(providerName));
-    firstDescLabel->setStyleName("FirstDescLabel");
-    firstDescLabel->setAlignment(Qt::AlignCenter);
-
-    // %"Fetching your data"
-    MLabel *secondDescLabel = new MLabel(qtTrId("qtn_acc_fetching_your_data"));
-    secondDescLabel->setStyleName("SecondDescLabel");
-    secondDescLabel->setAlignment(Qt::AlignCenter);
-
-    layoutPolicy->addItem(successLabel, Qt::AlignCenter);
-    layoutPolicy->addItem(firstDescLabel, Qt::AlignCenter);
-    layoutPolicy->addItem(secondDescLabel, Qt::AlignCenter);
+    AccountSetupFinishedWidget *widget = new AccountSetupFinishedWidget(providerName, this);
+    layoutPolicy->addItem(widget);
 
     //% "Add more account"
     MButton *addMoreAccountButton = new MButton(qtTrId("qtn_acc_add_more_accounts"));

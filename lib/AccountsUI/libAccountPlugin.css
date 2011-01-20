@@ -4,17 +4,17 @@ MApplicationPage MLabelStyle#connectingLabel {
   color: #1080DD;
 }
 
-MApplicationPage MLableStyle#SuccessLabel {
+AccountSetupFinishedWidget MLabelStyle#SuccessLabel {
     font: "Nokia Standard Bold" 62;
     color: #1080DD;
 }
 
-MApplicationPage MLableStyle#FirstDescLabel {
+AccountSetupFinishedWidget MLabelStyle#FirstDescLabel {
     font: "Nokia Standard Light" 36;
     color: #8C8C8C;
 }
 
-MApplicationPage MLableStyle#SecondDescLabel {
+AccountSetupFinishedWidget MLabelStyle#SecondDescLabel {
     font: "Nokia Standard Light" 36;
     color: #8C8C8C;
 }
