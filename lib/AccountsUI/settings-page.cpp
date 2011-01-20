@@ -50,7 +50,8 @@ class SettingsPagePrivate
 public:
     SettingsPagePrivate()
             : context(0)
-            , enableButton(0)
+            , enableButton(0),
+            buttonModel(0)
     {}
     ~SettingsPagePrivate(){}
     AbstractServiceSetupContext *context;
