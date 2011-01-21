@@ -82,7 +82,6 @@ public:
         , contextIsValidated(false)
         , identityCreated(false)
         , credentialsStored(false)
-        , authSessionStopped(false)
         , validationData(QString(), QString(), QVariantMap())
         , q_ptr(parent)
     {}
@@ -116,7 +115,6 @@ public:
     bool contextIsValidated;
     bool identityCreated;
     bool credentialsStored;
-    bool authSessionStopped;
 
     ValidationData validationData;
 
@@ -208,14 +206,6 @@ GenericAccountSetupContext::GenericAccountSetupContext(Account *account,
     : AbstractAccountSetupContext(account, type, parent)
     , d_ptr(new GenericAccountSetupContextPrivate(this))
 {
-    Q_D(GenericAccountSetupContext);
-
-    d->identity = Identity::newIdentity();
-    Q_ASSERT(d->identity);
-    connect(d->identity, SIGNAL(credentialsStored(const quint32)),
-            this, SLOT(credentialsReady(const quint32)));
-    connect(d->identity, SIGNAL(error(const SignOn::Error &)),
-            this, SLOT(storeCredentialsError(const SignOn::Error &)));
 }
 
 GenericAccountSetupContext::~GenericAccountSetupContext()
@@ -274,6 +264,15 @@ void GenericAccountSetupContext::storeIdentity()
     Q_D(GenericAccountSetupContext);
     qDebug() << Q_FUNC_INFO;
 
+    if (!d->identity) {
+        d->identity = Identity::newIdentity();
+        Q_ASSERT(d->identity);
+        connect(d->identity, SIGNAL(credentialsStored(const quint32)),
+                this, SLOT(credentialsReady(const quint32)));
+        connect(d->identity, SIGNAL(error(const SignOn::Error &)),
+                this, SLOT(storeCredentialsError(const SignOn::Error &)));
+    }
+
     d->identityInfo.setCaption(d->genericAccountSetupForm->providerName());
     d->identityInfo.setUserName(d->genericAccountSetupForm->username());
     bool storePassword = d->rememberPassword(d->genericAccountSetupForm->domDocument());
@@ -282,7 +281,6 @@ void GenericAccountSetupContext::storeIdentity()
     d->identityInfo.setSecret(d->genericAccountSetupForm->password(),
                                storePassword);
     d->identityInfo.setStoreSecret(storePassword);
-    d->authSessionStopped = false;
 
     if (d->identityCreated) {
         d->identity->storeCredentials(d->identityInfo);
@@ -455,11 +453,6 @@ void GenericAccountSetupContext::startAuthSession()
 {
     Q_D(GenericAccountSetupContext);
 
-    if (d->authSessionStopped) {
-        qDebug() << "Account validation already stopped - returning";
-        return;
-    }
-
     if (d->validationData.isNull()) {
         d->readValidationDataFromXML();
 
@@ -501,11 +494,16 @@ void GenericAccountSetupContext::stopAuthSession()
 {
     Q_D(GenericAccountSetupContext);
 
-    d->authSessionStopped = true;
-
-    d->disconnectAuthSessionSignals();
-    if  (d->authSession)
+    d->identity->disconnect();
+    if  (d->authSession) {
+        d->authSession->disconnect();
         d->authSession->cancel();
+        d->identity->destroySession(d->authSession);
+        d->authSession = 0;
+    }
+    delete d->identity;
+    d->identity = 0;
+
     if (d->networkManager)
         d->networkManager->stopSession();
 }
