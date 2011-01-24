@@ -59,6 +59,7 @@ public:
     {
         application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
+        window->setStyleName("AccountsUiWindow");
     }
 
     ProviderPluginProcessPrivate(int &argc, char **argv)
@@ -135,6 +136,7 @@ public:
         }
 
         window = new MApplicationWindow;
+        window->setStyleName("AccountsUiWindow");
 
         MLocale locale;
         locale.installTrCatalog("accountssso");

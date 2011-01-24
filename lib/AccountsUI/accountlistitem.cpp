@@ -27,7 +27,8 @@
 
 AccountListItem::AccountListItem(MDetailedListItem::ItemStyle style, QGraphicsItem *parent)
         :MDetailedListItem(style, parent)
-{}
+{
+}
 
 AccountListItem::~AccountListItem()
 {}

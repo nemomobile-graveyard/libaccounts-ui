@@ -34,10 +34,11 @@
 #include <MButton>
 #include <MTextEdit>
 #include <MInfoBanner>
-#include <MContentItem>
+#include <MBasicListItem>
 #include <MSeparator>
 #include <MLabel>
 #include <MProgressIndicator>
+#include <MImageWidget>
 
 //Qt
 #include <QDebug>
@@ -46,6 +47,20 @@
 #include <QTimer>
 
 const int BinaryTextVariantSeparator = 0x9c;
+
+class GenericAccountSetupFormListItem: public MBasicListItem
+{
+public:
+    GenericAccountSetupFormListItem(QGraphicsWidget *parent)
+            : MBasicListItem(MBasicListItem::IconWithTitle, parent)
+    {
+        setStyleName("CommonBasicListItemInverted");
+        titleLabelWidget()->setStyleName("GenericAccountSetupFormListItemStyle");
+    }
+
+    ~GenericAccountSetupFormListItem()
+    {}
+};
 
 class GenericAccountSetupFormViewPrivate
 {
@@ -87,7 +102,7 @@ public:
     MLayout *mainLayout;
     MSeparator *separator;
     MLabel *descriptionLabel;
-    MContentItem *providerInfoItem;
+    GenericAccountSetupFormListItem *providerInfoItem;
     CredentialWidgetModel *widgetModel;
     CredentialWidget *credentialWidget;
     MLabel *questionLabel;
@@ -170,16 +185,18 @@ void GenericAccountSetupFormViewPrivate::hideCredentialWidgetAndShowProgress()
     mainLayoutPolicy->addItem(separator, Qt::AlignTop);
     progressIndicator = new MProgressIndicator(NULL, MProgressIndicator::spinnerType);
     progressIndicator->setUnknownDuration(true);
+    progressIndicator->setStyleName("CommonLargeSpinnerInverted");
 
     //% "Connecting"
     connectingLabel = new MLabel(qtTrId("qtn_acc_connecting"));
-    connectingLabel->setObjectName("connectingLabel");
+    connectingLabel->setStyleName("ConnectingLabel");
+    connectingLabel->setObjectName("wgGenericAccountSetupFormViewLabel");
     connectingLabel->setAlignment(Qt::AlignCenter);
 
     //% "STOP"
     stopButton = new MButton(qtTrId("qtn_comm_stop"));
-    stopButton->setStyleName("wgStopButton");
-    stopButton->setObjectName("CommonSingleButton");
+    stopButton->setStyleName("CommonSingleButtonInverted");
+    stopButton->setObjectName("wgGenericAccountSetupFormViewButton");
     QObject::connect(stopButton, SIGNAL(clicked()),
                      controller, SIGNAL(stopButtonPressed()));
 
@@ -235,15 +252,15 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     }
 
     // Provider info widgets
-    providerInfoItem = new MContentItem(MContentItem::IconAndSingleTextLabel,
-                                        controller);
-    providerInfoItem->setObjectName("pluginProviderName");
+    providerInfoItem = new GenericAccountSetupFormListItem(controller);
+    providerInfoItem->setObjectName("wgGenericAccountSetupProviderInfoTitle");
     providerInfoItem->setTitle(providerName);
-    providerInfoItem->setImageID(providerIconId);
+    providerInfoItem->imageWidget()->setImage(providerIconId);
 
     descriptionLabel = new MLabel(qtTrId(descriptionText.toLatin1()));
     descriptionLabel->setWordWrap(true);
     descriptionLabel->setWrapMode(QTextOption::WordWrap);
+    descriptionLabel->setStyleName("CommonBodyTextInverted");
 
     // Credentials widget
     if (widgetModel) {
@@ -253,6 +270,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
 
     separator = new MSeparator();
     separator->setOrientation(Qt::Horizontal);
+    separator->setStyleName("CommonItemDividerInverted");
 
     widgetModel = new CredentialWidgetModel();
     widgetModel->setDialogsVisabilityConfig(CredentialWidgetModel::LoginDialogVisible);
@@ -277,6 +295,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
 
         //% "Don't have a %1 account yet?"
         questionLabel = new MLabel(qtTrId("qtn_acc_login_new_to_x").arg(providerName));
+        questionLabel->setStyleName("CommonBodyTextInverted");
         questionLabel->setAlignment(Qt::AlignCenter);
         questionLabel->setWordWrap(true);
         questionLabel->setWrapMode(QTextOption::WordWrap);

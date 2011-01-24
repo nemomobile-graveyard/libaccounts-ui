@@ -66,7 +66,8 @@ AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *
     d->q_ptr = this;
     d->account = context->account();
     d->serviceType = context->serviceType();
-    setObjectName("AccountSetupFinishedPage");
+    setObjectName("wgAccountSetupFinishedPage");
+    setStyleName("AccountsUiPage");
 }
 
 AccountSetupFinishedPage::~AccountSetupFinishedPage()
@@ -102,6 +103,7 @@ void AccountSetupFinishedPage::createContent()
 
     MSeparator *separatorTop = new MSeparator(this);
     separatorTop->setOrientation(Qt::Horizontal);
+    separatorTop->setStyleName("CommonItemDividerInverted");
 
     layoutPolicy->addItem(separatorTop);
 

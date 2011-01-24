@@ -301,18 +301,18 @@ void CredentialWidgetView::recreateWidgets()
     if (model()->loginDialogVisible()) {
         //% "Username"
         d->usernameLabel = new MLabel(qtTrId("qtn_acc_login_username"));
-        d->usernameLabel->setStyleName("wgUsernameLabel");
+        d->usernameLabel->setStyleName("CommonFieldLabelInverted");
 
         d->usernameTextEdit = new MTextEdit();
-        d->usernameTextEdit->setStyleName("wgUsernameTextEdit");
+        d->usernameTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
         d->usernameTextEdit->setContentType(M::EmailContentType); // TO DO url type needs to be supported if we do OpenId
 
         //% "Password"
         d->passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
-        d->passwordLabel->setStyleName("wgPasswordLabel");
+        d->passwordLabel->setStyleName("CommonFieldLabelInverted");
 
         d->passwordTextEdit = new MTextEdit();
-        d->passwordTextEdit->setStyleName("wgPasswordTextEdit");
+        d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
         d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
 
         if (model()->forgotPassword().isEmpty()) {
@@ -325,17 +325,19 @@ void CredentialWidgetView::recreateWidgets()
             d->forgotPasswordLabel->setWordWrap(true);
             d->forgotPasswordLabel->setWrapMode(QTextOption::WordWrap);
         }
-        d->forgotPasswordLabel->setStyleName("wgForgotPasswordLabel");
+        d->forgotPasswordLabel->setStyleName("CommonFieldLabelInverted");
         d->forgotPasswordLabel->setTextFormat(Qt::RichText);
         d->forgotPasswordLabel->setAlignment(Qt::AlignCenter);
-        d->forgotPasswordLabel->setObjectName("ForgotPasswordLabel");
+        d->forgotPasswordLabel->setStyleName("CommonFieldLabelInverted");
+        d->forgotPasswordLabel->setObjectName("wgForgotPasswordLabel");
 
         //% "Remember my password"
         d->rememberPasswordLabel = new MLabel(qtTrId("qtn_acc_login_remember_pw"));
-        d->rememberPasswordLabel->setStyleName("wgRememberPasswordLabel");
+        d->rememberPasswordLabel->setStyleName("CommonFieldLabelInverted");
 
         d->rememberPasswordSwitch = new MButton();
-        d->rememberPasswordSwitch->setStyleName("wgRememberPasswordSwitch");
+        d->rememberPasswordSwitch->setObjectName("wgRememberPasswordSwitch");
+        d->rememberPasswordSwitch->setStyleName("CommonSwitchInverted");
         d->rememberPasswordSwitch->setViewType(MButton::switchType);
         d->rememberPasswordSwitch->setCheckable(true);
 
@@ -365,7 +367,7 @@ void CredentialWidgetView::recreateWidgets()
     if (model()->captchaDialogVisible()) {
         //% "Enter characters you see in the picture below"
         d->captchaLabel = new MLabel(qtTrId("qtn_acc_login_captcha_info"));
-        d->captchaLabel->setStyleName("wgCaptchaLabel");
+        d->captchaLabel->setStyleName("CommonFieldLabelInverted");
 
         d->captchaImage = new CredentialImageWidget;
         d->captchaImage->setStyleName("wgCaptchaImage");
@@ -375,11 +377,11 @@ void CredentialWidgetView::recreateWidgets()
         d->captchaImage->setImage(model()->captcha().scaled(size, Qt::IgnoreAspectRatio));
 
         d->captchaRefreshButton = new MButton();
-        d->captchaRefreshButton->setStyleName("wgCaptchaRefreshButton");
+        d->captchaRefreshButton->setStyleName("CommonSingleButtonInverted");
         d->captchaRefreshButton->setIconID("icon-m-toolbar-refresh");
 
         d->captchaTextEdit = new MTextEdit();
-        d->captchaTextEdit->setStyleName("wgCaptchaTextEdit");
+        d->captchaTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
         d->captchaTextEdit->setText(model()->captchaText());
 
         connect(d->captchaImage, SIGNAL(widgetClicked()),
@@ -392,8 +394,8 @@ void CredentialWidgetView::recreateWidgets()
         Q_ASSERT(d->signInButton == 0);
         //% "CONNECT"
         d->signInButton = new MButton(qtTrId("qtn_acc_auth_dial_button"));
-        d->signInButton->setStyleName("wgSignInButton");
-        d->signInButton->setObjectName("CommonSingleButton");
+        d->signInButton->setStyleName("CommonSingleButtonInverted");
+        d->signInButton->setObjectName("wgSignInButton");
 
         connect(d->signInButton, SIGNAL(clicked()),
                         model(), SIGNAL(signInClicked()));
@@ -403,7 +405,7 @@ void CredentialWidgetView::recreateWidgets()
         Q_ASSERT(d->nextButton == 0);
         //% "Next"
         d->nextButton = new MButton(qtTrId("qtn_acc_next_button"));
-        d->nextButton->setStyleName("wgNextButton");
+        d->nextButton->setStyleName("CommonSingleButtonInverted");
 
         connect(d->nextButton, SIGNAL(clicked()),
                         model(), SIGNAL(nextClicked()));
@@ -413,7 +415,7 @@ void CredentialWidgetView::recreateWidgets()
         Q_ASSERT(d->cancelButton == 0);
         //% "Cancel"
         d->cancelButton = new MButton(qtTrId("qtn_acc_cancel_button"));
-        d->cancelButton->setStyleName("wgCancelButton");
+        d->cancelButton->setStyleName("CommonSingleButtonInverted");
 
         connect(d->cancelButton, SIGNAL(clicked()),
                         model(), SIGNAL(cancelClicked()));

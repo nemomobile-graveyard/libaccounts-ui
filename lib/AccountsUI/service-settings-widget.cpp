@@ -27,7 +27,7 @@
 #include "service-helper.h"
 
 //M
-#include <MContentItem>
+#include <MBasicListItem>
 #include <MLayout>
 #include <MLinearLayoutPolicy>
 #include <MGridLayoutPolicy>
@@ -85,18 +85,22 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
 
-    MContentItem *serviceInfo = 0;
+    MBasicListItem *serviceInfo = 0;
 
     if (settingsConf & EnableButton) {
         if (context) {
             d->enableServiceButton = new MButton(this);
             d->enableServiceButton->setViewType(MButton::switchType);
+            d->enableServiceButton->setStyleName("CommonSwitchInverted");
+            d->enableServiceButton->setObjectName("wgServiceSettingsWidgetServiceButton");
             d->enableServiceButton->setCheckable(true);
 
             ServiceHelper *serviceHepler =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
 
-            serviceInfo = new MContentItem(MContentItem::TwoTextLabels);
+            serviceInfo = new MBasicListItem(MBasicListItem::TitleWithSubtitle);
+            serviceInfo->setStyleName("CommonBasicListItemInverted");
+            serviceInfo->setObjectName("wgServiceSettingsWidgetListItem");
             serviceInfo->setTitle(serviceHepler->prettyName());
             serviceInfo->setSubtitle(serviceHepler->description());
 

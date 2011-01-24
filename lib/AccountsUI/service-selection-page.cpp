@@ -41,7 +41,7 @@
 #include <MWidgetCreator>
 #include <MContainer>
 #include <MSeparator>
-#include <MContentItem>
+#include <MBasicListItem>
 #include <MWidgetAction>
 #include <MImageWidget>
 
@@ -89,7 +89,7 @@ ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
         d_ptr(new ServiceSelectionPagePrivate())
 {
     Q_D(ServiceSelectionPage);
-    setStyleName("ServicePage");
+    setStyleName("AccountsUiPage");
     d->context = context;
     d->serviceType = context->serviceType();
     d->context->account()->selectService(NULL);
@@ -146,16 +146,18 @@ void ServiceSelectionPage::createContent()
             QString providerIconId = providerIcon.text();
 
             // Provider info widgets
-            MContentItem *providerInfoItem =
-                new MContentItem(MContentItem::IconAndTwoTextLabels, this);
-            providerInfoItem->setObjectName("pluginProviderName");
+            MBasicListItem *providerInfoItem =
+                    new MBasicListItem(MBasicListItem:: IconWithTitleAndSubtitle, this);
+            providerInfoItem->setStyleName("CommonBasicListItemInverted");
+            providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
             providerInfoItem->setTitle(providerName);
             providerInfoItem->setSubtitle(d->context->account()->displayName());
-            providerInfoItem->setImageID(providerIconId);
+            providerInfoItem->imageWidget()->setImage(providerIconId);
             horizontalLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
         }
 
         MSeparator *separatorTop = new MSeparator(this);
+        separatorTop->setStyleName("CommonItemDividerInverted");
         separatorTop->setOrientation(Qt::Horizontal);
 
         upperLayoutPolicy->addItem(horizontalLayout);
@@ -184,6 +186,7 @@ void ServiceSelectionPage::createContent()
     d->layoutPolicy->addItem(serviceWidget);
 
     MSeparator *separatorBottom = new MSeparator(this);
+    separatorBottom->setStyleName("CommonItemDividerInverted");
     separatorBottom->setOrientation(Qt::Horizontal);
     layoutServicePolicy->addItem(separatorBottom);
 

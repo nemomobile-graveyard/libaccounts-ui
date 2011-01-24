@@ -1,7 +1,19 @@
+MApplicationWindowStyle#AccountsUiWindow {
+    navigation-bar-style-name:"MNavigationBarStyleInverted";    
+}
 
-MApplicationPage MLabelStyle#connectingLabel {
-  font : "Nokia Standard Light" 32;
+MApplicationPage MLabelStyle#ConnectingLabel {
+  font: "Nokia Standard Light" 32;
   color: #1080DD;
+}
+
+MApplicationPage MLabelStyle#GenericAccountSetupFormListItemStyle {
+font:          $FONT_FAMILY bold 40; 
+color:         $COLOR_INVERTED_FOREGROUND;
+margin-top:    0.6mm;
+margin-bottom: 0;
+margin-left:   $INDENT_DEFAULT;
+margin-right:  $INDENT_DEFAULT;
 }
 
 AccountSetupFinishedWidget MLabelStyle#SuccessLabel {

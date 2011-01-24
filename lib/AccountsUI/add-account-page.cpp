@@ -81,7 +81,7 @@ AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
 {
     Q_D(AddAccountPage);
     Q_ASSERT(context);
-    setStyleName("AddAccountPage");
+    setStyleName("AccountsUiPage");
     setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
     d->serviceType = context->serviceType();

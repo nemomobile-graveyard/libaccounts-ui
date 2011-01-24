@@ -37,8 +37,9 @@
 #include <MGridLayoutPolicy>
 #include <MLabel>
 #include <MButton>
-#include <MContentItem>
+#include <MBasicListItem>
 #include <MSeparator>
+#include <MImageWidget>
 
 //Qt
 #include <QDebug>
@@ -103,16 +104,20 @@ void SettingsPage::createContent()
     ServiceHelper *serviceHepler =
         new ServiceHelper(const_cast<Accounts::Service*>(d->context->service()), this);
 
-    MContentItem *usernameAndStatus = new MContentItem(MContentItem::IconAndTwoTextLabels, this);
-    usernameAndStatus->setImageID(providerIconId);
+    MBasicListItem *usernameAndStatus = new MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, this);
+    usernameAndStatus->setStyleName("CommonBasicListItemInverted");
+    usernameAndStatus->setStyleName("wgSettingsPageCommonBasicListItem");
+    usernameAndStatus->imageWidget()->setImage(providerIconId);
     usernameAndStatus->setTitle(serviceHepler->prettyName());
     usernameAndStatus->setSubtitle(serviceHepler->description());
 
     MSeparator *separatorTop = new MSeparator(this);
+    separatorTop->setStyleName("CommonItemDividerInverted");
     separatorTop->setOrientation(Qt::Horizontal);
 
     MButton *enableButton = new MButton(this, d->buttonModel);
     enableButton->setViewType(MButton::switchType);
+    enableButton->setStyleName("CommonSwitchInverted");
     enableButton->setCheckable(true);
 
     d->context->account()->selectService(d->context->service());
