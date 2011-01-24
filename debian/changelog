@@ -1,3 +1,9 @@
+libaccounts-ui (0.60-1) unstable; urgency=low
+
+  * Fixes: NB#220936 - Logical string is shown for Cancel button in Login dialog
+
+ -- Dominic Velikakath  <dominic.velikakath@nokia.com>  Mon, 24 Jan 2011 16:37:38 +0530
+
 libaccounts-ui (0.59-1) unstable; urgency=low
 
   * Implementing the inverted Accounts-UI according to the UI spec.
