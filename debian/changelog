@@ -1,3 +1,9 @@
+libaccounts-ui (0.59-1) unstable; urgency=low
+
+  * Implementing the inverted Accounts-UI according to the UI spec.
+
+ -- Lucian Horga  <ext-lucian.horga@nokia.com>  Mon, 24 Jan 2011 11:43:00 +0300
+
 libaccounts-ui (0.58-1) unstable; urgency=low
 
   * Fixes: NB#215004 - The account UI shows "Unknown Error" while configuring account
