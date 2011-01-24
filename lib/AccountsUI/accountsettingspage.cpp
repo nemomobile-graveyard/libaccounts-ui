@@ -92,7 +92,7 @@ public:
     Accounts::Account* account;
     QList<AbstractServiceSetupContext *> contexts;
     MAction *showAllServices;
-    AccountListItem *usernameAndStatus;
+    MDetailedListItem *usernameAndStatus;
     QString serviceType;
     MLayout *serviceSettingLayout;
     MLinearLayoutPolicy *layoutServicePolicy;
@@ -195,7 +195,7 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
                  this, SLOT(saveSettings()));
     connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
-    setStyleName("AccountSettingsPage");
+    setStyleName("AccountsUiPage");
 }
 
 AccountSettingsPage::~AccountSettingsPage()
@@ -238,29 +238,31 @@ void AccountSettingsPage::createContent()
                 providerIconId = providerIcon.text();
             }
 
-            d->usernameAndStatus = new AccountListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons);
+            d->usernameAndStatus = new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons);
+            d->usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
+            d->usernameAndStatus->setObjectName("wgAccountSettingsPageListItem");
             d->usernameAndStatus->imageWidget()->setImage(providerIconId);
             d->usernameAndStatus->setTitle(providerName);
             d->usernameAndStatus->setSubtitle(d->context->account()->displayName());
 
             MSeparator *separatorTop = new MSeparator(this);
             separatorTop->setOrientation(Qt::Horizontal);
+            separatorTop->setStyleName("CommonItemDividerInverted");
 
             d->serviceList = d->account->services();
 
             d->enableButton = new MButton(this);
             d->enableButton->setViewType(MButton::switchType);
+            d->enableButton->setStyleName("CommonSwitchInverted");
             d->enableButton->setCheckable(true);
 
             d->account->selectService(NULL);
             if ( d->account->enabled()) {
                 d->panel->setEnabled(true);
                 d->enableButton->setChecked(true);
-                d->usernameAndStatus->setSubtitleLabelEnabled(true);
             } else {
                 d->panel->setEnabled(false);
                 d->enableButton->setChecked(false);
-                d->usernameAndStatus->setSubtitleLabelEnabled(false);
             }
 
             connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
@@ -307,6 +309,7 @@ void AccountSettingsPage::createContent()
     d->layoutPolicy->addItem(serviceWidget);
     if (d->settingsExist) {
         MSeparator *separatorBottom = new MSeparator(this);
+        separatorBottom->setStyleName("CommonItemDividerInverted");
         separatorBottom->setOrientation(Qt::Horizontal);
         d->layoutServicePolicy->addItem(separatorBottom);
     }
@@ -330,14 +333,6 @@ void AccountSettingsPage::enable(bool state)
     }
 
     d->context->account()->selectService(NULL);
-    if (state) {
-        if (d->usernameAndStatus)
-            d->usernameAndStatus->setSubtitleLabelEnabled(true);
-    } else {
-        if (d->usernameAndStatus)
-            d->usernameAndStatus->setSubtitleLabelEnabled(false);
-    }
-
     d->account->setEnabled(state);
 }
 
