@@ -414,7 +414,7 @@ void CredentialWidgetView::recreateWidgets()
     if (model()->cancelButtonVisible()) {
         Q_ASSERT(d->cancelButton == 0);
         //% "Cancel"
-        d->cancelButton = new MButton(qtTrId("qtn_acc_cancel_button"));
+        d->cancelButton = new MButton(qtTrId("qtn_comm_cancel"));
         d->cancelButton->setStyleName("CommonSingleButtonInverted");
 
         connect(d->cancelButton, SIGNAL(clicked()),
