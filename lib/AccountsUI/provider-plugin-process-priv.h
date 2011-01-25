@@ -27,6 +27,9 @@
 #include <AccountsUI/last-page-actions.h>
 #include <AccountsUI/provider-plugin-process.h>
 
+// AccountSetup
+#include <AccountSetup/ProviderPluginProcess>
+
 //Accounts
 #include <Accounts/account.h>
 #include <Accounts/manager.h>
@@ -49,76 +52,32 @@ class ProviderPluginProcessPrivate : public QObject
     Q_DECLARE_PUBLIC(ProviderPluginProcess)
 
 public:
-    ProviderPluginProcessPrivate(AccountPluginInterface *plugin, int &argc, char **argv)
-        : plugin(plugin)
-        , m_context(0)
-        , windowId(0)
-        , serviceType(QString())
-        , returnToApp(false)
-        , serverName(QString())
+    ProviderPluginProcessPrivate(AccountPluginInterface *plugin, int &argc, char **argv):
+        wrapped(0),
+        plugin(plugin),
+        m_context(0),
+        returnToApp(false)
     {
         application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
         window->setStyleName("AccountsUiWindow");
     }
 
-    ProviderPluginProcessPrivate(int &argc, char **argv)
-        : m_context(0)
-        , windowId(0)
+    ProviderPluginProcessPrivate(int &argc, char **argv):
+        wrapped(0),
+        m_context(0)
     {
-        account = 0;
-        setupType = CreateNew;
-
         application = MComponentCache::mApplication(argc, argv);
-        manager = new Accounts::Manager(this);
+
+        wrapped = new AccountSetup::ProviderPluginProcess(this);
+        account = wrapped->account();
 
         /* parse command line options */
-        bool type_set = false;
         for (int i = 0; i < argc; ++i)
         {
             Q_ASSERT(argv[i] != NULL);
 
-            if ((strcmp(argv[i], "--create") == 0) && !type_set)
-            {
-                setupType = CreateNew;
-                type_set = true;
-
-                i++;
-                if (i < argc) {
-                    account = manager->createAccount(argv[i]);
-                }
-            }
-            else if ((strcmp(argv[i], "--edit") == 0) && !type_set)
-            {
-                setupType = EditExisting;
-                type_set = true;
-
-                i++;
-                if (i < argc)
-                    account = manager->account(atoi(argv[i]));
-            }
-            else if (strcmp(argv[i], "--windowId") == 0)
-            {
-                i++;
-                if (i < argc)
-                    windowId = atoi(argv[i]);
-                Q_ASSERT(windowId != 0);
-            }
-            else if (strcmp(argv[i], "--serverName") == 0)
-            {
-                i++;
-                if (i < argc)
-                    serverName = argv[i];
-                Q_ASSERT(serverName != 0);
-            }
-            else if (strcmp(argv[i], "--serviceType") == 0)
-            {
-                i++;
-                if (i < argc)
-                    serviceType = argv[i];
-                Q_ASSERT(serviceType != 0);
-            }
-            else if (strcmp(argv[i], "--action") == 0)
+            if (strcmp(argv[i], "--action") == 0)
             {
                 Q_ASSERT (i + 2 < argc);
                 lastPageActions.addServiceAction(QString::fromUtf8(argv[i + 1]),
@@ -130,6 +89,7 @@ public:
         if (account != 0)
             monitorServices();
 
+        WId windowId = wrapped->parentWindowId();
         if (windowId != 0) {
             MComponentData::ChainData chainData(windowId, QString());
             MComponentData::pushChainData(chainData);
@@ -150,29 +110,23 @@ public:
         delete application;
     }
 
-    void printAccountId();
     AbstractAccountSetupContext *context() const;
     void serviceEnabled(Accounts::Service *service);
     void monitorServices();
 
 public Q_SLOTS:
     void accountSaved();
-    void socketConnectionError(QLocalSocket::LocalSocketError errorStatus);
 
 private:
     mutable ProviderPluginProcess *q_ptr;
+    AccountSetup::ProviderPluginProcess *wrapped;
     Accounts::ServiceList enabledServices;
     AccountPluginInterface *plugin;
     MApplication *application;
     MApplicationWindow *window;
     mutable AbstractAccountSetupContext *m_context;
-    Accounts::Manager *manager;
-    int windowId;
     Accounts::Account *account;
-    SetupType setupType;
-    QString serviceType;
     bool returnToApp;
-    QString serverName;
     LastPageActions lastPageActions;
 };
 

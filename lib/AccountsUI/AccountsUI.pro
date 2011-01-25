@@ -17,6 +17,7 @@ QT += xml \
 # dependencies
 # -----------------------------------------------------------------------------
 PKGCONFIG += accounts-qt \
+    AccountSetup \
     libsignon-qt \
     meegotouch
 
