@@ -167,6 +167,7 @@ void AccountSyncHandler::onContextValidateError(AccountsUI::ErrorCode code,
     }
 
     AbstractSetupContext *context = qobject_cast<AbstractSetupContext *>(QObject::sender());
+    showInfoBanner(message);
 
     qDebug() << message;
     releaseValidateLock(context);

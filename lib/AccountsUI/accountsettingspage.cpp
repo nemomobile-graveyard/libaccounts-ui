@@ -373,6 +373,9 @@ void AccountSettingsPage::onSyncStateChanged(const SyncState &state)
         case NotValidated:
             qDebug() << Q_FUNC_INFO << "NotValidated";
             setProgressIndicatorVisible(false);
+            //Saving the settings on back button press
+            connect(this, SIGNAL(backButtonClicked()),
+                         this, SLOT(saveSettings()));
             break;
         case Validated:
             qDebug() << Q_FUNC_INFO << "Validated";
