@@ -14,7 +14,7 @@ PROJECT_NAME = libAccountsUI
 # Project version
 # remember to update debian/* files if you changes this
 #-----------------------------------------------------------------------------
-PROJECT_VERSION = 0.60
+PROJECT_VERSION = 0.61
 
 
 # End of File
