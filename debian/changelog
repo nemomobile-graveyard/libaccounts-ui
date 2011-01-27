@@ -1,3 +1,9 @@
+libaccounts-ui (0.61-1) unstable; urgency=low
+
+  * Fixes: NB#221669 - Back button become unavailable
+
+ -- Dominic Velikakath  <dominic.velikakath@nokia.com>  Thu, 27 Jan 2011 21:03:35 +0530
+
 libaccounts-ui (0.60-1) unstable; urgency=low
 
   * Fixes: NB#220936 - Logical string is shown for Cancel button in Login dialog
