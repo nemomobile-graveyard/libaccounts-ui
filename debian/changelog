@@ -1,3 +1,9 @@
+libaccounts-ui (0.62-1) unstable; urgency=low
+
+  * Use libAccountSetup to implement the launching of the provider plugins.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Mon, 31 Jan 2011 10:33:51 +0200
+
 libaccounts-ui (0.61-1) unstable; urgency=low
 
   * Fixes: NB#221669 - Back button become unavailable
