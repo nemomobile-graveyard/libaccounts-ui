@@ -2,7 +2,7 @@ Source: libaccounts-ui
 Section: comm
 Priority: optional
 Maintainer: Alberto Mardegan <alberto.mardegan@nokia.com>
-Build-Depends: debhelper(>=5), doxygen, libaccounts-qt-dev (>= 0.32), libsignon-qt-dev, libqt4-dev(>= 4.5), libmeegotouch-dev(>= 0.20.15)
+Build-Depends: debhelper(>=5), doxygen, libaccounts-qt-dev (>= 0.32), libsignon-qt-dev, libqt4-dev(>= 4.5), libmeegotouch-dev(>= 0.20.15), libaccountsetup-dev
 Standards-Version: 3.7.2
 
 Package: libaccounts-ui-doc
@@ -17,7 +17,7 @@ Package: libaccountplugin-dev
 Architecture: any
 Section: devel
 Priority: optional
-Depends: pkg-config (>= 0.22), libaccountplugin0 (= ${binary:Version}), libaccounts-qt-dev, libsignon-qt-dev
+Depends: pkg-config (>= 0.22), libaccountplugin0 (= ${binary:Version}), libaccounts-qt-dev, libsignon-qt-dev, libaccountsetup-dev
 Replaces: libaccounts-ui-dev
 Description: Accounts-ui plugin development headers
  Development package for building plugins for the MeeGo accounts UI.
