@@ -41,38 +41,24 @@ namespace AccountsUI {
 
 static ProviderPluginProcess *plugin_instance = 0;
 
-void ProviderPluginProcessPrivate::printAccountId()
-{
-    Accounts::Account *account = context()->account();
-
-    QByteArray ba = QString("%1 %2").arg(account->id()).arg(QString::number(returnToApp)).toAscii();
-    if (!serverName.isEmpty()) {
-        QLocalSocket *socket = new QLocalSocket();
-        connect(socket, SIGNAL(error(QLocalSocket::LocalSocketError)),
-                this, SLOT(socketConnectionError(QLocalSocket::LocalSocketError)));
-        socket->connectToServer(serverName);
-        socket->write(ba);
-        socket->flush();
-        socket->close();
-    } else {
-        QFile output;
-        output.open(STDOUT_FILENO, QIODevice::WriteOnly);
-        output.write(ba.constData());
-        output.close();
-    }
-}
-
-void ProviderPluginProcessPrivate::socketConnectionError(QLocalSocket::LocalSocketError status)
-{
-    qDebug() << Q_FUNC_INFO << status;
-}
-
-
 AbstractAccountSetupContext *ProviderPluginProcessPrivate::context() const
 {
     if (!m_context) {
+        SetupType setupType;
+        switch (wrapped->setupType()) {
+        case AccountSetup::CreateNew:
+            setupType = CreateNew;
+            break;
+        case AccountSetup::EditExisting:
+            setupType = EditExisting;
+            break;
+        default:
+            qWarning() << "Setup type not recognized:" << wrapped->setupType();
+            return 0;
+        }
+
         m_context = q_ptr->accountSetupContext(account, setupType, q_ptr);
-        m_context->setServiceType(serviceType);
+        m_context->setServiceType(wrapped->serviceType());
     }
     return m_context;
 }
@@ -127,7 +113,8 @@ void ProviderPluginProcessPrivate::monitorServices()
     /* If we are editing an account, get the list of services initially
      * enabled, to avoid starting up their handlers for no reason */
     account->selectService();
-    if (setupType == EditExisting && account->enabled()) {
+    if (wrapped->setupType() == AccountSetup::EditExisting &&
+        account->enabled()) {
         foreach (Accounts::Service *service, account->services()) {
             account->selectService(service);
             if (account->enabled())
@@ -140,10 +127,7 @@ ProviderPluginProcess::ProviderPluginProcess(AccountPluginInterface *plugin,
                                              int &argc, char **argv)
     : d_ptr(new ProviderPluginProcessPrivate(plugin, argc, argv))
 {
-    Q_D(ProviderPluginProcess);
     init(argc, argv);
-    d->m_context = plugin->accountSetupContext(d->account, d->setupType, this);
-    d->m_context->setServiceType(d->serviceType);
 }
 
 ProviderPluginProcess::ProviderPluginProcess(int &argc, char **argv)
@@ -219,9 +203,7 @@ void ProviderPluginProcess::quit()
 {
     Q_D(ProviderPluginProcess);
 
-    d->printAccountId();
-
-    QCoreApplication::exit(0);
+    d->wrapped->quit();
 }
 
 AbstractAccountSetupContext *ProviderPluginProcess::setupContext() const

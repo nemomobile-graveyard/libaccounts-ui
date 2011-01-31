@@ -122,8 +122,9 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
         MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
 
         if (widget) {
-            MImageWidget *sideImage = new MImageWidget("icon-m-common-drilldown-arrow", upperWidget);
+            MImageWidget *sideImage = new MImageWidget("icon-m-common-drilldown-arrow-inverse", upperWidget);
             sideImage->setStyleName("CommonDrillDownIcon");
+            sideImage->setObjectName("wgServiceSettingsWidgetDrillDownIcon");
             containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
             if (serviceInfo)
                 connect(serviceInfo, SIGNAL(clicked()),
