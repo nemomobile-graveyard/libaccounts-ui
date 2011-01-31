@@ -1,3 +1,10 @@
+libaccounts-ui (0.62-1) unstable; urgency=low
+
+  * Fixes: NB#222915 - [Inverted UI]icon-m-common-drilldown-arrow to open service settings is not visible in Accounts view
+  * Implemented the inverted styling for the Service Settings widget.
+
+ -- Lucian Horga  <ext-lucian.horga@nokia.com>  Mon, 31 Jan 2011 12:36:00 +0300
+
 libaccounts-ui (0.61-1) unstable; urgency=low
 
   * Fixes: NB#221669 - Back button become unavailable
