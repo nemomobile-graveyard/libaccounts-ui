@@ -37,7 +37,7 @@
 #include <MGridLayoutPolicy>
 #include <MLabel>
 #include <MButton>
-#include <MBasicListItem>
+#include <MDetailedListItem>
 #include <MSeparator>
 #include <MImageWidget>
 
@@ -80,6 +80,9 @@ SettingsPage::~SettingsPage()
 void SettingsPage::createContent()
 {
     Q_D(SettingsPage);
+
+    setStyleName("AccountsUiPage");
+
     //% "%1 settings"
     setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->service()->name()));
 
@@ -104,9 +107,10 @@ void SettingsPage::createContent()
     ServiceHelper *serviceHepler =
         new ServiceHelper(const_cast<Accounts::Service*>(d->context->service()), this);
 
-    MBasicListItem *usernameAndStatus = new MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, this);
-    usernameAndStatus->setStyleName("CommonBasicListItemInverted");
-    usernameAndStatus->setStyleName("wgSettingsPageCommonBasicListItem");
+    MDetailedListItem *usernameAndStatus =
+            new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons, this);
+    usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
+    usernameAndStatus->setObjectName("wgSettingsPageCommonBasicListItem");
     usernameAndStatus->imageWidget()->setImage(providerIconId);
     usernameAndStatus->setTitle(serviceHepler->prettyName());
     usernameAndStatus->setSubtitle(serviceHepler->description());

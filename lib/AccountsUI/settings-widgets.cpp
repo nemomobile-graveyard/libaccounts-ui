@@ -41,7 +41,9 @@ static MLayout *wrapWithLabelAbove(QGraphicsLayoutItem *widget, const QString &t
         new MLinearLayoutPolicy(formElementLayout, Qt::Vertical);
     formElementLayoutPolicy->setSpacing(0);
 
-    formElementLayoutPolicy->addItem(new MLabel(text));
+    MLabel *label = new MLabel(text);
+    label->setStyleName("CommonFieldLabelInverted");
+    formElementLayoutPolicy->addItem(label);
     formElementLayoutPolicy->addItem(widget);
 
     qDebug() << "created label" << text;
@@ -93,6 +95,7 @@ QGraphicsLayoutItem *ParameterText::ui(const QDomElement &node,
         editor->setText(context->account()->valueAsString(key));
         context->settingsMap.insert(key, editor->model());
     }
+
     // tune the MWidget
     editor->setStyleName(QString(key));
     editor->setInputMethodCorrectionEnabled (false);
