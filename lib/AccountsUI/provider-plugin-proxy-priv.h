@@ -28,6 +28,9 @@
 #include "last-page-actions.h"
 #include "provider-plugin-proxy.h"
 
+// AccountSetup
+#include <AccountSetup/ProviderPluginProxy>
+
 //Accounts
 #include <Accounts/Manager>
 
@@ -49,42 +52,39 @@ PWATCHER_INIT(pwatcher);
 
 namespace AccountsUI {
 
+class ProviderPluginProxyWrapper: public AccountSetup::ProviderPluginProxy
+{
+    Q_OBJECT
+public:
+    ProviderPluginProxyWrapper(QObject *parent):
+        AccountSetup::ProviderPluginProxy(parent)
+    {
+        QStringList dirs;
+
+        dirs << QString::fromLatin1("/usr/libexec/AccountsUI") <<
+            pluginDirectories();
+        setPluginDirectories(dirs);
+    }
+
+    void setLastPageArguments(const LastPageActions *lastPageActions);
+    bool stopProcess();
+};
+
 class ProviderPluginProxyPrivate: public QObject
 {
     Q_OBJECT
     Q_DECLARE_PUBLIC(ProviderPluginProxy)
 
 public:
-    ProviderPluginProxyPrivate():
-        pluginName(),
-        process(0),
-        serverName(QString ()),
-        accountInfo(QString ())
-    {}
-    ~ProviderPluginProxyPrivate();
-
-    void addLastPageArguments(QStringList &arguments,
-                              const LastPageActions *lastPageActions);
-
-    void startProcess(Provider *provider, AccountId accountId,
-                      const QString &serviceType,
-                      const LastPageActions *lastPageActions = 0);
-    bool stopProcess();
+    ProviderPluginProxyPrivate();
+    ~ProviderPluginProxyPrivate() {};
 
 private Q_SLOTS:
-    void onReadStandardError();
-    void onError(QProcess::ProcessError);
-    void onFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void onNewConnection();
-    void setCommunicationChannel();
+    void onPluginFinished();
 
 private:
     mutable ProviderPluginProxy *q_ptr;
-    bool newAccountCreation;
-    QString pluginName;
-    QProcess *process;
-    QString serverName;
-    QString accountInfo;
+    ProviderPluginProxyWrapper *wrapper;
 };
 
 }; // namespace
