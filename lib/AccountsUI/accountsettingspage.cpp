@@ -140,7 +140,7 @@ void AccountSettingsPage::setServicesToBeShown()
         ServiceSettingsWidget *settingsWidget;
 
         d->account->selectService(service);
-
+        emit serviceEnabled(service->name(), d->account->enabled());
         bool enabled = false;
         if (d->account->enabled() &&
             !enabledServiceTypes.contains(service->serviceType())) {
@@ -172,9 +172,12 @@ void AccountSettingsPage::setServicesToBeShown()
     if (d->settingsWidgets.count() > 1)
         d->settingsExist = true;
 
-    foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets)
+    foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets) {
         connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
                  this, SLOT(disableSameServiceTypes(const QString&)));
+        connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+                 this, SIGNAL(serviceEnabled(const QString&, bool)));
+    }
 }
 
 AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)

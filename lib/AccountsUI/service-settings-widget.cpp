@@ -152,7 +152,7 @@ void ServiceSettingsWidget::enabled(bool enabled)
         return;
 
     d->context->enable(enabled);
-
+    emit serviceEnabled(d->context->service()->name(), enabled);
     if (enabled &&
         d->context->service()) {
             emit serviceButtonEnabled(d->context->service()->serviceType());
