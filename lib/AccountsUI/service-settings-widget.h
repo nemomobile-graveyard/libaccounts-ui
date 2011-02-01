@@ -65,6 +65,7 @@ public:
 
     Q_SIGNALS:
         void serviceButtonEnabled(const QString &serviceType);
+        void serviceEnabled(const QString &serviceName, bool enabled);
 
     private Q_SLOTS:
         void enabled(bool enabled);
