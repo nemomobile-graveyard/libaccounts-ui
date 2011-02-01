@@ -80,7 +80,7 @@ public:
     const AbstractAccountSetupContext *context();
 
 
-void setWidget(MWidget *widget);
+    void setWidget(MWidget *widget);
 
     /*!
      * Allows clients to hide services from service selection screen.
@@ -101,6 +101,9 @@ public slots:
      * confirmation to the user.
      */
     virtual void removeAccount();
+
+Q_SIGNALS:
+    void serviceEnabled(const QString &serviceName, bool enabled);
 
 private slots:
     void saveSettings();
