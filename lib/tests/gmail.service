@@ -7,12 +7,12 @@
 
   <!-- default settings (account settings have precedence over these) -->
   <template>
-    <parameters>
+    <group name="parameters">
       <setting name="server">imap.google.com</setting>
       <setting name="port" type="i">5223</setting>
       <setting name="old-ssl" type="b">1</setting>
       <setting name="fallback-conference-server">conference.jabber.org</setting>
-    </parameters>
+    </group>
     <setting name="enabled" type="b">true</setting>
   </template>
 
