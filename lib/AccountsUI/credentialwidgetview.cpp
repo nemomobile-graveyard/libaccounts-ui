@@ -638,11 +638,11 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
     //landscape mode
     d->landscapePolicy->addItem(d->usernameLabel,row,0);
     row++;
-    d->landscapePolicy->addItem(d->passwordLabel,row,2,1,2);
+    d->landscapePolicy->addItem(d->usernameTextEdit,row,0);
+    row--;
+    d->landscapePolicy->addItem(d->passwordLabel,row,1);
     row++;
-    d->landscapePolicy->addItem(d->usernameTextEdit,row,0,1,2);
-    row++;
-    d->landscapePolicy->addItem(d->passwordTextEdit,row,2,1,2);
+    d->landscapePolicy->addItem(d->passwordTextEdit,row,1);
 
     if (model()->forgotPasswordVisible()) {
         row++;
@@ -751,14 +751,12 @@ void CredentialWidgetView::configureWithLogin()
     row = 0;
     //landscape mode
     d->landscapePolicy->addItem(d->usernameLabel,row,0);
-    d->landscapePolicy->setRowSpacing(row,0);
     row++;
     d->landscapePolicy->addItem(d->usernameTextEdit,row,0);
+    row--;
+    d->landscapePolicy->addItem(d->passwordLabel,row,1);
     row++;
-    d->landscapePolicy->addItem(d->passwordLabel,row,0);
-    d->landscapePolicy->setRowSpacing(row,0);
-    row++;
-    d->landscapePolicy->addItem(d->passwordTextEdit,row,0);
+    d->landscapePolicy->addItem(d->passwordTextEdit,row,1);
 
     if (model()->forgotPasswordVisible()) {
         row++;
@@ -820,7 +818,7 @@ void CredentialWidgetView::updateMainLayout()
     else
         configureWithButtonsOnly();
 
-    d->landscapePolicy->setColumnStretchFactor(0,99);
+    d->landscapePolicy->setColumnStretchFactor(0,1);
     d->landscapePolicy->setColumnStretchFactor(1,1);
 
     d->portraitPolicy->setColumnStretchFactor(0,99);
