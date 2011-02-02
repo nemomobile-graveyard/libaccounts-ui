@@ -1,3 +1,9 @@
+libaccounts-ui (0.65-1) unstable; urgency=low
+
+  * Fixes: NB#219539 - Login view is not as per the Layout guide in Landscape mode.
+
+ -- Lucian Horga <ext-lucian.horga@nokia.com>  Wed, 02 Feb 2011 13:55:00 +0200
+
 libaccounts-ui (0.64-1) unstable; urgency=low
 
   * Fixes: NB#213723 - Scheduled synchronization panel in account sync widget does not correctly display content types selected for synchronization
