@@ -58,6 +58,9 @@ private slots:
     void onSyncStateChanged(const SyncState &state);
     void onAccountInstallButton();
 
+Q_SIGNALS:
+    void serviceEnabled(const QString &serviceName, bool enabled);
+
 private:
     ServiceSelectionPagePrivate *d_ptr;
     Q_DISABLE_COPY(ServiceSelectionPage)
