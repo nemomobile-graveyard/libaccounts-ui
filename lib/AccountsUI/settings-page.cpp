@@ -119,23 +119,23 @@ void SettingsPage::createContent()
     separatorTop->setStyleName("CommonItemDividerInverted");
     separatorTop->setOrientation(Qt::Horizontal);
 
-    MButton *enableButton = new MButton(this, d->buttonModel);
-    enableButton->setViewType(MButton::switchType);
-    enableButton->setStyleName("CommonSwitchInverted");
-    enableButton->setCheckable(true);
+    d->enableButton = new MButton(this, d->buttonModel);
+    d->enableButton->setViewType(MButton::switchType);
+    d->enableButton->setStyleName("CommonSwitchInverted");
+    d->enableButton->setCheckable(true);
 
     d->context->account()->selectService(d->context->service());
 
     if (d->buttonModel->checked())
-        enableButton->setChecked(true);
+        d->enableButton->setChecked(true);
     else
-        enableButton->setChecked(false);
+        d->enableButton->setChecked(false);
 
-    connect(enableButton, SIGNAL(toggled(bool)),
-            this, SLOT(changeServiceStatus(bool)));
+    connect(this, SIGNAL(backButtonClicked()),
+            this, SLOT(changeServiceStatus()));
 
     horizontalLayoutPolicy->addItem(usernameAndStatus, Qt::AlignLeft | Qt::AlignVCenter);
-    horizontalLayoutPolicy->addItem(enableButton, Qt::AlignRight | Qt::AlignVCenter);
+    horizontalLayoutPolicy->addItem(d->enableButton, Qt::AlignRight | Qt::AlignVCenter);
     upperLayoutPolicy->addItem(horizontalLayout);
     upperLayoutPolicy->addItem(separatorTop);
 
@@ -152,11 +152,13 @@ void SettingsPage::createContent()
     setCentralWidget(centralWidget);
 }
 
-void SettingsPage::changeServiceStatus(bool status)
+void SettingsPage::changeServiceStatus()
 {
     Q_D(SettingsPage);
+    bool status = d->enableButton->isChecked();
     d->context->account()->selectService(d->context->service());
-    d->context->account()->setEnabled(status);
+    if (d->context->account()->enabled() != status)
+        d->context->account()->setEnabled(status);
 }
 
 }//end of namespace
