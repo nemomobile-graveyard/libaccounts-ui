@@ -65,7 +65,8 @@ public:
     }
 
     virtual void store(GenericServiceSetupContext *context) {
-        context->account()->setValue(key, editor->text());
+        if (context->account()->valueAsString(key) != editor->text())
+            context->account()->setValue(key, editor->text());
     }
 
     virtual QGraphicsLayoutItem* ui(const QDomElement &node, GenericServiceSetupContext *context,
@@ -88,8 +89,9 @@ protected:
     MTextEdit *editor;
 
     virtual void store(GenericServiceSetupContext *context) {
-        context->account()->setValue(key,
-                                     editor->text().toInt());
+        if (context->account()->valueAsInt(key) != editor->text().toInt())
+            context->account()->setValue(key,
+                                         editor->text().toInt());
     }
 
 public:
@@ -116,6 +118,7 @@ protected:
     MButton *button;
     virtual void store(GenericServiceSetupContext *context)
         {
+        if (context->account()->valueAsBool(key) != button->isChecked())
             context->account()->setValue(key,button->isChecked());
         }
 public:

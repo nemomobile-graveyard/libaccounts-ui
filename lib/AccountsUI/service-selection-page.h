@@ -57,6 +57,8 @@ private slots:
     void serviceSelected(QModelIndex);
     void onSyncStateChanged(const SyncState &state);
     void onAccountInstallButton();
+    void setEnabledService(const QString &serviceName,
+                           bool enabled);
 
 Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);

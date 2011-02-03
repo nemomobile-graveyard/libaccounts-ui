@@ -79,6 +79,7 @@ public:
     MLayout *layout;
     MLinearLayoutPolicy *layoutPolicy;
     QString serviceType;
+    QMap<QString, bool> serviceStatusMap;
 };
 
 ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
@@ -180,10 +181,13 @@ void ServiceSelectionPage::createContent()
                                       true);
         const Accounts::Service *service = d->serviceContextList.at(i)->service();
         emit serviceEnabled(service->name(), true);
+        d->serviceStatusMap.insert(service->name(), true);
         d->abstractContexts.append(d->serviceContextList.at(i));
         layoutServicePolicy->addItem(settingsWidget);
         connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
                  this, SIGNAL(serviceEnabled(const QString&, bool)));
+        connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+                 this, SLOT(setEnabledService(const QString&, bool)));
     }
 
     d->layoutPolicy->addItem(serviceWidget);
@@ -225,6 +229,15 @@ void ServiceSelectionPage::onAccountInstallButton()
                this, SLOT(close()));
 
     setProgressIndicatorVisible(true);
+    for (int i = 0; i < d->serviceContextList.count(); i++) {
+        const Accounts::Service *service = d->serviceContextList.at(i)->service();
+        QMap<QString, bool>::iterator mapIterator =
+                d->serviceStatusMap.find(service->name());
+        if (mapIterator == d->serviceStatusMap.end())
+            continue;
+        d->serviceContextList.at(i)->enable(mapIterator.value());
+        d->serviceStatusMap.remove(mapIterator.key());
+    }
     d->syncHandler->validate(d->abstractContexts);
 }
 
@@ -263,6 +276,13 @@ void ServiceSelectionPage::setWidget(MWidget *widget)
 
      if(d->layoutPolicy && widget)
         d->layoutPolicy->addItem(widget);
+}
+
+void ServiceSelectionPage::setEnabledService(const QString &serviceName,
+                                            bool enabled)
+{
+    Q_D(ServiceSelectionPage);
+    d->serviceStatusMap[serviceName] = enabled;
 }
 
 } //namespace
