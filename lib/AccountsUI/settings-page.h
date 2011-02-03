@@ -42,8 +42,6 @@ public:
     virtual ~SettingsPage();
     virtual void createContent();
 
-private slots:
-    void changeServiceStatus(bool);
 
 private:
     SettingsPagePrivate *d_ptr;
