@@ -1,3 +1,9 @@
+libaccounts-ui (0.66-1) unstable; urgency=low
+
+  * Fixes: NB#213723 - Scheduled synchronization panel in account sync widget does not correctly display content types selected for synchronization
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 03 Feb 2011 05:41:22 +0300
+
 libaccounts-ui (0.65-1) unstable; urgency=low
 
   * Fixes: NB#219539 - Login view is not as per the Layout guide in Landscape mode.
