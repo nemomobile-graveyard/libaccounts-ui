@@ -108,6 +108,7 @@ public:
     MLinearLayoutPolicy *panelPolicy;
     bool settingsExist;
     Accounts::ServiceList hiddenServiceList;
+    QMap<QString, bool> serviceStatusMap;
 };
 
 void AccountSettingsPage::setServicesToBeShown()
@@ -140,6 +141,7 @@ void AccountSettingsPage::setServicesToBeShown()
         ServiceSettingsWidget *settingsWidget;
 
         d->account->selectService(service);
+        d->serviceStatusMap.insert(service->name(), d->account->enabled());
         emit serviceEnabled(service->name(), d->account->enabled());
         bool enabled = false;
         if (d->account->enabled() &&
@@ -177,6 +179,8 @@ void AccountSettingsPage::setServicesToBeShown()
                  this, SLOT(disableSameServiceTypes(const QString&)));
         connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
                  this, SIGNAL(serviceEnabled(const QString&, bool)));
+        connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+                 this, SLOT(setEnabledService(const QString&, bool)));
     }
 }
 
@@ -329,14 +333,6 @@ void AccountSettingsPage::enable(bool state)
 {
     Q_D(AccountSettingsPage);
     d->panel->setEnabled(state);
-
-    if (d->serviceList.count() == 1) {
-        d->account->selectService(d->serviceList.at(0));
-        d->account->setEnabled(state);
-    }
-
-    d->context->account()->selectService(NULL);
-    d->account->setEnabled(state);
 }
 
 void AccountSettingsPage::removeAccount()
@@ -361,6 +357,26 @@ void AccountSettingsPage::saveSettings()
     disconnect(this , SIGNAL(backButtonClicked()), 0, 0);
     setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
+    bool state = d->enableButton->isChecked();
+    if (d->serviceList.count() == 1) {
+        d->account->selectService(d->serviceList.at(0));
+        if (d->account->enabled() != state)
+            d->account->setEnabled(state);
+    } else if (d->serviceList.count() > 1) {
+        foreach (AbstractServiceSetupContext *serviceContext, d->contexts) {
+            const Accounts::Service *service = serviceContext->service();
+            QMap<QString, bool>::iterator i =
+                    d->serviceStatusMap.find(service->name());
+            d->account->selectService(service);
+            if (d->account->enabled() != i.value())
+                    serviceContext->enable(i.value());
+            d->serviceStatusMap.remove(i.key());
+        }
+    }
+
+    d->context->account()->selectService(NULL);
+    if (d->account->enabled() != state)
+        d->account->setEnabled(state);
 
     //we should call only validate. Storing will be handled
     //in onSyncStateChangted func.
@@ -472,6 +488,13 @@ void AccountSettingsPage::setHiddenServices(const Accounts::ServiceList &hiddenS
 {
     Q_D(AccountSettingsPage);
     d->hiddenServiceList = hiddenServices;
+}
+
+void AccountSettingsPage::setEnabledService(const QString &serviceName,
+                                            bool enabled)
+{
+    Q_D(AccountSettingsPage);
+    d->serviceStatusMap[serviceName] = enabled;
 }
 
 } // namespace
