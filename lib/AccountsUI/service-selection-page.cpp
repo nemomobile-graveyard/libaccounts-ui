@@ -178,9 +178,12 @@ void ServiceSelectionPage::createContent()
                                       ServiceSettingsWidget::MandatorySettings |
                                       ServiceSettingsWidget::EnableButton,
                                       true);
-
+        const Accounts::Service *service = d->serviceContextList.at(i)->service();
+        emit serviceEnabled(service->name(), true);
         d->abstractContexts.append(d->serviceContextList.at(i));
         layoutServicePolicy->addItem(settingsWidget);
+        connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+                 this, SIGNAL(serviceEnabled(const QString&, bool)));
     }
 
     d->layoutPolicy->addItem(serviceWidget);
