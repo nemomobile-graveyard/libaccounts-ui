@@ -131,9 +131,6 @@ void SettingsPage::createContent()
     else
         d->enableButton->setChecked(false);
 
-    connect(this, SIGNAL(backButtonClicked()),
-            this, SLOT(changeServiceStatus()));
-
     horizontalLayoutPolicy->addItem(usernameAndStatus, Qt::AlignLeft | Qt::AlignVCenter);
     horizontalLayoutPolicy->addItem(d->enableButton, Qt::AlignRight | Qt::AlignVCenter);
     upperLayoutPolicy->addItem(horizontalLayout);
@@ -150,15 +147,6 @@ void SettingsPage::createContent()
     layoutPolicy->addStretch();
 
     setCentralWidget(centralWidget);
-}
-
-void SettingsPage::changeServiceStatus()
-{
-    Q_D(SettingsPage);
-    bool status = d->enableButton->isChecked();
-    d->context->account()->selectService(d->context->service());
-    if (d->context->account()->enabled() != status)
-        d->context->account()->setEnabled(status);
 }
 
 }//end of namespace
