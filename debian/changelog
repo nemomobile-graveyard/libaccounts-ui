@@ -1,3 +1,9 @@
+libaccounts-ui (0.68-1) unstable; urgency=low
+
+  * Fixes: NB#225464 - Simple accounts are configured with disabled state
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 07 Feb 2011 05:58:22 +0300
+
 libaccounts-ui (0.67-1) unstable; urgency=low
 
   * Fixes: NB#200000 - Accounts-ui should not re-write settings which have not changed
