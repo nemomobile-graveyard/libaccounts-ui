@@ -160,6 +160,8 @@ void AddAccountPage::navigateToServiceSelectionPage()
         d->syncHandler = new AccountSyncHandler(this);
         connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
                 this, SLOT(onSyncStateChanged(const SyncState&)));
+        d->context->account()->selectService(NULL);
+        d->context->account()->setEnabled(true);
 
         d->abstractContexts.append(d->context);
         if (d->serviceContextList.count() == 1)
