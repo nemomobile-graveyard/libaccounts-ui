@@ -1,3 +1,9 @@
+libaccounts-ui (0.70-1) unstable; urgency=low
+
+  * Fixes: NB#225004 - Login dialog - username and password fields are not placed properly in Landscape mode.
+
+ -- Lucian Horga <ext-lucian.horga@nokia.com>  Tue, 08 Feb 2011 13:59:00 +0200
+
 libaccounts-ui (0.69-1) unstable; urgency=low
 
   * Fixes: NB#225464 - Simple accounts are configured with disabled state
