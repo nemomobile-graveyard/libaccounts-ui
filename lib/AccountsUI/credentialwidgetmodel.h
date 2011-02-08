@@ -137,6 +137,13 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     */
     M_MODEL_PROPERTY(bool, enabled, Enabled, true, true)
 
+    /*!
+        \property CredentialWidgetModel::forcedPortraitMode
+        \brief .Property holding whether the whole widget is always shown in portrait layout.
+                This is specially useful in the Signon-Ui credentials dialog.
+    */
+    M_MODEL_PROPERTY(bool, forcedPortraitMode, ForcedPortraitMode, true, false)
+
     public:
 
         enum Configuration {

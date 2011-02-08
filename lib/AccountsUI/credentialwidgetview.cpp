@@ -825,7 +825,11 @@ void CredentialWidgetView::updateMainLayout()
     d->portraitPolicy->setColumnStretchFactor(1,1);
 
     d->mainLayout->setPortraitPolicy(d->portraitPolicy);
-    d->mainLayout->setLandscapePolicy(d->landscapePolicy);
+
+    if(model()->forcedPortraitMode())
+        d->mainLayout->setLandscapePolicy(d->portraitPolicy);
+    else
+        d->mainLayout->setLandscapePolicy(d->landscapePolicy);
 }
 
 M_REGISTER_VIEW_NEW(CredentialWidgetView, CredentialWidget);
