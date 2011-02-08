@@ -164,11 +164,8 @@ void AddAccountPage::navigateToServiceSelectionPage()
         d->context->account()->setEnabled(true);
 
         d->abstractContexts.append(d->context);
-        if (d->serviceContextList.count() == 1) {
-            d->context->account()->selectService(d->serviceContextList.at(0)->service());
-            d->context->account()->setEnabled(true);
+        if (d->serviceContextList.count() == 1)
             d->abstractContexts.append(d->serviceContextList.at(0));
-        }
 
         setProgressIndicatorVisible(true);
 

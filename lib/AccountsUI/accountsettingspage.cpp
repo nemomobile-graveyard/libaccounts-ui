@@ -357,30 +357,29 @@ void AccountSettingsPage::saveSettings()
     disconnect(this , SIGNAL(backButtonClicked()), 0, 0);
     setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
-    if (d->enableButton) {
-        bool state = d->enableButton->isChecked();
-        if (d->serviceList.count() == 1) {
-            d->account->selectService(d->serviceList.at(0));
-            if (d->account->enabled() != state)
-                d->account->setEnabled(state);
-        } else if (d->serviceList.count() > 1) {
-            foreach (AbstractServiceSetupContext *serviceContext, d->contexts) {
-                const Accounts::Service *service = serviceContext->service();
-                QMap<QString, bool>::iterator i =
-                        d->serviceStatusMap.find(service->name());
-                if (i == d->serviceStatusMap.end())
-                    continue;
-                d->account->selectService(service);
-                if (d->account->enabled() != i.value())
-                        serviceContext->enable(i.value());
-                d->serviceStatusMap.remove(i.key());
-            }
-        }
-
-        d->context->account()->selectService(NULL);
+    bool state = d->enableButton->isChecked();
+    if (d->serviceList.count() == 1) {
+        d->account->selectService(d->serviceList.at(0));
         if (d->account->enabled() != state)
             d->account->setEnabled(state);
+    } else if (d->serviceList.count() > 1) {
+        foreach (AbstractServiceSetupContext *serviceContext, d->contexts) {
+            const Accounts::Service *service = serviceContext->service();
+            QMap<QString, bool>::iterator i =
+                    d->serviceStatusMap.find(service->name());
+            if (i == d->serviceStatusMap.end())
+                continue;
+            d->account->selectService(service);
+            if (d->account->enabled() != i.value())
+                    serviceContext->enable(i.value());
+            d->serviceStatusMap.remove(i.key());
+        }
     }
+
+    d->context->account()->selectService(NULL);
+    if (d->account->enabled() != state)
+        d->account->setEnabled(state);
+
     //we should call only validate. Storing will be handled
     //in onSyncStateChangted func.
     d->syncHandler->validate(d->abstractContexts);
