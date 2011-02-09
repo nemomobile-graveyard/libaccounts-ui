@@ -1,3 +1,10 @@
+libaccounts-ui (0.72-1) unstable; urgency=low
+
+  * Fixes: NB#211254 - Account setup finished view not shown for Simple accounts (Provider which has only one service)
+  * Fixes: NB#218527 - "qtn_acc_remove_account" title string is not shown in Remove account confirmation dialog
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Wed, 09 Feb 2011 17:13:38 +0530
+
 libaccounts-ui (0.71-1) unstable; urgency=low
 
   * Fixes: NB#225464 - Simple accounts are configured with disabled state
