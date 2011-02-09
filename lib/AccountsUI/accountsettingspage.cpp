@@ -340,8 +340,10 @@ void AccountSettingsPage::removeAccount()
     Q_D(AccountSettingsPage);
     //% "Delete %1 from your device?"
     QString dialogTitle =
-        qtTrId("qtn_acc_remove_account_statement").arg(d->context->account()->displayName());
-    MMessageBox removeMBox(dialogTitle, M::YesButton | M::NoButton);
+        qtTrId("qtn_acc_remove_account").arg(d->context->account()->displayName());
+    //% "All content related to this account will be deleted permanently"
+    MMessageBox removeMBox(dialogTitle, qtTrId("qtn_acc_remove_account_statement"),
+                           M::YesButton | M::NoButton);
     removeMBox.setStyleName("RemoveDialog");
 
     if (removeMBox.exec() == M::YesButton) {
