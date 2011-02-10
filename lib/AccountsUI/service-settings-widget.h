@@ -26,6 +26,7 @@
 //M
 #include <MContainer>
 #include <MWidget>
+#include <MBasicListItem>
 
 namespace AccountsUI {
 
@@ -75,6 +76,23 @@ private:
     ServiceSettingsWidgetPrivate *d_ptr;
     Q_DISABLE_COPY(ServiceSettingsWidget)
     Q_DECLARE_PRIVATE(ServiceSettingsWidget)
+};
+
+class ServiceSettingsWidgetListItem : public MBasicListItem
+{
+    Q_OBJECT
+
+public:
+    ServiceSettingsWidgetListItem(QGraphicsWidget *parent = 0);
+    virtual ~ServiceSettingsWidgetListItem();
+
+    void showDrillDownButton();
+
+protected:
+    virtual QGraphicsLayout *createLayout();
+
+private:
+    MLayout *horizontalLayout;
 };
 
 } //namespace
