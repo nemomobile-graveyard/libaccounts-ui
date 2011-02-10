@@ -1,3 +1,9 @@
+libaccounts-ui (0.73-2) unstable; urgency=low
+
+  * Fix changelog. Bugfixes were repeated.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 10 Feb 2011 15:32:11 +0200
+
 libaccounts-ui (0.73-1) unstable; urgency=low
 
   * Fixes: NB#214873 - Unable to click arrow in "GoogleTalk" account
@@ -13,8 +19,8 @@ libaccounts-ui (0.72-1) unstable; urgency=low
 
 libaccounts-ui (0.71-1) unstable; urgency=low
 
-  * Fixes: NB#225464 - Simple accounts are configured with disabled state
-  * Fixes: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
+  * Addresses: NB#225464 - Simple accounts are configured with disabled state
+  * Addresses: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 09 Feb 2011 12:18:22 +0300
 
@@ -26,8 +32,8 @@ libaccounts-ui (0.70-1) unstable; urgency=low
 
 libaccounts-ui (0.69-1) unstable; urgency=low
 
-  * Addresses: NB#225464 - Simple accounts are configured with disabled state
-  * Addresses: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
+  * Fixes: NB#225464 - Simple accounts are configured with disabled state
+  * Fixes: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 08 Feb 2011 13:28:22 +0300
 
