@@ -1,3 +1,9 @@
+libaccounts-ui (0.73-1) unstable; urgency=low
+
+  * Fixes: NB#214873 - Unable to click arrow in "GoogleTalk" account
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Thu, 10 Feb 2011 15:49:36 +0530
+
 libaccounts-ui (0.72-1) unstable; urgency=low
 
   * Fixes: NB#211254 - Account setup finished view not shown for Simple accounts (Provider which has only one service)
