@@ -3,7 +3,7 @@ exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include
 serviceplugindir=${libdir}/AccountsUI/
-providerplugindir=${prefix}/libexec/AccountsUI/
+providerplugindir=${prefix}/lib/AccountSetup/
 
 Name: AccountsUI
 Description: Accounts-UI plugins development
