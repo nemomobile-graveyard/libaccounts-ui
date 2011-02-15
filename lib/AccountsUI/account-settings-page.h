@@ -114,7 +114,7 @@ private slots:
     void setEnabledService(const QString& serviceName, bool enabled);
 
 private:
-    AccountSettingsPagePrivate* d_ptr;
+    AccountSettingsPagePrivate *d_ptr;
     Q_DISABLE_COPY(AccountSettingsPage)
     Q_DECLARE_PRIVATE(AccountSettingsPage)
 

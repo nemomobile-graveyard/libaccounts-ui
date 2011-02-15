@@ -21,95 +21,32 @@
  */
 
 //project
-#include "account-settings-page.h"
+#include "account-settings-page-priv.h"
 #include "provider-plugin-process.h"
 #include "service-settings-widget.h"
 #include "credentialdialog.h"
 #include "service-model.h"
 #include "sort-service-model.h"
-#include "account-sync-handler.h"
-#include "accountlistitem.h"
 
 //Accounts
 #include <Accounts/Account>
 #include <Accounts/Provider>
 
 //Meegotouch
-#include <MContainer>
 #include <MLayout>
 #include <MLinearLayoutPolicy>
 #include <MMessageBox>
-#include <MLocale>
 #include <MAction>
-#include <MLabel>
-#include <MGridLayoutPolicy>
 #include <MButton>
-#include <MContentItem>
-#include <MApplicationIfProxy>
-#include <MContentItem>
-#include <MSeparator>
 #include <MImageWidget>
+#include <MSeparator>
 
 //Qt
 #include <QDebug>
-#include <QTimer>
-#include <QMultiMap>
-
-//Accounts-Ui
-#include "abstract-account-setup-context.h"
-#include "accountsmanagersingleton.h"
-
 
 #define INFO_BANNER_TIMEOUT 3000
 
-namespace AccountsUI {
-
-class AccountSettingsPagePrivate
-{
-public:
-    AccountSettingsPagePrivate()
-            : context(0),
-            service(0),
-            account(0),
-            showAllServices(0),
-            usernameAndStatus(0),
-            serviceSettingLayout(0),
-            layoutServicePolicy(0),
-            enableButton(0),
-            syncHandler(0),
-            changePasswordDialogStarted(false),
-            panel(0),
-            layout(0),
-            layoutPolicy(0),
-            panelPolicy(0),
-            settingsExist(false)
-    {}
-
-    ~AccountSettingsPagePrivate() {}
-
-    AbstractAccountSetupContext *context;
-    const Accounts::Service *service;
-    Accounts::Account* account;
-    QList<AbstractServiceSetupContext *> contexts;
-    MAction *showAllServices;
-    MDetailedListItem *usernameAndStatus;
-    QString serviceType;
-    MLayout *serviceSettingLayout;
-    MLinearLayoutPolicy *layoutServicePolicy;
-    MButton *enableButton;
-    Accounts::ServiceList serviceList;
-    QList<AbstractSetupContext*> abstractContexts;
-    AccountSyncHandler *syncHandler;
-    bool changePasswordDialogStarted;
-    QMultiMap<QString, ServiceSettingsWidget*> settingsWidgets;
-    MWidgetController *panel;
-    MLayout *layout;
-    MLinearLayoutPolicy *layoutPolicy;
-    MLinearLayoutPolicy *panelPolicy;
-    bool settingsExist;
-    Accounts::ServiceList hiddenServiceList;
-    QMap<QString, bool> serviceStatusMap;
-};
+using namespace AccountsUI;
 
 void AccountSettingsPage::setServicesToBeShown()
 {
@@ -215,7 +152,7 @@ void AccountSettingsPage::createContent()
     Q_D(AccountSettingsPage);
 
     //we need a central widget to get the right layout size under the menubar
-    MWidget* centralWidget = new MWidget();
+    MWidget *centralWidget = new MWidget();
     d->layout = new MLayout(centralWidget);
     d->layoutPolicy = new MLinearLayoutPolicy(d->layout, Qt::Vertical);
     d->layoutPolicy->setSpacing(0);
@@ -240,9 +177,7 @@ void AccountSettingsPage::createContent()
             // xml file that describes the ui elements for the provider
             Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
             if (provider) {
-                QDomElement root = provider->domDocument().documentElement();
-                QDomElement providerIcon = root.firstChildElement("icon");
-                providerIconId = providerIcon.text();
+                providerIconId = provider->iconName();
             }
 
             d->usernameAndStatus = new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons);
@@ -502,4 +437,3 @@ void AccountSettingsPage::setEnabledService(const QString &serviceName,
     d->serviceStatusMap[serviceName] = enabled;
 }
 
-} // namespace

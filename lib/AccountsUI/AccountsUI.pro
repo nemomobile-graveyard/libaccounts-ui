@@ -30,6 +30,7 @@ HEADERS += account-plugin-interface.h \
     abstract-service-setup-context.h \
     abstract-setup-context.h \
     account-settings-page.h \
+    account-settings-page-priv.h \
     account-setup-finished-page.h \
     account-setup-finished-page-priv.h \
     credentialdialog.h \
