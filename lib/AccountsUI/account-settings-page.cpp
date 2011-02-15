@@ -288,88 +288,87 @@ void AccountSettingsPage::removeAccount()
     }
 }
 
-void AccountSettingsPage::saveSettings()
+void AccountSettingsPagePrivate::saveSettings()
 {
-    Q_D(AccountSettingsPage);
+    Q_Q(AccountSettingsPage);
     disconnect(this , SIGNAL(backButtonClicked()), 0, 0);
-    setProgressIndicatorVisible(true);
+    q->setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
-    if (d->enableButton) {
-        bool state = d->enableButton->isChecked();
-        if (d->serviceList.count() == 1) {
-            d->account->selectService(d->serviceList.at(0));
-            if (d->account->enabled() != state)
-                d->account->setEnabled(state);
-        } else if (d->serviceList.count() > 1) {
-            foreach (AbstractServiceSetupContext *serviceContext, d->contexts) {
+    if (enableButton) {
+        bool state = enableButton->isChecked();
+        if (serviceList.count() == 1) {
+            account->selectService(serviceList.at(0));
+            if (account->enabled() != state)
+                account->setEnabled(state);
+        } else if (serviceList.count() > 1) {
+            foreach (AbstractServiceSetupContext *serviceContext, contexts) {
                 const Accounts::Service *service = serviceContext->service();
                 QMap<QString, bool>::iterator i =
-                        d->serviceStatusMap.find(service->name());
-                if (i == d->serviceStatusMap.end())
+                        serviceStatusMap.find(service->name());
+                if (i == serviceStatusMap.end())
                     continue;
-                d->account->selectService(service);
-                if (d->account->enabled() != i.value())
+                account->selectService(service);
+                if (account->enabled() != i.value())
                         serviceContext->enable(i.value());
-                d->serviceStatusMap.remove(i.key());
+                serviceStatusMap.remove(i.key());
             }
         }
 
-        d->context->account()->selectService(NULL);
-        if (d->account->enabled() != state)
-            d->account->setEnabled(state);
+        context->account()->selectService(NULL);
+        if (account->enabled() != state)
+            account->setEnabled(state);
     }
     //we should call only validate. Storing will be handled
     //in onSyncStateChangted func.
-    d->syncHandler->validate(d->abstractContexts);
+    syncHandler->validate(abstractContexts);
 }
 
-void AccountSettingsPage::onSyncStateChanged(const SyncState &state)
+void AccountSettingsPagePrivate::onSyncStateChanged(const SyncState &state)
 {
     qDebug() << Q_FUNC_INFO;
 
-    Q_D(AccountSettingsPage);
+    Q_Q(AccountSettingsPage);
     switch (state) {
         case NotValidated:
             qDebug() << Q_FUNC_INFO << "NotValidated";
-            setProgressIndicatorVisible(false);
+            q->setProgressIndicatorVisible(false);
             //Saving the settings on back button press
             connect(this, SIGNAL(backButtonClicked()),
-                         this, SLOT(saveSettings()));
+                    this, SLOT(saveSettings()));
             break;
         case Validated:
             qDebug() << Q_FUNC_INFO << "Validated";
-            d->syncHandler->store(d->abstractContexts);
+            syncHandler->store(abstractContexts);
             break;
         case NotStored:
             qDebug() << Q_FUNC_INFO << "NotStored";
-            connect(d->context->account(), SIGNAL(synced()),
+            connect(context->account(), SIGNAL(synced()),
                     ProviderPluginProcess::instance(), SLOT(quit()));
-            d->context->account()->sync();
+            context->account()->sync();
             break;
         case Stored:
             qDebug() << Q_FUNC_INFO << "Stored";
-            connect(d->context->account(), SIGNAL(synced()),
+            connect(context->account(), SIGNAL(synced()),
                     ProviderPluginProcess::instance(), SLOT(quit()));
-            d->context->account()->sync();
+            context->account()->sync();
             break;
         default:
             return;
     }
 }
 
-void AccountSettingsPage::openChangePasswordDialog()
+void AccountSettingsPagePrivate::openChangePasswordDialog()
 {
-    Q_D(AccountSettingsPage);
     //ignore multiple clicks
-    if (d->changePasswordDialogStarted)
+    if (changePasswordDialogStarted)
     {
         qDebug() << Q_FUNC_INFO << "Change password dialog is started already";
         return;
     }
 
-    d->changePasswordDialogStarted = true;
+    changePasswordDialogStarted = true;
 
-    CredentialDialog *credentialDialog = new CredentialDialog(d->account->credentialsId());
+    CredentialDialog *credentialDialog = new CredentialDialog(account->credentialsId());
     if (!credentialDialog) {
         qCritical() << "Cannot create change password dialog";
         return;
@@ -382,10 +381,9 @@ void AccountSettingsPage::openChangePasswordDialog()
     credentialDialog->exec();
 }
 
-void AccountSettingsPage::deleteCredentialsDialog()
+void AccountSettingsPagePrivate::deleteCredentialsDialog()
 {
-    Q_D(AccountSettingsPage);
-    d->changePasswordDialogStarted = false;
+    changePasswordDialogStarted = false;
     CredentialDialog *credentialDialog;
 
     if (sender() != NULL &&
@@ -397,9 +395,8 @@ void AccountSettingsPage::deleteCredentialsDialog()
 /*
  * The same serviceTypes cannot be enabled in meantime
  * */
-void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
+void AccountSettingsPagePrivate::disableSameServiceTypes(const QString &serviceType)
 {
-    Q_D(AccountSettingsPage);
     qDebug() << Q_FUNC_INFO << __LINE__;
     if (!sender())
     {
@@ -407,10 +404,10 @@ void AccountSettingsPage::disableSameServiceTypes(const QString &serviceType)
         return;
     }
 
-    if (d->settingsWidgets.count(serviceType) == 1)
+    if (settingsWidgets.count(serviceType) == 1)
         return;
 
-    foreach (ServiceSettingsWidget *widget, d->settingsWidgets.values(serviceType)) {
+    foreach (ServiceSettingsWidget *widget, settingsWidgets.values(serviceType)) {
         if (widget == sender())
             continue;
 
@@ -430,10 +427,9 @@ void AccountSettingsPage::setHiddenServices(const Accounts::ServiceList &hiddenS
     d->hiddenServiceList = hiddenServices;
 }
 
-void AccountSettingsPage::setEnabledService(const QString &serviceName,
-                                            bool enabled)
+void AccountSettingsPagePrivate::setEnabledService(const QString &serviceName,
+                                                   bool enabled)
 {
-    Q_D(AccountSettingsPage);
-    d->serviceStatusMap[serviceName] = enabled;
+    serviceStatusMap[serviceName] = enabled;
 }
 

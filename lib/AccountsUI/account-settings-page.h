@@ -105,14 +105,6 @@ public slots:
 Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);
 
-private slots:
-    void saveSettings();
-    void openChangePasswordDialog();
-    void onSyncStateChanged(const SyncState &state);
-    void deleteCredentialsDialog();
-    void disableSameServiceTypes(const QString &serviceType);
-    void setEnabledService(const QString& serviceName, bool enabled);
-
 private:
     AccountSettingsPagePrivate *d_ptr;
     Q_DISABLE_COPY(AccountSettingsPage)

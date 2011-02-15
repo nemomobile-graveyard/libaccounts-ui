@@ -48,8 +48,11 @@
 
 namespace AccountsUI {
 
-class AccountSettingsPagePrivate
+class AccountSettingsPagePrivate: public QObject
 {
+    Q_OBJECT
+    Q_DECLARE_PUBLIC(AccountSettingsPage)
+
 public:
     AccountSettingsPagePrivate()
             : context(0),
@@ -71,6 +74,16 @@ public:
 
     ~AccountSettingsPagePrivate() {}
 
+public Q_SLOTS:
+    void saveSettings();
+    void openChangePasswordDialog();
+    void onSyncStateChanged(const SyncState &state);
+    void deleteCredentialsDialog();
+    void disableSameServiceTypes(const QString &serviceType);
+    void setEnabledService(const QString& serviceName, bool enabled);
+
+private:
+    mutable AccountSettingsPage *q_ptr;
     AbstractAccountSetupContext *context;
     const Accounts::Service *service;
     Accounts::Account *account;
