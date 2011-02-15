@@ -56,6 +56,7 @@ public:
     {
         setStyleName("CommonBasicListItemInverted");
         titleLabelWidget()->setStyleName("GenericAccountSetupFormListItemStyle");
+        setEnabled(false);
     }
 
     ~GenericAccountSetupFormListItem()
