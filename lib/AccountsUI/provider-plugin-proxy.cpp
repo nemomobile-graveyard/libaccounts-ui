@@ -23,16 +23,36 @@
 #include "provider-plugin-proxy.h"
 #include "provider-plugin-proxy-priv.h"
 
-#include <QProcess>
+#include <QCoreApplication>
 #include <QDebug>
 #include <QLocalServer>
 #include <QLocalSocket>
+#include <QProcess>
 
 using namespace Accounts;
 using namespace AccountsUI;
 
-void ProviderPluginProxyWrapper::setLastPageArguments(const LastPageActions
-                                                      *lastPageActions)
+ProviderPluginProxyWrapper::ProviderPluginProxyWrapper(QObject *parent):
+    AccountSetup::ProviderPluginProxy(parent)
+{
+    QStringList dirs;
+
+    dirs << QString::fromLatin1("/usr/libexec/AccountsUI") <<
+        pluginDirectories();
+    setPluginDirectories(dirs);
+
+    /* Get MeegoTouch output level. Unfortunately libMeegoTouch does not
+     * provide an API for this.
+     */
+    QStringList args = QCoreApplication::arguments();
+    int index = args.indexOf(QLatin1String("-output-level"));
+    if (index >= 0) {
+        outputLevel = args[index + 1];
+    }
+}
+
+QStringList ProviderPluginProxyWrapper::lastPageArguments(const LastPageActions
+                                                          *lastPageActions)
 {
     const LastPageActions::ServiceActionList actions =
         lastPageActions->serviceActions();
@@ -44,7 +64,19 @@ void ProviderPluginProxyWrapper::setLastPageArguments(const LastPageActions
             << action.serviceName();
     }
 
-    setAdditionalParameters(arguments);
+    return arguments;
+}
+
+void ProviderPluginProxyWrapper::setup(const LastPageActions *lastPageActions)
+{
+    QStringList parameters = lastPageArguments(lastPageActions);
+
+    // Add MeegoTouch debugging option
+    if (!outputLevel.isEmpty())
+        parameters << QLatin1String("-output-level") << outputLevel;
+
+    setAdditionalParameters(parameters);
+    setParentWidget(MApplication::instance()->activeWindow());
 }
 
 bool ProviderPluginProxyWrapper::stopProcess()
@@ -100,8 +132,7 @@ void ProviderPluginProxy::createAccount(Provider *provider,
 {
     Q_D(ProviderPluginProxy);
 
-    d->wrapper->setLastPageArguments(&lastPageActions);
-    d->wrapper->setParentWidget(MApplication::instance()->activeWindow());
+    d->wrapper->setup(&lastPageActions);
     d->wrapper->createAccount(provider, serviceType);
 }
 
@@ -111,8 +142,7 @@ void ProviderPluginProxy::editAccount(Account *account,
     Q_D(ProviderPluginProxy);
 
     LastPageActions lastPageActions;
-    d->wrapper->setLastPageArguments(&lastPageActions);
-    d->wrapper->setParentWidget(MApplication::instance()->activeWindow());
+    d->wrapper->setup(&lastPageActions);
     d->wrapper->editAccount(account, serviceType);
 }
 
