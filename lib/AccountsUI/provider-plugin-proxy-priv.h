@@ -56,15 +56,7 @@ class ProviderPluginProxyWrapper: public AccountSetup::ProviderPluginProxy
 {
     Q_OBJECT
 public:
-    ProviderPluginProxyWrapper(QObject *parent):
-        AccountSetup::ProviderPluginProxy(parent)
-    {
-        QStringList dirs;
-
-        dirs << QString::fromLatin1("/usr/libexec/AccountsUI") <<
-            pluginDirectories();
-        setPluginDirectories(dirs);
-    }
+    ProviderPluginProxyWrapper(QObject *parent);
 
     void setLastPageArguments(const LastPageActions *lastPageActions);
     bool stopProcess();

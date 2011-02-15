@@ -31,6 +31,16 @@
 using namespace Accounts;
 using namespace AccountsUI;
 
+ProviderPluginProxyWrapper::ProviderPluginProxyWrapper(QObject *parent):
+    AccountSetup::ProviderPluginProxy(parent)
+{
+    QStringList dirs;
+
+    dirs << QString::fromLatin1("/usr/libexec/AccountsUI") <<
+        pluginDirectories();
+    setPluginDirectories(dirs);
+}
+
 void ProviderPluginProxyWrapper::setLastPageArguments(const LastPageActions
                                                       *lastPageActions)
 {
