@@ -48,6 +48,165 @@
 
 using namespace AccountsUI;
 
+void AccountSettingsPagePrivate::saveSettings()
+{
+    Q_Q(AccountSettingsPage);
+    disconnect(this , SIGNAL(backButtonClicked()), 0, 0);
+    q->setProgressIndicatorVisible(true);
+    qDebug() << Q_FUNC_INFO;
+    if (enableButton) {
+        bool state = enableButton->isChecked();
+        if (serviceList.count() == 1) {
+            account->selectService(serviceList.at(0));
+            if (account->enabled() != state)
+                account->setEnabled(state);
+        } else if (serviceList.count() > 1) {
+            foreach (AbstractServiceSetupContext *serviceContext, contexts) {
+                const Accounts::Service *service = serviceContext->service();
+                QMap<QString, bool>::iterator i =
+                        serviceStatusMap.find(service->name());
+                if (i == serviceStatusMap.end())
+                    continue;
+                account->selectService(service);
+                if (account->enabled() != i.value())
+                        serviceContext->enable(i.value());
+                serviceStatusMap.remove(i.key());
+            }
+        }
+
+        context->account()->selectService(NULL);
+        if (account->enabled() != state)
+            account->setEnabled(state);
+    }
+    //we should call only validate. Storing will be handled
+    //in onSyncStateChangted func.
+    syncHandler->validate(abstractContexts);
+}
+
+void AccountSettingsPagePrivate::onSyncStateChanged(const SyncState &state)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    Q_Q(AccountSettingsPage);
+    switch (state) {
+        case NotValidated:
+            qDebug() << Q_FUNC_INFO << "NotValidated";
+            q->setProgressIndicatorVisible(false);
+            //Saving the settings on back button press
+            connect(this, SIGNAL(backButtonClicked()),
+                    this, SLOT(saveSettings()));
+            break;
+        case Validated:
+            qDebug() << Q_FUNC_INFO << "Validated";
+            syncHandler->store(abstractContexts);
+            break;
+        case NotStored:
+            qDebug() << Q_FUNC_INFO << "NotStored";
+            connect(context->account(), SIGNAL(synced()),
+                    ProviderPluginProcess::instance(), SLOT(quit()));
+            context->account()->sync();
+            break;
+        case Stored:
+            qDebug() << Q_FUNC_INFO << "Stored";
+            connect(context->account(), SIGNAL(synced()),
+                    ProviderPluginProcess::instance(), SLOT(quit()));
+            context->account()->sync();
+            break;
+        default:
+            return;
+    }
+}
+
+void AccountSettingsPagePrivate::openChangePasswordDialog()
+{
+    //ignore multiple clicks
+    if (changePasswordDialogStarted)
+    {
+        qDebug() << Q_FUNC_INFO << "Change password dialog is started already";
+        return;
+    }
+
+    changePasswordDialogStarted = true;
+
+    CredentialDialog *credentialDialog = new CredentialDialog(account->credentialsId());
+    if (!credentialDialog) {
+        qCritical() << "Cannot create change password dialog";
+        return;
+    }
+    credentialDialog->setParent(this);
+    connect (credentialDialog, SIGNAL(safeToDeleteMe(CredentialDialog*)),
+             this, SLOT(deleteCredentialsDialog()));
+    //% "Change Password"
+    credentialDialog->setTitle(qtTrId("qtn_acc_login_title_change"));
+    credentialDialog->exec();
+}
+
+void AccountSettingsPagePrivate::deleteCredentialsDialog()
+{
+    changePasswordDialogStarted = false;
+    CredentialDialog *credentialDialog;
+
+    if (sender() != NULL &&
+        (credentialDialog = qobject_cast<CredentialDialog *>(sender())) != NULL)
+        credentialDialog->deleteLater();
+}
+
+
+/*
+ * The same serviceTypes cannot be enabled in meantime
+ * */
+void AccountSettingsPagePrivate::disableSameServiceTypes(const QString &serviceType)
+{
+    qDebug() << Q_FUNC_INFO << __LINE__;
+    if (!sender())
+    {
+        qCritical() << "disableSameServiceTypes() must be called via signaling";
+        return;
+    }
+
+    if (settingsWidgets.count(serviceType) == 1)
+        return;
+
+    foreach (ServiceSettingsWidget *widget, settingsWidgets.values(serviceType)) {
+        if (widget == sender())
+            continue;
+
+        widget->setServiceButtonEnable(false);
+    }
+}
+
+void AccountSettingsPagePrivate::setEnabledService(const QString &serviceName,
+                                                   bool enabled)
+{
+    serviceStatusMap[serviceName] = enabled;
+}
+
+AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
+        : MApplicationPage(),
+          d_ptr(new AccountSettingsPagePrivate())
+{
+    Q_D(AccountSettingsPage);
+
+    Q_ASSERT (context != NULL);
+    d->context = context;
+    d->account = d->context->account();
+    d->abstractContexts.append(d->context);
+    d->serviceType = d->context->serviceType();
+    d->panel = new MWidgetController();
+    d->syncHandler = new AccountSyncHandler(this);
+    //Saving the settings on back button press
+    connect(this, SIGNAL(backButtonClicked()),
+                 this, SLOT(saveSettings()));
+    connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
+            this, SLOT(onSyncStateChanged(const SyncState&)));
+    setStyleName("AccountsUiPage");
+}
+
+AccountSettingsPage::~AccountSettingsPage()
+{
+    delete d_ptr;
+}
+
 void AccountSettingsPage::setServicesToBeShown()
 {
     Q_D(AccountSettingsPage);
@@ -119,32 +278,6 @@ void AccountSettingsPage::setServicesToBeShown()
         connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
                  this, SLOT(setEnabledService(const QString&, bool)));
     }
-}
-
-AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
-        : MApplicationPage(),
-          d_ptr(new AccountSettingsPagePrivate())
-{
-    Q_D(AccountSettingsPage);
-
-    Q_ASSERT (context != NULL);
-    d->context = context;
-    d->account = d->context->account();
-    d->abstractContexts.append(d->context);
-    d->serviceType = d->context->serviceType();
-    d->panel = new MWidgetController();
-    d->syncHandler = new AccountSyncHandler(this);
-    //Saving the settings on back button press
-    connect(this, SIGNAL(backButtonClicked()),
-                 this, SLOT(saveSettings()));
-    connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
-            this, SLOT(onSyncStateChanged(const SyncState&)));
-    setStyleName("AccountsUiPage");
-}
-
-AccountSettingsPage::~AccountSettingsPage()
-{
-    delete d_ptr;
 }
 
 void AccountSettingsPage::createContent()
@@ -288,133 +421,6 @@ void AccountSettingsPage::removeAccount()
     }
 }
 
-void AccountSettingsPagePrivate::saveSettings()
-{
-    Q_Q(AccountSettingsPage);
-    disconnect(this , SIGNAL(backButtonClicked()), 0, 0);
-    q->setProgressIndicatorVisible(true);
-    qDebug() << Q_FUNC_INFO;
-    if (enableButton) {
-        bool state = enableButton->isChecked();
-        if (serviceList.count() == 1) {
-            account->selectService(serviceList.at(0));
-            if (account->enabled() != state)
-                account->setEnabled(state);
-        } else if (serviceList.count() > 1) {
-            foreach (AbstractServiceSetupContext *serviceContext, contexts) {
-                const Accounts::Service *service = serviceContext->service();
-                QMap<QString, bool>::iterator i =
-                        serviceStatusMap.find(service->name());
-                if (i == serviceStatusMap.end())
-                    continue;
-                account->selectService(service);
-                if (account->enabled() != i.value())
-                        serviceContext->enable(i.value());
-                serviceStatusMap.remove(i.key());
-            }
-        }
-
-        context->account()->selectService(NULL);
-        if (account->enabled() != state)
-            account->setEnabled(state);
-    }
-    //we should call only validate. Storing will be handled
-    //in onSyncStateChangted func.
-    syncHandler->validate(abstractContexts);
-}
-
-void AccountSettingsPagePrivate::onSyncStateChanged(const SyncState &state)
-{
-    qDebug() << Q_FUNC_INFO;
-
-    Q_Q(AccountSettingsPage);
-    switch (state) {
-        case NotValidated:
-            qDebug() << Q_FUNC_INFO << "NotValidated";
-            q->setProgressIndicatorVisible(false);
-            //Saving the settings on back button press
-            connect(this, SIGNAL(backButtonClicked()),
-                    this, SLOT(saveSettings()));
-            break;
-        case Validated:
-            qDebug() << Q_FUNC_INFO << "Validated";
-            syncHandler->store(abstractContexts);
-            break;
-        case NotStored:
-            qDebug() << Q_FUNC_INFO << "NotStored";
-            connect(context->account(), SIGNAL(synced()),
-                    ProviderPluginProcess::instance(), SLOT(quit()));
-            context->account()->sync();
-            break;
-        case Stored:
-            qDebug() << Q_FUNC_INFO << "Stored";
-            connect(context->account(), SIGNAL(synced()),
-                    ProviderPluginProcess::instance(), SLOT(quit()));
-            context->account()->sync();
-            break;
-        default:
-            return;
-    }
-}
-
-void AccountSettingsPagePrivate::openChangePasswordDialog()
-{
-    //ignore multiple clicks
-    if (changePasswordDialogStarted)
-    {
-        qDebug() << Q_FUNC_INFO << "Change password dialog is started already";
-        return;
-    }
-
-    changePasswordDialogStarted = true;
-
-    CredentialDialog *credentialDialog = new CredentialDialog(account->credentialsId());
-    if (!credentialDialog) {
-        qCritical() << "Cannot create change password dialog";
-        return;
-    }
-    credentialDialog->setParent(this);
-    connect (credentialDialog, SIGNAL(safeToDeleteMe(CredentialDialog*)),
-             this, SLOT(deleteCredentialsDialog()));
-    //% "Change Password"
-    credentialDialog->setTitle(qtTrId("qtn_acc_login_title_change"));
-    credentialDialog->exec();
-}
-
-void AccountSettingsPagePrivate::deleteCredentialsDialog()
-{
-    changePasswordDialogStarted = false;
-    CredentialDialog *credentialDialog;
-
-    if (sender() != NULL &&
-        (credentialDialog = qobject_cast<CredentialDialog *>(sender())) != NULL)
-        credentialDialog->deleteLater();
-}
-
-
-/*
- * The same serviceTypes cannot be enabled in meantime
- * */
-void AccountSettingsPagePrivate::disableSameServiceTypes(const QString &serviceType)
-{
-    qDebug() << Q_FUNC_INFO << __LINE__;
-    if (!sender())
-    {
-        qCritical() << "disableSameServiceTypes() must be called via signaling";
-        return;
-    }
-
-    if (settingsWidgets.count(serviceType) == 1)
-        return;
-
-    foreach (ServiceSettingsWidget *widget, settingsWidgets.values(serviceType)) {
-        if (widget == sender())
-            continue;
-
-        widget->setServiceButtonEnable(false);
-    }
-}
-
 void AccountSettingsPage::setWidget(MWidget *widget)
 {
      Q_D(AccountSettingsPage);
@@ -425,11 +431,5 @@ void AccountSettingsPage::setHiddenServices(const Accounts::ServiceList &hiddenS
 {
     Q_D(AccountSettingsPage);
     d->hiddenServiceList = hiddenServices;
-}
-
-void AccountSettingsPagePrivate::setEnabledService(const QString &serviceName,
-                                                   bool enabled)
-{
-    serviceStatusMap[serviceName] = enabled;
 }
 
