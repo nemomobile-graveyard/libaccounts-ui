@@ -58,8 +58,11 @@ class ProviderPluginProxyWrapper: public AccountSetup::ProviderPluginProxy
 public:
     ProviderPluginProxyWrapper(QObject *parent);
 
-    void setLastPageArguments(const LastPageActions *lastPageActions);
+    QStringList lastPageArguments(const LastPageActions *lastPageActions);
+    void setup(const LastPageActions *lastPageActions);
     bool stopProcess();
+private:
+    QString outputLevel;
 };
 
 class ProviderPluginProxyPrivate: public QObject
