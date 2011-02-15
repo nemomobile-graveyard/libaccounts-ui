@@ -8,7 +8,7 @@ providerplugindir=${prefix}/libexec/AccountsUI/
 Name: AccountsUI
 Description: Accounts-UI plugins development
 Version: 0.1
-Requires: accounts-qt, meegotouch, libsignon-qt
+Requires.private: accounts-qt, meegotouch, libsignon-qt
 Libs: -L${libdir} -lAccountPlugin
 Cflags: -I${includedir}
 
