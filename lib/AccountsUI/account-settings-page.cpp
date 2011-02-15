@@ -21,7 +21,7 @@
  */
 
 //project
-#include "accountsettingspage.h"
+#include "account-settings-page.h"
 #include "provider-plugin-process.h"
 #include "service-settings-widget.h"
 #include "credentialdialog.h"

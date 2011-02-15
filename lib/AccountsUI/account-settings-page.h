@@ -45,7 +45,7 @@ class AccountSettingsPagePrivate;
 
 /*!
  * @class AccountSettingsPage
- * @headerfile AccountsUI/accountsettingspage.h AccountsUI/AccountSettingsPage
+ * @headerfile AccountsUI/account-settings-page.h AccountsUI/AccountSettingsPage
  * @brief Main UI element for editing an existing account.
  *
  * @details The AccountSettingsPage is the page that appears when the user

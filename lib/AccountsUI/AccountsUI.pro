@@ -29,6 +29,7 @@ HEADERS += account-plugin-interface.h \
     abstract-account-setup-context.h \
     abstract-service-setup-context.h \
     abstract-setup-context.h \
+    account-settings-page.h \
     account-setup-finished-page.h \
     account-setup-finished-page-priv.h \
     credentialdialog.h \
@@ -55,7 +56,6 @@ HEADERS += account-plugin-interface.h \
     settings-widgets.h \
     layouts.h \
     ui-builder.h \
-    accountsettingspage.h \
     service-settings-widget.h \
     common.h \
     network-session-manager.h \
@@ -70,6 +70,7 @@ HEADERS += account-plugin-interface.h \
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
     abstract-setup-context.cpp \
+    account-settings-page.cpp \
     credentialdialog.cpp \
     credentialwidget.cpp \
     credentialwidgetview.cpp \
@@ -89,7 +90,6 @@ SOURCES += abstract-account-setup-context.cpp \
     parser.cpp \
     settings-widgets.cpp \
     layouts.cpp \
-    accountsettingspage.cpp \
     service-settings-widget.cpp \
     common.cpp \
     network-session-manager.cpp \
@@ -122,7 +122,7 @@ headers.files += AccountPluginInterface \
     AbstractSetupContext \
     abstract-setup-context.h \
     AccountSettingsPage \
-    accountsettingspage.h \
+    account-settings-page.h \
     account-setup-finished-page.h \
     AccountSyncHandler \
     account-sync-handler.h \
