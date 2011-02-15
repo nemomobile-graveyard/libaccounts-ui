@@ -29,6 +29,7 @@
 
 // AccountSetup
 #include <AccountSetup/ProviderPluginProcess>
+#include "pluginservice.h"
 
 //Accounts
 #include <Accounts/account.h>
@@ -40,6 +41,7 @@
 #include <MApplicationWindow>
 #include <MComponentData>
 #include <MLocale>
+#include <MApplicationService>
 
 //Qt
 #include <QLocalSocket>
@@ -58,7 +60,12 @@ public:
         m_context(0),
         returnToApp(false)
     {
-        application = MComponentCache::mApplication(argc, argv);
+        service = new PluginService();
+        QStringList argList = QString(*argv).split("/");
+        /* set the serviceName as per the name of the plugin */
+        service->setServiceName(QString("com.nokia.%1").
+                                arg(argList.at(argList.count()-1)).toLatin1());
+        application = MComponentCache::mApplication(argc, argv, QLatin1String(""), service);
         window = MComponentCache::mApplicationWindow();
         window->setStyleName("AccountsUiWindow");
     }
@@ -67,11 +74,19 @@ public:
         wrapped(0),
         m_context(0)
     {
-        application = MComponentCache::mApplication(argc, argv);
+        service = new PluginService();
+        QStringList argList = QString(*argv).split("/");
+        /* set the serviceName as per the name of the plugin */
+        pluginName = argList.at(argList.count()-1);
+        service->setServiceName(QString("com.nokia.%1").
+                                arg(pluginName).toLatin1());
+        application = MComponentCache::mApplication(argc, argv, QLatin1String(""), service);
+        window = MComponentCache::mApplicationWindow();
 
         wrapped = new AccountSetup::ProviderPluginProcess(this);
         account = wrapped->account();
 
+        service->setProviderName(account->providerName());
         /* parse command line options */
         for (int i = 0; i < argc; ++i)
         {
@@ -128,6 +143,8 @@ private:
     Accounts::Account *account;
     bool returnToApp;
     LastPageActions lastPageActions;
+    PluginService *service;
+    QString pluginName;
 };
 
 } // namespace
