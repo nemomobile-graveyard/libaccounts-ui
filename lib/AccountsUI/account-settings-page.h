@@ -105,6 +105,13 @@ public slots:
 Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);
 
+protected:
+    /*!
+     * Create the upper part of the page, containing the global account
+     * settings. This method is called from createContent().
+     */
+    QGraphicsLayoutItem *createAccountSettingsLayout();
+
 private:
     AccountSettingsPagePrivate *d_ptr;
     Q_DISABLE_COPY(AccountSettingsPage)

@@ -65,6 +65,7 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     settingsExist(false)
 {
     account = context->account();
+    serviceList = account->services();
     abstractContexts.append(context);
     serviceType = context->serviceType();
     panel = new MWidgetController();
@@ -298,9 +299,78 @@ void AccountSettingsPage::setServicesToBeShown()
     }
 }
 
+QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
+{
+    Q_D(AccountSettingsPage);
+
+    // First, see if the plugin has own implementation of this widget
+    QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
+    if (accountSettingsWidget != 0)
+        return accountSettingsWidget;
+
+    // Generic implementation
+    MWidget *upperWidget = new MWidget(this);
+    MLayout *upperLayout = new MLayout(upperWidget);
+    MLinearLayoutPolicy *upperLayoutPolicy =
+        new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
+    upperLayoutPolicy->setSpacing(0);
+
+    MLayout *horizontalLayout = new MLayout();
+    MLinearLayoutPolicy *horizontalLayoutPolicy =
+        new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
+    horizontalLayoutPolicy->setSpacing(0);
+
+    QString providerName(d->account->providerName());
+    QString providerIconId;
+    Accounts::Provider *provider =
+        AccountsManager::instance()->provider(providerName);
+    if (provider) {
+        providerIconId = provider->iconName();
+    }
+
+    d->usernameAndStatus =
+        new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons);
+    d->usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
+    d->usernameAndStatus->setObjectName("wgAccountSettingsPageListItem");
+    d->usernameAndStatus->imageWidget()->setImage(providerIconId);
+    d->usernameAndStatus->setTitle(providerName);
+    d->usernameAndStatus->setSubtitle(d->account->displayName());
+
+    MSeparator *separatorTop = new MSeparator(this);
+    separatorTop->setOrientation(Qt::Horizontal);
+    separatorTop->setStyleName("CommonItemDividerInverted");
+
+    d->enableButton = new MButton(this);
+    d->enableButton->setViewType(MButton::switchType);
+    d->enableButton->setStyleName("CommonSwitchInverted");
+    d->enableButton->setCheckable(true);
+
+    d->account->selectService(NULL);
+    if (d->account->enabled()) {
+        d->panel->setEnabled(true);
+        d->enableButton->setChecked(true);
+    } else {
+        d->panel->setEnabled(false);
+        d->enableButton->setChecked(false);
+    }
+
+    connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
+
+    horizontalLayoutPolicy->addItem(d->usernameAndStatus,
+                                    Qt::AlignLeft | Qt::AlignVCenter);
+    horizontalLayoutPolicy->addItem(d->enableButton,
+                                    Qt::AlignRight | Qt::AlignVCenter);
+    upperLayoutPolicy->addItem(horizontalLayout);
+    upperLayoutPolicy->addItem(separatorTop);
+
+    return upperWidget;
+}
+
 void AccountSettingsPage::createContent()
 {
     Q_D(AccountSettingsPage);
+
+    if (d->context == 0) return;
 
     //we need a central widget to get the right layout size under the menubar
     MWidget *centralWidget = new MWidget();
@@ -308,66 +378,8 @@ void AccountSettingsPage::createContent()
     d->layoutPolicy = new MLinearLayoutPolicy(d->layout, Qt::Vertical);
     d->layoutPolicy->setSpacing(0);
 
-    if (d->context) {
-        QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
-        d->serviceList = d->account->services();
-        if (accountSettingsWidget != 0) {
-            d->layoutPolicy->addItem(accountSettingsWidget);
-        } else {
-            MWidget *upperWidget = new MWidget(this);
-            MLayout *upperLayout = new MLayout(upperWidget);
-            MLinearLayoutPolicy *upperLayoutPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
-            upperLayoutPolicy->setSpacing(0);
-
-            MLayout *horizontalLayout = new MLayout();
-            MLinearLayoutPolicy *horizontalLayoutPolicy = new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
-            horizontalLayoutPolicy->setSpacing(0);
-
-            QString providerName(d->account->providerName());
-            QString providerIconId;
-            // xml file that describes the ui elements for the provider
-            Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
-            if (provider) {
-                providerIconId = provider->iconName();
-            }
-
-            d->usernameAndStatus = new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons);
-            d->usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
-            d->usernameAndStatus->setObjectName("wgAccountSettingsPageListItem");
-            d->usernameAndStatus->imageWidget()->setImage(providerIconId);
-            d->usernameAndStatus->setTitle(providerName);
-            d->usernameAndStatus->setSubtitle(d->context->account()->displayName());
-
-            MSeparator *separatorTop = new MSeparator(this);
-            separatorTop->setOrientation(Qt::Horizontal);
-            separatorTop->setStyleName("CommonItemDividerInverted");
-
-            d->serviceList = d->account->services();
-
-            d->enableButton = new MButton(this);
-            d->enableButton->setViewType(MButton::switchType);
-            d->enableButton->setStyleName("CommonSwitchInverted");
-            d->enableButton->setCheckable(true);
-
-            d->account->selectService(NULL);
-            if ( d->account->enabled()) {
-                d->panel->setEnabled(true);
-                d->enableButton->setChecked(true);
-            } else {
-                d->panel->setEnabled(false);
-                d->enableButton->setChecked(false);
-            }
-
-            connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
-
-            horizontalLayoutPolicy->addItem(d->usernameAndStatus, Qt::AlignLeft | Qt::AlignVCenter);
-            horizontalLayoutPolicy->addItem(d->enableButton, Qt::AlignRight | Qt::AlignVCenter);
-            upperLayoutPolicy->addItem(horizontalLayout);
-            upperLayoutPolicy->addItem(separatorTop);
-
-            d->layoutPolicy->addItem(upperWidget);
-        }
-    }
+    QGraphicsLayoutItem *accountSettingsLayout = createAccountSettingsLayout();
+    d->layoutPolicy->addItem(accountSettingsLayout);
 
     MWidget *serviceWidget = new MWidget(this);
     d->serviceSettingLayout = new MLayout(serviceWidget);
