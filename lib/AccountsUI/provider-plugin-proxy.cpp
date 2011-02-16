@@ -164,3 +164,9 @@ QString ProviderPluginProxy::pluginName()
     return d->wrapper->pluginName();
 }
 
+QString ProviderPluginProxy::providerName()
+{
+    Q_D(ProviderPluginProxy);
+    return d->wrapper->providerName();
+}
+

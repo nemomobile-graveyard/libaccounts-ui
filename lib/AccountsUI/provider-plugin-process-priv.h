@@ -29,7 +29,7 @@
 
 // AccountSetup
 #include <AccountSetup/ProviderPluginProcess>
-#include "pluginservice.h"
+#include "plugin-service.h"
 
 //Accounts
 #include <Accounts/account.h>
@@ -75,18 +75,13 @@ public:
         m_context(0)
     {
         service = new PluginService();
-        QStringList argList = QString(*argv).split("/");
-        /* set the serviceName as per the name of the plugin */
-        pluginName = argList.at(argList.count()-1);
-        service->setServiceName(QString("com.nokia.%1").
-                                arg(pluginName).toLatin1());
-        application = MComponentCache::mApplication(argc, argv, QLatin1String(""), service);
-        window = MComponentCache::mApplicationWindow();
+        application = MComponentCache::mApplication(argc, argv, QString(), service);
 
         wrapped = new AccountSetup::ProviderPluginProcess(this);
         account = wrapped->account();
 
         service->setProviderName(account->providerName());
+        service->registerService();
         /* parse command line options */
         for (int i = 0; i < argc; ++i)
         {
@@ -144,7 +139,6 @@ private:
     bool returnToApp;
     LastPageActions lastPageActions;
     PluginService *service;
-    QString pluginName;
 };
 
 } // namespace
