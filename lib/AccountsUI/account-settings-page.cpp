@@ -48,6 +48,33 @@
 
 using namespace AccountsUI;
 
+AccountSettingsPagePrivate::AccountSettingsPagePrivate(
+    AbstractAccountSetupContext *context):
+    context(context),
+    service(0),
+    account(0),
+    showAllServices(0),
+    usernameAndStatus(0),
+    serviceSettingLayout(0),
+    layoutServicePolicy(0),
+    enableButton(0),
+    syncHandler(0),
+    changePasswordDialogStarted(false),
+    panel(0),
+    layout(0),
+    layoutPolicy(0),
+    panelPolicy(0),
+    settingsExist(false)
+{
+    account = context->account();
+    abstractContexts.append(context);
+    serviceType = context->serviceType();
+    panel = new MWidgetController();
+    syncHandler = new AccountSyncHandler(this);
+    connect(syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
+            this, SLOT(onSyncStateChanged(const SyncState&)));
+}
+
 void AccountSettingsPagePrivate::saveSettings()
 {
     Q_Q(AccountSettingsPage);
@@ -183,22 +210,16 @@ void AccountSettingsPagePrivate::setEnabledService(const QString &serviceName,
 
 AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
         : MApplicationPage(),
-          d_ptr(new AccountSettingsPagePrivate())
+          d_ptr(new AccountSettingsPagePrivate(context))
 {
     Q_D(AccountSettingsPage);
 
     Q_ASSERT (context != NULL);
-    d->context = context;
-    d->account = d->context->account();
-    d->abstractContexts.append(d->context);
-    d->serviceType = d->context->serviceType();
-    d->panel = new MWidgetController();
-    d->syncHandler = new AccountSyncHandler(this);
+    d->q_ptr = this;
+
     //Saving the settings on back button press
     connect(this, SIGNAL(backButtonClicked()),
-                 this, SLOT(saveSettings()));
-    connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
-            this, SLOT(onSyncStateChanged(const SyncState&)));
+            d, SLOT(saveSettings()));
     setStyleName("AccountsUiPage");
 }
 

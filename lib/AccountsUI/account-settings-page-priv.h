@@ -54,24 +54,7 @@ class AccountSettingsPagePrivate: public QObject
     Q_DECLARE_PUBLIC(AccountSettingsPage)
 
 public:
-    AccountSettingsPagePrivate()
-            : context(0),
-            service(0),
-            account(0),
-            showAllServices(0),
-            usernameAndStatus(0),
-            serviceSettingLayout(0),
-            layoutServicePolicy(0),
-            enableButton(0),
-            syncHandler(0),
-            changePasswordDialogStarted(false),
-            panel(0),
-            layout(0),
-            layoutPolicy(0),
-            panelPolicy(0),
-            settingsExist(false)
-    {}
-
+    AccountSettingsPagePrivate(AbstractAccountSetupContext *context);
     ~AccountSettingsPagePrivate() {}
 
 public Q_SLOTS:
