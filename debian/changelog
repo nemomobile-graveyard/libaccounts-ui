@@ -1,4 +1,4 @@
-libaccounts-ui (0.76-1) unstable; urgency=low
+libaccounts-ui (0.76-2) unstable; urgency=low
 
   * Fixes: NB#226154 - Incorrect account provider name displayed in service selection view
 
