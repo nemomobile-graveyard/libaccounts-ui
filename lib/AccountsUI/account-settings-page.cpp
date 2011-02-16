@@ -51,9 +51,7 @@ using namespace AccountsUI;
 AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     AbstractAccountSetupContext *context):
     context(context),
-    service(0),
     account(0),
-    showAllServices(0),
     usernameAndStatus(0),
     serviceSettingLayout(0),
     layoutServicePolicy(0),
@@ -253,7 +251,6 @@ void AccountSettingsPage::setServicesToBeShown()
 
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
-        d->service = context->service();
         const Accounts::Service *service = context->service();
         ServiceSettingsWidget *settingsWidget;
 

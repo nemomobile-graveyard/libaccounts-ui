@@ -32,7 +32,6 @@
 #include <Accounts/Account>
 
 //Meegotouch
-#include <MAction>
 #include <MButton>
 #include <MDetailedListItem>
 #include <MLayout>
@@ -68,10 +67,8 @@ public Q_SLOTS:
 private:
     mutable AccountSettingsPage *q_ptr;
     AbstractAccountSetupContext *context;
-    const Accounts::Service *service;
     Accounts::Account *account;
     QList<AbstractServiceSetupContext *> contexts;
-    MAction *showAllServices;
     MDetailedListItem *usernameAndStatus;
     QString serviceType;
     MLayout *serviceSettingLayout;
