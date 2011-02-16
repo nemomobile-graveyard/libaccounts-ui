@@ -29,6 +29,7 @@
 
 // AccountSetup
 #include <AccountSetup/ProviderPluginProcess>
+#include "plugin-service.h"
 
 //Accounts
 #include <Accounts/account.h>
@@ -40,6 +41,7 @@
 #include <MApplicationWindow>
 #include <MComponentData>
 #include <MLocale>
+#include <MApplicationService>
 
 //Qt
 #include <QLocalSocket>
@@ -67,11 +69,16 @@ public:
         wrapped(0),
         m_context(0)
     {
-        application = MComponentCache::mApplication(argc, argv);
+        service = new PluginService();
+        application = MComponentCache::mApplication(argc, argv, QString(), service);
+        window = MComponentCache::mApplicationWindow();
 
         wrapped = new AccountSetup::ProviderPluginProcess(this);
         account = wrapped->account();
 
+        service->setServiceName(QString("com.nokia.AccountPlugin.%1").arg(account->providerName()));
+        service->registerService();
+        service->setProviderName(account->providerName());
         /* parse command line options */
         for (int i = 0; i < argc; ++i)
         {
@@ -128,6 +135,8 @@ private:
     Accounts::Account *account;
     bool returnToApp;
     LastPageActions lastPageActions;
+    PluginService *service;
+    QString pluginName;
 };
 
 } // namespace
