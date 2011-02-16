@@ -33,6 +33,7 @@
 #include <MApplicationPage>
 #include <MLinearLayoutPolicy>
 #include <MWidget>
+class MButton;
 
 namespace Accounts {
     class Account;
@@ -86,6 +87,13 @@ public:
      * Allows clients to hide services from service selection screen.
      */
     void setHiddenServices(const Accounts::ServiceList &hiddenServices);
+
+    /*!
+     * Get the button used to enable or disable the account.
+     * @note This method will return 0 if the context provides its own
+     * implementation of the account settings widget.
+     */
+    MButton *enableAccountButton() const;
 
 public slots:
     /*!

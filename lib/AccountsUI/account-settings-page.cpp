@@ -463,3 +463,9 @@ void AccountSettingsPage::setHiddenServices(const Accounts::ServiceList &hiddenS
     d->hiddenServiceList = hiddenServices;
 }
 
+MButton *AccountSettingsPage::enableAccountButton() const
+{
+    Q_D(const AccountSettingsPage);
+    return d->enableButton;
+}
+
