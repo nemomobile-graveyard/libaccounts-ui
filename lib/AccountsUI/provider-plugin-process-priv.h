@@ -29,7 +29,7 @@
 
 // AccountSetup
 #include <AccountSetup/ProviderPluginProcess>
-#include "pluginservice.h"
+#include "plugin-service.h"
 
 //Accounts
 #include <Accounts/account.h>
@@ -60,12 +60,7 @@ public:
         m_context(0),
         returnToApp(false)
     {
-        service = new PluginService();
-        QStringList argList = QString(*argv).split("/");
-        /* set the serviceName as per the name of the plugin */
-        service->setServiceName(QString("com.nokia.%1").
-                                arg(argList.at(argList.count()-1)).toLatin1());
-        application = MComponentCache::mApplication(argc, argv, QLatin1String(""), service);
+        application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
         window->setStyleName("AccountsUiWindow");
     }
@@ -75,17 +70,14 @@ public:
         m_context(0)
     {
         service = new PluginService();
-        QStringList argList = QString(*argv).split("/");
-        /* set the serviceName as per the name of the plugin */
-        pluginName = argList.at(argList.count()-1);
-        service->setServiceName(QString("com.nokia.%1").
-                                arg(pluginName).toLatin1());
-        application = MComponentCache::mApplication(argc, argv, QLatin1String(""), service);
+        application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
 
         wrapped = new AccountSetup::ProviderPluginProcess(this);
         account = wrapped->account();
 
+        service->setServiceName(QString("com.nokia.%1").arg(account->providerName()));
+        service->registerService();
         service->setProviderName(account->providerName());
         /* parse command line options */
         for (int i = 0; i < argc; ++i)

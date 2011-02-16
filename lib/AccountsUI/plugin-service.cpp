@@ -1,4 +1,4 @@
-#include "pluginservice.h"
+#include "plugin-service.h"
 
 #include <MBanner>
 #include <MApplication>
@@ -10,7 +10,6 @@ public:
     PluginServicePrivate()
         : providerName(QString())
     {}
-    ~PluginServicePrivate() {}
     QString providerName;
 };
 
@@ -32,7 +31,7 @@ void PluginService::launch()
     banner->setStyleName("InformationBanner");
     if (!d->providerName.isEmpty())
         banner->setTitle(qtTrId("qtn_acc_view_update_failed_infobanner").arg(d->providerName));
-    banner->appear(MSceneWindow::DestroyWhenDone);
+    banner->appear(window, MSceneWindow::DestroyWhenDone);
 }
 
 void PluginService::setProviderName(const QString &name)
