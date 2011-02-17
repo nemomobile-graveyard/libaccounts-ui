@@ -22,7 +22,7 @@
 
 #include "provider-plugin-process.h"
 #include "add-account-page.h"
-#include "accountsettingspage.h"
+#include "account-settings-page.h"
 #include "generic-account-setup-context.h"
 #include "provider-plugin-process-priv.h"
 
