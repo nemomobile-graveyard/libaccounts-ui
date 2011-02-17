@@ -1,6 +1,5 @@
 libaccounts-ui (0.77-1) unstable; urgency=low
 
-  * UNRELEASED
   * Fixes: NB#191533 - Provide protected PIMPL implementations to enhance the
     inheritance to AccountsSettingsPage class.
 
