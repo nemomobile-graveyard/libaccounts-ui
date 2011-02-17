@@ -389,10 +389,6 @@ void AccountSettingsPage::createContent()
     /* Sets the service widgets and add it into the layout policy*/
     setServicesToBeShown();
 
-    QStringList servicesNames;
-    for (int i = 0; i < d->serviceList.count(); i++)
-        servicesNames << d->serviceList.at(i)->name();
-
     setCentralWidget(centralWidget);
 
     //% "Delete"
@@ -401,15 +397,6 @@ void AccountSettingsPage::createContent()
     addAction(action);
     connect(action, SIGNAL(triggered()),
             this, SLOT(removeAccount()));
-
-    if (d->context && !d->context->serviceType().isEmpty()) {
-        QStringList serviceType;
-        Accounts::ServiceList services = d->context->account()->services();
-        foreach (Accounts::Service *service, services) {
-            serviceType.append(service->serviceType());
-        }
-        serviceType.removeDuplicates();
-    }
 
     d->layoutPolicy->addItem(serviceWidget);
     if (d->settingsExist) {
