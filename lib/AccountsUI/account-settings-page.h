@@ -129,6 +129,12 @@ protected:
      */
     QGraphicsLayoutItem *createAccountSettingsLayout();
 
+    /*!
+     * Create the MActions for the page.
+     * This method is called from createContent().
+     */
+    void createPageActions();
+
 private:
     AccountSettingsPagePrivate *d_ptr;
     Q_DISABLE_COPY(AccountSettingsPage)

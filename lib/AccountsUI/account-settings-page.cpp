@@ -378,6 +378,16 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     return upperWidget;
 }
 
+void AccountSettingsPage::createPageActions()
+{
+    //% "Delete"
+    MAction *action = new MAction(qtTrId("qtn_comm_command_delete"), this);
+    action->setLocation(MAction::ApplicationMenuLocation);
+    addAction(action);
+    connect(action, SIGNAL(triggered()),
+            this, SLOT(removeAccount()));
+}
+
 void AccountSettingsPage::createContent()
 {
     Q_D(AccountSettingsPage);
@@ -401,12 +411,7 @@ void AccountSettingsPage::createContent()
 
     setCentralWidget(centralWidget);
 
-    //% "Delete"
-    MAction *action = new MAction(qtTrId("qtn_comm_command_delete"),this);
-    action->setLocation(MAction::ApplicationMenuLocation);
-    addAction(action);
-    connect(action, SIGNAL(triggered()),
-            this, SLOT(removeAccount()));
+    createPageActions();
 }
 
 const AbstractAccountSetupContext *AccountSettingsPage::context()
