@@ -70,13 +70,13 @@ public:
         m_context(0)
     {
         service = new PluginService();
-        application = MComponentCache::mApplication(argc, argv);
+        application = MComponentCache::mApplication(argc, argv, QString(), service);
         window = MComponentCache::mApplicationWindow();
 
         wrapped = new AccountSetup::ProviderPluginProcess(this);
         account = wrapped->account();
 
-        service->setServiceName(QString("com.nokia.%1").arg(account->providerName()));
+        service->setServiceName(QString("com.nokia.AccountPlugin.%1").arg(account->providerName()));
         service->registerService();
         service->setProviderName(account->providerName());
         /* parse command line options */
