@@ -34,7 +34,6 @@
 
 //Meegotouch
 #include <MLayout>
-#include <MLinearLayoutPolicy>
 #include <MMessageBox>
 #include <MAction>
 #include <MButton>
@@ -53,14 +52,11 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     context(context),
     account(0),
     usernameAndStatus(0),
-    serviceSettingLayout(0),
-    layoutServicePolicy(0),
     enableButton(0),
     syncHandler(0),
     changePasswordDialogStarted(false),
     panel(0),
     layout(0),
-    layoutPolicy(0),
     panelPolicy(0)
 {
     account = context->account();
@@ -235,9 +231,10 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
     Q_D(AccountSettingsPage);
 
     MWidget *serviceWidget = new MWidget(this);
-    d->serviceSettingLayout = new MLayout(serviceWidget);
-    d->layoutServicePolicy = new MLinearLayoutPolicy(d->serviceSettingLayout, Qt::Vertical);
-    d->layoutServicePolicy->setSpacing(0);
+    MLayout *serviceSettingLayout = new MLayout(serviceWidget);
+    MLinearLayoutPolicy *layoutServicePolicy =
+        new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
+    layoutServicePolicy->setSpacing(0);
 
     /* List the services available on the account and load all the respective plugins. */
 
@@ -290,7 +287,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
         d->panelPolicy->addItem(settingsWidget);
     }
 
-    d->layoutServicePolicy->addItem(d->panel);
+    layoutServicePolicy->addItem(d->panel);
     /*
      * no need in extra processing of any signals during content creation
      * */
@@ -299,7 +296,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
         MSeparator *separatorBottom = new MSeparator(this);
         separatorBottom->setStyleName("CommonItemDividerInverted");
         separatorBottom->setOrientation(Qt::Horizontal);
-        d->layoutServicePolicy->addItem(separatorBottom);
+        layoutServicePolicy->addItem(separatorBottom);
     }
 
     foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets) {
@@ -390,13 +387,17 @@ void AccountSettingsPage::createContent()
     //we need a central widget to get the right layout size under the menubar
     MWidget *centralWidget = new MWidget();
     d->layout = new MLayout(centralWidget);
-    d->layoutPolicy = new MLinearLayoutPolicy(d->layout, Qt::Vertical);
-    d->layoutPolicy->setSpacing(0);
+    MLinearLayoutPolicy *layoutPolicy =
+        new MLinearLayoutPolicy(d->layout, Qt::Vertical);
+    layoutPolicy->setSpacing(0);
 
     QGraphicsLayoutItem *accountSettingsLayout = createAccountSettingsLayout();
-    d->layoutPolicy->addItem(accountSettingsLayout);
+    layoutPolicy->addItem(accountSettingsLayout);
 
     QGraphicsLayoutItem *serviceWidget = createServiceSettingsLayout();
+    layoutPolicy->addItem(serviceWidget);
+
+    layoutPolicy->addStretch();
 
     setCentralWidget(centralWidget);
 
@@ -406,9 +407,6 @@ void AccountSettingsPage::createContent()
     addAction(action);
     connect(action, SIGNAL(triggered()),
             this, SLOT(removeAccount()));
-
-    d->layoutPolicy->addItem(serviceWidget);
-    d->layoutPolicy->addStretch();
 }
 
 const AbstractAccountSetupContext *AccountSettingsPage::context()

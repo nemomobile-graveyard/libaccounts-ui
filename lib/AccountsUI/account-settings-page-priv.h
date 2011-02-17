@@ -70,8 +70,6 @@ private:
     Accounts::Account *account;
     QList<AbstractServiceSetupContext *> contexts;
     MDetailedListItem *usernameAndStatus;
-    MLayout *serviceSettingLayout;
-    MLinearLayoutPolicy *layoutServicePolicy;
     MButton *enableButton;
     Accounts::ServiceList serviceList;
     QList<AbstractSetupContext*> abstractContexts;
@@ -80,7 +78,6 @@ private:
     QMultiMap<QString, ServiceSettingsWidget*> settingsWidgets;
     MWidgetController *panel;
     MLayout *layout;
-    MLinearLayoutPolicy *layoutPolicy;
     MLinearLayoutPolicy *panelPolicy;
     Accounts::ServiceList hiddenServiceList;
     QMap<QString, bool> serviceStatusMap;
