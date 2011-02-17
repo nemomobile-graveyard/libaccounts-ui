@@ -98,6 +98,11 @@ public:
      */
     MButton *enableAccountButton() const;
 
+    /*!
+     * Gets the AccountSyncHandler object.
+     */
+    AccountSyncHandler *accountSyncHandler() const;
+
 public slots:
     /*!
      * Called when the user toggles the enable button for the account.

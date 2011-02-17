@@ -462,3 +462,9 @@ MButton *AccountSettingsPage::enableAccountButton() const
     return d->enableButton;
 }
 
+AccountSyncHandler *AccountSettingsPage::accountSyncHandler() const
+{
+    Q_D(const AccountSettingsPage);
+    return d->syncHandler;
+}
+
