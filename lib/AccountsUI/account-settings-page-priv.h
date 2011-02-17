@@ -70,7 +70,6 @@ private:
     Accounts::Account *account;
     QList<AbstractServiceSetupContext *> contexts;
     MDetailedListItem *usernameAndStatus;
-    QString serviceType;
     MLayout *serviceSettingLayout;
     MLinearLayoutPolicy *layoutServicePolicy;
     MButton *enableButton;

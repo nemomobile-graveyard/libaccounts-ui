@@ -67,7 +67,6 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     account = context->account();
     serviceList = account->services();
     abstractContexts.append(context);
-    serviceType = context->serviceType();
     panel = new MWidgetController();
     syncHandler = new AccountSyncHandler(this);
     connect(syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
