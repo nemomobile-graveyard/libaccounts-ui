@@ -61,8 +61,7 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     panel(0),
     layout(0),
     layoutPolicy(0),
-    panelPolicy(0),
-    settingsExist(false)
+    panelPolicy(0)
 {
     account = context->account();
     serviceList = account->services();
@@ -228,7 +227,18 @@ AccountSettingsPage::~AccountSettingsPage()
 
 void AccountSettingsPage::setServicesToBeShown()
 {
+    qWarning() << Q_FUNC_INFO << "Deprecated. This function does nothing.";
+}
+
+QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
+{
     Q_D(AccountSettingsPage);
+
+    MWidget *serviceWidget = new MWidget(this);
+    d->serviceSettingLayout = new MLayout(serviceWidget);
+    d->layoutServicePolicy = new MLinearLayoutPolicy(d->serviceSettingLayout, Qt::Vertical);
+    d->layoutServicePolicy->setSpacing(0);
+
     /* List the services available on the account and load all the respective plugins. */
 
     //% "%1 Settings"
@@ -285,8 +295,12 @@ void AccountSettingsPage::setServicesToBeShown()
      * no need in extra processing of any signals during content creation
      * */
 
-    if (d->settingsWidgets.count() > 1)
-        d->settingsExist = true;
+    if (d->settingsWidgets.count() > 1) {
+        MSeparator *separatorBottom = new MSeparator(this);
+        separatorBottom->setStyleName("CommonItemDividerInverted");
+        separatorBottom->setOrientation(Qt::Horizontal);
+        d->layoutServicePolicy->addItem(separatorBottom);
+    }
 
     foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets) {
         connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
@@ -296,6 +310,8 @@ void AccountSettingsPage::setServicesToBeShown()
         connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
                  this, SLOT(setEnabledService(const QString&, bool)));
     }
+
+    return serviceWidget;
 }
 
 QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
@@ -380,13 +396,7 @@ void AccountSettingsPage::createContent()
     QGraphicsLayoutItem *accountSettingsLayout = createAccountSettingsLayout();
     d->layoutPolicy->addItem(accountSettingsLayout);
 
-    MWidget *serviceWidget = new MWidget(this);
-    d->serviceSettingLayout = new MLayout(serviceWidget);
-    d->layoutServicePolicy = new MLinearLayoutPolicy(d->serviceSettingLayout, Qt::Vertical);
-    d->layoutServicePolicy->setSpacing(0);
-
-    /* Sets the service widgets and add it into the layout policy*/
-    setServicesToBeShown();
+    QGraphicsLayoutItem *serviceWidget = createServiceSettingsLayout();
 
     setCentralWidget(centralWidget);
 
@@ -398,12 +408,6 @@ void AccountSettingsPage::createContent()
             this, SLOT(removeAccount()));
 
     d->layoutPolicy->addItem(serviceWidget);
-    if (d->settingsExist) {
-        MSeparator *separatorBottom = new MSeparator(this);
-        separatorBottom->setStyleName("CommonItemDividerInverted");
-        separatorBottom->setOrientation(Qt::Horizontal);
-        d->layoutServicePolicy->addItem(separatorBottom);
-    }
     d->layoutPolicy->addStretch();
 }
 

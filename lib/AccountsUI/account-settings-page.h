@@ -70,10 +70,13 @@ public:
      */
     virtual void createContent();
 
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
     /*!
      * Creates the layout of all the services as per serviceType
+     * @deprecated Use createServiceSettingsLayout() instead.
      */
     void setServicesToBeShown();
+#endif
 
     /*!
      * Returns the context.
@@ -114,6 +117,12 @@ Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);
 
 protected:
+    /*!
+     * Create the widget with the settings for all the services.
+     * This method is called from createContent().
+     */
+    QGraphicsLayoutItem *createServiceSettingsLayout();
+
     /*!
      * Create the upper part of the page, containing the global account
      * settings. This method is called from createContent().

@@ -82,7 +82,6 @@ private:
     MLayout *layout;
     MLinearLayoutPolicy *layoutPolicy;
     MLinearLayoutPolicy *panelPolicy;
-    bool settingsExist;
     Accounts::ServiceList hiddenServiceList;
     QMap<QString, bool> serviceStatusMap;
 };
