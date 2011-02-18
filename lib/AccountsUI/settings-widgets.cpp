@@ -159,14 +159,15 @@ QGraphicsLayoutItem *ParameterBoolean::ui(const QDomElement &node,
     if (context->settingsMap.contains(key)) {
         MButtonModel *model = qobject_cast<MButtonModel*>(context->settingsMap.value(key));
         button = new MButton(0, model);
+        button->setCheckable(true);
     } else {
         button = new MButton(0);
         bool checked = context->account()->valueAsBool(key);
+        button->setCheckable(true);
         button->setChecked(checked);
         context->settingsMap.insert(key, button->model());
     }
     button->setStyleName(QString(key));
-    button->setCheckable(true);
 
     // instead of label:
     button->setText(descriptionLabelText(node, key));
