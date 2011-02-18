@@ -1,3 +1,9 @@
+libaccounts-ui (0.79-1) unstable; urgency=low
+
+  * Fixes: NB#214171 - Accounts ui doesn't display correct button status
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Fri, 18 Feb 2011 17:34:58 +0530
+
 libaccounts-ui (0.78-1) unstable; urgency=low
 
   * Fixes: NB#218578 - Information banner is not shown when updating the view is not possible
