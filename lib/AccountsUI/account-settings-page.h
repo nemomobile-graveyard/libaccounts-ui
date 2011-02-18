@@ -33,6 +33,7 @@
 #include <MApplicationPage>
 #include <MLinearLayoutPolicy>
 #include <MWidget>
+class MButton;
 
 namespace Accounts {
     class Account;
@@ -45,7 +46,7 @@ class AccountSettingsPagePrivate;
 
 /*!
  * @class AccountSettingsPage
- * @headerfile AccountsUI/accountsettingspage.h AccountsUI/AccountSettingsPage
+ * @headerfile AccountsUI/account-settings-page.h AccountsUI/AccountSettingsPage
  * @brief Main UI element for editing an existing account.
  *
  * @details The AccountSettingsPage is the page that appears when the user
@@ -69,10 +70,13 @@ public:
      */
     virtual void createContent();
 
+#ifndef ACCOUNTSUI_DISABLE_DEPRECATED
     /*!
      * Creates the layout of all the services as per serviceType
+     * @deprecated Use createServiceSettingsLayout() instead.
      */
     void setServicesToBeShown();
+#endif
 
     /*!
      * Returns the context.
@@ -86,6 +90,18 @@ public:
      * Allows clients to hide services from service selection screen.
      */
     void setHiddenServices(const Accounts::ServiceList &hiddenServices);
+
+    /*!
+     * Get the button used to enable or disable the account.
+     * @note This method will return 0 if the context provides its own
+     * implementation of the account settings widget.
+     */
+    MButton *enableAccountButton() const;
+
+    /*!
+     * Gets the AccountSyncHandler object.
+     */
+    AccountSyncHandler *accountSyncHandler() const;
 
 public slots:
     /*!
@@ -105,16 +121,27 @@ public slots:
 Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);
 
-private slots:
-    void saveSettings();
-    void openChangePasswordDialog();
-    void onSyncStateChanged(const SyncState &state);
-    void deleteCredentialsDialog();
-    void disableSameServiceTypes(const QString &serviceType);
-    void setEnabledService(const QString& serviceName, bool enabled);
+protected:
+    /*!
+     * Create the widget with the settings for all the services.
+     * This method is called from createContent().
+     */
+    QGraphicsLayoutItem *createServiceSettingsLayout();
+
+    /*!
+     * Create the upper part of the page, containing the global account
+     * settings. This method is called from createContent().
+     */
+    QGraphicsLayoutItem *createAccountSettingsLayout();
+
+    /*!
+     * Create the MActions for the page.
+     * This method is called from createContent().
+     */
+    void createPageActions();
 
 private:
-    AccountSettingsPagePrivate* d_ptr;
+    AccountSettingsPagePrivate *d_ptr;
     Q_DISABLE_COPY(AccountSettingsPage)
     Q_DECLARE_PRIVATE(AccountSettingsPage)
 

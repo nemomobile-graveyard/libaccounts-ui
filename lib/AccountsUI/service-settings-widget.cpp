@@ -42,6 +42,47 @@
 
 namespace AccountsUI {
 
+ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
+        : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
+{
+    setStyleName("CommonBasicListItemInverted");
+    setObjectName("wgServiceSettingsWidgetListItem");
+
+    horizontalLayout = new MLayout(this);
+
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+    MLinearLayoutPolicy *horizontalLayoutPolicy
+            = new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
+    horizontalLayoutPolicy->setSpacing(0);
+
+    MLayout *titleSubtitleLayout = new MLayout(horizontalLayout);
+    titleSubtitleLayout->setContentsMargins(0, 0, 0, 0);
+    MLinearLayoutPolicy *titleSubtitleLayoutPolicy = new MLinearLayoutPolicy(titleSubtitleLayout, Qt::Vertical);
+    titleSubtitleLayoutPolicy->setSpacing(0);
+
+    titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);    
+    titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
+
+    horizontalLayoutPolicy->addItem(titleSubtitleLayout, Qt::AlignLeft | Qt::AlignCenter);
+    horizontalLayoutPolicy->addItem(imageWidget(), Qt::AlignCenter);
+}
+
+ServiceSettingsWidgetListItem::~ServiceSettingsWidgetListItem()
+{}
+
+
+QGraphicsLayout *ServiceSettingsWidgetListItem::createLayout()
+{
+    return horizontalLayout;
+}
+
+void ServiceSettingsWidgetListItem::showDrillDownButton()
+{
+    imageWidget()->setImage("icon-m-common-drilldown-arrow-inverse");
+    imageWidget()->setStyleName("CommonDrillDownIcon");
+    imageWidget()->setObjectName("wgServiceSettingsWidgetDrillDownIcon");
+}
+
 class ServiceSettingsWidgetPrivate
 {
 public:
@@ -85,7 +126,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
 
-    MBasicListItem *serviceInfo = 0;
+    ServiceSettingsWidgetListItem *serviceInfo = 0;
 
     if (settingsConf & EnableButton) {
         if (context) {
@@ -98,9 +139,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             ServiceHelper *serviceHepler =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
 
-            serviceInfo = new MBasicListItem(MBasicListItem::TitleWithSubtitle);
-            serviceInfo->setStyleName("CommonBasicListItemInverted");
-            serviceInfo->setObjectName("wgServiceSettingsWidgetListItem");
+            serviceInfo = new ServiceSettingsWidgetListItem();
             serviceInfo->setTitle(serviceHepler->prettyName());
             serviceInfo->setSubtitle(serviceHepler->description());
 
@@ -122,11 +161,8 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
         MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
 
         if (widget) {
-            MImageWidget *sideImage = new MImageWidget("icon-m-common-drilldown-arrow-inverse", upperWidget);
-            sideImage->setStyleName("CommonDrillDownIcon");
-            sideImage->setObjectName("wgServiceSettingsWidgetDrillDownIcon");
-            containerMainPolicy->addItem(sideImage, Qt::AlignRight | Qt::AlignVCenter);
             if (serviceInfo)
+                serviceInfo->showDrillDownButton();
                 connect(serviceInfo, SIGNAL(clicked()),
                         this, SLOT(openSettingsPage()));
 

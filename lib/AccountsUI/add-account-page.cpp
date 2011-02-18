@@ -29,6 +29,7 @@
 #include "provider-plugin-process.h"
 #include "account-sync-handler.h"
 #include "genericaccountsetupform.h"
+#include "account-setup-finished-page.h"
 
 //Accounts
 #include <Accounts/Account>
@@ -214,10 +215,16 @@ void AddAccountPage::onSyncStateChanged(const SyncState &state)
             d->syncHandler->store(d->abstractContexts);
             break;
         case Stored:
-            connect(d->context->account(), SIGNAL(synced()),
-                    ProviderPluginProcess::instance(), SLOT(quit()));
-            d->context->account()->sync();
-            showMenuBar();
+            if (d->serviceType.isEmpty()) {
+                connect(d->context->account(), SIGNAL(synced()),
+                        ProviderPluginProcess::instance(), SLOT(quit()));
+                d->context->account()->sync();
+                showMenuBar();
+            } else {
+                d->context->account()->sync();
+                AccountSetupFinishedPage *page = new AccountSetupFinishedPage(d->context);
+                page->appear();
+            }
             break;
         default:
             return;

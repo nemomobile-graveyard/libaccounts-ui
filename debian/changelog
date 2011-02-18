@@ -1,7 +1,51 @@
+libaccounts-ui (0.77-1) unstable; urgency=low
+
+  * Fixes: NB#191533 - Provide protected PIMPL implementations to enhance the
+    inheritance to AccountsSettingsPage class.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 17 Feb 2011 15:15:17 +0200
+
+libaccounts-ui (0.76-2) unstable; urgency=low
+
+  * Fixes: NB#226154 - Incorrect account provider name displayed in service selection view
+
+ -- K Prasanna Kumar <k-prasanna.kumar@nokia.com>  Wed, 16 Feb 2011 15:38:49 +0530
+
+libaccounts-ui (0.75-1) unstable; urgency=low
+
+  * Fixes: NB#220973 - Should not get the visual feedback if screen touch is made to a non-functional icon on add account page 
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Tue, 15 Feb 2011 18:25:49 +0530
+
+libaccounts-ui (0.74-1) unstable; urgency=low
+
+  * Fixes: NB#225065 - No qDebug() enabled for account plugins
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 15 Feb 2011 13:15:09 +0200
+
+libaccounts-ui (0.73-2) unstable; urgency=low
+
+  * Fix changelog. Bugfixes were repeated.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 10 Feb 2011 15:32:11 +0200
+
+libaccounts-ui (0.73-1) unstable; urgency=low
+
+  * Fixes: NB#214873 - Unable to click arrow in "GoogleTalk" account
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Thu, 10 Feb 2011 15:49:36 +0530
+
+libaccounts-ui (0.72-1) unstable; urgency=low
+
+  * Fixes: NB#211254 - Account setup finished view not shown for Simple accounts (Provider which has only one service)
+  * Fixes: NB#218527 - "qtn_acc_remove_account" title string is not shown in Remove account confirmation dialog
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Wed, 09 Feb 2011 17:13:38 +0530
+
 libaccounts-ui (0.71-1) unstable; urgency=low
 
-  * Fixes: NB#225464 - Simple accounts are configured with disabled state
-  * Fixes: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
+  * Addresses: NB#225464 - Simple accounts are configured with disabled state
+  * Addresses: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 09 Feb 2011 12:18:22 +0300
 
@@ -13,8 +57,8 @@ libaccounts-ui (0.70-1) unstable; urgency=low
 
 libaccounts-ui (0.69-1) unstable; urgency=low
 
-  * Addresses: NB#225464 - Simple accounts are configured with disabled state
-  * Addresses: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
+  * Fixes: NB#225464 - Simple accounts are configured with disabled state
+  * Fixes: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 08 Feb 2011 13:28:22 +0300
 
