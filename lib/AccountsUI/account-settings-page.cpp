@@ -71,7 +71,7 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
 void AccountSettingsPagePrivate::saveSettings()
 {
     Q_Q(AccountSettingsPage);
-    disconnect(this , SIGNAL(backButtonClicked()), 0, 0);
+    disconnect(q , SIGNAL(backButtonClicked()), 0, 0);
     q->setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
     if (enableButton) {
@@ -300,12 +300,12 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
     }
 
     foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets) {
-        connect (settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
-                 this, SLOT(disableSameServiceTypes(const QString&)));
-        connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
-                 this, SIGNAL(serviceEnabled(const QString&, bool)));
-        connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
-                 this, SLOT(setEnabledService(const QString&, bool)));
+        connect(settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
+                d, SLOT(disableSameServiceTypes(const QString&)));
+        connect(settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+                d, SIGNAL(serviceEnabled(const QString&, bool)));
+        connect(settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+                d, SLOT(setEnabledService(const QString&, bool)));
     }
 
     return serviceWidget;
