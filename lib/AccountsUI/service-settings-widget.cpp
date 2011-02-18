@@ -146,7 +146,6 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             /*
              * no signals during widget creation
              * */
-            d->context->enable(enabled);
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
