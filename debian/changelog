@@ -1,3 +1,9 @@
+libaccounts-ui (0.78-1) unstable; urgency=low
+
+  * Fixes: NB#218578 - Information banner is not shown when updating the view is not possible
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 18 Feb 2011 11:48:17 +0300
+
 libaccounts-ui (0.77-1) unstable; urgency=low
 
   * Fixes: NB#191533 - Provide protected PIMPL implementations to enhance the
