@@ -239,7 +239,8 @@ void GenericAccountSetupContext::store()
         qDebug()<< d->genericAccountSetupForm->username();
         QString username = d->genericAccountSetupForm->username();
         QString password = d->genericAccountSetupForm->password();
-        account()->setDisplayName(username);
+        if (account()->displayName().isEmpty())
+            account()->setDisplayName(username);
          //TODO: check that username is valid(empty, mail address ...)
         account()->setValue("username", username);
         /*
