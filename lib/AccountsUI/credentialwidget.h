@@ -62,6 +62,7 @@ public:
     void setFocusOnPasswordField();
     void setFocusOnCaptchaField();
     void setEnabled(bool isWidgetEnabled);
+    void setInformativeNoteText(const QString &text);
 
 protected:
     /*!

@@ -144,6 +144,12 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     */
     M_MODEL_PROPERTY(bool, forcedPortraitMode, ForcedPortraitMode, true, false)
 
+    /*!
+        \property CredentialWidgetModel::informativeNoteText
+        \brief .Property holding the text for any informative note the widget might display.
+    */
+    M_MODEL_PROPERTY(QString, informativeNoteText, InformativeNoteText, true, QString())
+
     public:
 
         enum Configuration {
