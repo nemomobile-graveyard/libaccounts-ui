@@ -54,7 +54,8 @@ class CredentialWidgetViewPrivate {
 
 public:
     CredentialWidgetViewPrivate(CredentialWidget *controller)
-        : usernameLabel(0),
+        : informativeNoteLabel(0),
+          usernameLabel(0),
           usernameTextEdit(0),
           keychainButton(0),
           passwordLabel(0),
@@ -90,6 +91,12 @@ public:
      * variants of accounts-ui dialogs
      */
     MLayout *mainLayout;
+
+
+    /*
+     * label for displaying informative texts
+     */
+    MLabel *informativeNoteLabel;
 
     /*
      * username specific items
@@ -155,6 +162,11 @@ public:
 
 void CredentialWidgetViewPrivate::destroyAllWidgets()
 {
+    if (informativeNoteLabel) {
+        delete informativeNoteLabel;
+        informativeNoteLabel = NULL;
+    }
+
     if (usernameLabel) {
         delete usernameLabel;
         usernameLabel = NULL;
@@ -299,6 +311,15 @@ void CredentialWidgetView::recreateWidgets()
     d->destroyAllWidgets();
 
     if (model()->loginDialogVisible()) {
+
+        if (!model()->informativeNoteText().isEmpty()) {
+            d->informativeNoteLabel = new MLabel(model()->informativeNoteText());
+            d->informativeNoteLabel->setStyleName("CommonBodyTextInverted");
+            d->informativeNoteLabel->setWordWrap(true);
+            d->informativeNoteLabel->setWrapMode(QTextOption::WordWrap);
+            d->informativeNoteLabel->setAlignment(Qt::AlignCenter);
+        }
+
         //% "Username"
         d->usernameLabel = new MLabel(qtTrId("qtn_acc_login_username"));
         d->usernameLabel->setStyleName("CommonFieldLabelInverted");
@@ -489,12 +510,19 @@ void CredentialWidgetView::updateData(const QList <const char *> &modifications)
         else if (member == CredentialWidgetModel::Enabled) {
             setEnabled(model()->enabled());
         }
+        else if (member == CredentialWidgetModel::InformativeNoteText) {
+            if (d->informativeNoteLabel)
+                d->informativeNoteLabel->setText(model()->informativeNoteText());
+        }
     }
 }
 
 void CredentialWidgetView::setEnabled(bool isWidgetEnabled)
 {
     Q_D(CredentialWidgetView);
+
+    if (d->informativeNoteLabel)
+        d->informativeNoteLabel->setEnabled(isWidgetEnabled);
 
     if (d->usernameLabel)
         d->usernameLabel->setEnabled(isWidgetEnabled);
@@ -592,6 +620,8 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
 
     int row = 0;
     //portrait mode
+    d->portraitPolicy->addItem(d->informativeNoteLabel,row,0);
+    row++;
     d->portraitPolicy->addItem(d->usernameLabel,row,0);
     row++;
     d->portraitPolicy->addItem(d->usernameTextEdit,row,0,1,2);
@@ -636,6 +666,9 @@ void CredentialWidgetView::configureWithCaptchaAndLogin()
 
     row = 0;
     //landscape mode
+    d->landscapePolicy->addItem(d->informativeNoteLabel,row,0,1,2);
+    d->landscapePolicy->setRowAlignment(row,Qt::AlignHCenter);
+    row++;
     d->landscapePolicy->addItem(d->usernameLabel,row,0);
     row++;
     d->landscapePolicy->addItem(d->usernameTextEdit,row,0);
@@ -712,6 +745,8 @@ void CredentialWidgetView::configureWithLogin()
 
     int row = 0;
     //portrait mode
+    d->portraitPolicy->addItem(d->informativeNoteLabel,row,0);
+    row++;
     d->portraitPolicy->addItem(d->usernameLabel,row,0);
     d->portraitPolicy->setRowSpacing(row,0);
     row++;
@@ -750,6 +785,9 @@ void CredentialWidgetView::configureWithLogin()
 
     row = 0;
     //landscape mode
+    d->landscapePolicy->addItem(d->informativeNoteLabel,row,0,1,2);
+    d->landscapePolicy->setRowAlignment(row,Qt::AlignHCenter);
+    row++;
     d->landscapePolicy->addItem(d->usernameLabel,row,0);
     row++;
     d->landscapePolicy->addItem(d->usernameTextEdit,row,0);

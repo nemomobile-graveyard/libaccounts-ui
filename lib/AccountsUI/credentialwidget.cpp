@@ -128,4 +128,10 @@ void CredentialWidget::setEnabled(bool value)
     model()->setEnabled(value);
 }
 
+void CredentialWidget::setInformativeNoteText(const QString &text)
+{
+    Q_ASSERT(model());
+    model()->setInformativeNoteText(text);
+}
+
 M_REGISTER_WIDGET_NO_CREATE(CredentialWidget);
