@@ -132,7 +132,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
         if (context) {
             d->enableServiceButton = new MButton(this);
             d->enableServiceButton->setViewType(MButton::switchType);
-            d->enableServiceButton->setStyleName("CommonSwitchInverted");
+            d->enableServiceButton->setStyleName("CommonLeftSwitchInverted");
             d->enableServiceButton->setObjectName("wgServiceSettingsWidgetServiceButton");
             d->enableServiceButton->setCheckable(true);
 
@@ -160,10 +160,11 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
         MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
 
         if (widget) {
-            if (serviceInfo)
+            if (serviceInfo) {
                 serviceInfo->showDrillDownButton();
                 connect(serviceInfo, SIGNAL(clicked()),
                         this, SLOT(openSettingsPage()));
+            }
 
             if ((settingsConf & NonMandatorySettings) ||
                 (settingsConf & MandatorySettings)) {
