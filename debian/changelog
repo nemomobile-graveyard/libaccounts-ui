@@ -1,3 +1,9 @@
+libaccounts-ui (0.84-1) unstable; urgency=low
+
+  * Updated the CredentialsWidget to support informative text notes.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Mon, 21 Feb 2011 14:37:50 +0200
+
 libaccounts-ui (0.83-1) unstable; urgency=low
 
   * Fixes: NB#213333 - User name must be shown in account information even if email address is used for login
