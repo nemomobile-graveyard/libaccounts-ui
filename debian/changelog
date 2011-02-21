@@ -1,3 +1,18 @@
+libaccounts-ui (0.80-1) unstable; urgency=low
+
+  * Restore the fix for NB#200000, about account settings to be rewritten
+    without reason.
+  * Restore saving of the services enabledmness states when editing an
+    account.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Fri, 18 Feb 2011 16:30:53 +0200
+
+libaccounts-ui (0.79-1) unstable; urgency=low
+
+  * Fixes: NB#214171 - Accounts ui doesn't display correct button status
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Fri, 18 Feb 2011 17:34:58 +0530
+
 libaccounts-ui (0.78-1) unstable; urgency=low
 
   * Fixes: NB#218578 - Information banner is not shown when updating the view is not possible
