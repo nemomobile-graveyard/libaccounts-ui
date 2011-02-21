@@ -1,3 +1,10 @@
+libaccounts-ui (0.83-1) unstable; urgency=low
+
+  * Fixes: NB#213333 - User name must be shown in account information even if email address is used for login
+  * Fixes: NB#228213 - libaccountplugin is using hard coded fonts creating a design inconsistency
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 21 Feb 2011 12:13:14 +0300
+
 libaccounts-ui (0.82-1) unstable; urgency=low
 
   * Fixes: NB#195456 - Provide protected PIMPL implementations to enhance the inheritance to AddAccountPage class
