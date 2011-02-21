@@ -1,6 +1,12 @@
-libaccounts-ui (0.81-1) unstable; urgency=low
+libaccounts-ui (0.82-1) unstable; urgency=low
 
   * Fixes: NB#195456 - Provide protected PIMPL implementations to enhance the inheritance to AddAccountPage class
+
+ -- Smita Srivastava <smita.srivastava@teleca.com> Mon, 21 Feb 2011 06:27:17 +0300
+
+libaccounts-ui (0.81-1) unstable; urgency=low
+
+  * Addresses : NB#195456 - Provide protected PIMPL implementations to enhance the inheritance to AddAccountPage class
 
  -- Smita Srivastava <smita.srivastava@teleca.com> Mon, 21 Feb 2011 05:23:17 +0300
 
