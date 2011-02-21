@@ -1,3 +1,9 @@
+libaccounts-ui (0.85-1) unstable; urgency=low
+
+  * Fixing changelog
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Mon, 21 Feb 2011 14:37:50 +0200
+
 libaccounts-ui (0.84-1) unstable; urgency=low
 
   * Updated the CredentialsWidget to support informative text notes.
@@ -21,7 +27,7 @@ libaccounts-ui (0.81-1) unstable; urgency=low
 
   * Addresses : NB#195456 - Provide protected PIMPL implementations to enhance the inheritance to AddAccountPage class
 
- -- Smita Srivastava <smita.srivastava@teleca.com> Mon, 21 Feb 2011 05:23:17 +0300
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 21 Feb 2011 05:23:17 +0300
 
 libaccounts-ui (0.80-1) unstable; urgency=low
 
