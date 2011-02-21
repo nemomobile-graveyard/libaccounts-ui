@@ -140,6 +140,12 @@ void AddAccountPage::setHiddenServices(const Accounts::ServiceList &hiddenServic
     d->hiddenServiceList = hiddenServices;
 }
 
+AccountSyncHandler *accountSyncHandler()
+{
+    Q_D(AddAccountPage);
+    return d->syncHandler
+}
+
 void AddAccountPage::navigateToServiceSelectionPage()
 {
     Q_D(AddAccountPage);
