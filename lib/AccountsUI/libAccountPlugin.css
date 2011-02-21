@@ -3,7 +3,7 @@ MApplicationWindowStyle#AccountsUiWindow {
 }
 
 MApplicationPage MLabelStyle#ConnectingLabel {
-  font: "Nokia Standard Light" 32;
+  font: $FONT_FAMILY light 32;
   color: #1080DD;
 }
 
@@ -17,17 +17,17 @@ margin-right:  $INDENT_DEFAULT;
 }
 
 AccountSetupFinishedWidget MLabelStyle#SuccessLabel {
-    font: "Nokia Standard Bold" 62;
+    font: $FONT_FAMILY bold 62;
     color: #1080DD;
 }
 
 AccountSetupFinishedWidget MLabelStyle#FirstDescLabel {
-    font: "Nokia Standard Light" 36;
+    font: $FONT_FAMILY light 36;
     color: #8C8C8C;
 }
 
 AccountSetupFinishedWidget MLabelStyle#SecondDescLabel {
-    font: "Nokia Standard Light" 36;
+    font: $FONT_FAMILY light 36;
     color: #8C8C8C;
 }
 
