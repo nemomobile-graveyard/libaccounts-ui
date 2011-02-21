@@ -66,8 +66,15 @@ public:
      */
     void setHiddenServices(const Accounts::ServiceList &hiddenServices);
 
-private slots:
+    /*!
+     * Returns the account sync handler
+     */
+    AccountSyncHandler *accountSyncHandler();
+
+protected slots:
     void navigateToServiceSelectionPage();
+
+private slots:
     void clearServiceContextList();
     void hideMenuBar();
     void showMenuBar();
