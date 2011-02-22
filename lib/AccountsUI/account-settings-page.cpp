@@ -345,7 +345,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     d->usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
     d->usernameAndStatus->setObjectName("wgAccountSettingsPageListItem");
     d->usernameAndStatus->imageWidget()->setImage(providerIconId);
-    d->usernameAndStatus->setTitle(providerName);
+    d->usernameAndStatus->setTitle(provider->displayName());
     d->usernameAndStatus->setSubtitle(d->account->displayName());
 
     MSeparator *separatorTop = new MSeparator(this);
