@@ -64,8 +64,7 @@ public:
         cancelAction(0),
         context(0),
         syncHandler(0),
-        layout(0),
-        layoutPolicy(0)
+        layoutServicePolicy(0)
         {}
     ~ServiceSelectionPagePrivate() {}
 
@@ -76,8 +75,7 @@ public:
     QList<AbstractServiceSetupContext*> serviceContextList;
     QList<AbstractSetupContext*> abstractContexts;
     AccountSyncHandler *syncHandler;
-    MLayout *layout;
-    MLinearLayoutPolicy *layoutPolicy;
+    MLinearLayoutPolicy *layoutServicePolicy;
     QString serviceType;
     QMap<QString, bool> serviceStatusMap;
 };
@@ -124,9 +122,9 @@ void ServiceSelectionPage::createContent()
     //we need a central widget to get the right layout size under the menubar
     MWidget *centralWidget = new MWidget();
     setCentralWidget(centralWidget);
-    d->layout = new MLayout(centralWidget);
-    d->layoutPolicy = new MLinearLayoutPolicy(d->layout, Qt::Vertical);
-    d->layoutPolicy->setSpacing(0);
+    MLayout *layout = new MLayout(centralWidget);
+    MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
+    layoutPolicy->setSpacing(0);
 
     if (d->context) {
         MWidget *upperWidget = new MWidget(this);
@@ -164,13 +162,13 @@ void ServiceSelectionPage::createContent()
         upperLayoutPolicy->addItem(horizontalLayout);
         upperLayoutPolicy->addItem(separatorTop);
 
-        d->layoutPolicy->addItem(upperWidget);
+        layoutPolicy->addItem(upperWidget);
     }
 
     MWidget *serviceWidget = new MWidget();
     MLayout *serviceSettingLayout = new MLayout(serviceWidget);
-    MLinearLayoutPolicy *layoutServicePolicy = new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
-    layoutServicePolicy->setSpacing(0);
+    d->layoutServicePolicy = new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
+    d->layoutServicePolicy->setSpacing(0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         //ServiceSettingsWidget sets the display widget of the changing settings
@@ -183,19 +181,19 @@ void ServiceSelectionPage::createContent()
         emit serviceEnabled(service->name(), true);
         d->serviceStatusMap.insert(service->name(), true);
         d->abstractContexts.append(d->serviceContextList.at(i));
-        layoutServicePolicy->addItem(settingsWidget);
+        d->layoutServicePolicy->addItem(settingsWidget, Qt::AlignLeft);
         connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
                  this, SIGNAL(serviceEnabled(const QString&, bool)));
         connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
                  this, SLOT(setEnabledService(const QString&, bool)));
     }
 
-    d->layoutPolicy->addItem(serviceWidget);
+    layoutPolicy->addItem(serviceWidget, Qt::AlignLeft);
 
     MSeparator *separatorBottom = new MSeparator(this);
     separatorBottom->setStyleName("CommonItemDividerInverted");
     separatorBottom->setOrientation(Qt::Horizontal);
-    layoutServicePolicy->addItem(separatorBottom);
+    d->layoutServicePolicy->addItem(separatorBottom);
 
     //% "DONE"
     d->saveAction = new MAction(qtTrId("qtn_comm_command_done"), centralWidget);
@@ -206,7 +204,7 @@ void ServiceSelectionPage::createContent()
     d->cancelAction = new MAction(qtTrId("qtn_comm_cancel"), centralWidget);
     d->cancelAction->setLocation(MAction::ToolBarLocation);
     addAction(d->cancelAction);
-    d->layoutPolicy->addStretch();
+    layoutPolicy->addStretch();
 
     connect(d->saveAction, SIGNAL(triggered()),
             this, SLOT(onAccountInstallButton()));
@@ -272,10 +270,10 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
 
 void ServiceSelectionPage::setWidget(MWidget *widget)
 {
-     Q_D(ServiceSelectionPage);
+    Q_D(ServiceSelectionPage);
 
-     if(d->layoutPolicy && widget)
-        d->layoutPolicy->addItem(widget);
+    if (d->layoutServicePolicy && widget)
+        d->layoutServicePolicy->addItem(widget);
 }
 
 void ServiceSelectionPage::setEnabledService(const QString &serviceName,
