@@ -1,3 +1,9 @@
+libaccounts-ui (0.87-1) unstable; urgency=low
+
+  * Fixes: NB#224416 - Scheduled synchronization button is not left aligned in service selection page
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Wed, 23 Feb 2011 14:34:10 +0530
+
 libaccounts-ui (0.86-1) unstable; urgency=low
 
   * Fixes: NB#220141 - Skype account settings view always displays the skype account name instead of displayname in screen name field when launched
