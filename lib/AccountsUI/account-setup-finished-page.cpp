@@ -92,12 +92,19 @@ void AccountSetupFinishedPage::createContent()
     if (provider) {
         QDomElement root = provider->domDocument().documentElement();
         QDomElement providerIcon = root.firstChildElement("icon");
+        QString catalog = provider->trCatalog();
+        MLocale locale;
+        if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
+            locale.installTrCatalog(catalog);
+            MLocale::setDefault(locale);
+        }
         QString providerIconId = providerIcon.text();
 
         MContentItem *providerItem = new MContentItem(MContentItem::IconAndSingleTextLabel, this);
         providerItem->setStyleName("SetupFinishedProviderName");
         providerItem->setImageID(providerIconId);
-        providerItem->setTitle(provider->displayName());
+        providerItem->setTitle(qtTrId(provider->displayName().toLatin1()));
+
         layoutPolicy->addItem(providerItem);
     }
 
