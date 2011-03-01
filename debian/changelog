@@ -1,3 +1,9 @@
+libaccounts-ui (0.89-1) unstable; urgency=low
+
+  * Fixes: NB#226154 - Incorrect account provider name displayed in service selection view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 01 Mar 2011 14:49:13 +0200
+
 libaccounts-ui (0.88-1) unstable; urgency=low
 
   * Fixes: NB#229894 - Logical string qtn_mail_other_mailbox displayed in Account Setup Complete view
