@@ -149,8 +149,8 @@ void ServiceSelectionPage::createContent()
                     new MBasicListItem(MBasicListItem:: IconWithTitleAndSubtitle, this);
             providerInfoItem->setStyleName("CommonBasicListItemInverted");
             providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
-            providerInfoItem->setTitle(provider->displayName());
-            providerInfoItem->setSubtitle(d->context->account()->displayName());
+            providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
+            providerInfoItem->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));
             providerInfoItem->imageWidget()->setImage(providerIconId);
             horizontalLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
         }
