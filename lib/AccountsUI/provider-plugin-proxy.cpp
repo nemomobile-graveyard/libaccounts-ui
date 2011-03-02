@@ -98,7 +98,9 @@ void ProviderPluginProxyPrivate::onPluginFinished()
     if (wrapper->error() != AccountSetup::ProviderPluginProxy::NoError) {
         emit q->failed();
     } else if (wrapper->setupType() == AccountSetup::CreateNew) {
-        emit q->created(wrapper->createdAccountId());
+        if (wrapper->createdAccountId())
+            emit q->created(wrapper->createdAccountId());
+        emit q->cancelled();
     } else {
         emit q->edited();
     }
