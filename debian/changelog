@@ -1,3 +1,9 @@
+libaccounts-ui (0.90-1) unstable; urgency=low
+
+  * Removing hardcoded provider name
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 02 Mar 2011 07:35:30 +0200
+
 libaccounts-ui (0.89-1) unstable; urgency=low
 
   * Fixes: NB#226154 - Incorrect account provider name displayed in service selection view
