@@ -120,6 +120,7 @@ Q_SIGNALS:
     void created(int accountId);
     void edited();
     void failed();
+    void cancelled();
 
 private:
     ProviderPluginProxyPrivate *d_ptr;

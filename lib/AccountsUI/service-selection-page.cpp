@@ -26,6 +26,7 @@
 #include "service-settings-widget.h"
 #include "accountsmanagersingleton.h"
 #include "account-setup-finished-page.h"
+#include "provider-plugin-process.h"
 
 //Qt
 #include <QStringListModel>
@@ -209,7 +210,7 @@ void ServiceSelectionPage::createContent()
     connect(d->saveAction, SIGNAL(triggered()),
             this, SLOT(onAccountInstallButton()));
     connect(d->cancelAction, SIGNAL(triggered()),
-            this, SLOT(close()));
+            ProviderPluginProcess::instance(), SLOT(quit()));
     connect(d->serviceList, SIGNAL(itemClicked(QModelIndex)),
             this,SLOT(serviceSelected(QModelIndex)));
 
@@ -223,8 +224,6 @@ void ServiceSelectionPage::onAccountInstallButton()
 
     disconnect(d->saveAction, SIGNAL(triggered()),
                this, SLOT(onAccountInstallButton()));
-    disconnect(d->cancelAction, SIGNAL(triggered()),
-               this, SLOT(close()));
 
     setProgressIndicatorVisible(true);
     for (int i = 0; i < d->serviceContextList.count(); i++) {
@@ -262,7 +261,7 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             connect(d->saveAction, SIGNAL(triggered()),
                     this, SLOT(onAccountInstallButton()));
             connect(d->cancelAction, SIGNAL(triggered()),
-                    this, SLOT(close()));
+                    ProviderPluginProcess::instance(), SLOT(quit()));
             setProgressIndicatorVisible(false);
             return;
     }
