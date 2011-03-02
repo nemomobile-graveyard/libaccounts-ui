@@ -226,16 +226,15 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QDomElement providerIcon = root.firstChildElement("icon");
     QDomElement catalog = root.firstChildElement("translations");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
-    QString providerName = root.firstChildElement("name").text();
-
-    if (q->model() != NULL) {
-        q->model()->setProviderName(providerName);
-    }
 
     if (!catalog.text().isEmpty()) {
         MLocale locale;
         locale.installTrCatalog(catalog.text());
         MLocale::setDefault(locale);
+    }
+    QString providerName = qtTrId(root.firstChildElement("name").text().toLatin1());
+    if (q->model() != NULL) {
+        q->model()->setProviderName(providerName);
     }
     QString descriptionText = descriptionElement.text();
     QString providerIconId = providerIcon.text();
@@ -283,7 +282,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
 
     credentialWidget = new CredentialWidget(widgetModel);
     if (!authDomainSeparator.isEmpty() || !authDomainDefault.isEmpty())
-        credentialWidget->setUsername(authDomainSeparator + authDomainDefault);
+        credentialWidget->setUsername(authDomainSeparator + qtTrId(authDomainDefault.toLatin1()));
 
     // add the widgets to the layout
     mainLayoutPolicy->addItem(providerInfoItem);

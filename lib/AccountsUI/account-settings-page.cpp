@@ -39,6 +39,7 @@
 #include <MButton>
 #include <MImageWidget>
 #include <MSeparator>
+#include <MLocale>
 
 //Qt
 #include <QDebug>
@@ -338,6 +339,12 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
         AccountsManager::instance()->provider(providerName);
     if (provider) {
         providerIconId = provider->iconName();
+        QString catalog = provider->trCatalog();
+        MLocale locale;
+        if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
+            locale.installTrCatalog(catalog);
+            MLocale::setDefault(locale);
+        }
     }
 
     d->usernameAndStatus =
@@ -345,7 +352,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     d->usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
     d->usernameAndStatus->setObjectName("wgAccountSettingsPageListItem");
     d->usernameAndStatus->imageWidget()->setImage(providerIconId);
-    d->usernameAndStatus->setTitle(provider->displayName());
+    d->usernameAndStatus->setTitle(qtTrId(provider->displayName().toLatin1()));
     d->usernameAndStatus->setSubtitle(d->account->displayName());
 
     MSeparator *separatorTop = new MSeparator(this);
