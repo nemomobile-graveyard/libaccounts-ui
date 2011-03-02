@@ -1,3 +1,9 @@
+libaccounts-ui (0.91-1) unstable; urgency=low
+
+  * Needed changes for fixing bug 210224 View goes back to Login view instead of Accounts view after selecting Cancel button of service selection view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 02 Mar 2011 14:39:30 +0200
+
 libaccounts-ui (0.90-1) unstable; urgency=low
 
   * Removing hardcoded provider name
