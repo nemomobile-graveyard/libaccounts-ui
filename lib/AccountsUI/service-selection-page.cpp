@@ -210,7 +210,7 @@ void ServiceSelectionPage::createContent()
     connect(d->saveAction, SIGNAL(triggered()),
             this, SLOT(onAccountInstallButton()));
     connect(d->cancelAction, SIGNAL(triggered()),
-            ProviderPluginProcess::instance(), SLOT(quit()));
+            this, SLOT(cancel()));
     connect(d->serviceList, SIGNAL(itemClicked(QModelIndex)),
             this,SLOT(serviceSelected(QModelIndex)));
 
@@ -261,7 +261,7 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             connect(d->saveAction, SIGNAL(triggered()),
                     this, SLOT(onAccountInstallButton()));
             connect(d->cancelAction, SIGNAL(triggered()),
-                    ProviderPluginProcess::instance(), SLOT(quit()));
+                    this, SLOT(cancel()));
             setProgressIndicatorVisible(false);
             return;
     }
@@ -280,6 +280,11 @@ void ServiceSelectionPage::setEnabledService(const QString &serviceName,
 {
     Q_D(ServiceSelectionPage);
     d->serviceStatusMap[serviceName] = enabled;
+}
+
+void ServiceSelectionPage::cancel()
+{
+    ProviderPluginProcess::instance()->setReturnToAccountsList(true);
 }
 
 } //namespace

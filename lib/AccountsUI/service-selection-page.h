@@ -59,6 +59,7 @@ private slots:
     void onAccountInstallButton();
     void setEnabledService(const QString &serviceName,
                            bool enabled);
+    void cancel();
 
 Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);

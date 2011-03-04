@@ -226,6 +226,12 @@ void ProviderPluginProcess::setReturnToApp(bool returnToApp)
     d->returnToApp = returnToApp;
 }
 
+void ProviderPluginProcess::setReturnToAccountsList(bool value)
+{
+    Q_D(ProviderPluginProcess);
+    d->wrapped->setReturnToAccountsList(value);
+}
+
 const LastPageActions &ProviderPluginProcess::lastPageActions() const
 {
     Q_D(const ProviderPluginProcess);
