@@ -107,6 +107,11 @@ public:
      */
     const LastPageActions &lastPageActions() const;
 
+    /*!
+     * sets the variable to go to accountsPage.
+     */
+    void setReturnToAccountsList(bool value);
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.
