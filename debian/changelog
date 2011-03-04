@@ -1,3 +1,9 @@
+libaccounts-ui (0.92-1) unstable; urgency=low
+
+  * Fixes: NB#210224 - View goes back to Login view instead of Accounts view after selecting Cancel button of service selection view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 04 Mar 2011 10:52:09 +0200
+
 libaccounts-ui (0.91-1) unstable; urgency=low
 
   * Needed changes for fixing bug 210224 View goes back to Login view instead of Accounts view after selecting Cancel button of service selection view
