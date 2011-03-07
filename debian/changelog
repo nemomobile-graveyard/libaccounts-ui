@@ -1,0 +1,652 @@
+libaccounts-ui (0.92-1) unstable; urgency=low
+
+  * Fixes: NB#210224 - View goes back to Login view instead of Accounts view after selecting Cancel button of service selection view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 04 Mar 2011 10:52:09 +0200
+
+libaccounts-ui (0.91-1) unstable; urgency=low
+
+  * Needed changes for fixing bug 210224 View goes back to Login view instead of Accounts view after selecting Cancel button of service selection view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 02 Mar 2011 14:39:30 +0200
+
+libaccounts-ui (0.90-1) unstable; urgency=low
+
+  * Removing hardcoded provider name
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 02 Mar 2011 07:35:30 +0200
+
+libaccounts-ui (0.89-1) unstable; urgency=low
+
+  * Fixes: NB#226154 - Incorrect account provider name displayed in service selection view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 01 Mar 2011 14:49:13 +0200
+
+libaccounts-ui (0.88-1) unstable; urgency=low
+
+  * Fixes: NB#229894 - Logical string qtn_mail_other_mailbox displayed in Account Setup Complete view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 28 Feb 2011 12:15:29 +0200
+
+libaccounts-ui (0.87-1) unstable; urgency=low
+
+  * Fixes: NB#224416 - Scheduled synchronization button is not left aligned in service selection page
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Wed, 23 Feb 2011 14:34:10 +0530
+
+libaccounts-ui (0.86-1) unstable; urgency=low
+
+  * Fixes: NB#220141 - Skype account settings view always displays the skype account name instead of displayname in screen name field when launched
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 22 Feb 2011 14:31:13 +0200
+
+libaccounts-ui (0.85-1) unstable; urgency=low
+
+  * Fixing changelog
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Mon, 21 Feb 2011 14:37:50 +0200
+
+libaccounts-ui (0.84-1) unstable; urgency=low
+
+  * Updated the CredentialsWidget to support informative text notes.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Mon, 21 Feb 2011 14:37:50 +0200
+
+libaccounts-ui (0.83-1) unstable; urgency=low
+
+  * Fixes: NB#213333 - User name must be shown in account information even if email address is used for login
+  * Fixes: NB#228213 - libaccountplugin is using hard coded fonts creating a design inconsistency
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 21 Feb 2011 12:13:14 +0300
+
+libaccounts-ui (0.82-1) unstable; urgency=low
+
+  * Fixes: NB#195456 - Provide protected PIMPL implementations to enhance the inheritance to AddAccountPage class
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 21 Feb 2011 06:27:17 +0300
+
+libaccounts-ui (0.81-1) unstable; urgency=low
+
+  * Addresses : NB#195456 - Provide protected PIMPL implementations to enhance the inheritance to AddAccountPage class
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 21 Feb 2011 05:23:17 +0300
+
+libaccounts-ui (0.80-1) unstable; urgency=low
+
+  * Restore the fix for NB#200000, about account settings to be rewritten
+    without reason.
+  * Restore saving of the services enabledmness states when editing an
+    account.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Fri, 18 Feb 2011 16:30:53 +0200
+
+libaccounts-ui (0.79-1) unstable; urgency=low
+
+  * Fixes: NB#214171 - Accounts ui doesn't display correct button status
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Fri, 18 Feb 2011 17:34:58 +0530
+
+libaccounts-ui (0.78-1) unstable; urgency=low
+
+  * Fixes: NB#218578 - Information banner is not shown when updating the view is not possible
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 18 Feb 2011 11:48:17 +0300
+
+libaccounts-ui (0.77-1) unstable; urgency=low
+
+  * Fixes: NB#191533 - Provide protected PIMPL implementations to enhance the
+    inheritance to AccountsSettingsPage class.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 17 Feb 2011 15:15:17 +0200
+
+libaccounts-ui (0.76-2) unstable; urgency=low
+
+  * Fixes: NB#226154 - Incorrect account provider name displayed in service selection view
+
+ -- K Prasanna Kumar <k-prasanna.kumar@nokia.com>  Wed, 16 Feb 2011 15:38:49 +0530
+
+libaccounts-ui (0.75-1) unstable; urgency=low
+
+  * Fixes: NB#220973 - Should not get the visual feedback if screen touch is made to a non-functional icon on add account page 
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Tue, 15 Feb 2011 18:25:49 +0530
+
+libaccounts-ui (0.74-1) unstable; urgency=low
+
+  * Fixes: NB#225065 - No qDebug() enabled for account plugins
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 15 Feb 2011 13:15:09 +0200
+
+libaccounts-ui (0.73-2) unstable; urgency=low
+
+  * Fix changelog. Bugfixes were repeated.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 10 Feb 2011 15:32:11 +0200
+
+libaccounts-ui (0.73-1) unstable; urgency=low
+
+  * Fixes: NB#214873 - Unable to click arrow in "GoogleTalk" account
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Thu, 10 Feb 2011 15:49:36 +0530
+
+libaccounts-ui (0.72-1) unstable; urgency=low
+
+  * Fixes: NB#211254 - Account setup finished view not shown for Simple accounts (Provider which has only one service)
+  * Fixes: NB#218527 - "qtn_acc_remove_account" title string is not shown in Remove account confirmation dialog
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Wed, 09 Feb 2011 17:13:38 +0530
+
+libaccounts-ui (0.71-1) unstable; urgency=low
+
+  * Addresses: NB#225464 - Simple accounts are configured with disabled state
+  * Addresses: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 09 Feb 2011 12:18:22 +0300
+
+libaccounts-ui (0.70-1) unstable; urgency=low
+
+  * Fixes: NB#225004 - Login dialog - username and password fields are not placed properly in Landscape mode.
+
+ -- Lucian Horga <ext-lucian.horga@nokia.com>  Tue, 08 Feb 2011 13:59:00 +0200
+
+libaccounts-ui (0.69-1) unstable; urgency=low
+
+  * Fixes: NB#225464 - Simple accounts are configured with disabled state
+  * Fixes: NB#225862 - Email, MFE and SIP plugins crashes after taping on back button of Account settings view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 08 Feb 2011 13:28:22 +0300
+
+libaccounts-ui (0.68-1) unstable; urgency=low
+
+  * Addresses: NB#225464 - Simple accounts are configured with disabled state
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 07 Feb 2011 05:58:22 +0300
+
+libaccounts-ui (0.67-1) unstable; urgency=low
+
+  * Fixes: NB#200000 - Accounts-ui should not re-write settings which have not changed
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 04 Feb 2011 12:12:22 +0300
+
+libaccounts-ui (0.66-1) unstable; urgency=low
+
+  * Fixes: NB#213723 - Scheduled synchronization panel in account sync widget does not correctly display content types selected for synchronization
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 03 Feb 2011 05:41:22 +0300
+
+libaccounts-ui (0.65-1) unstable; urgency=low
+
+  * Fixes: NB#219539 - Login view is not as per the Layout guide in Landscape mode.
+
+ -- Lucian Horga <ext-lucian.horga@nokia.com>  Wed, 02 Feb 2011 13:55:00 +0200
+
+libaccounts-ui (0.64-1) unstable; urgency=low
+
+  * Fixes: NB#213723 - Scheduled synchronization panel in account sync widget does not correctly display content types selected for synchronization
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 01 Feb 2011 11:31:22 +0300
+
+libaccounts-ui (0.63-1) unstable; urgency=low
+
+  * Fixes: NB#222915 - [Inverted UI]icon-m-common-drilldown-arrow to open service settings is not visible in Accounts view
+  * Implemented the inverted styling for the Service Settings widget.
+
+ -- Lucian Horga  <ext-lucian.horga@nokia.com>  Mon, 31 Jan 2011 12:36:00 +0200
+
+libaccounts-ui (0.62-1) unstable; urgency=low
+
+  * Use libAccountSetup to implement the launching of the provider plugins.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Mon, 31 Jan 2011 10:33:51 +0200
+
+libaccounts-ui (0.61-1) unstable; urgency=low
+
+  * Fixes: NB#221669 - Back button become unavailable
+
+ -- Dominic Velikakath  <dominic.velikakath@nokia.com>  Thu, 27 Jan 2011 21:03:35 +0530
+
+libaccounts-ui (0.60-1) unstable; urgency=low
+
+  * Fixes: NB#220936 - Logical string is shown for Cancel button in Login dialog
+
+ -- Dominic Velikakath  <dominic.velikakath@nokia.com>  Mon, 24 Jan 2011 16:37:38 +0530
+
+libaccounts-ui (0.59-1) unstable; urgency=low
+
+  * Implementing the inverted Accounts-UI according to the UI spec.
+
+ -- Lucian Horga  <ext-lucian.horga@nokia.com>  Mon, 24 Jan 2011 11:43:00 +0300
+
+libaccounts-ui (0.58-1) unstable; urgency=low
+
+  * Fixes: NB#215004 - The account UI shows "Unknown Error" while configuring account
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Fri, 21 Jan 2011 15:35:38 +0530
+
+libaccounts-ui (0.57-1) unstable; urgency=low
+
+  * Fixes: NB#212882 - Account setup finished view label font size is not proper
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 20 Jan 2011 11:20:22 +0300
+
+libaccounts-ui (0.56-1) unstable; urgency=low
+
+  * Fixes: NB#219564 - Logical ids shown for Youtube sharing service
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 19 Jan 2011 15:01:22 +0300
+
+libaccounts-ui (0.55-1) unstable; urgency=low
+
+  * Fixes: NB#219274 - [TASK] Support for hidding services in default
+    implementation of service list ui.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 18 Jan 2011 15:52:06 +0200
+
+libaccounts-ui (0.54-1) unstable; urgency=low
+
+  * Fixes: NB#219527 - Unable to setting widget to service-selection-page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 17 Jan 2011 11:27:22 +0300
+
+libaccounts-ui (0.53-2) unstable; urgency=low
+
+  * Fixes: NB#212817 - After an account configuration,the transition is fast forwarded to Accounts view from Login View
+
+ -- K Prasanna Kumar <k-prasanna.kumar@nokia.com>  Fri, 14 Jan 2011 15:31:33 +0530
+
+libaccounts-ui (0.53-1) unstable; urgency=low
+
+  * Added "Forgot my password" option to credentials dialog.
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Fri, 14 Jan 2011 11:41:29 +0200
+
+libaccounts-ui (0.52-2) unstable; urgency=low
+
+  * Fixes: NB#215884 - Facebook plugin crash is encountered sometimes while trying to configure facebook account
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Thu, 13 Jan 2011 09:11:29 -0500
+
+libaccounts-ui (0.52-1) unstable; urgency=low
+
+  * Fixes: NB#217199 - accounts-ui and libaccounts-ui should export some
+    classes.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 13 Jan 2011 10:02:33 +0200
+
+libaccounts-ui (0.51-1) unstable; urgency=low
+
+  * Fixes: NB#218093 - First account configured is not shown in accounts view and plugin crashes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 12 Jan 2011 13:35:22 +0300
+
+libaccounts-ui (0.50-1) unstable; urgency=low
+
+  * Fixes: NB#202650 - libaccounts-ui: non stripped library in binary package.
+
+ -- Lucian Horga  <ext-lucian.horga@nokia.com>  Wed, 12 Jan 2011 11:15:00 +0300
+
+libaccounts-ui (0.49-1) unstable; urgency=low
+
+  * exported service-model 
+
+ -- Dominic Velikakath  <dominic.velikakath@nokia.com>  Tue, 11 Jan 2011 06:23:13 -0500
+
+libaccounts-ui (0.48-1) unstable; urgency=low
+
+  * removed deletion of page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 11 Jan 2010 12:40:22 +0300
+
+libaccounts-ui (0.47-1) unstable; urgency=low
+
+  * Fixes: NB#207001 - COREWEB: /usr/bin/accounts-ui '__poll g_main_context_poll g_main_context_iterate g_main_context_iteration QEventDispatcherGlib::processEvents'
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 10 Jan 2010 13:59:22 +0300
+
+libaccounts-ui (0.46-3) unstable; urgency=low
+
+  * Fixes: NB#215004 - Facebook: The account UI shows "Unknown Error" while configuring Facebook Account
+  * Fixes: NB#212882 - Account setup finished view label font size is not proper
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Tue, 11 Jan 2011 04:57:37 -0500
+
+libaccounts-ui (0.46-2) unstable; urgency=low
+
+  * merging missing changes
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Thu, 30 Dec 2010 10:24:22 +0300
+
+libaccounts-ui (0.46-1) unstable; urgency=low
+
+  * Adding the method to return list of service contexts of any account
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 23 Dec 2010 15:44:22 +0300
+
+libaccounts-ui (0.45-1) unstable; urgency=low
+
+  * Fixes: NB#206428 - §qtn_acc_remove_account_statement§ correct delete statement is not shown
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 21 Dec 2010 16:35:22 +0300
+
+libaccounts-ui (0.44-1) unstable; urgency=low
+
+  * Fixes: NB#209957 - Accounts SSO; Clipping in calDAV body text §qtn_caln_caldav_calendars§
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 21 Dec 2010 17:05:22 +0300
+
+libaccounts-ui (0.43-1) unstable; urgency=low
+
+  * Fixes: NB#213774 - Account settings options for Other mail account is not shown in Account settings view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 21 Dec 2010 12:37:22 +0300
+
+libaccounts-ui (0.42-1) unstable; urgency=low
+
+  * Fixes: NB#188789 - Cannot disable /re-enable accounts
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 20 Dec 2010 11:07:22 +0300
+
+libaccounts-ui (0.41-1) unstable; urgency=low
+
+  * Fixes: NB#212967 - Filtering of services should be removed from Accounts settings page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 17 Dec 2010 17:07:22 +0300
+
+libaccounts-ui (0.40-1) unstable; urgency=low
+
+  * Fixes: NB#204790 - Tapping on Google talk Service in the Service Selection view disables the Google Talk Service.
+  * Creating the settings widget only once. Removing double creation of the settings widget.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Fri, 17 Dec 2010 13:45:00 +0300
+
+libaccounts-ui (0.39-1) unstable; urgency=low
+
+  * Allow plugins to easily specify validation data
+  * Fixes: NB#211282 - Back button should not be there in Account setup finished
+    view
+  * Fixes: NB#212246 - Cropped text in Setup your Google account view in
+    portrait mode
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 16 Dec 2010 12:21:36 +0200
+
+libaccounts-ui (0.38-1) unstable; urgency=low
+
+  * Changed drill-down icon on service settings widget with a proper one.
+  * Added some spaces between the progress indicator, STOP button and the label in the sign in view, according to the UI spec.
+  * Indentation fixes.
+  * Fixes: NB#209137 - List items without drill down icon should not be highlighted after tapping on it.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Thu, 16 Dec 2010 12:10:00 +0300
+
+libaccounts-ui (0.37-1) unstable; urgency=low
+
+  * Fixes: NB#211130 - Plugins crash when tapped on 'Stop',while its trying to
+    sign-in without connectivity
+  * Fixes: NB#211934 - Not able to configure/edit any account after
+    configuring another account (without closing the accounts-ui)
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Wed, 15 Dec 2010 12:00:22 +0200
+
+libaccounts-ui (0.36-1) unstable; urgency=low
+
+  * Fixes: NB#209944 - Get a new account here appears twice and with unwanted
+    characters
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 14 Dec 2010 12:45:29 +0200
+
+libaccounts-ui (0.35-1) unstable; urgency=low
+
+  * Fixes: NB#209962 - Banner truncated
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 14 Dec 2010 10:06:00 +0200
+
+libaccounts-ui (0.34-1) unstable; urgency=low
+
+  * Fixes: NB#210679 - Accounts-ui crashes while going back from Login view to Provider list view
+  * Adding socket to communicate between processes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 13 Dec 2010 14:48:22 +0300
+
+libaccounts-ui (0.33-1) unstable; urgency=low
+
+  * Fixes: NB#210659 - H-Accounts& SSO: §qtn_acc_auth_dial_button§ is hard coded
+  * Fixes: NB#202520 - Hard coded lables are shown in Accounts-ui
+  * Installing the catalog for providers to fix bug 208204 but we need logical ids for our plugins
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 10 Dec 2010 17:51:22 +0300
+
+libaccounts-ui (0.32-1) unstable; urgency=low
+
+  * Fixes: NB#208918 - wrong info. note and crashes observed,while entering wrong credentials in certain scenario 
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Tue, 07 Dec 2010 13:05:16 +0200
+
+libaccounts-ui (0.31-1) unstable; urgency=low
+
+  * Fixes: NB#204793 - Layout of the Google Talk Service is not proper in
+    Service Selection view
+  * Fixes: NB#204968 - Cancel Button is missing in Service Selection View
+  * Fixes: NB#206359 - Account Username in account settings view is not shown
+    after disabling and enabling the account
+  * Fixes: NB#206460 - Layout is not proper for Account settings view of
+    Simple Accounts
+  * Fixes: NB#208404 - Delete option in Accounts settings view must be present
+    in View Menu
+  * Delete the MApplication when exiting plugin
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 07 Dec 2010 11:35:16 +0200
+
+libaccounts-ui (0.30-1) unstable; urgency=low
+
+  * Fixes: NB#207468 - libAccountPlugin.so.1.0.0 using deprecated component
+    MInfoBanner
+  * Revert latest break in the signature of ProviderPluginProxy::created()
+    signal.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Fri, 03 Dec 2010 12:00:23 +0200
+
+libaccounts-ui (0.29) unstable; urgency=low
+
+  * Adding success page
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 02 Dec 2010 10:48:22 +0300
+
+libaccounts-ui (0.28) unstable; urgency=low
+
+  * Added STOP button for the sign in page.
+
+ --  Lucian Horga <ext-lucian.horga@teleca.com>  Sat, 29 Nov 2010 18:33:00 +0300
+
+libaccounts-ui (0.27-2) unstable; urgency=low
+
+  * Sync widget integration changes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 29 Nov 2010 10:02:22 +0300
+
+libaccounts-ui (0.27) unstable; urgency=low
+
+  * Sync widget integration changes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 26 Nov 2010 17:25:22 +0300
+
+libaccounts-ui (0.26) unstable; urgency=low
+
+  * Seattle ui - disabled accounts settings view.
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 23 Nov 2010 10:04:22 +0300
+
+libaccounts-ui (0.25) unstable; urgency=low
+
+  * Fixes: NB#204705 - Logical ids are in account settings
+  * Added some more logical ids
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 15 Nov 2010 14:00:22 +0300
+
+libaccounts-ui (0.24) unstable; urgency=low
+
+  * More ui changes.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Sat, 13 Nov 2010 23:22:00 +0300
+
+libaccounts-ui (0.23-1) unstable; urgency=low
+
+  * Fixes: NB#191186 - Services are not shown in account settings
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 12 Nov 2010 11:39:22 +0300
+
+libaccounts-ui (0.22-1) unstable; urgency=low
+
+  * Fixes: NB#202437 -  New account registration option is not working
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 8 Nov 2010 11:32:22 +0300
+
+libaccounts-ui (0.21-2) unstable; urgency=low
+
+  * Fixes: NB#193329 - Switch button in Google settings functions as 'disable' account button
+  * Added css file for future settings changes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 5 Nov 2010 11:45:22 +0300
+
+libaccounts-ui (0.20) unstable; urgency=low
+
+  * Seattle changes for acounts sign in page.
+
+ -- Lucian Horga <ext-lucian.horga@nokia.com>  Thu, 03 Nov 2010 12:13:10 +0300
+
+libaccounts-ui (0.19-1) unstable; urgency=low
+
+  * Fixes: NB186925 - Validating acc and servicesacc and services  before storing 
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Thu, 28 Oct 2010 09:13:10 +0300
+
+libaccounts-ui (0.18-1) unstable; urgency=low
+
+  * Fixes: NB#198580 - Hidden service doesn't get visible after checking CDS
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 26 Oct 2010 16:12:22 +0300
+
+libaccounts-ui (0.17-1) unstable; urgency=low
+
+  * Pumped up version.
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Fri, 22 Oct 2010 18:57:00 +0300
+
+libaccounts-ui (0.17) unstable; urgency=low
+
+  * Modified libAccountsUI in order to include all the moved functionality from libSignonUI + fixed exporting of some headers.
+  * Fixes: NB#198784 -  The class AccountSyncHandler should be exported
+
+ -- Lucian Horga <ext-lucian.horga@teleca.com>  Fri, 22 Oct 2010 16:46:00 +0300
+
+libaccounts-ui (0.16-1) unstable; urgency=low
+
+  * Fixes: NB#198688 having logical id in the names
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 22 Oct 2010 09:43:22 +0300
+
+libaccounts-ui (0.15-1) unstable; urgency=low
+
+  * Allow AccountService plugins to get the username.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Wed, 20 Oct 2010 16:32:53 +0300
+
+libaccounts-ui (0.14-1) unstable; urgency=low
+
+  * Set enabledServices fro accounts settings page to dont filter them out 
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Wed, 20 Oct 2010 13:52:35 +0300
+
+libaccounts-ui (0.13-1) unstable; urgency=low
+
+  * Fixes: NB#198463 - Two gmail services are shown in Google account
+    settings page
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Tue, 19 Oct 2010 12:13:55 +0300
+
+libaccounts-ui (0.12-1) unstable; urgency=low
+
+  * Add the ProviderPluginProxy class.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 19 Oct 2010 11:19:47 +0300
+
+libaccounts-ui (0.11-1) unstable; urgency=low
+
+  * Fixes: NB#198635 -  Both Gmail services can be enabled in certain scenario
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Mon, 18 Oct 2010 10:00:22 +0300
+
+libaccounts-ui (0.10-1) unstable; urgency=low
+
+  * Fixes: NB#190924 -  Email crashes continuously while launching @ "QMailStorePrivate::attemptAccountConfiguration" with Google account
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Fri, 15 Oct 2010 12:45:22 +0300
+
+libaccounts-ui (0.9) unstable; urgency=low
+
+  * Proper handling of service hidding 
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Thu, 14 Oct 2010 13:05:58 +0300
+
+libaccounts-ui (0.8-1) unstable; urgency=low
+
+  * Fixing problem with extra validation of created account 
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Sun, 11 Oct 2010 12:45:22 +0300
+ 
+libaccounts-ui (0.7-2) unstable; urgency=low
+
+  * Storing Identity data prior to the credentials validation. 
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Sun, 10 Oct 2010 15:45:22 +0300
+
+libaccounts-ui (0.7) unstable; urgency=low
+
+  * Storing Identity data prior to the credentials validation. 
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Sun, 10 Oct 2010 14:45:22 +0300
+
+libaccounts-ui (0.6) unstable; urgency=low
+
+  * Fixing storing of settings in accountSettingsPage
+  * Fixing the bug about exporting showInfoBanner
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 08 Oct 2010 17:35:22 +0300
+
+libaccounts-ui (0.5) unstable; urgency=low
+
+  * Fixes: NB#196262 -  UI freezes in account settings view
+
+ -- Alexander Akimov <ext-radek.zielonka@nokia.com>  Fri, 08 Oct 2010 13:00:22 +0300
+
+libaccounts-ui (0.4) unstable; urgency=low
+
+  * Proper handling of validating and storing
+
+    Also the Sign in button is disconected while validating and storing
+    to prevent multitimes validating while presing multitime
+
+ -- Radek Zielonka <ext-radek.zielonka@nokia.com>  Fri, 08 Oct 2010 10:00:22 +0300
+
+libaccounts-ui (0.3) unstable; urgency=low
+
+  * Fixes: NB#193820 - Accounts components use an old and deprecated version of Bearer API.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 06 Oct 2010 14:33:00 +0300
+
+libaccounts-ui (0.2) unstable; urgency=low
+
+  * Adding bug fixes, which were lost during repo migration
+
+ -- Alexander Akimov <ext-alexander.akimo@nokia.com>  Mon, 05 Oct 2010 10:27:22 +0300
+ 
+libaccounts-ui (0.1-2) unstable; urgency=low
+
+  * Add Replaces: line for libaccounts-ui-dev.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Mon, 04 Oct 2010 10:27:22 +0300
+
+libaccounts-ui (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Mon, 20 Sep 2010 16:26:21 +0300

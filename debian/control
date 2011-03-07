@@ -1,0 +1,49 @@
+Source: libaccounts-ui
+Section: comm
+Priority: optional
+Maintainer: Alberto Mardegan <alberto.mardegan@nokia.com>
+Build-Depends: debhelper(>=5), doxygen, libaccounts-qt-dev (>= 0.32), libsignon-qt-dev, libqt4-dev(>= 4.5), libmeegotouch-dev(>= 0.20.15), libaccountsetup-dev(>= 0.4)
+Standards-Version: 3.7.2
+
+Package: libaccounts-ui-doc
+Architecture: all
+Section: doc
+Priority: optional
+Description: Documentation for the accounts UI plugin development library
+ Doxygen-generated HTML documentation for the Accounts-ui plugin development
+ library.
+
+Package: libaccountplugin-dev
+Architecture: any
+Section: devel
+Priority: optional
+Depends: pkg-config (>= 0.22), libaccountplugin0 (= ${binary:Version}), libaccounts-qt-dev, libsignon-qt-dev, libaccountsetup-dev(>= 0.3)
+Replaces: libaccounts-ui-dev
+Description: Accounts-ui plugin development headers
+ Development package for building plugins for the MeeGo accounts UI.
+
+Package: libaccountplugin0
+Architecture: any
+Section: libs
+Priority: optional
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Accounts UI plugin development library
+ Library which contains the needed classes for building plugins for
+ the MeeGo accounts UI.
+
+Package: libaccountplugin0-dbg
+Architecture: any
+Section: devel
+Priority: optional
+Depends: libaccountplugin0 (= ${binary:Version})
+Description: Debug symbols for libaccountsplugin
+ Debug symbols for libaccounts-ui.
+
+Package: libaccountplugin-tests
+Architecture: any
+Depends: ${shlibs:Depends}, ci-testing
+XB-Maemo-CI-Packages: libaccountplugin0
+XB-Maemo-CI-Stage: staging
+Description: Tests for libaccountplugin
+ Tests for libaccountplugin.
+
