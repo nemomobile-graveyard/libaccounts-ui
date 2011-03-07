@@ -45,6 +45,7 @@
 #include <MBasicListItem>
 #include <MWidgetAction>
 #include <MImageWidget>
+#include <MLabel>
 
 //libAccounts
 #include <Accounts/Provider>
@@ -133,19 +134,18 @@ void ServiceSelectionPage::createContent()
         MLinearLayoutPolicy *upperLayoutPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
         upperLayoutPolicy->setSpacing(0);
 
-        MLayout *horizontalLayout = new MLayout();
-        MLinearLayoutPolicy *horizontalLayoutPolicy = new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
-        horizontalLayoutPolicy->setSpacing(0);
+        MLayout *topLayout = new MLayout();
+        MLinearLayoutPolicy *topLayoutPolicy = new MLinearLayoutPolicy(topLayout, Qt::Vertical);
+        topLayoutPolicy->setSpacing(0);
 
         QString providerName(d->context->account()->providerName());
         // xml file that describes the ui elements for the provider
         Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
         if (provider) {
+            // provider info header
             QDomElement root = provider->domDocument().documentElement();
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
-
-            // Provider info widgets
             MBasicListItem *providerInfoItem =
                     new MBasicListItem(MBasicListItem:: IconWithTitleAndSubtitle, this);
             providerInfoItem->setStyleName("CommonBasicListItemInverted");
@@ -153,14 +153,25 @@ void ServiceSelectionPage::createContent()
             providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
             providerInfoItem->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));
             providerInfoItem->imageWidget()->setImage(providerIconId);
-            horizontalLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
+            topLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
+
+            // account connected message
+            QDomElement accountConnectedMessage= root.firstChildElement("account-connected-message");
+            if (!accountConnectedMessage.isNull()) {
+                // display a account connected message for provider
+                QString accountConnectedMessageId= accountConnectedMessage.text();
+                MLabel *accountConnectedMessageLabel=
+                        new MLabel(accountConnectedMessageId);
+                accountConnectedMessageLabel->setStyleName("CommonBodyTextInverted");
+                topLayoutPolicy->addItem(accountConnectedMessageLabel, Qt::AlignLeft | Qt::AlignVCenter);
+            }
         }
 
         MSeparator *separatorTop = new MSeparator(this);
         separatorTop->setStyleName("CommonItemDividerInverted");
         separatorTop->setOrientation(Qt::Horizontal);
 
-        upperLayoutPolicy->addItem(horizontalLayout);
+        upperLayoutPolicy->addItem(topLayout);
         upperLayoutPolicy->addItem(separatorTop);
 
         layoutPolicy->addItem(upperWidget);
