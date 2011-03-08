@@ -1,3 +1,9 @@
+libaccounts-ui (0.93-1) unstable; urgency=low
+
+  * Fixes: NB#229430 - Account view should be in portrait mode only.
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Tue, 08 Mar 2011 12:04:16 +0530
+
 libaccounts-ui (0.92-1) unstable; urgency=low
 
   * Fixes: NB#210224 - View goes back to Login view instead of Accounts view after selecting Cancel button of service selection view
