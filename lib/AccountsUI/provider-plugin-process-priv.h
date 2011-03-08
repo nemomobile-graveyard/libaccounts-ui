@@ -68,6 +68,11 @@ public:
         application = MComponentCache::mApplication(argc, argv, QLatin1String(""), service);
         window = MComponentCache::mApplicationWindow();
         window->setStyleName("AccountsUiWindow");
+
+#ifdef __ARMEL__
+        window->setPortraitOrientation();
+        window->setOrientationLocked(true);
+#endif
     }
 
     ProviderPluginProcessPrivate(int &argc, char **argv):
@@ -107,6 +112,11 @@ public:
 
         window = new MApplicationWindow;
         window->setStyleName("AccountsUiWindow");
+
+#ifdef __ARMEL__
+        window->setPortraitOrientation();
+        window->setOrientationLocked(true);
+#endif
 
         MLocale locale;
         locale.installTrCatalog("accountssso");
