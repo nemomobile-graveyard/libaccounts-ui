@@ -29,14 +29,6 @@
 //Meegotouch
 #include <MLayout>
 #include <MLinearLayoutPolicy>
-#include <MContentItem>
-#include <MLocale>
-#include <MAction>
-#include <MLabel>
-#include <MGridLayoutPolicy>
-#include <MSeparator>
-#include <MImageWidget>
-#include <MButton>
 
 //Qt
 #include <QDebug>
@@ -49,14 +41,6 @@
 #include "account-setup-finished-widget.h"
 
 namespace AccountsUI {
-
-void AccountSetupFinishedPagePrivate::actionButtonClicked()
-{
-    QString serviceName = sender()->property("serviceName").toString();
-    qDebug() << "Invoking service" << serviceName;
-    LastPageActions::executeService(serviceName);
-    ProviderPluginProcess::instance()->quit();
-}
 
 AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *context)
         : MApplicationPage(),
@@ -86,76 +70,9 @@ void AccountSetupFinishedPage::createContent()
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
     layoutPolicy->setSpacing(0);
 
-    QString providerName(d->account->providerName());
-    // xml file that describes the ui elements for the provider
-    Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
-    if (provider) {
-        QDomElement root = provider->domDocument().documentElement();
-        QDomElement providerIcon = root.firstChildElement("icon");
-        QString catalog = provider->trCatalog();
-        MLocale locale;
-        if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
-            locale.installTrCatalog(catalog);
-            MLocale::setDefault(locale);
-        }
-        QString providerIconId = providerIcon.text();
-
-        MContentItem *providerItem = new MContentItem(MContentItem::IconAndSingleTextLabel, this);
-        providerItem->setStyleName("SetupFinishedProviderName");
-        providerItem->setImageID(providerIconId);
-        providerItem->setTitle(qtTrId(provider->displayName().toLatin1()));
-
-        layoutPolicy->addItem(providerItem);
-    }
-
-    MSeparator *separatorTop = new MSeparator(this);
-    separatorTop->setOrientation(Qt::Horizontal);
-    separatorTop->setStyleName("CommonItemDividerInverted");
-
-    layoutPolicy->addItem(separatorTop);
-
-    AccountSetupFinishedWidget *widget = new AccountSetupFinishedWidget(providerName, this);
+    AccountSetupFinishedWidget *widget = new AccountSetupFinishedWidget(d->account->providerName(), this);
     layoutPolicy->addItem(widget);
-
-    //% "Add more account"
-    MButton *addMoreAccountButton = new MButton(qtTrId("qtn_acc_add_more_accounts"));
-    connect (addMoreAccountButton, SIGNAL(clicked()), ProviderPluginProcess::instance(), SLOT(quit()));
-    MLayout *buttonsLayout = new MLayout();
-    MLinearLayoutPolicy *portraitPolicy = new MLinearLayoutPolicy(buttonsLayout, Qt::Vertical);
-    MLinearLayoutPolicy *landscapePolicy = new MLinearLayoutPolicy(buttonsLayout, Qt::Horizontal);
-
-    portraitPolicy->addStretch();
-    portraitPolicy->setSpacing(20);
-    landscapePolicy->addStretch();
-    landscapePolicy->setSpacing(20);
-
-    const LastPageActions &lastPageActions =
-        ProviderPluginProcess::instance()->lastPageActions();
-    const LastPageActions::ServiceActionList actions =
-        lastPageActions.serviceActions();
-    foreach (LastPageActions::ServiceAction action, actions) {
-        MButton *button = new MButton(qtTrId("qtn_comm_go_to_x").
-                                      arg(action.title()));
-        button->setProperty("serviceName", action.serviceName());
-        connect(button, SIGNAL(clicked()), d, SLOT(actionButtonClicked()));
-
-        landscapePolicy->addItem(button, Qt::AlignRight);
-        portraitPolicy->addItem(button, Qt::AlignCenter);
-    }
-
-    portraitPolicy->addItem(addMoreAccountButton, Qt::AlignCenter);
-    landscapePolicy->addItem(addMoreAccountButton, Qt::AlignCenter);
-
-    portraitPolicy->addStretch();
-    landscapePolicy->addStretch();
-
-    buttonsLayout->setLandscapePolicy(landscapePolicy);
-    buttonsLayout->setPortraitPolicy(portraitPolicy);
-    layoutPolicy->addStretch();
-    layoutPolicy->addItem(buttonsLayout);
-
     setCentralWidget(centralWidget);
-
 }
 
 void AccountSetupFinishedPage::goToApplication()

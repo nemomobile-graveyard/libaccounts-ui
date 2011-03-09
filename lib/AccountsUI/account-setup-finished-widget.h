@@ -31,6 +31,9 @@ class AccountSetupFinishedWidget : public MStylableWidget
 
 public:
     AccountSetupFinishedWidget(const QString &providerName, QGraphicsItem *parent = 0);
+
+private Q_SLOTS:
+    void actionButtonClicked();
 };
 
 #endif // ACCOUNTSETUPFINISHEDWIDGET_H
