@@ -1,3 +1,9 @@
+libaccounts-ui (0.94-1) unstable; urgency=low
+
+  * Fixes: NB#222433 - Facebook functionality selecting view in setup sequence misses clarifications
+
+ -- Abhijit Bera <abhijit.bera@nokia.com>  Wed, 09 Mar 2011 13:02:27 +0530
+
 libaccounts-ui (0.93-1) unstable; urgency=low
 
   * Fixes: NB#229430 - Account view should be in portrait mode only.
