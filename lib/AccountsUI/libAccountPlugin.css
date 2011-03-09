@@ -16,6 +16,26 @@ margin-left:   $INDENT_DEFAULT;
 margin-right:  $INDENT_DEFAULT;
 }
 
+AccountSetupFinishedWidget MLabelStyle#AccountSetupFinishedLargeHeader {
+font:          $FONT_FAMILY bold 40;
+color:         $COLOR_INVERTED_FOREGROUND;
+margin-top:    0.6mm;
+margin-bottom: 0;
+margin-left:   $INDENT_DEFAULT;
+margin-right:  $INDENT_DEFAULT;
+}
+
+AccountSetupFinishedWidget MSeparatorStyle#AccountSetupFinishedPageXLargeSpacer {
+minimum-size:   0 0;
+preferred-size: 100% 0;
+maximum-size:   100% 0;
+height:         88;
+margin-top:     $MARGIN_XXLARGE;
+margin-bottom:  0;
+margin-left:    0;
+margin-right:   0;
+}
+
 AccountSetupFinishedWidget MLabelStyle#SuccessLabel {
     font: $FONT_FAMILY bold 62;
     color: #1080DD;
