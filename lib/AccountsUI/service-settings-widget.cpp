@@ -60,11 +60,17 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     MLinearLayoutPolicy *titleSubtitleLayoutPolicy = new MLinearLayoutPolicy(titleSubtitleLayout, Qt::Vertical);
     titleSubtitleLayoutPolicy->setSpacing(0);
 
-    titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);    
+    titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
 
     horizontalLayoutPolicy->addItem(titleSubtitleLayout, Qt::AlignLeft | Qt::AlignCenter);
-    horizontalLayoutPolicy->addItem(imageWidget(), Qt::AlignCenter);
+
+    MImageWidget *image = imageWidget();
+    image->setImage("icon-m-common-drilldown-arrow-inverse");
+    image->setStyleName("CommonDrillDownIcon");
+    image->setObjectName("wgServiceSettingsWidgetDrillDownIcon");
+    image->setVisible(false);
+    horizontalLayoutPolicy->addItem(image, Qt::AlignCenter);
 }
 
 ServiceSettingsWidgetListItem::~ServiceSettingsWidgetListItem()
@@ -78,9 +84,7 @@ QGraphicsLayout *ServiceSettingsWidgetListItem::createLayout()
 
 void ServiceSettingsWidgetListItem::showDrillDownButton()
 {
-    imageWidget()->setImage("icon-m-common-drilldown-arrow-inverse");
-    imageWidget()->setStyleName("CommonDrillDownIcon");
-    imageWidget()->setObjectName("wgServiceSettingsWidgetDrillDownIcon");
+    imageWidget()->setVisible(true);
 }
 
 class ServiceSettingsWidgetPrivate
