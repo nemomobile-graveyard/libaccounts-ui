@@ -1,3 +1,10 @@
+libaccounts-ui (0.97-1) unstable; urgency=low
+
+  * Fixes: NB#192778 - Allow .service-type files to specify the command(s) to
+    be executed when an account having this service type enabled is created.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Thu, 10 Mar 2011 12:08:01 +0200
+
 libaccounts-ui (0.96-1) unstable; urgency=low
 
   * Fixes: NB#228509 - Layout is not proper for Account settings view and Service Selection view
