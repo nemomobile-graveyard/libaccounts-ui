@@ -126,6 +126,7 @@ public:
 
     AbstractAccountSetupContext *context() const;
     void serviceEnabled(Accounts::Service *service);
+    void executeCommandFromXML(const QDomDocument &document);
     void monitorServices();
 
 public Q_SLOTS:
