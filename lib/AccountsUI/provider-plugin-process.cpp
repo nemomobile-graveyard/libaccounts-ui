@@ -63,11 +63,10 @@ AbstractAccountSetupContext *ProviderPluginProcessPrivate::context() const
     return m_context;
 }
 
-void ProviderPluginProcessPrivate::serviceEnabled(Accounts::Service *service)
+void ProviderPluginProcessPrivate::executeCommandFromXML(const QDomDocument
+                                                         &document)
 {
-    qDebug() << Q_FUNC_INFO << service->name();
-
-    QDomElement root = service->domDocument().documentElement();
+    QDomElement root = document.documentElement();
     QDomElement handler = root.firstChildElement("handler");
     if (!handler.isNull()) {
         QString type = handler.attribute("type");
@@ -88,6 +87,20 @@ void ProviderPluginProcessPrivate::serviceEnabled(Accounts::Service *service)
         }
         /* support more types (e.g., D-Bus services) here */
     }
+}
+
+void ProviderPluginProcessPrivate::serviceEnabled(Accounts::Service *service)
+{
+    qDebug() << Q_FUNC_INFO << service->name();
+
+    executeCommandFromXML(service->domDocument());
+
+    // Commands might be specified in service-type files too
+    Accounts::Manager *manager = account->manager();
+    Accounts::ServiceType *serviceType =
+        manager->serviceType(service->serviceType());
+    if (serviceType != 0)
+        executeCommandFromXML(serviceType->domDocument());
 }
 
 void ProviderPluginProcessPrivate::accountSaved()
