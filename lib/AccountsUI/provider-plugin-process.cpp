@@ -94,6 +94,13 @@ void ProviderPluginProcessPrivate::serviceEnabled(Accounts::Service *service)
     qDebug() << Q_FUNC_INFO << service->name();
 
     executeCommandFromXML(service->domDocument());
+
+    // Commands might be specified in service-type files too
+    Accounts::Manager *manager = account->manager();
+    Accounts::ServiceType *serviceType =
+        manager->serviceType(service->serviceType());
+    if (serviceType != 0)
+        executeCommandFromXML(serviceType->domDocument());
 }
 
 void ProviderPluginProcessPrivate::accountSaved()
