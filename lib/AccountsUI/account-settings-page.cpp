@@ -69,6 +69,11 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
             this, SLOT(onSyncStateChanged(const SyncState&)));
 }
 
+bool AccountSettingsPagePrivate::hasSingleService() const
+{
+    return serviceList.count() <= 1;
+}
+
 void AccountSettingsPagePrivate::saveSettings()
 {
     Q_Q(AccountSettingsPage);
@@ -272,7 +277,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
             enabled = true;
         }
 
-        if (d->serviceList.count() > 1)
+        if (!d->hasSingleService())
             settingsWidget = new ServiceSettingsWidget(context,
                                                    d->panel,
                                                    ServiceSettingsWidget::EnableButton,

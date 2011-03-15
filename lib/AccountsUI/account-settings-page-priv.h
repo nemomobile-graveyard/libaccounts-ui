@@ -56,6 +56,8 @@ public:
     AccountSettingsPagePrivate(AbstractAccountSetupContext *context);
     ~AccountSettingsPagePrivate() {}
 
+    bool hasSingleService() const;
+
 public Q_SLOTS:
     void saveSettings();
     void openChangePasswordDialog();
