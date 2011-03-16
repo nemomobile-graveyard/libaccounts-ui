@@ -56,6 +56,8 @@ public:
     AccountSettingsPagePrivate(AbstractAccountSetupContext *context);
     ~AccountSettingsPagePrivate() {}
 
+    bool hasSingleService() const;
+
 public Q_SLOTS:
     void saveSettings();
     void openChangePasswordDialog();
@@ -81,6 +83,7 @@ private:
     MLinearLayoutPolicy *panelPolicy;
     Accounts::ServiceList hiddenServiceList;
     QMap<QString, bool> serviceStatusMap;
+    bool saving;
 };
 
 } // namespace

@@ -58,7 +58,8 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     changePasswordDialogStarted(false),
     panel(0),
     layout(0),
-    panelPolicy(0)
+    panelPolicy(0),
+    saving(false)
 {
     account = context->account();
     serviceList = account->services();
@@ -69,9 +70,18 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
             this, SLOT(onSyncStateChanged(const SyncState&)));
 }
 
+bool AccountSettingsPagePrivate::hasSingleService() const
+{
+    return serviceList.count() <= 1;
+}
+
 void AccountSettingsPagePrivate::saveSettings()
 {
     Q_Q(AccountSettingsPage);
+
+    if (saving) return;
+    saving = true;
+
     disconnect(q , SIGNAL(backButtonClicked()), 0, 0);
     q->setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
@@ -116,6 +126,7 @@ void AccountSettingsPagePrivate::onSyncStateChanged(const SyncState &state)
             //Saving the settings on back button press
             connect(this, SIGNAL(backButtonClicked()),
                     this, SLOT(saveSettings()));
+            saving = false;
             break;
         case Validated:
             qDebug() << Q_FUNC_INFO << "Validated";
@@ -272,7 +283,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
             enabled = true;
         }
 
-        if (d->serviceList.count() > 1)
+        if (!d->hasSingleService())
             settingsWidget = new ServiceSettingsWidget(context,
                                                    d->panel,
                                                    ServiceSettingsWidget::EnableButton,
@@ -387,8 +398,31 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
 
 void AccountSettingsPage::createPageActions()
 {
+    Q_D(AccountSettingsPage);
+    MAction *action;
+
+    if (d->hasSingleService()) {
+        //% "Save"
+        action = new MAction(qtTrId("qtn_comm_save"), this);
+        action->setLocation(MAction::ToolBarLocation);
+        addAction(action);
+        connect(action, SIGNAL(triggered()),
+                d, SLOT(saveSettings()));
+
+        //% "Cancel"
+        action = new MAction(qtTrId("qtn_comm_cancel"), this);
+        action->setLocation(MAction::ToolBarLocation);
+        addAction(action);
+        connect(action, SIGNAL(triggered()),
+                ProviderPluginProcess::instance(), SLOT(quit()));
+
+        // Hide the standard back/close button
+        setComponentsDisplayMode(MApplicationPage::EscapeButton,
+                                 MApplicationPageModel::Hide);
+    }
+
     //% "Delete"
-    MAction *action = new MAction(qtTrId("qtn_comm_command_delete"), this);
+    action = new MAction(qtTrId("qtn_comm_command_delete"), this);
     action->setLocation(MAction::ApplicationMenuLocation);
     addAction(action);
     connect(action, SIGNAL(triggered()),
