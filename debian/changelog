@@ -1,3 +1,10 @@
+libaccounts-ui (0.98-1) unstable; urgency=low
+
+  * Fixes: NB#233096 - Simple account settings view does not have 'Save' and
+    'Cancel'
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Wed, 16 Mar 2011 15:08:53 +0200
+
 libaccounts-ui (0.97-1) unstable; urgency=low
 
   * Fixes: NB#192778 - Allow .service-type files to specify the command(s) to
