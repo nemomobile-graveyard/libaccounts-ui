@@ -58,7 +58,8 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     changePasswordDialogStarted(false),
     panel(0),
     layout(0),
-    panelPolicy(0)
+    panelPolicy(0),
+    saving(false)
 {
     account = context->account();
     serviceList = account->services();
@@ -77,6 +78,10 @@ bool AccountSettingsPagePrivate::hasSingleService() const
 void AccountSettingsPagePrivate::saveSettings()
 {
     Q_Q(AccountSettingsPage);
+
+    if (saving) return;
+    saving = true;
+
     disconnect(q , SIGNAL(backButtonClicked()), 0, 0);
     q->setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
@@ -121,6 +126,7 @@ void AccountSettingsPagePrivate::onSyncStateChanged(const SyncState &state)
             //Saving the settings on back button press
             connect(this, SIGNAL(backButtonClicked()),
                     this, SLOT(saveSettings()));
+            saving = false;
             break;
         case Validated:
             qDebug() << Q_FUNC_INFO << "Validated";

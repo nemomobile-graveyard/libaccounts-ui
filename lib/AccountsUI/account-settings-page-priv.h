@@ -83,6 +83,7 @@ private:
     MLinearLayoutPolicy *panelPolicy;
     Accounts::ServiceList hiddenServiceList;
     QMap<QString, bool> serviceStatusMap;
+    bool saving;
 };
 
 } // namespace
