@@ -392,8 +392,31 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
 
 void AccountSettingsPage::createPageActions()
 {
+    Q_D(AccountSettingsPage);
+    MAction *action;
+
+    if (d->hasSingleService()) {
+        //% "Save"
+        action = new MAction(qtTrId("qtn_comm_save"), this);
+        action->setLocation(MAction::ToolBarLocation);
+        addAction(action);
+        connect(action, SIGNAL(triggered()),
+                d, SLOT(saveSettings()));
+
+        //% "Cancel"
+        action = new MAction(qtTrId("qtn_comm_cancel"), this);
+        action->setLocation(MAction::ToolBarLocation);
+        addAction(action);
+        connect(action, SIGNAL(triggered()),
+                ProviderPluginProcess::instance(), SLOT(quit()));
+
+        // Hide the standard back/close button
+        setComponentsDisplayMode(MApplicationPage::EscapeButton,
+                                 MApplicationPageModel::Hide);
+    }
+
     //% "Delete"
-    MAction *action = new MAction(qtTrId("qtn_comm_command_delete"), this);
+    action = new MAction(qtTrId("qtn_comm_command_delete"), this);
     action->setLocation(MAction::ApplicationMenuLocation);
     addAction(action);
     connect(action, SIGNAL(triggered()),
