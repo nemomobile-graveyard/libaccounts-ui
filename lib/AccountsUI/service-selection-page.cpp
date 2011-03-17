@@ -46,6 +46,7 @@
 #include <MWidgetAction>
 #include <MImageWidget>
 #include <MLabel>
+#include <MLocale>
 
 //libAccounts
 #include <Accounts/Provider>
@@ -98,8 +99,6 @@ ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
     d->serviceContextList = serviceContextList;
     d->abstractContexts.append(d->context);
 
-    setEscapeMode(MApplicationPageModel::EscapeManualBack);
-
     d->syncHandler = new AccountSyncHandler(this);
     connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
@@ -142,10 +141,19 @@ void ServiceSelectionPage::createContent()
         // xml file that describes the ui elements for the provider
         Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
         if (provider) {
+            // loading common catalog to show device name string
+            MLocale locale;
+            QString catalog = "common";
+            if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
+                locale.installTrCatalog(catalog);
+                MLocale::setDefault(locale);
+            }
+
             // provider info header
             QDomElement root = provider->domDocument().documentElement();
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
+
             MBasicListItem *providerInfoItem =
                     new MBasicListItem(MBasicListItem:: IconWithTitleAndSubtitle, this);
             providerInfoItem->setStyleName("CommonBasicListItemInverted");
@@ -159,10 +167,12 @@ void ServiceSelectionPage::createContent()
             QDomElement accountConnectedMessage= root.firstChildElement("account-connected-message");
             if (!accountConnectedMessage.isNull()) {
                 // display a account connected message for provider
-                QString accountConnectedMessageId= accountConnectedMessage.text();
+                QString accountConnectedMessageId=
+                        qtTrId((accountConnectedMessage.text()).toLatin1()).arg(qtTrId("qtn_comm_product_n9"));
                 MLabel *accountConnectedMessageLabel=
                         new MLabel(accountConnectedMessageId);
-                accountConnectedMessageLabel->setStyleName("CommonBodyTextInverted");
+                accountConnectedMessageLabel->setWordWrap(1);
+		accountConnectedMessageLabel->setStyleName("CommonBodyTextInverted");
                 topLayoutPolicy->addItem(accountConnectedMessageLabel, Qt::AlignLeft | Qt::AlignVCenter);
             }
         }
