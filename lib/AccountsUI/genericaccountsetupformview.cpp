@@ -309,7 +309,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
         questionLabel->setObjectName("AccountsPrimaryInfoLabel");
 
         //% "Get one here"
-        QString link("<a href=\"%1\"> " + qtTrId("qtn_acc_login_register_here") + "! </a>");
+        QString link("<a href=\"%1\"> " + qtTrId("qtn_acc_login_register_here") + "!</a>");
         /* fetch the first lenght variant as qt doesnt provide
             support for length variants for rich text */
         link = link.left(link.indexOf(QChar(BinaryTextVariantSeparator)));
