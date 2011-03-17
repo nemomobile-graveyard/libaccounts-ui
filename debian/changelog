@@ -1,3 +1,10 @@
+libaccounts-ui (0.100-1) unstable; urgency=low
+
+  * Fixes: NB#204977 - Duplicate account creation Dialog not shown if duplicate account is created
+  * Fixes: NB#233049 - [ENG] Trailing space in 'Get a new account here!' on account setup page
+
+ -- Smita Srivastava <smita.srivastava@nokia.com>  Thu, 17 Mar 2011 12:18:07 +0200
+
 libaccounts-ui (0.99-1) unstable; urgency=low
 
   * Fixes: NB#235730 - Facebook service selection view shows logical id §qtn_fbk_account_connected§
