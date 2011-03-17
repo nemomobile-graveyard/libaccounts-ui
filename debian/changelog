@@ -1,3 +1,9 @@
+libaccounts-ui (0.99-1) unstable; urgency=low
+
+  * Fixes: NB#235730 - Facebook service selection view shows logical id §qtn_fbk_account_connected§
+
+ -- Abhijit Bera <abhijit.bera@nokia.com>  Thu, 17 Mar 2011 13:33:53 +0530
+
 libaccounts-ui (0.98-1) unstable; urgency=low
 
   * Fixes: NB#233096 - Simple account settings view does not have 'Save' and
