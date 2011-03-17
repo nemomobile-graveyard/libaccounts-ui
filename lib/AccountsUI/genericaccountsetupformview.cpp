@@ -25,6 +25,8 @@
 #include "genericaccountsetupform.h"
 #include "genericaccountsetupformview.h"
 #include "common.h"
+#include "accountsmanagersingleton.h"
+#include "provider-plugin-process.h"
 
 //M
 #include <MLayout>
@@ -39,6 +41,7 @@
 #include <MLabel>
 #include <MProgressIndicator>
 #include <MImageWidget>
+#include <MMessageBox>
 
 //Qt
 #include <QDebug>
@@ -46,6 +49,7 @@
 #include <QUrl>
 #include <QTimer>
 
+using namespace Accounts;
 const int BinaryTextVariantSeparator = 0x9c;
 
 class GenericAccountSetupFormListItem: public MBasicListItem
@@ -88,6 +92,7 @@ public:
         registerNewLink = QString();
         authDomainSeparator = QString();
         authDomainDefault = QString();
+        provider = QString();
     }
 
     ~GenericAccountSetupFormViewPrivate()
@@ -118,6 +123,7 @@ public:
     QString registerNewLink;
     QString authDomainSeparator;
     QString authDomainDefault;
+    QString provider;
 
 protected:
     Q_DECLARE_PUBLIC(GenericAccountSetupFormView);
@@ -226,6 +232,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QDomElement providerIcon = root.firstChildElement("icon");
     QDomElement catalog = root.firstChildElement("translations");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
+    provider = root.attribute("id");
 
     if (!catalog.text().isEmpty()) {
         MLocale locale;
@@ -426,6 +433,24 @@ void GenericAccountSetupFormView::signIn()
         //% "Fill in username@example.com"
         showInfoBanner(qtTrId("qtn_acc_fill_in_username_with_domain_infobanner"));
         return;
+    }
+
+    AccountIdList idList = AccountsManager::instance()->accountList();
+    foreach (Accounts::AccountId id, idList) {
+        Accounts::Account *account = AccountsManager::instance()->account(id);
+        if ((d->widgetModel->username() == account->displayName()) &&
+            (d->provider == account->providerName())) {
+            MMessageBox queryBox(qtTrId("qtn_acc_account_exists"), qtTrId("qtn_acc_tune_it_in_accounts"), 0);
+            MButton *continueButton = new MButton(qtTrId("qtn_comm_command_continue"));
+            MButton *cancelButton = new MButton(qtTrId("qtn_comm_cancel"));
+            queryBox.addButton(continueButton->model());
+            queryBox.addButton(cancelButton->model());
+            queryBox.exec();
+            if (queryBox.clickedButton() == continueButton->model())
+                ProviderPluginProcess::instance()->setReturnToAccountsList(true);
+            else if (queryBox.clickedButton() == cancelButton->model())
+                ProviderPluginProcess::instance()->quit();
+        }
     }
 
     model()->setRememberMe(d->widgetModel->checkboxPressed());
