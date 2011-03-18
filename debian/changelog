@@ -1,3 +1,10 @@
+libaccounts-ui (0.101-1) unstable; urgency=low
+
+  * Fixes: NB#237169 - Plugins are crashing on tapping back button of login
+    view while it is validating login credentials.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Fri, 18 Mar 2011 09:42:33 +0200
+
 libaccounts-ui (0.100-1) unstable; urgency=low
 
   * Fixes: NB#204977 - Duplicate account creation Dialog not shown if duplicate account is created
