@@ -214,7 +214,8 @@ GenericAccountSetupContext::~GenericAccountSetupContext()
         !d_ptr->contextIsValidated)
     {
         qDebug() << Q_FUNC_INFO << "Need to delete credentials";
-        d_ptr->identity->remove();
+        if (d_ptr->identity != 0)
+            d_ptr->identity->remove();
     }
     else
         qDebug() << Q_FUNC_INFO << "no need to remove credentials";
