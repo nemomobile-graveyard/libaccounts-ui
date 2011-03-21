@@ -3,7 +3,7 @@ MApplicationWindowStyle#AccountsUiWindow {
 }
 
 MApplicationPage MLabelStyle#ConnectingLabel {
-  font: $FONT_FAMILY light 32;
+  font: $FONT_FAMILY bold 32;
   color: #1080DD;
 }
 
