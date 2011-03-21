@@ -3,7 +3,7 @@ MApplicationWindowStyle#AccountsUiWindow {
 }
 
 MApplicationPage MLabelStyle#ConnectingLabel {
-  font: $FONT_FAMILY light 32;
+  font: $FONT_FAMILY bold 32;
   color: #1080DD;
 }
 
@@ -14,6 +14,11 @@ margin-top:    0.6mm;
 margin-bottom: 0;
 margin-left:   $INDENT_DEFAULT;
 margin-right:  $INDENT_DEFAULT;
+}
+
+MApplicationPage MLabelStyle#GenericAccountSetupFormSignUpStyle {
+font:          $FONT_FAMILY bold 24;
+color:         #3465a4;
 }
 
 AccountSetupFinishedWidget MLabelStyle#AccountSetupFinishedLargeHeader {
