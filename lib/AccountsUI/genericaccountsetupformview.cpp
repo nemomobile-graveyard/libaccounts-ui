@@ -316,6 +316,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
         subscribeLabel = new MLabel(link.arg(registerNewLink));
         subscribeLabel->setTextFormat(Qt::RichText);
         subscribeLabel->setAlignment(Qt::AlignCenter);
+        subscribeLabel->setStyleName("GenericAccountSetupFormSignUpStyle");
         subscribeLabel->setObjectName("AccountsSecondaryInfoLabel");
         QObject::connect(subscribeLabel, SIGNAL(linkActivated(QString)),
                               q_ptr, SLOT(registerNew()));

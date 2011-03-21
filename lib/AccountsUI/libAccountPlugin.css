@@ -16,6 +16,11 @@ margin-left:   $INDENT_DEFAULT;
 margin-right:  $INDENT_DEFAULT;
 }
 
+MApplicationPage MLabelStyle#GenericAccountSetupFormSignUpStyle {
+font:          $FONT_FAMILY bold 24;
+color:         #3465a4;
+}
+
 AccountSetupFinishedWidget MLabelStyle#AccountSetupFinishedLargeHeader {
 font:          $FONT_FAMILY bold 40;
 color:         $COLOR_INVERTED_FOREGROUND;
