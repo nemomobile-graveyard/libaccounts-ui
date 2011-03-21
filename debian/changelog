@@ -1,3 +1,10 @@
+libaccounts-ui (0.102-1) unstable; urgency=low
+
+  * Fixes: NB#228541 - Get new account here option is not according to layout guide. 
+  * Fixes: NB#228833 - Progress Indicator Checking label font is not bold.
+
+ -- Lucian Horga <ext-lucian.horga@nokia.com>  Mon, 21 Mar 2011 11:09:00 +0200
+
 libaccounts-ui (0.101-1) unstable; urgency=low
 
   * Fixes: NB#237169 - Plugins are crashing on tapping back button of login
