@@ -1,3 +1,9 @@
+libaccounts-ui (0.103-1) unstable; urgency=low
+
+  * Fixes: NB#237537 - Account success view is not showing the provider name properly
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Wed, 23 Mar 2011 19:27:14 +0530
+
 libaccounts-ui (0.102-1) unstable; urgency=low
 
   * Fixes: NB#228541 - Get new account here option is not according to layout guide. 
