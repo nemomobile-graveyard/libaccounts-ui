@@ -110,7 +110,8 @@ AccountSetupFinishedWidget::AccountSetupFinishedWidget(const QString &providerNa
     successLabel->setAlignment(Qt::AlignCenter);
 
     // %"Your %1 account is connected!"
-    MLabel *firstDescLabel = new MLabel(qtTrId("qtn_acc_account_connected").arg(providerName));
+    MLabel *firstDescLabel = new MLabel(qtTrId("qtn_acc_account_connected")
+                                        .arg(qtTrId(provider->displayName().toLatin1())));
     firstDescLabel->setWordWrap(true);
     firstDescLabel->setWrapMode(QTextOption::WordWrap);
     firstDescLabel->setStyleName("FirstDescLabel");
