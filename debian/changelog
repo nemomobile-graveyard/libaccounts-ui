@@ -1,3 +1,9 @@
+libaccounts-ui (0.104-1) unstable; urgency=low
+
+  * Fixes: NB#234297 - Account settingsview is not Dimmed or highlighted properly when the account is disabled/enabled
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Mon, 28 Mar 2011 16:19:32 +0530
+
 libaccounts-ui (0.103-1) unstable; urgency=low
 
   * Fixes: NB#237537 - Account success view is not showing the provider name properly
