@@ -1,3 +1,9 @@
+libaccounts-ui (0.105-1) unstable; urgency=low
+
+  * Fixes: NB#226331 - Empty state should not scroll
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 28 Mar 2011 14:51:08 +0300
+
 libaccounts-ui (0.104-1) unstable; urgency=low
 
   * Fixes: NB#234297 - Account settingsview is not Dimmed or highlighted properly when the account is disabled/enabled
