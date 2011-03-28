@@ -174,9 +174,6 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                 (settingsConf & MandatorySettings)) {
                     mainPolicy->addItem(widget);
             }
-        } else {
-            if (serviceInfo)
-                serviceInfo->setEnabled(false);
         }
     }
 }
