@@ -47,6 +47,7 @@
 #include <MImageWidget>
 #include <MLabel>
 #include <MLocale>
+#include <MPannableViewport>
 
 //libAccounts
 #include <Accounts/Provider>
@@ -102,6 +103,7 @@ ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
     d->syncHandler = new AccountSyncHandler(this);
     connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
+    pannableViewport()->setVerticalPanningPolicy(MPannableViewport::PanningAsNeeded);
 }
 
 void ServiceSelectionPage::serviceSelected(QModelIndex index)

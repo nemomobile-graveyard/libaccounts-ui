@@ -43,6 +43,7 @@
 #include <MImageWidget>
 #include <MButton>
 #include <MWidgetCreator>
+#include <MPannableViewport>
 
 //Qt
 #include <QString>
@@ -86,6 +87,7 @@ AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
     setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
     d->serviceType = context->serviceType();
+    pannableViewport()->setVerticalPanningPolicy(MPannableViewport::PanningAsNeeded);
 }
 
 AddAccountPage::~AddAccountPage()
