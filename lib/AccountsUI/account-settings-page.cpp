@@ -298,7 +298,16 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
                                                        enabled);
 
         d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
+
         d->panelPolicy->addItem(settingsWidget);
+    }
+
+    if (!d->hasSingleService()) {
+        d->panelPolicy->setSpacing(20);
+        MSeparator *separatorBottom = new MSeparator(this);
+        separatorBottom->setStyleName("CommonItemDividerInverted");
+        separatorBottom->setOrientation(Qt::Horizontal);
+        d->panelPolicy->addItem(separatorBottom);
     }
 
     layoutServicePolicy->addItem(d->panel);
