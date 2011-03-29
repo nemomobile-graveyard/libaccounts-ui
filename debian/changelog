@@ -1,3 +1,10 @@
+libaccounts-ui (0.107-1) unstable; urgency=low
+
+  * Addresses: NB#218455 - The service name shown in applications does not
+    identify the provider.
+
+ -- Alberto Mardegan <alberto.mardegan@nokia.com>  Tue, 29 Mar 2011 11:45:46 +0300
+
 libaccounts-ui (0.106-1) unstable; urgency=low
 
   * Addresses: NB#214804 - Synchronization label not shown in Account settings view
