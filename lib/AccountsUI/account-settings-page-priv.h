@@ -71,7 +71,6 @@ private:
     AbstractAccountSetupContext *context;
     Accounts::Account *account;
     QList<AbstractServiceSetupContext *> contexts;
-    MDetailedListItem *usernameAndStatus;
     MButton *enableButton;
     Accounts::ServiceList serviceList;
     QList<AbstractSetupContext*> abstractContexts;

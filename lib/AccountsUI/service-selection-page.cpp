@@ -27,6 +27,7 @@
 #include "accountsmanagersingleton.h"
 #include "account-setup-finished-page.h"
 #include "provider-plugin-process.h"
+#include "basic-header-widget.h"
 
 //Qt
 #include <QStringListModel>
@@ -156,13 +157,11 @@ void ServiceSelectionPage::createContent()
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
 
-            MBasicListItem *providerInfoItem =
-                    new MBasicListItem(MBasicListItem:: IconWithTitleAndSubtitle, this);
-            providerInfoItem->setStyleName("CommonBasicListItemInverted");
-            providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
+            BasicHeaderWidget *providerInfoItem = new BasicHeaderWidget(this);
+            providerInfoItem->setImage(providerIconId);
             providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
             providerInfoItem->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));
-            providerInfoItem->imageWidget()->setImage(providerIconId);
+            providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
             topLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
 
             // account connected message
