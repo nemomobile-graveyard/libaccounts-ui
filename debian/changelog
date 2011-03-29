@@ -1,3 +1,9 @@
+libaccounts-ui (0.106-1) unstable; urgency=low
+
+  * Addresses: NB#214804 - Synchronization label not shown in Account settings view
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 29 Mar 2011 11:23:43 +0300
+
 libaccounts-ui (0.105-1) unstable; urgency=low
 
   * Fixes: NB#226331 - Empty state should not scroll
