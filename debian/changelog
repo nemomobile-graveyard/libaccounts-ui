@@ -1,3 +1,9 @@
+libaccounts-ui (0.108-1) unstable; urgency=low
+
+  * Fixes: NB#228147 - Non-functional provider icon and name title area is highlighted after tapping on it in Account settings view and in Service selection view
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Tue, 29 Mar 2011 16:59:47 +0530
+
 libaccounts-ui (0.107-1) unstable; urgency=low
 
   * Addresses: NB#218455 - The service name shown in applications does not
