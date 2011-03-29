@@ -149,8 +149,14 @@ QString ServiceHelper::prettyName()
 {
     Q_D(ServiceHelper);
 
-    /* TODO: support for dynamic prettyName from the plugin */
-    QString name = d->service->displayName();
+    QString name;
+
+    QDomElement root = d->domDocument.documentElement();
+    QDomElement setupNameElement = root.firstChildElement("setupName");
+    if (!setupNameElement.isNull())
+        name = setupNameElement.text();
+    else
+        name = d->service->displayName();
     return qtTrId(name.toLatin1());
 }
 
