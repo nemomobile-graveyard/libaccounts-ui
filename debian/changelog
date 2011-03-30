@@ -1,3 +1,9 @@
+libaccounts-ui (0.109-1) unstable; urgency=low
+
+  * Addresses: NB#241334 - Account settings view is not proper
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 30 Mar 2011 07:54:44 +0300
+
 libaccounts-ui (0.108-1) unstable; urgency=low
 
   * Fixes: NB#228147 - Non-functional provider icon and name title area is highlighted after tapping on it in Account settings view and in Service selection view
