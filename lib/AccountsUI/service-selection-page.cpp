@@ -213,11 +213,6 @@ void ServiceSelectionPage::createContent()
 
     layoutPolicy->addItem(serviceWidget, Qt::AlignLeft);
 
-    MSeparator *separatorBottom = new MSeparator(this);
-    separatorBottom->setStyleName("CommonItemDividerInverted");
-    separatorBottom->setOrientation(Qt::Horizontal);
-    d->layoutServicePolicy->addItem(separatorBottom);
-
     //% "DONE"
     d->saveAction = new MAction(qtTrId("qtn_comm_command_done"), centralWidget);
     d->saveAction->setLocation(MAction::ToolBarLocation);

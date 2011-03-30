@@ -303,25 +303,11 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
         d->panelPolicy->addItem(settingsWidget);
     }
 
-    if (!d->hasSingleService()) {
-        d->panelPolicy->setSpacing(20);
-        MSeparator *separatorBottom = new MSeparator(this);
-        separatorBottom->setStyleName("CommonItemDividerInverted");
-        separatorBottom->setOrientation(Qt::Horizontal);
-        d->panelPolicy->addItem(separatorBottom);
-    }
-
+    d->panelPolicy->setSpacing(20);
     layoutServicePolicy->addItem(d->panel);
     /*
      * no need in extra processing of any signals during content creation
      * */
-
-    if (d->settingsWidgets.count() > 1) {
-        MSeparator *separatorBottom = new MSeparator(this);
-        separatorBottom->setStyleName("CommonItemDividerInverted");
-        separatorBottom->setOrientation(Qt::Horizontal);
-        layoutServicePolicy->addItem(separatorBottom);
-    }
 
     foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets) {
         connect(settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
