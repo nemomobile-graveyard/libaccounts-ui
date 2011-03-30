@@ -42,6 +42,8 @@
 #include <MLocale>
 #include <MPannableViewport>
 
+#include "basic-header-widget.h"
+
 //Qt
 #include <QDebug>
 
@@ -53,7 +55,6 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     AbstractAccountSetupContext *context):
     context(context),
     account(0),
-    usernameAndStatus(0),
     enableButton(0),
     syncHandler(0),
     changePasswordDialogStarted(false),
@@ -355,13 +356,10 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
         }
     }
 
-    d->usernameAndStatus =
-        new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons);
-    d->usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
-    d->usernameAndStatus->setObjectName("wgAccountSettingsPageListItem");
-    d->usernameAndStatus->imageWidget()->setImage(providerIconId);
-    d->usernameAndStatus->setTitle(qtTrId(provider->displayName().toLatin1()));
-    d->usernameAndStatus->setSubtitle(d->account->displayName());
+    BasicHeaderWidget *usernameAndStatus = new BasicHeaderWidget(this);
+    usernameAndStatus->setImage(providerIconId);
+    usernameAndStatus->setTitle(qtTrId(provider->displayName().toLatin1()));
+    usernameAndStatus->setSubtitle(d->account->displayName());
 
     MSeparator *separatorTop = new MSeparator(this);
     separatorTop->setOrientation(Qt::Horizontal);
@@ -383,7 +381,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
 
     connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
 
-    horizontalLayoutPolicy->addItem(d->usernameAndStatus,
+    horizontalLayoutPolicy->addItem(usernameAndStatus,
                                     Qt::AlignLeft | Qt::AlignVCenter);
     horizontalLayoutPolicy->addItem(d->enableButton,
                                     Qt::AlignRight | Qt::AlignVCenter);

@@ -67,7 +67,8 @@ HEADERS += account-plugin-interface.h \
     accountlistitem.h \
     validation-data.h \
     account-setup-finished-widget.h \
-    plugin-service.h
+    plugin-service.h \
+    basic-header-widget.h
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
     abstract-setup-context.cpp \
@@ -101,7 +102,8 @@ SOURCES += abstract-account-setup-context.cpp \
     account-setup-finished-page.cpp \
     accountlistitem.cpp \
     account-setup-finished-widget.cpp \
-    plugin-service.cpp
+    plugin-service.cpp \
+    basic-header-widget.cpp
 MODEL_HEADERS += \
     credentialwidgetmodel.h \
     genericaccountsetupformmodel.h
