@@ -29,7 +29,6 @@
 //Meegotouch
 #include <MLayout>
 #include <MLinearLayoutPolicy>
-#include <MPannableViewport>
 
 //Qt
 #include <QDebug>
@@ -53,7 +52,6 @@ AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *
     d->serviceType = context->serviceType();
     setObjectName("wgAccountSetupFinishedPage");
     setStyleName("AccountsUiPage");
-    pannableViewport()->setVerticalPanningPolicy(MPannableViewport::PanningAsNeeded);
 }
 
 AccountSetupFinishedPage::~AccountSetupFinishedPage()

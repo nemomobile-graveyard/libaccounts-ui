@@ -40,7 +40,6 @@
 #include <MImageWidget>
 #include <MSeparator>
 #include <MLocale>
-#include <MPannableViewport>
 
 #include "basic-header-widget.h"
 
@@ -228,7 +227,6 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
     connect(this, SIGNAL(backButtonClicked()),
             d, SLOT(saveSettings()));
     setStyleName("AccountsUiPage");
-    pannableViewport()->setVerticalPanningPolicy(MPannableViewport::PanningAsNeeded);
 }
 
 AccountSettingsPage::~AccountSettingsPage()

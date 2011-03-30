@@ -40,7 +40,6 @@
 #include <MDetailedListItem>
 #include <MSeparator>
 #include <MImageWidget>
-#include <MPannableViewport>
 
 //Qt
 #include <QDebug>
@@ -71,7 +70,6 @@ SettingsPage::SettingsPage(AbstractServiceSetupContext *context,
     d->context = context;
     d->buttonModel = model;
     connect(this, SIGNAL(backButtonClicked()), d->context, SLOT(store()));
-    pannableViewport()->setVerticalPanningPolicy(MPannableViewport::PanningAsNeeded);
 }
 
 SettingsPage::~SettingsPage()
