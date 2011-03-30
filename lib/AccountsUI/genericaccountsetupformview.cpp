@@ -201,7 +201,7 @@ void GenericAccountSetupFormViewPrivate::hideCredentialWidgetAndShowProgress()
     connectingLabel->setAlignment(Qt::AlignCenter);
 
     //% "STOP"
-    stopButton = new MButton(qtTrId("qtn_comm_stop"));
+    stopButton = new MButton(qtTrId("qtn_comm_cancel"));
     stopButton->setStyleName("CommonSingleButtonInverted");
     stopButton->setObjectName("wgGenericAccountSetupFormViewButton");
     QObject::connect(stopButton, SIGNAL(clicked()),
