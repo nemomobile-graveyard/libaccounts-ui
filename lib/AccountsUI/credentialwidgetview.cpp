@@ -39,6 +39,7 @@
 #include <MButton>
 #include <MTextEdit>
 #include <MDialog>
+#include <MInputMethodState>
 
 //Qt
 #include <QDebug>
@@ -263,6 +264,38 @@ void CredentialWidgetView::usernameTextEditGainedFocus()
         d->usernameTextEdit->setCursorPosition(0);
 
     firstTime = false;
+    int id = MInputMethodState::instance()->registerAttributeExtension();
+    d->usernameTextEdit->attachToolbar(id);
+    MInputMethodState::instance()->setExtendedAttribute
+            (id, "/keys", "actionKey", "label", qtTrId("qtn_comm_next"));
+    connect(d->usernameTextEdit, SIGNAL(returnPressed()),
+            this, SLOT(passwordTextEditSetFocus()));
+}
+
+void CredentialWidgetView::passwordTextEditGainedFocus()
+{
+    Q_D(CredentialWidgetView);
+    int id = MInputMethodState::instance()->registerAttributeExtension();
+    d->passwordTextEdit->attachToolbar(id);
+    MInputMethodState::instance()->setExtendedAttribute(id, "/keys", "actionKey","label",
+                                                        qtTrId("qtn_comm_ok"));
+    connect(d->passwordTextEdit, SIGNAL(returnPressed()),
+            this, SLOT(closeVKB()));
+}
+
+void CredentialWidgetView::closeVKB()
+{
+    Q_D(CredentialWidgetView);
+    MInputMethodState::closeSoftwareInputPanel();
+    QGraphicsItem *passwordItem = static_cast<QGraphicsItem *>(d->passwordTextEdit);
+    passwordItem->clearFocus();
+}
+
+void CredentialWidgetView::passwordTextEditSetFocus()
+{
+    Q_D(CredentialWidgetView);
+    QGraphicsItem *passwordItem = static_cast<QGraphicsItem *>(d->passwordTextEdit);
+    passwordItem->setFocus();
 }
 
 void CredentialWidgetView::launchKeychain()
@@ -366,13 +399,16 @@ void CredentialWidgetView::recreateWidgets()
         d->usernameTextEdit->setText(model()->username());
         d->passwordTextEdit->setText(model()->password());
 
+        connect(d->passwordTextEdit, SIGNAL(gainedFocus(Qt::FocusReason)),
+                this, SLOT(passwordTextEditGainedFocus()));
+
         connect(d->passwordTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
                 this, SLOT(refreshPasswordInModel()));
 
         connect(d->usernameTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
                 this, SLOT(refreshUsernameInModel()));
 
-        connect(d->usernameTextEdit, SIGNAL(widgetClicked()),
+        connect(d->usernameTextEdit, SIGNAL(gainedFocus (Qt::FocusReason)),
                 this, SLOT(usernameTextEditGainedFocus()));
 
         connect(d->forgotPasswordLabel, SIGNAL(linkActivated(QString)),
