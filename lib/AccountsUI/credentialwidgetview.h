@@ -72,6 +72,9 @@ private Q_SLOTS:
     void captchaImageClicked();
     void forgotPasswordClicked(QString link);
     void setEnabled(bool isWidgetEnabled);
+    void passwordTextEditSetFocus();
+    void closeVKB();
+    void passwordTextEditGainedFocus();
 
 private:
     void configureWithCaptchaAndLogin();
