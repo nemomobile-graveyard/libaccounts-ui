@@ -245,6 +245,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
 
     MWidget *serviceWidget = new MWidget(this);
     MLayout *serviceSettingLayout = new MLayout(serviceWidget);
+    serviceSettingLayout->setContentsMargins(0, 0, 0, 0);
     MLinearLayoutPolicy *layoutServicePolicy =
         new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
     layoutServicePolicy->setSpacing(0);
@@ -267,6 +268,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
      * UI widgets to embed */
     QMap<QString, bool> enabledServiceTypes;
     MLayout *layoutPanel = new MLayout(d->panel);
+    layoutPanel->setContentsMargins(0, 0, 0, 0);
     d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
 
     foreach (AbstractServiceSetupContext *context, d->contexts) {
@@ -301,7 +303,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
         d->panelPolicy->addItem(settingsWidget);
     }
 
-    d->panelPolicy->setSpacing(20);
+    d->panelPolicy->setSpacing(0);
     layoutServicePolicy->addItem(d->panel);
     /*
      * no need in extra processing of any signals during content creation
@@ -331,11 +333,13 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     // Generic implementation
     MWidget *upperWidget = new MWidget(this);
     MLayout *upperLayout = new MLayout(upperWidget);
+    upperLayout->setContentsMargins(0, 0, 0, 0);
     MLinearLayoutPolicy *upperLayoutPolicy =
         new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
     upperLayoutPolicy->setSpacing(0);
 
     MLayout *horizontalLayout = new MLayout();
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
     MLinearLayoutPolicy *horizontalLayoutPolicy =
         new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
     horizontalLayoutPolicy->setSpacing(0);
@@ -365,7 +369,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
 
     d->enableButton = new MButton(this);
     d->enableButton->setViewType(MButton::switchType);
-    d->enableButton->setStyleName("CommonSwitchInverted");
+    d->enableButton->setStyleName("CommonRightSwitchInverted");
     d->enableButton->setCheckable(true);
 
     d->account->selectService(NULL);
@@ -383,8 +387,22 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
                                     Qt::AlignLeft | Qt::AlignVCenter);
     horizontalLayoutPolicy->addItem(d->enableButton,
                                     Qt::AlignRight | Qt::AlignVCenter);
+
+    MWidgetController *spacer = new MWidgetController(this);
+    spacer->setStyleName("CommonSpacer");
+    upperLayoutPolicy->addItem(spacer);
+
     upperLayoutPolicy->addItem(horizontalLayout);
+
+    spacer = new MWidgetController(this);
+    spacer->setStyleName("CommonSmallSpacer");
+    upperLayoutPolicy->addItem(spacer);
+
     upperLayoutPolicy->addItem(separatorTop);
+
+    spacer = new MWidgetController(this);
+    spacer->setStyleName("CommonSmallSpacer");
+    upperLayoutPolicy->addItem(spacer);
 
     return upperWidget;
 }
@@ -431,6 +449,7 @@ void AccountSettingsPage::createContent()
     //we need a central widget to get the right layout size under the menubar
     MWidget *centralWidget = new MWidget();
     d->layout = new MLayout(centralWidget);
+    d->layout->setContentsMargins(0, 0, 0, 0);
     MLinearLayoutPolicy *layoutPolicy =
         new MLinearLayoutPolicy(d->layout, Qt::Vertical);
     layoutPolicy->setSpacing(0);

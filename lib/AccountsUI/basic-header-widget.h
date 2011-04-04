@@ -23,14 +23,14 @@
 #ifndef ACCOUNTSUI_BASICHEADERWIDGET_H
 #define ACCOUNTSUI_BASICHEADERWIDGET_H
 
-#include <MWidget>
+#include <MWidgetController>
 #include <QObject>
 
 namespace AccountsUI {
 
 class BasicHeaderWidgetPrivate;
 
-class BasicHeaderWidget : public MWidget
+class BasicHeaderWidget : public MWidgetController
 {
     Q_OBJECT
 

@@ -63,3 +63,8 @@ MApplicationPage MLabelStyle#EnabledAccountState {
 MApplicationPage MLabelStyle#DisabledAccountState {
     color : gray
 }
+
+MWidgetController#CredentialWidget MButtonStyle#CommonSingleButtonInverted {
+margin-top: $MARGIN_XXLARGE;
+}
+

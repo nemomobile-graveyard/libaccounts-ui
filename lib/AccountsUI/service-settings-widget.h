@@ -71,6 +71,7 @@ public:
     private Q_SLOTS:
         void enabled(bool enabled);
         void openSettingsPage();
+        void onSettingsPageClosed();
 
 private:
     ServiceSettingsWidgetPrivate *d_ptr;

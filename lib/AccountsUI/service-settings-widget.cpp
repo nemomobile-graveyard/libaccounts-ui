@@ -45,7 +45,7 @@ namespace AccountsUI {
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
         : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
-    setStyleName("CommonBasicListItemInverted");
+    setStyleName("CommonPanelNoFeedbackInverted");
     setObjectName("wgServiceSettingsWidgetListItem");
 
     horizontalLayout = new MLayout(this);
@@ -60,8 +60,12 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     MLinearLayoutPolicy *titleSubtitleLayoutPolicy = new MLinearLayoutPolicy(titleSubtitleLayout, Qt::Vertical);
     titleSubtitleLayoutPolicy->setSpacing(0);
 
+    titleLabelWidget()->setStyleName("CommonTitleInverted");
     titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
+    subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
+    // Add an empty item to push the subtitle up
+    titleSubtitleLayoutPolicy->addItem(new QGraphicsWidget());
 
     horizontalLayoutPolicy->addItem(titleSubtitleLayout, Qt::AlignLeft | Qt::AlignCenter);
 
@@ -84,6 +88,7 @@ QGraphicsLayout *ServiceSettingsWidgetListItem::createLayout()
 
 void ServiceSettingsWidgetListItem::showDrillDownButton()
 {
+    setStyleName("CommonPanelInverted");
     imageWidget()->setVisible(true);
 }
 
@@ -212,6 +217,15 @@ void ServiceSettingsWidget::openSettingsPage()
     SettingsPage *settingsPage =
             new SettingsPage(d->context, d->enableServiceButton->model());
     settingsPage->appear();
+    QObject::connect(settingsPage, SIGNAL(disappearing()),
+                     this, SLOT(onSettingsPageClosed()));
+}
+
+void ServiceSettingsWidget::onSettingsPageClosed()
+{
+    Q_D(ServiceSettingsWidget);
+    // Restore button style
+    d->enableServiceButton->setStyleName("CommonLeftSwitchInverted");
 }
 
 }//end of namespace

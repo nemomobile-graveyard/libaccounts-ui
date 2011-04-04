@@ -44,6 +44,7 @@ CredentialWidget::CredentialWidget(CredentialWidgetModel *model, QGraphicsItem *
                "no CredentialWidgetView",
                "There is no available WidgetView class for this widget - is there an existing and correct conf file?");
     setView(defaultWidgetView);
+    setStyleName("CredentialWidget");
 }
 
 CredentialWidget::~CredentialWidget()

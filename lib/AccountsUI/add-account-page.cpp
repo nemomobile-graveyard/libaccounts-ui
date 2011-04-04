@@ -104,6 +104,7 @@ void AddAccountPage::createContent()
 
     // layout
     MLayout *layout = new MLayout(centralWidget());
+    layout->setContentsMargins(0, 0, 0, 0);
     MLinearLayoutPolicy *layoutPolicy =
             new MLinearLayoutPolicy( layout, Qt::Vertical );
 

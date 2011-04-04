@@ -77,10 +77,11 @@ public:
     {
         //layouts and policies init
         mainLayout = new MLayout(controller);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
         portraitPolicy = new MGridLayoutPolicy(mainLayout);
         landscapePolicy = new MGridLayoutPolicy(mainLayout);
-        portraitPolicy->setSpacing(10);
-        landscapePolicy->setSpacing(10);
+        portraitPolicy->setSpacing(0);
+        landscapePolicy->setSpacing(0);
     }
 
     ~CredentialWidgetViewPrivate()
