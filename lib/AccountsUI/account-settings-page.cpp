@@ -83,7 +83,6 @@ void AccountSettingsPagePrivate::saveSettings()
     if (saving) return;
     saving = true;
 
-    disconnect(q , SIGNAL(backButtonClicked()), 0, 0);
     q->setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
     if (enableButton) {
@@ -125,8 +124,6 @@ void AccountSettingsPagePrivate::onSyncStateChanged(const SyncState &state)
             qDebug() << Q_FUNC_INFO << "NotValidated";
             q->setProgressIndicatorVisible(false);
             //Saving the settings on back button press
-            connect(this, SIGNAL(backButtonClicked()),
-                    this, SLOT(saveSettings()));
             saving = false;
             break;
         case Validated:
@@ -223,9 +220,6 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
     Q_ASSERT (context != NULL);
     d->q_ptr = this;
 
-    //Saving the settings on back button press
-    connect(this, SIGNAL(backButtonClicked()),
-            d, SLOT(saveSettings()));
     setStyleName("AccountsUiPage");
 }
 
@@ -412,25 +406,23 @@ void AccountSettingsPage::createPageActions()
     Q_D(AccountSettingsPage);
     MAction *action;
 
-    if (d->hasSingleService()) {
-        //% "Save"
-        action = new MAction(qtTrId("qtn_comm_save"), this);
-        action->setLocation(MAction::ToolBarLocation);
-        addAction(action);
-        connect(action, SIGNAL(triggered()),
-                d, SLOT(saveSettings()));
+    //% "Save"
+    action = new MAction(qtTrId("qtn_comm_save"), this);
+    action->setLocation(MAction::ToolBarLocation);
+    addAction(action);
+    connect(action, SIGNAL(triggered()),
+            d, SLOT(saveSettings()));
 
-        //% "Cancel"
-        action = new MAction(qtTrId("qtn_comm_cancel"), this);
-        action->setLocation(MAction::ToolBarLocation);
-        addAction(action);
-        connect(action, SIGNAL(triggered()),
-                ProviderPluginProcess::instance(), SLOT(quit()));
+    //% "Cancel"
+    action = new MAction(qtTrId("qtn_comm_cancel"), this);
+    action->setLocation(MAction::ToolBarLocation);
+    addAction(action);
+    connect(action, SIGNAL(triggered()),
+            ProviderPluginProcess::instance(), SLOT(quit()));
 
-        // Hide the standard back/close button
-        setComponentsDisplayMode(MApplicationPage::EscapeButton,
-                                 MApplicationPageModel::Hide);
-    }
+    // Hide the standard back/close button
+    setComponentsDisplayMode(MApplicationPage::EscapeButton,
+                             MApplicationPageModel::Hide);
 
     //% "Delete"
     action = new MAction(qtTrId("qtn_comm_command_delete"), this);
