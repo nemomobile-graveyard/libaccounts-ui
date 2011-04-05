@@ -59,7 +59,7 @@ public:
             : MBasicListItem(MBasicListItem::IconWithTitle, parent)
     {
         setStyleName("CommonBasicListItemInverted");
-        titleLabelWidget()->setStyleName("GenericAccountSetupFormListItemStyle");
+        titleLabelWidget()->setStyleName("CommonHeaderInverted");
         setEnabled(false);
     }
 
@@ -291,10 +291,19 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     if (!authDomainSeparator.isEmpty() || !authDomainDefault.isEmpty())
         credentialWidget->setUsername(authDomainSeparator + qtTrId(authDomainDefault.toLatin1()));
 
+    MWidgetController *spacer = new MWidgetController(controller);
+    spacer->setStyleName("CommonSpacer");
+    mainLayoutPolicy->addItem(spacer);
+
     // add the widgets to the layout
     mainLayoutPolicy->addItem(providerInfoItem);
     mainLayoutPolicy->addItem(descriptionLabel);
     mainLayoutPolicy->addItem(separator);
+
+    spacer = new MWidgetController(controller);
+    spacer->setStyleName("CommonLargeSpacer");
+    mainLayoutPolicy->addItem(spacer);
+
     mainLayoutPolicy->addItem(credentialWidget);
     mainLayoutPolicy->addStretch(3);
 
@@ -323,6 +332,10 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
 
         mainLayoutPolicy->addItem(questionLabel, Qt::AlignCenter);
         mainLayoutPolicy->addItem(subscribeLabel, Qt::AlignCenter);
+
+        MWidgetController *spacer = new MWidgetController(controller);
+        spacer->setStyleName("CommonXLargeSpacer");
+        mainLayoutPolicy->addItem(spacer);
     }
 }
 
@@ -336,6 +349,7 @@ GenericAccountSetupFormView::GenericAccountSetupFormView(GenericAccountSetupForm
 
     // layouts
     d->mainLayout = new MLayout();
+    d->mainLayout->setContentsMargins(0, 0, 0, 0);
     d->mainLayoutPolicy = new MLinearLayoutPolicy(d->mainLayout, Qt::Vertical);
 
     controller->setLayout(d->mainLayout);

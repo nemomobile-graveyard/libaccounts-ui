@@ -50,18 +50,19 @@ public:
 };
 
 BasicHeaderWidget::BasicHeaderWidget(QGraphicsItem *parent)
-        :MWidget(parent),
+        :MWidgetController(parent),
         d_ptr(new BasicHeaderWidgetPrivate())
 {
     Q_D(BasicHeaderWidget);
 
+    setStyleName("CommonPanelInverted");
+
     MLayout *mainLayout = new MLayout();
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     MLinearLayoutPolicy *mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Horizontal);
-    mainLayoutPolicy->setStyleName("CommonPanelInverted");
 
     MLayout *titleLayout = new MLayout();
     MLinearLayoutPolicy *titleLayoutPolicy = new MLinearLayoutPolicy(titleLayout, Qt::Vertical);
-    titleLayoutPolicy->setStyleName("CommonPanelInverted");
 
     d->image = new MImageWidget();
     d->image->setStyleName("CommonMainIcon");
@@ -72,6 +73,8 @@ BasicHeaderWidget::BasicHeaderWidget(QGraphicsItem *parent)
 
     titleLayoutPolicy->addItem(d->title);
     titleLayoutPolicy->addItem(d->subtitle);
+    // Add an empty item to push the subtitle up
+    titleLayoutPolicy->addItem(new QGraphicsWidget());
 
     mainLayoutPolicy->addItem(d->image);
     mainLayoutPolicy->addItem(titleLayout);

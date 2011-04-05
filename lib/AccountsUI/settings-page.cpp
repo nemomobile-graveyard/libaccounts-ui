@@ -121,7 +121,7 @@ void SettingsPage::createContent()
 
     d->enableButton = new MButton(this, d->buttonModel);
     d->enableButton->setViewType(MButton::switchType);
-    d->enableButton->setStyleName("CommonSwitchInverted");
+    d->enableButton->setStyleName("CommonRightSwitchInverted");
     d->enableButton->setCheckable(true);
 
     d->context->account()->selectService(d->context->service());
