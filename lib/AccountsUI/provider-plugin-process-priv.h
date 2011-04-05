@@ -34,6 +34,7 @@
 //Accounts
 #include <Accounts/account.h>
 #include <Accounts/manager.h>
+#include <Accounts/provider.h>
 
 //M
 #include <MComponentCache>
@@ -95,8 +96,17 @@ public:
             }
         }
 
-        if (account != 0)
+        if (account != 0) {
             monitorServices();
+            QString providerName = account->providerName();
+            Accounts::Provider *provider = account->manager()->provider(providerName);
+            QString catalog = provider->trCatalog();
+            MLocale locale;
+            if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
+                locale.installTrCatalog(catalog);
+                MLocale::setDefault(locale);
+            }
+        }
 
         WId windowId = wrapped->parentWindowId();
         if (windowId != 0) {
