@@ -1,3 +1,9 @@
+libaccounts-ui (0.113-1) unstable; urgency=low
+
+  * Fixes: NB#243274 - Logical string qtn_goog_gmail is shown with Sync widget of Google plugin
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 05 Apr 2011 14:29:35 +0300
+
 libaccounts-ui (0.112-1) unstable; urgency=low
 
   * Fixes: NB#238491 - There are no save or cancel buttons in service
