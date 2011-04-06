@@ -1,3 +1,9 @@
+libaccounts-ui (0.114-1) unstable; urgency=low
+
+  * Fixes: NB#224122 - Get new account links are not highlighted when tapped
+
+ -- Devanjan Choudhury <devanjan.choudhury@nokia.com>  Wed, 06 Apr 2011 14:50:43 +0530
+
 libaccounts-ui (0.113-1) unstable; urgency=low
 
   * Fixes: NB#243274 - Logical string qtn_goog_gmail is shown with Sync widget of Google plugin
