@@ -40,6 +40,8 @@
 #include <MImageWidget>
 #include <MSeparator>
 #include <MLocale>
+#include <MPannableViewport>
+#include <MPositionIndicator>
 
 #include "basic-header-widget.h"
 
@@ -221,6 +223,7 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
     d->q_ptr = this;
 
     setStyleName("AccountsUiPage");
+    pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
 }
 
 AccountSettingsPage::~AccountSettingsPage()
