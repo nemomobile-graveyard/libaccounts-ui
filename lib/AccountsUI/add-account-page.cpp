@@ -43,6 +43,8 @@
 #include <MImageWidget>
 #include <MButton>
 #include <MWidgetCreator>
+#include <MPannableViewport>
+#include <MPositionIndicator>
 
 //Qt
 #include <QString>
@@ -86,6 +88,7 @@ AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
     setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
     d->serviceType = context->serviceType();
+    pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
 }
 
 AddAccountPage::~AddAccountPage()
