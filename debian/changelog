@@ -1,3 +1,9 @@
+libaccounts-ui (0.117-1) unstable; urgency=low
+
+  * Fixes: NB#239010 - Info banner 'qtn_acc_conn_to_service_fail' is not proper. Review comments also done.
+
+ -- Simjees Abraham <simjees.abraham@nokia.com>  Wed, 13 Apr 2011 14:41:02 +0530
+
 libaccounts-ui (0.116-1) unstable; urgency=low
 
   * Fixes: NB#239010 - Info banner 'qtn_acc_conn_to_service_fail' is not proper.
