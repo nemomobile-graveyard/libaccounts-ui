@@ -47,7 +47,7 @@ typedef SignOn::Error::ErrorType SignonErrType;
  * @param providerName the provider name.
  * @returns corresponding translation id string.
  */
-const QString trIdFromSignonError(const SignonErrType err, QString providerName = QString());
+const QString trIdFromSignonError(const SignonErrType err, const QString& providerName = NULL);
 
 /*!
  * @overload trIdFromSignonError(const SignonErrType err)
