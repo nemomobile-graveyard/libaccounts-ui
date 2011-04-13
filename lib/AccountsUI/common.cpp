@@ -32,7 +32,7 @@ const QString trIdFromSignonError(const int err)
     return trIdFromSignonError((SignonErrType)err);
 }
 
-const QString trIdFromSignonError(const SignOn::Error::ErrorType err, QString providerName)
+const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QString& providerName)
 {
     //todo - enrich this
     switch (err) {

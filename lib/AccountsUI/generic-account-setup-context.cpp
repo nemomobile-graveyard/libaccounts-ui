@@ -529,7 +529,8 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
 
     //Connection errors should be handled by Connectivity, but their Ui
     //is not quite in the proper shape
-    showInfoBanner(trIdFromSignonError((SignonErrType)err.type(), account()->providerName()));
+    showInfoBanner(trIdFromSignonError((SignonErrType)err.type(), 
+					qtTrId(account()->providerName().toAscii().constData())));
 
     emit error(UnknownError, err.message());
 }
