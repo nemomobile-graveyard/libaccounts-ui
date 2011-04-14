@@ -309,8 +309,8 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
 
     if (!registerNewLink.isEmpty()) {
 
-        //% "Don't have a %1 account yet?"
-        questionLabel = new MLabel(qtTrId("qtn_acc_login_new_to_x").arg(providerName));
+        //% "Don't have an account yet?"
+        questionLabel = new MLabel(qtTrId("qtn_acc_login_new_to_x"));
         questionLabel->setStyleName("CommonBodyTextInverted");
         questionLabel->setAlignment(Qt::AlignCenter);
         questionLabel->setWordWrap(true);
