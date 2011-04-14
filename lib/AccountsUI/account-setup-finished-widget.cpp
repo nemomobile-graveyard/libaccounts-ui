@@ -109,9 +109,8 @@ AccountSetupFinishedWidget::AccountSetupFinishedWidget(const QString &providerNa
     successLabel->setStyleName("SuccessLabel");
     successLabel->setAlignment(Qt::AlignCenter);
 
-    // %"Your %1 account is connected!"
-    MLabel *firstDescLabel = new MLabel(qtTrId("qtn_acc_account_connected")
-                                        .arg(qtTrId(provider->displayName().toLatin1())));
+    // %"Your account is connected!"
+    MLabel *firstDescLabel = new MLabel(qtTrId("qtn_acc_account_connected"));
     firstDescLabel->setWordWrap(true);
     firstDescLabel->setWrapMode(QTextOption::WordWrap);
     firstDescLabel->setStyleName("FirstDescLabel");
@@ -174,6 +173,9 @@ void AccountSetupFinishedWidget::actionButtonClicked()
     QString serviceName = sender()->property("serviceName").toString();
     qDebug() << "Invoking service" << serviceName;
     AccountsUI::LastPageActions::executeService(serviceName);
+    bool killCaller = true;
+    QVariant data(killCaller);
+    AccountsUI::ProviderPluginProcess::instance()->setExitData(data);
     AccountsUI::ProviderPluginProcess::instance()->quit();
 }
 
