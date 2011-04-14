@@ -47,13 +47,14 @@ AccountSetupFinishedWidget MLabelStyle#SuccessLabel {
 }
 
 AccountSetupFinishedWidget MLabelStyle#FirstDescLabel {
-    font: $FONT_FAMILY light 36;
-    color: #8C8C8C;
+    font: $FONT_FAMILY light 24;
+    color: #F5F5F5
+;
 }
 
 AccountSetupFinishedWidget MLabelStyle#SecondDescLabel {
-    font: $FONT_FAMILY light 36;
-    color: #8C8C8C;
+    font: $FONT_FAMILY light 24;
+    color: #F5F5F5;
 }
 
 MApplicationPage MLabelStyle#EnabledAccountState {
