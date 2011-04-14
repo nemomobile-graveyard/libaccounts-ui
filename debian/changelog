@@ -1,3 +1,27 @@
+libaccounts-ui (0.117-1) unstable; urgency=low
+
+  * Fixes: NB#239010 - Info banner 'qtn_acc_conn_to_service_fail' is not proper. Review comments also done.
+
+ -- Simjees Abraham <simjees.abraham@nokia.com>  Wed, 13 Apr 2011 14:41:02 +0530
+
+libaccounts-ui (0.116-1) unstable; urgency=low
+
+  * Fixes: NB#239010 - Info banner 'qtn_acc_conn_to_service_fail' is not proper.
+
+ -- Simjees Abraham <simjees.abraham@nokia.com>  Wed, 13 Apr 2011 11:06:10 +0530
+
+libaccounts-ui (0.115-1) unstable; urgency=low
+
+  * fixed the incorrect display of scroll bars (Similar to Bug 234916)
+
+ -- Simjees Abraham <simjees.abraham@nokia.com>  Thu, 07 Apr 2011 11:44:43 +0530
+
+libaccounts-ui (0.114-1) unstable; urgency=low
+
+  * Fixes: NB#224122 - Get new account links are not highlighted when tapped
+
+ -- Devanjan Choudhury <devanjan.choudhury@nokia.com>  Wed, 06 Apr 2011 14:50:43 +0530
+
 libaccounts-ui (0.113-1) unstable; urgency=low
 
   * Fixes: NB#243274 - Logical string qtn_goog_gmail is shown with Sync widget of Google plugin

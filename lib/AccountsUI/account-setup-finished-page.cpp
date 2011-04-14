@@ -29,6 +29,8 @@
 //Meegotouch
 #include <MLayout>
 #include <MLinearLayoutPolicy>
+#include <MPannableViewport>
+#include <MPositionIndicator>
 
 //Qt
 #include <QDebug>
@@ -52,6 +54,7 @@ AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *
     d->serviceType = context->serviceType();
     setObjectName("wgAccountSetupFinishedPage");
     setStyleName("AccountsUiPage");
+    pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
 }
 
 AccountSetupFinishedPage::~AccountSetupFinishedPage()

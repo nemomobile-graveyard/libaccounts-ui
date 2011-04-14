@@ -40,6 +40,8 @@
 #include <MDetailedListItem>
 #include <MSeparator>
 #include <MImageWidget>
+#include <MPannableViewport>
+#include <MPositionIndicator>
 
 //Qt
 #include <QDebug>
@@ -70,6 +72,7 @@ SettingsPage::SettingsPage(AbstractServiceSetupContext *context,
     d->context = context;
     d->buttonModel = model;
     connect(this, SIGNAL(backButtonClicked()), d->context, SLOT(store()));
+    pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
 }
 
 SettingsPage::~SettingsPage()

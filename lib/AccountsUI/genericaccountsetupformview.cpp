@@ -42,6 +42,7 @@
 #include <MProgressIndicator>
 #include <MImageWidget>
 #include <MMessageBox>
+#include <MLabelHighlighter>
 
 //Qt
 #include <QDebug>
@@ -318,17 +319,19 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
         questionLabel->setObjectName("AccountsPrimaryInfoLabel");
 
         //% "Get one here"
-        QString link("<a href=\"%1\"> " + qtTrId("qtn_acc_login_register_here") + "!</a>");
+        QString link = qtTrId("qtn_acc_login_register_here");
         /* fetch the first lenght variant as qt doesnt provide
             support for length variants for rich text */
         link = link.left(link.indexOf(QChar(BinaryTextVariantSeparator)));
         subscribeLabel = new MLabel(link.arg(registerNewLink));
-        subscribeLabel->setTextFormat(Qt::RichText);
+
         subscribeLabel->setAlignment(Qt::AlignCenter);
         subscribeLabel->setStyleName("GenericAccountSetupFormSignUpStyle");
-        subscribeLabel->setObjectName("AccountsSecondaryInfoLabel");
-        QObject::connect(subscribeLabel, SIGNAL(linkActivated(QString)),
-                              q_ptr, SLOT(registerNew()));
+        MCommonLabelHighlighter *subscribeLabelHighligher = new MCommonLabelHighlighter(QRegExp("[^\r\n]*"));
+        subscribeLabel->addHighlighter(subscribeLabelHighligher);
+
+        QObject::connect(subscribeLabelHighligher, SIGNAL(clicked(QString)),
+                q_ptr, SLOT(registerNew()));
 
         mainLayoutPolicy->addItem(questionLabel, Qt::AlignCenter);
         mainLayoutPolicy->addItem(subscribeLabel, Qt::AlignCenter);

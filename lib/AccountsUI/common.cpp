@@ -32,7 +32,7 @@ const QString trIdFromSignonError(const int err)
     return trIdFromSignonError((SignonErrType)err);
 }
 
-const QString trIdFromSignonError(const SignOn::Error::ErrorType err)
+const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QString& providerName)
 {
     //todo - enrich this
     switch (err) {
@@ -45,10 +45,10 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err)
         return qtTrId("qtn_acc_auth_failed_infobanner");
     case SignOn::Error::Network:
         //% "Service connection failed"
-        return qtTrId("qtn_acc_conn_to_service_fail");
+        return qtTrId("qtn_acc_conn_to_service_fail").arg(providerName);
     case SignOn::Error::NoConnection:
         //% "No network connection"
-        return qtTrId("qtn_acc_conn_to_service_fail");
+        return qtTrId("qtn_acc_conn_to_service_fail").arg(providerName);
     case SignOn::Error::NotAuthorized:
         //% "Wrong Credentials"
         return qtTrId("qtn_acc_auth_failed_infobanner");

@@ -44,9 +44,10 @@ typedef SignOn::Error::ErrorType SignonErrType;
 /*!
  * Helper function. Maps SignOn error types to logical translation ids.
  * @param err the SignOn error type.
+ * @param providerName the provider name.
  * @returns corresponding translation id string.
  */
-const QString trIdFromSignonError(const SignonErrType err);
+const QString trIdFromSignonError(const SignonErrType err, const QString& providerName = NULL);
 
 /*!
  * @overload trIdFromSignonError(const SignonErrType err)

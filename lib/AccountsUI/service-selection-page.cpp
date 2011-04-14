@@ -48,6 +48,8 @@
 #include <MImageWidget>
 #include <MLabel>
 #include <MLocale>
+#include <MPannableViewport>
+#include <MPositionIndicator>
 
 //libAccounts
 #include <Accounts/Provider>
@@ -103,6 +105,7 @@ ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
     d->syncHandler = new AccountSyncHandler(this);
     connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
+    pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
 }
 
 void ServiceSelectionPage::serviceSelected(QModelIndex index)
