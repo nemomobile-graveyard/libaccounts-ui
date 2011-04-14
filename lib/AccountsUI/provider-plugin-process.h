@@ -112,6 +112,11 @@ public:
      */
     void setReturnToAccountsList(bool value);
 
+    /*!
+     * sets the exit data.
+     */
+    void setExitData(const QVariant &data);
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.

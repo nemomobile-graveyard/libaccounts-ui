@@ -110,6 +110,11 @@ public:
      */
     QString providerName();
 
+    /*!
+     * return the extra data that the plugin returned when terminating.
+     */
+    QVariant exitData();
+
 public Q_SLOTS:
     /*!
      * Stops the plugin process.

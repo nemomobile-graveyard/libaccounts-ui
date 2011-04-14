@@ -245,6 +245,12 @@ void ProviderPluginProcess::setReturnToAccountsList(bool value)
     d->wrapped->setReturnToAccountsList(value);
 }
 
+void ProviderPluginProcess::setExitData(const QVariant &data)
+{
+    Q_D(ProviderPluginProcess);
+    d->wrapped->setExitData(data);
+}
+
 const LastPageActions &ProviderPluginProcess::lastPageActions() const
 {
     Q_D(const ProviderPluginProcess);

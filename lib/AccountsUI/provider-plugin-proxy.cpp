@@ -170,3 +170,9 @@ QString ProviderPluginProxy::providerName()
     return d->wrapper->providerName();
 }
 
+QVariant ProviderPluginProxy::exitData()
+{
+    Q_D(ProviderPluginProxy);
+    return d->wrapper->exitData();
+}
+
