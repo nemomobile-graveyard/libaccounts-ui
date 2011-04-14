@@ -1,3 +1,12 @@
+libaccounts-ui (0.118-1) unstable; urgency=low
+
+  * Fixes: NB#245270 - Services name(%1) should not display in account success view in Your account is connected label
+  * Fixes: NB#245070 - In login view in the text Don't have an %1 account yet
+  * Fixes: NB#243979 - Success view texts are shown with wrong font size
+  * Adrreses: NB#239006 - Accounts-ui is not closing after configuring account from other application
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 14 Apr 2011 12:30:37 +0300
+
 libaccounts-ui (0.117-1) unstable; urgency=low
 
   * Fixes: NB#239010 - Info banner 'qtn_acc_conn_to_service_fail' is not proper. Review comments also done.
