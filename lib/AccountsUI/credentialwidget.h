@@ -59,6 +59,7 @@ public:
     void setPassword(const QString &aPassword);
     void setCaptcha(const QImage &image);
     void setRememberPasswordChecked(bool checked);
+    void setFocusOnUserNameField();
     void setFocusOnPasswordField();
     void setFocusOnCaptchaField();
     void setEnabled(bool isWidgetEnabled);

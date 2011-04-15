@@ -516,6 +516,10 @@ void CredentialWidgetView::updateData(const QList <const char *> &modifications)
             if (d->passwordTextEdit)
                 d->passwordTextEdit->setText(model()->password());
         }
+        else if (member == CredentialWidgetModel::FocusOnUserNameField) {
+            if (d->usernameTextEdit)
+                d->usernameTextEdit->setFocus(Qt::ActiveWindowFocusReason);
+        }
         else if (member == CredentialWidgetModel::FocusOnPasswordField) {
             if (d->passwordTextEdit)
                 d->passwordTextEdit->setFocus(Qt::ActiveWindowFocusReason);

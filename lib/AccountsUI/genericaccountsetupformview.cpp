@@ -437,12 +437,14 @@ void GenericAccountSetupFormView::signIn()
     if (d->widgetModel->username().isEmpty()) {
         //% "Fill in username"
         showInfoBanner(qtTrId("qtn_acc_fill_in_username_infobanner"));
+        d->credentialWidget->setFocusOnUserNameField();
         return;
     }
 
     if (d->widgetModel->password().isEmpty()) {
         //% "Fill in password"
         showInfoBanner(qtTrId("qtn_acc_fill_in_password_infobanner"));
+        d->credentialWidget->setFocusOnPasswordField();
         return;
     }
 
@@ -450,6 +452,7 @@ void GenericAccountSetupFormView::signIn()
         !d->widgetModel->username().contains(d->authDomainSeparator)) {
         //% "Fill in username@example.com"
         showInfoBanner(qtTrId("qtn_acc_fill_in_username_with_domain_infobanner"));
+        d->credentialWidget->setFocusOnUserNameField();
         return;
     }
 
