@@ -23,6 +23,7 @@
 
 //project
 #include "credentialwidget.h"
+#include "credentialwidgetview.h"
 
 //Qt
 #include <QDebug>
@@ -113,23 +114,18 @@ void CredentialWidget::setRememberPasswordChecked(bool checked)
 
 void CredentialWidget::setFocusOnUserNameField()
 {
-    Q_ASSERT(model());
-    model()->blockSignals(true);
-    // reseting the value in the model so that
-    // the focus will be set correctly.
-    model()->setFocusOnUserNameField(false);
-    model()->blockSignals(false);
-    model()->setFocusOnUserNameField(true);
+    CredentialWidgetView* cdView = NULL;
+    cdView = const_cast<CredentialWidgetView*>(qobject_cast<const CredentialWidgetView*> (view()));
+    if (NULL != cdView)
+        cdView->setFocusOnUserNameField();
 }
 
 void CredentialWidget::setFocusOnPasswordField()
 {
-    Q_ASSERT(model());
-    model()->blockSignals(true);
-    // reseting the value in the model so that
-    // the focus will be set correctly.
-    model()->setFocusOnPasswordField(false);
-    model()->blockSignals(false);
+    CredentialWidgetView* cdView = NULL;
+    cdView = const_cast<CredentialWidgetView*>(qobject_cast<const CredentialWidgetView*> (view()));
+    if (NULL != cdView)
+        cdView->setFocusOnUserNameField();
     model()->setFocusOnPasswordField(true);
 }
 
