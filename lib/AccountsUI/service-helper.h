@@ -75,6 +75,12 @@ public:
     QString prettyName();
 
     /*!
+     * Gets the service short description. This might cause the loading of the
+     * service plugin.
+     */
+    QString shortDescription();
+
+    /*!
      * Gets the service description. This might cause the loading of the
      * service plugin.
      */

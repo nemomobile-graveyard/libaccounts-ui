@@ -160,6 +160,17 @@ QString ServiceHelper::prettyName()
     return qtTrId(name.toLatin1());
 }
 
+QString ServiceHelper::shortDescription()
+{
+    Q_D(ServiceHelper);
+    QDomElement root = d->domDocument.documentElement();
+    QDomElement descriptionElement = root.firstChildElement("short-description");
+    if (!descriptionElement.isNull())
+        return qtTrId(descriptionElement.text().toLatin1());
+    else
+        return QString();
+}
+
 QString ServiceHelper::description()
 {
     Q_D(ServiceHelper);
@@ -168,7 +179,7 @@ QString ServiceHelper::description()
     if (!descriptionElement.isNull())
         return qtTrId(descriptionElement.text().toLatin1());
     else
-        return 0;
+        return QString();
 }
 
 AbstractServiceSetupContext *

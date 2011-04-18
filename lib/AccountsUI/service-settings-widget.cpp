@@ -145,13 +145,19 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setObjectName("wgServiceSettingsWidgetServiceButton");
             d->enableServiceButton->setCheckable(true);
 
-            ServiceHelper *serviceHepler =
+            ServiceHelper *serviceHelper =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
 
             serviceInfo = new ServiceSettingsWidgetListItem();
-            serviceInfo->setTitle(serviceHepler->prettyName());
-            serviceInfo->setSubtitle(serviceHepler->description());
+            serviceInfo->setTitle(serviceHelper->prettyName());
+            QString subTitle = serviceHelper->description();
 
+            if (settingsConf != (MandatorySettings | EnableButton)) {
+                if (!serviceHelper->shortDescription().isEmpty())
+                    subTitle = serviceHelper->shortDescription();
+            }
+
+            serviceInfo->setSubtitle(subTitle);
             /*
              * no signals during widget creation
              * */
