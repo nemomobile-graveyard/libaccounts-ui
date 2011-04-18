@@ -54,12 +54,6 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     M_MODEL_PROPERTY(QString, password, Password, true, QString())
 
     /*!
-         \property CredentialWidgetModel::FocusOnUserNameField
-         \brief .
-    */
-   M_MODEL_PROPERTY(bool, focusOnUserNameField, FocusOnUserNameField, true, true)
-
-    /*!
         \property CredentialWidgetModel::FocusOnPasswordField
         \brief .
     */

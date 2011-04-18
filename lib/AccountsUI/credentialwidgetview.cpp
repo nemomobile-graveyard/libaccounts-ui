@@ -517,10 +517,6 @@ void CredentialWidgetView::updateData(const QList <const char *> &modifications)
             if (d->passwordTextEdit)
                 d->passwordTextEdit->setText(model()->password());
         }
-        else if (member == CredentialWidgetModel::FocusOnUserNameField) {
-            if (d->usernameTextEdit)
-                d->usernameTextEdit->setFocus(Qt::ActiveWindowFocusReason);
-        }
         else if (member == CredentialWidgetModel::FocusOnPasswordField) {
             if (d->passwordTextEdit)
                 d->passwordTextEdit->setFocus(Qt::ActiveWindowFocusReason);
@@ -915,14 +911,15 @@ void CredentialWidgetView::updateMainLayout()
 void CredentialWidgetView::setFocusOnUserNameField()
 {
     Q_D(CredentialWidgetView);
-    QGraphicsItem *userNameItem = qobject_cast<QGraphicsItem *>(d->usernameTextEdit);
-    if (NULL != userNameItem)
-        userNameItem->setFocus();
+    if (d->usernameTextEdit)
+        d->usernameTextEdit->setFocus(Qt::ActiveWindowFocusReason);
 }
 
 void CredentialWidgetView::setFocusOnPasswordField()
 {
-    passwordTextEditSetFocus();
+    Q_D(CredentialWidgetView);
+    if (d->passwordTextEdit)
+        d->passwordTextEdit->setFocus(Qt::ActiveWindowFocusReason);
 }
 
 M_REGISTER_VIEW_NEW(CredentialWidgetView, CredentialWidget);
