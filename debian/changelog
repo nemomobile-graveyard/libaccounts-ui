@@ -1,3 +1,9 @@
+libaccounts-ui (0.120-1) unstable; urgency=low
+
+  * Fixes: NB#234282 - Support for different service description in service selection view and account settings view is missing
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 18 Apr 2011 14:18:46 +0300
+
 libaccounts-ui (0.119-1) unstable; urgency=low
 
   * Fixes: NB#180563 - Login View: Text field focus is not proper
