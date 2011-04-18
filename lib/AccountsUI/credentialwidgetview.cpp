@@ -296,7 +296,7 @@ void CredentialWidgetView::passwordTextEditSetFocus()
 {
     Q_D(CredentialWidgetView);
     QGraphicsItem *passwordItem = static_cast<QGraphicsItem *>(d->passwordTextEdit);
-    if (NULL != passwordItem)
+    if (passwordItem != 0)
         passwordItem->setFocus();
 }
 
