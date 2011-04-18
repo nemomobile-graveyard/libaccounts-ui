@@ -123,9 +123,9 @@ void CredentialWidget::setFocusOnUserNameField()
 void CredentialWidget::setFocusOnPasswordField()
 {
     CredentialWidgetView* cdView = NULL;
-    cdView = (CredentialWidgetView*)view();
+    cdView = const_cast<CredentialWidgetView*>(qobject_cast<const CredentialWidgetView*> (view()));
     if (NULL != cdView)
-        cdView->setFocusOnUserNameField();
+        cdView->setFocusOnPasswordField();
     model()->setFocusOnPasswordField(true);
 }
 
