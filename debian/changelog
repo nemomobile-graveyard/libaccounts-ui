@@ -1,3 +1,9 @@
+libaccounts-ui (0.119-1) unstable; urgency=low
+
+  * Fixes: NB#180563 - Login View: Text field focus is not proper
+
+ -- Simjees Abraham <simjees.abraham@nokia.com>  Mon, 18 Apr 2011 12:28:05 +0530
+
 libaccounts-ui (0.118-1) unstable; urgency=low
 
   * Fixes: NB#245270 - Services name(%1) should not display in account success view in Your account is connected label
