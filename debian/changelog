@@ -1,3 +1,9 @@
+libaccounts-ui (0.121-1) unstable; urgency=low
+
+  * Fixes: NB#242448 - Crash when emitting validated signal from class inheriting NGenericAccountSetopContext
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 19 Apr 2011 14:01:03 +0300
+
 libaccounts-ui (0.120-1) unstable; urgency=low
 
   * Fixes: NB#234282 - Support for different service description in service selection view and account settings view is missing
