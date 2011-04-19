@@ -418,37 +418,40 @@ void GenericAccountSetupContext::validate()
     }
 
     // set the user name for the AbstractAccountSetupContext
-    setUserName(d->genericAccountSetupForm->username());
+    if (d->genericAccountSetupForm) {
+        setUserName(d->genericAccountSetupForm->username());
 
-    emit validating();
+        emit validating();
 
-    //check authsession part of provider file
-    QDomDocument domDocument = d->genericAccountSetupForm->domDocument();
-    QDomElement root = domDocument.documentElement();
-    QDomElement element = root.firstChildElement("account-setup");
-    QDomElement authSection = element.firstChildElement("authsession");
+        //check authsession part of provider file
+        QDomDocument domDocument = d->genericAccountSetupForm->domDocument();
+        QDomElement root = domDocument.documentElement();
+        QDomElement element = root.firstChildElement("account-setup");
+        QDomElement authSection = element.firstChildElement("authsession");
 
-    if (authSection.isNull()) {
-        //no section how to do validation, just emit validated
-        qDebug() << Q_FUNC_INFO << __LINE__;
-        d->contextIsValidated = true;
+        if (authSection.isNull()) {
+            //no section how to do validation, just emit validated
+            qDebug() << Q_FUNC_INFO << __LINE__;
+            d->contextIsValidated = true;
+            emit validated();
+            return;
+        }
+
+        if (d->networkManager == 0) {
+            d->networkManager = new NetworkSessionManager;
+
+            connect(d->networkManager, SIGNAL(sessionReady()), SLOT(storeIdentity()));
+            connect(d->networkManager, SIGNAL(error(ErrorType)), SLOT(networkSessionError()));
+
+            d->networkManager->startSession();
+
+        } else if (!d->networkManager->isSessionReady()) {
+            d->networkManager->startSession();
+        } else {
+            storeIdentity();
+        }
+    } else
         emit validated();
-        return;
-    }
-
-    if (d->networkManager == 0) {
-        d->networkManager = new NetworkSessionManager;
-
-        connect(d->networkManager, SIGNAL(sessionReady()), SLOT(storeIdentity()));
-        connect(d->networkManager, SIGNAL(error(ErrorType)), SLOT(networkSessionError()));
-
-        d->networkManager->startSession();
-
-    } else if (!d->networkManager->isSessionReady()) {
-        d->networkManager->startSession();
-    } else {
-        storeIdentity();
-    }
 }
 
 void GenericAccountSetupContext::startAuthSession()
