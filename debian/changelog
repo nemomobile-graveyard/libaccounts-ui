@@ -1,3 +1,9 @@
+libaccounts-ui (0.122-2) unstable; urgency=low
+
+  * Commit for bugfix 180563 was accidently lost during merge. Merged the changes to harmattan again from master
+
+ -- Simjees Abraham <simjees.abraham@nokia.com>  Wed, 20 Apr 2011 16:11:43 +0530
+
 libaccounts-ui (0.122-1) unstable; urgency=low
 
   * Fixes: NB#231333 - Google login view, when user taps prefilled username the focus is put into the prefilled text -> annoying to use.
