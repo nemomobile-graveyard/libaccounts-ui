@@ -86,6 +86,10 @@ protected:
     virtual void setupModel();
     virtual void applyStyle();
 
+public:
+    void setFocusOnUserNameField();
+    void setFocusOnPasswordField();
+
 protected:
     CredentialWidgetViewPrivate *d_ptr;
     Q_DISABLE_COPY(CredentialWidgetView);

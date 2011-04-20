@@ -296,7 +296,8 @@ void CredentialWidgetView::passwordTextEditSetFocus()
 {
     Q_D(CredentialWidgetView);
     QGraphicsItem *passwordItem = static_cast<QGraphicsItem *>(d->passwordTextEdit);
-    passwordItem->setFocus();
+    if (passwordItem != 0)
+        passwordItem->setFocus();
 }
 
 void CredentialWidgetView::launchKeychain()
@@ -907,4 +908,19 @@ void CredentialWidgetView::updateMainLayout()
         d->mainLayout->setLandscapePolicy(d->landscapePolicy);
 }
 
+void CredentialWidgetView::setFocusOnUserNameField()
+{
+    Q_D(CredentialWidgetView);
+    if (d->usernameTextEdit)
+        d->usernameTextEdit->setFocus(Qt::ActiveWindowFocusReason);
+}
+
+void CredentialWidgetView::setFocusOnPasswordField()
+{
+    Q_D(CredentialWidgetView);
+    if (d->passwordTextEdit)
+        d->passwordTextEdit->setFocus(Qt::ActiveWindowFocusReason);
+}
+
 M_REGISTER_VIEW_NEW(CredentialWidgetView, CredentialWidget);
+

@@ -435,12 +435,14 @@ void GenericAccountSetupFormView::signIn()
     if (d->widgetModel->username().isEmpty()) {
         //% "Fill in username"
         showInfoBanner(qtTrId("qtn_acc_fill_in_username_infobanner"));
+        d->credentialWidget->setFocusOnUserNameField();
         return;
     }
 
     if (d->widgetModel->password().isEmpty()) {
         //% "Fill in password"
         showInfoBanner(qtTrId("qtn_acc_fill_in_password_infobanner"));
+        d->credentialWidget->setFocusOnPasswordField();
         return;
     }
 
