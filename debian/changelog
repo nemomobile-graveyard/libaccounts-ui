@@ -2,7 +2,7 @@ libaccounts-ui (0.122-1) unstable; urgency=low
 
   * Fixes: NB#231333 - Google login view, when user taps prefilled username the focus is put into the prefilled text -> annoying to use.
 
- --  Simjees Abraham <simjees.abraham@nokia.com> Wed, 20 Apr 2011 12:48:21 +0530
+ --  Simjees Abraham <simjees.abraham@nokia.com>  Wed, 20 Apr 2011 14:11:21 +0530
 
 libaccounts-ui (0.121-1) unstable; urgency=low
 
