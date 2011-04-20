@@ -289,8 +289,6 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
                      q_ptr, SLOT(updateModel(QList<const char*>)));
 
     credentialWidget = new CredentialWidget(widgetModel);
-    if (!authDomainSeparator.isEmpty() || !authDomainDefault.isEmpty())
-        credentialWidget->setUsername(authDomainSeparator + qtTrId(authDomainDefault.toLatin1()));
 
     MWidgetController *spacer = new MWidgetController(controller);
     spacer->setStyleName("CommonSpacer");
@@ -446,11 +444,13 @@ void GenericAccountSetupFormView::signIn()
         return;
     }
 
-    if (!d->authDomainSeparator.isEmpty() &&
-        !d->widgetModel->username().contains(d->authDomainSeparator)) {
-        //% "Fill in username@example.com"
-        showInfoBanner(qtTrId("qtn_acc_fill_in_username_with_domain_infobanner"));
-        return;
+    if (!d->authDomainSeparator.isEmpty() && !d->authDomainDefault.isEmpty() &&
+        !d->widgetModel->username().contains(d->authDomainSeparator)){
+        // User did not enter the required domain name. Hence using the default domain name.
+        d->widgetModel->blockSignals(true);
+        QString domainDefault = d->authDomainSeparator + qtTrId(d->authDomainDefault.toLatin1());
+        d->widgetModel->setUsername(d->widgetModel->username() + domainDefault);
+        d->widgetModel->blockSignals(false);
     }
 
     AccountIdList idList = AccountsManager::instance()->accountList();
