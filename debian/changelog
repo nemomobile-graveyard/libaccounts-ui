@@ -1,3 +1,9 @@
+libaccounts-ui (0.123-1) unstable; urgency=low
+
+  * Fixes: NB#228655 - Service selection view does not contain all the information provided in Layout guide
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 21 Apr 2011 12:35:07 +0300
+
 libaccounts-ui (0.122-2) unstable; urgency=low
 
   * Commit for bugfix 180563 was accidently lost during merge. Merged the changes to harmattan again from master
