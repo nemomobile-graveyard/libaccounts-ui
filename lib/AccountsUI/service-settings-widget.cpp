@@ -45,7 +45,7 @@ namespace AccountsUI {
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
         : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
-    setStyleName("CommonPanelNoFeedbackInverted");
+    setStyleName("CommonLargePanel");
     setObjectName("wgServiceSettingsWidgetListItem");
 
     horizontalLayout = new MLayout(this);
@@ -83,7 +83,10 @@ ServiceSettingsWidgetListItem::~ServiceSettingsWidgetListItem()
 
 QGraphicsLayout *ServiceSettingsWidgetListItem::createLayout()
 {
-    return horizontalLayout;
+    subtitleLabelWidget()->setWordWrap(true);
+    subtitleLabelWidget()->setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    subtitleLabelWidget()->setTextElide(false);
+    return MBasicListItem::createLayout();
 }
 
 void ServiceSettingsWidgetListItem::showDrillDownButton()
