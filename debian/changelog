@@ -1,3 +1,9 @@
+libaccounts-ui (0.124-4) unstable; urgency=low
+
+  * Fixes: NB#244071 - Labels are misaligned for drill down and service name.
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Mon, 25 Apr 2011 13:18:22 +0530
+
 libaccounts-ui (0.123-1) unstable; urgency=low
 
   * Fixes: NB#228655 - Service selection view does not contain all the information provided in Layout guide
