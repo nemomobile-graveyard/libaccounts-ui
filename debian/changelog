@@ -1,3 +1,9 @@
+libaccounts-ui (0.125-1) unstable; urgency=low
+
+  * Fixes: NB#250369 - Plugins crash on configuring multi service accounts
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 28 Apr 2011 15:27:49 +0300
+
 libaccounts-ui (0.124-4) unstable; urgency=low
 
   * Fixes: NB#244071 - Labels are misaligned for drill down and service name.
