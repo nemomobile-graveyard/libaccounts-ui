@@ -158,20 +158,13 @@ void ServiceSelectionPage::createContent()
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
 
-            MLayout *headerLayout = new MLayout(this);
-            MLinearLayoutPolicy *headerLayoutPolicy = new MLinearLayoutPolicy(headerLayout, Qt::Horizontal);
-            headerLayoutPolicy->setSpacing(0);
+            BasicHeaderWidget *providerInfoItem = new BasicHeaderWidget(this);
+            providerInfoItem->setImage(providerIconId);
+            providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
+            providerInfoItem->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));
+            providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
+            topLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
 
-            MImageWidget *providerImage = new MImageWidget(this);
-            providerImage->setStyleName("CommonMainIcon");
-            providerImage->setImage(providerIconId);
-
-            MLabel *providerLabel = new MLabel(this);
-            providerLabel->setStyleName("CommonHeaderInverted");
-            providerLabel->setText(qtTrId(provider->displayName().toLatin1()));
-            headerLayoutPolicy->addItem(providerImage, Qt::AlignVCenter);
-            headerLayoutPolicy->addItem(providerLabel);
-            topLayoutPolicy->addItem(headerLayout, Qt::AlignLeft | Qt::AlignVCenter);
 
             // account connected message
             QDomElement accountConnectedMessage= root.firstChildElement("account-connected-message");
