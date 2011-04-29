@@ -286,7 +286,7 @@ void CredentialWidgetView::passwordTextEditGainedFocus()
     Q_D(CredentialWidgetView);
     int id = MInputMethodState::instance()->registerAttributeExtension();
     d->passwordTextEdit->attachToolbar(id);
-    MInputMethodState::instance()->setExtendedAttribute(id, "/keys", "actionKey","label",
+    MInputMethodState::instance()->setExtendedAttribute(id, "/keys", "actionKey", "label",
                                                         qtTrId("qtn_comm_ok"));
     connect(d->passwordTextEdit, SIGNAL(returnPressed()),
             this, SLOT(closeVKB()));
@@ -681,147 +681,147 @@ void CredentialWidgetView::forgotPasswordClicked(QString link)
     model()->forgotPasswordClick(link);
 }
 
-void CredentialWidgetView::configureWithCaptcha(int &startPRow, int &startLRow)
+void CredentialWidgetView::configureWithCaptcha(int &portraitRow, int &landscapeRow)
 {
     Q_D(CredentialWidgetView);
 
-    int row = startPRow;
+    int row = portraitRow;
     //portrait mode
-    d->portraitPolicy->addItem(d->captchaLabel,row,0,1,2);
+    d->portraitPolicy->addItem(d->captchaLabel, row, 0, 1, 2);
     row++;
-    d->portraitPolicy->addItem(d->captchaImage,row,0,Qt::AlignLeft);
-    d->portraitPolicy->addItem(d->captchaRefreshButton,row,1,Qt::AlignRight);
+    d->portraitPolicy->addItem(d->captchaImage, row, 0, Qt::AlignLeft);
+    d->portraitPolicy->addItem(d->captchaRefreshButton, row, 1, Qt::AlignRight);
     row++;
-    d->portraitPolicy->addItem(d->captchaTextEdit,row,0,1,2);
+    d->portraitPolicy->addItem(d->captchaTextEdit, row, 0, 1, 2);
     row++;
-    startPRow = row;
+    portraitRow = row;
 
-    row = startLRow;
+    row = landscapeRow;
     //lanscape mode
-    d->landscapePolicy->addItem(d->captchaLabel,row,0,1,4);
+    d->landscapePolicy->addItem(d->captchaLabel, row, 0, 1, 4);
     row++;
-    d->landscapePolicy->addItem(d->captchaImage,row,0,1,1,Qt::AlignLeft);
-    d->landscapePolicy->addItem(d->captchaRefreshButton,row,3,1,1,Qt::AlignRight);
+    d->landscapePolicy->addItem(d->captchaImage, row, 0, 1, 1, Qt::AlignLeft);
+    d->landscapePolicy->addItem(d->captchaRefreshButton, row, 3, 1, 1, Qt::AlignRight);
     row++;
-    d->landscapePolicy->addItem(d->captchaTextEdit,row,0,1,4);
+    d->landscapePolicy->addItem(d->captchaTextEdit, row, 0, 1, 4);
     row++;
-    startLRow = row;
+    landscapeRow = row;
 }
 
-void CredentialWidgetView::configureWithLogin(int &startPRow, int &startLRow)
+void CredentialWidgetView::configureWithLogin(int &portraitRow, int &landscapeRow)
 {
     Q_D(CredentialWidgetView);
 
-    int row = startPRow;
+    int row = portraitRow;
     //portrait mode
     if (model()->confirmPassword()) {
-        d->portraitPolicy->addItem(d->usernameHeader, row ,0, Qt::AlignLeft);
+        d->portraitPolicy->addItem(d->usernameHeader, row , 0, Qt::AlignLeft);
        row++;
     } else {
-       d->portraitPolicy->addItem(d->usernameLabel,row,0);
-       d->portraitPolicy->setRowSpacing(row,0);
+       d->portraitPolicy->addItem(d->usernameLabel, row, 0);
+       d->portraitPolicy->setRowSpacing(row, 0);
        row++;
-       d->portraitPolicy->addItem(d->usernameTextEdit,row,0,1,2);
+       d->portraitPolicy->addItem(d->usernameTextEdit, row, 0, 1, 2);
        row++;
     }
-    d->portraitPolicy->addItem(d->passwordLabel,row,0);
-    d->portraitPolicy->setRowSpacing(row,0);
+    d->portraitPolicy->addItem(d->passwordLabel, row, 0);
+    d->portraitPolicy->setRowSpacing(row, 0);
     row++;
-    d->portraitPolicy->addItem(d->passwordTextEdit,row,0,1,2);
+    d->portraitPolicy->addItem(d->passwordTextEdit, row, 0, 1, 2);
     row++;
 
     if (model()->forgotPasswordVisible()) {
-        d->portraitPolicy->addItem(d->forgotPasswordLabel,row,0,1,2, Qt::AlignLeft);
-        d->landscapePolicy->setRowAlignment(row,Qt::AlignLeft);
+        d->portraitPolicy->addItem(d->forgotPasswordLabel, row, 0, 1, 2, Qt::AlignLeft);
+        d->landscapePolicy->setRowAlignment(row, Qt::AlignLeft);
         row++;
     }
 
     if (model()->checkboxVisible()) {
-        d->portraitPolicy->addItem(d->rememberPasswordLabel,row,0);
-        d->portraitPolicy->addItem(d->rememberPasswordSwitch,row,1);
+        d->portraitPolicy->addItem(d->rememberPasswordLabel, row, 0);
+        d->portraitPolicy->addItem(d->rememberPasswordSwitch, row, 1);
         row++;
     }
-    startPRow = row;
+    portraitRow = row;
 
-    row = startLRow;
+    row = landscapeRow;
     //landscape mode
-    d->landscapePolicy->addItem(d->usernameLabel,row,0);
+    d->landscapePolicy->addItem(d->usernameLabel, row, 0);
     row++;
-    d->landscapePolicy->addItem(d->usernameTextEdit,row,0);
+    d->landscapePolicy->addItem(d->usernameTextEdit, row, 0);
     row--;
-    d->landscapePolicy->addItem(d->passwordLabel,row,1);
+    d->landscapePolicy->addItem(d->passwordLabel, row, 1);
     row++;
-    d->landscapePolicy->addItem(d->passwordTextEdit,row,1);
+    d->landscapePolicy->addItem(d->passwordTextEdit, row, 1);
     row++;
 
     if (model()->forgotPasswordVisible()) {
-        d->landscapePolicy->addItem(d->forgotPasswordLabel,row,0,1,2,Qt::AlignLeft);
-        d->landscapePolicy->setRowAlignment(row,Qt::AlignLeft);
+        d->landscapePolicy->addItem(d->forgotPasswordLabel, row, 0, 1, 2, Qt::AlignLeft);
+        d->landscapePolicy->setRowAlignment(row, Qt::AlignLeft);
         row++;
     }
 
     if (model()->checkboxVisible()) {
-        d->landscapePolicy->addItem(d->rememberPasswordLabel,row,0,1,3);
-        d->landscapePolicy->addItem(d->rememberPasswordSwitch,row,3,1,1,Qt::AlignRight);
+        d->landscapePolicy->addItem(d->rememberPasswordLabel, row, 0, 1, 3);
+        d->landscapePolicy->addItem(d->rememberPasswordSwitch, row, 3, 1, 1, Qt::AlignRight);
         row++;
     }
 
-    startLRow = row;
+    landscapeRow = row;
 }
 
-void CredentialWidgetView::configureWithButtons(int &startPRow, int &startLRow)
+void CredentialWidgetView::configureWithButtons(int &portraitRow, int &landscapeRow)
 {
     Q_D(CredentialWidgetView);
 
-    int row = startPRow;
+    int row = portraitRow;
     //portrait mode
     if (model()->signInButtonVisible()) {
-        d->portraitPolicy->addItem(d->signInButton,row,0,1,2,Qt::AlignHCenter);
+        d->portraitPolicy->addItem(d->signInButton, row, 0, 1, 2, Qt::AlignHCenter);
         row++;
     }
     if (model()->cancelButtonVisible()) {
-        d->portraitPolicy->addItem(d->cancelButton,row,0,1,2,Qt::AlignHCenter);
+        d->portraitPolicy->addItem(d->cancelButton, row, 0, 1, 2, Qt::AlignHCenter);
         row++;
     }
     if (model()->nextButtonVisible()) {
-        d->portraitPolicy->addItem(d->nextButton,row,0,1,2,Qt::AlignHCenter);
+        d->portraitPolicy->addItem(d->nextButton, row, 0, 1, 2, Qt::AlignHCenter);
         row++;
     }
-    startPRow = row;
+    portraitRow = row;
 
-    row = startLRow;
+    row = landscapeRow;
     //landscape mode
     if (model()->signInButtonVisible()) {
-        d->landscapePolicy->addItem(d->signInButton,row,0,1,2,Qt::AlignHCenter);
+        d->landscapePolicy->addItem(d->signInButton, row, 0, 1, 2, Qt::AlignHCenter);
         row++;
     }
     if (model()->cancelButtonVisible()) {
-        d->landscapePolicy->addItem(d->cancelButton,row,0,1,2,Qt::AlignHCenter);
+        d->landscapePolicy->addItem(d->cancelButton, row, 0, 1, 2, Qt::AlignHCenter);
         row++;
     }
     if (model()->nextButtonVisible()) {
-        d->landscapePolicy->addItem(d->nextButton,row,0,1,2,Qt::AlignHCenter);
+        d->landscapePolicy->addItem(d->nextButton, row, 0, 1, 2, Qt::AlignHCenter);
         row++;
     }
-    startLRow = row;
+    landscapeRow = row;
 }
 
-void CredentialWidgetView::configureWithInfoLabel(int &startPRow, int &startLRow)
+void CredentialWidgetView::configureWithInfoLabel(int &portraitRow, int &landscapeRow)
 {
     Q_D(CredentialWidgetView);
 
-    int row = startPRow;
+    int row = portraitRow;
     //portrait mode
-    d->portraitPolicy->addItem(d->informativeNoteLabel,row,0);
+    d->portraitPolicy->addItem(d->informativeNoteLabel, row, 0);
     row++;
-    startPRow = row;
+    portraitRow = row;
 
-    row = startLRow;
+    row = landscapeRow;
     //landscape mode
-    d->landscapePolicy->addItem(d->informativeNoteLabel,row,0,1,2);
-    d->landscapePolicy->setRowAlignment(row,Qt::AlignHCenter);
+    d->landscapePolicy->addItem(d->informativeNoteLabel, row, 0, 1, 2);
+    d->landscapePolicy->setRowAlignment(row, Qt::AlignHCenter);
     row++;
-    startLRow = row;
+    landscapeRow = row;
 }
 
 void CredentialWidgetView::updateMainLayout()
@@ -838,11 +838,11 @@ void CredentialWidgetView::updateMainLayout()
         configureWithCaptcha(portraitRow, landscapeRow);
     configureWithButtons(portraitRow, landscapeRow);
 
-    d->landscapePolicy->setColumnStretchFactor(0,1);
-    d->landscapePolicy->setColumnStretchFactor(1,1);
+    d->landscapePolicy->setColumnStretchFactor(0, 1);
+    d->landscapePolicy->setColumnStretchFactor(1, 1);
 
-    d->portraitPolicy->setColumnStretchFactor(0,99);
-    d->portraitPolicy->setColumnStretchFactor(1,1);
+    d->portraitPolicy->setColumnStretchFactor(0, 99);
+    d->portraitPolicy->setColumnStretchFactor(1, 1);
 
     d->mainLayout->setPortraitPolicy(d->portraitPolicy);
 
