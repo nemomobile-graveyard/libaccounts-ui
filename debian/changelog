@@ -1,3 +1,9 @@
+libaccounts-ui (0.126-1) unstable; urgency=low
+
+  * Fixes: NB#249311 - Password verification dialog contents are not as specified
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Fri, 29 Apr 2011 13:57:49 +0300
+
 libaccounts-ui (0.125-1) unstable; urgency=low
 
   * Fixes: NB#250369 - Plugins crash on configuring multi service accounts
