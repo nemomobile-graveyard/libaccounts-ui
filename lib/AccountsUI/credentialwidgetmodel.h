@@ -48,6 +48,18 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     M_MODEL_PROPERTY(bool, usernameEditable, UsernameEditable, true, true)
 
     /*!
+        \property CredentialWidgetModel::ServiceIcon
+        \brief .
+    */
+    M_MODEL_PROPERTY(QString, serviceIcon, ServiceIcon, true, QString())
+
+    /*!
+        \property CredentialWidgetModel::ConfirmPassword
+        \brief .
+    */
+    M_MODEL_PROPERTY(bool, confirmPassword, ConfirmPassword, true, false)
+
+    /*!
         \property CredentialWidgetModel::Password
         \brief .
     */

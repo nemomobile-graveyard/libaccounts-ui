@@ -77,10 +77,10 @@ private Q_SLOTS:
     void passwordTextEditGainedFocus();
 
 private:
-    void configureWithCaptchaAndLogin();
-    void configureWithCaptcha();
-    void configureWithLogin();
-    void configureWithButtonsOnly();
+    void configureWithCaptcha(int &startPRow, int &startLRow);
+    void configureWithLogin(int &startPRow, int &startLRow);
+    void configureWithButtons(int &startPRow, int &startLRow);
+    void configureWithInfoLabel(int &startPRow, int &startLRow);
 
 protected:
     virtual void setupModel();
