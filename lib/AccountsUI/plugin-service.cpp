@@ -30,8 +30,8 @@ void PluginService::launch()
     MApplicationService::launch();
     MBanner *banner = new MBanner();
     banner->setStyleName("InformationBanner");
-    if (!d->providerName.isEmpty())
-        banner->setTitle(qtTrId("qtn_acc_view_update_failed_infobanner").arg(d->providerName));
+    if (!d->displayName.isEmpty())
+        banner->setTitle(qtTrId("qtn_acc_view_update_failed_infobanner").arg(d->displayName));
     banner->appear(window, MSceneWindow::DestroyWhenDone);
 }
 
