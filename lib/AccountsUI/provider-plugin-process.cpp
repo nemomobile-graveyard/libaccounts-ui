@@ -259,11 +259,12 @@ const LastPageActions &ProviderPluginProcess::lastPageActions() const
     return d->lastPageActions;
 }
 
-const QString& ProviderPluginProcess::translatedProviderName() const
+QString& ProviderPluginProcess::translatedProviderName()
 {
-    Q_D(const ProviderPluginProcess);
+    Q_D(ProviderPluginProcess);
     QString providerName(d->account->providerName());
     QString providerIconId;
+
     Accounts::Provider *provider =
             AccountsManager::instance()->provider(providerName);
     if (provider) {
@@ -275,8 +276,8 @@ const QString& ProviderPluginProcess::translatedProviderName() const
             MLocale::setDefault(locale);
         }
     }
-
-    return qtTrId(provider->displayName().toLatin1());
+    d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
+    return d->translatedProviderName;
 }
 
 } // namespace
