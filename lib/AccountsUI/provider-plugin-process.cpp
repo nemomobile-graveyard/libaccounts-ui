@@ -260,13 +260,17 @@ const LastPageActions &ProviderPluginProcess::lastPageActions() const
 }
 
 QString ProviderPluginProcess::translatedProviderName() const
-{
+{       
     Q_D(const ProviderPluginProcess);
+
+    if (!(d->translatedProviderName .isEmpty()))
+        return d->translatedProviderName;
+
     QString providerName(d->account->providerName());
     QString providerIconId;
-
     Accounts::Provider *provider =
             AccountsManager::instance()->provider(providerName);
+
     if (provider) {
         providerIconId = provider->iconName();
         QString catalog = provider->trCatalog();
@@ -276,8 +280,9 @@ QString ProviderPluginProcess::translatedProviderName() const
             MLocale::setDefault(locale);
         }
     }
-    d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
 
+    d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
+    if (!(d->translatedProviderName .isEmpty()))
         return d->translatedProviderName;
 }
 
