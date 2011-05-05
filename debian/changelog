@@ -1,3 +1,10 @@
+libaccounts-ui (0.127-1) unstable; urgency=low
+
+  * Fixes  NB#237990 - Mail: Incorrect abbreviated trademark mfe in
+    §qtn_acc_view_update_failed_infobanner§
+
+ -- Cagri Akgul <cagri.akgul@nokia.com>  Thu, 05 May 2011 16:36:24 -0700
+
 libaccounts-ui (0.126-1) unstable; urgency=low
 
   * Fixes: NB#249311 - Password verification dialog contents are not as specified
