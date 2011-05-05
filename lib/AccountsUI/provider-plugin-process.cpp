@@ -284,6 +284,10 @@ QString ProviderPluginProcess::translatedProviderName() const
     d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
     if (!(d->translatedProviderName .isEmpty()))
         return d->translatedProviderName;
+    else if (!providerName.isEmpty())
+        return providerName;
+    else
+        return "";
 }
 
 } // namespace
