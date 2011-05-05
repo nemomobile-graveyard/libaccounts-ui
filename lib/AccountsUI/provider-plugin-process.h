@@ -117,7 +117,7 @@ public:
      */
     void setExitData(const QVariant &data);
 
-    QString& translatedProviderName();
+    QString translatedProviderName() const;
 
 public Q_SLOTS:
     /*!

@@ -160,7 +160,7 @@ private:
     bool returnToApp;
     LastPageActions lastPageActions;
     PluginService *service;
-    QString translatedProviderName;
+    mutable QString translatedProviderName;
 };
 
 } // namespace

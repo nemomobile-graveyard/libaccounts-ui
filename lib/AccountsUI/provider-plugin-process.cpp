@@ -259,9 +259,9 @@ const LastPageActions &ProviderPluginProcess::lastPageActions() const
     return d->lastPageActions;
 }
 
-QString& ProviderPluginProcess::translatedProviderName()
+QString ProviderPluginProcess::translatedProviderName() const
 {
-    Q_D(ProviderPluginProcess);
+    Q_D(const ProviderPluginProcess);
     QString providerName(d->account->providerName());
     QString providerIconId;
 
@@ -277,7 +277,8 @@ QString& ProviderPluginProcess::translatedProviderName()
         }
     }
     d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
-    return d->translatedProviderName;
+
+        return d->translatedProviderName;
 }
 
 } // namespace

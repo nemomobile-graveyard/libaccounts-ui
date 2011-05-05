@@ -30,7 +30,7 @@ void PluginService::launch()
     MApplicationService::launch();
     MBanner *banner = new MBanner();
     banner->setStyleName("InformationBanner");
-    QString translatedProviderName = AccountsUI::ProviderPluginProcess::instance()->translatedProviderName();
+    QString translatedProviderName( AccountsUI::ProviderPluginProcess::instance()->translatedProviderName());
     QString bannerTitle = qtTrId("qtn_acc_view_update_failed_infobanner").arg(translatedProviderName);
     banner->setTitle(bannerTitle);
     banner->appear(window, MSceneWindow::DestroyWhenDone);
