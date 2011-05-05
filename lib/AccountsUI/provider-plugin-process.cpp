@@ -25,9 +25,11 @@
 #include "account-settings-page.h"
 #include "generic-account-setup-context.h"
 #include "provider-plugin-process-priv.h"
+#include "accountsmanagersingleton.h"
 
 #include <Accounts/Account>
 #include <Accounts/Manager>
+#include <Accounts/Provider>
 #include <MComponentCache>
 #include <MApplication>
 #include <MApplicationWindow>
@@ -255,6 +257,26 @@ const LastPageActions &ProviderPluginProcess::lastPageActions() const
 {
     Q_D(const ProviderPluginProcess);
     return d->lastPageActions;
+}
+
+const QString& ProviderPluginProcess::translatedProviderName() const
+{
+    Q_D(const ProviderPluginProcess);
+    QString providerName(d->account->providerName());
+    QString providerIconId;
+    Accounts::Provider *provider =
+            AccountsManager::instance()->provider(providerName);
+    if (provider) {
+        providerIconId = provider->iconName();
+        QString catalog = provider->trCatalog();
+        MLocale locale;
+        if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
+            locale.installTrCatalog(catalog);
+            MLocale::setDefault(locale);
+        }
+    }
+
+    return qtTrId(provider->displayName().toLatin1());
 }
 
 } // namespace

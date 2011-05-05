@@ -117,6 +117,8 @@ public:
      */
     void setExitData(const QVariant &data);
 
+    const QString& translatedProviderName() const;
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.
