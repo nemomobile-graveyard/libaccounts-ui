@@ -29,7 +29,7 @@
 
 #include <Accounts/Account>
 #include <Accounts/Manager>
-#include <Accounts/Provider>
+
 #include <MComponentCache>
 #include <MApplication>
 #include <MApplicationWindow>
