@@ -1,4 +1,5 @@
 #include "plugin-service.h"
+#include "provider-plugin-process.h"
 
 #include <MBanner>
 #include <MApplication>
@@ -25,13 +26,13 @@ PluginService::~PluginService()
 
 void PluginService::launch()
 {
-    Q_D(PluginService);
     MApplicationWindow *window = MApplication::instance()->activeApplicationWindow();
     MApplicationService::launch();
     MBanner *banner = new MBanner();
     banner->setStyleName("InformationBanner");
-    if (!d->providerName.isEmpty())
-        banner->setTitle(qtTrId("qtn_acc_view_update_failed_infobanner").arg(d->providerName));
+    QString translatedProviderName( AccountsUI::ProviderPluginProcess::instance()->translatedProviderName());
+    QString bannerTitle = qtTrId("qtn_acc_view_update_failed_infobanner").arg(translatedProviderName);
+    banner->setTitle(bannerTitle);
     banner->appear(window, MSceneWindow::DestroyWhenDone);
 }
 
