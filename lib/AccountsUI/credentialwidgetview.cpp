@@ -259,6 +259,7 @@ CredentialWidgetView::CredentialWidgetView(CredentialWidget *controller)
     : MWidgetView(controller),
       d_ptr(new CredentialWidgetViewPrivate(controller))
 {
+    connect(this, SIGNAL(enterCredentialsDone()), controller, SIGNAL(doSignIn()));
 }
 
 CredentialWidgetView::~CredentialWidgetView()
@@ -298,6 +299,7 @@ void CredentialWidgetView::closeVKB()
     MInputMethodState::closeSoftwareInputPanel();
     QGraphicsItem *passwordItem = static_cast<QGraphicsItem *>(d->passwordTextEdit);
     passwordItem->clearFocus();
+    emit enterCredentialsDone();
 }
 
 void CredentialWidgetView::passwordTextEditSetFocus()

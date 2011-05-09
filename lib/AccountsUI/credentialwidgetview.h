@@ -90,6 +90,8 @@ public:
     void setFocusOnUserNameField();
     void setFocusOnPasswordField();
 
+signals:
+    void enterCredentialsDone();
 protected:
     CredentialWidgetViewPrivate *d_ptr;
     Q_DISABLE_COPY(CredentialWidgetView);
