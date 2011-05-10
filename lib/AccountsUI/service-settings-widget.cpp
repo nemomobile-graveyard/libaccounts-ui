@@ -43,7 +43,7 @@
 namespace AccountsUI {
 
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
-        : MBasicListItem(MBasicListItem, parent)
+        : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
     setStyleName("CommonLargePanel");
     setObjectName("wgServiceSettingsWidgetListItem");
