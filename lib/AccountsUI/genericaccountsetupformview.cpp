@@ -413,6 +413,7 @@ void GenericAccountSetupFormView::updateData(const QList<const char*> &modificat
                                   .arg(errorStr).toAscii());
             }
             d->createUiFromXml(providerAccountDocument);
+            connect(d->credentialWidget, SIGNAL(doSignIn()), this, SLOT(signIn()));
         } else if (!qstrcmp(member, "credentialWidgetEnabled")) {
             if (model()->credentialWidgetEnabled()) {
                 d->showCredentialWidgetAndHideProgress();

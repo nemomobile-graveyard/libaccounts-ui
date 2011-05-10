@@ -73,6 +73,9 @@ protected:
      */
     virtual void showEvent(QShowEvent *event);
 
+signals:
+    void doSignIn();
+
 private:
     Q_DISABLE_COPY(CredentialWidget);
 };
