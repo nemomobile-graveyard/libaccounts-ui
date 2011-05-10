@@ -69,3 +69,9 @@ MWidgetController#CredentialWidget MButtonStyle#CommonSingleButtonInverted {
 margin-top: $MARGIN_XXLARGE;
 }
 
+MWidget MButtonStyle#CommonLeftSwitchInverted {
+margin-top: 17;
+margin-bottom: 17;
+}
+
+

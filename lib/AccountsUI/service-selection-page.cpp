@@ -130,16 +130,19 @@ void ServiceSelectionPage::createContent()
     MLayout *layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
     layoutPolicy->setSpacing(0);
+    layoutPolicy->setContentsMargins(0,0,0,0);
 
     if (d->context) {
         MWidget *upperWidget = new MWidget(this);
         MLayout *upperLayout = new MLayout(upperWidget);
         MLinearLayoutPolicy *upperLayoutPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
         upperLayoutPolicy->setSpacing(0);
+        upperLayoutPolicy->setContentsMargins(0,0,0,0);
 
         MLayout *topLayout = new MLayout();
         MLinearLayoutPolicy *topLayoutPolicy = new MLinearLayoutPolicy(topLayout, Qt::Vertical);
         topLayoutPolicy->setSpacing(0);
+        topLayoutPolicy->setContentsMargins(0,0,0,0);
 
         QString providerName(d->context->account()->providerName());
         // xml file that describes the ui elements for the provider
@@ -157,7 +160,7 @@ void ServiceSelectionPage::createContent()
             QDomElement root = provider->domDocument().documentElement();
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
-
+        // TO DO  : replace BasicHeaderWidget with MControllerWidget
             BasicHeaderWidget *providerInfoItem = new BasicHeaderWidget(this);
             providerInfoItem->setImage(providerIconId);
             providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
@@ -194,6 +197,7 @@ void ServiceSelectionPage::createContent()
     MLayout *serviceSettingLayout = new MLayout(serviceWidget);
     d->layoutServicePolicy = new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
     d->layoutServicePolicy->setSpacing(0);
+    d->layoutServicePolicy->setContentsMargins(0,0,0,0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         //ServiceSettingsWidget sets the display widget of the changing settings

@@ -43,7 +43,7 @@
 namespace AccountsUI {
 
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
-        : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
+        : MBasicListItem(MBasicListItem, parent)
 {
     setStyleName("CommonLargePanel");
     setObjectName("wgServiceSettingsWidgetListItem");
@@ -65,16 +65,16 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
     // Add an empty item to push the subtitle up
-    titleSubtitleLayoutPolicy->addItem(new QGraphicsWidget());
+    titleSubtitleLayoutPolicy->addStretch();
 
     horizontalLayoutPolicy->addItem(titleSubtitleLayout, Qt::AlignLeft | Qt::AlignCenter);
 
-    MImageWidget *image = imageWidget();
-    image->setImage("icon-m-common-drilldown-arrow-inverse");
-    image->setStyleName("CommonDrillDownIcon");
-    image->setObjectName("wgServiceSettingsWidgetDrillDownIcon");
-    image->setVisible(false);
-    horizontalLayoutPolicy->addItem(image, Qt::AlignCenter);
+//    MImageWidget *image = imageWidget();
+//    image->setImage("icon-m-common-drilldown-arrow-inverse");
+//    image->setStyleName("CommonDrillDownIcon");
+//    image->setObjectName("wgServiceSettingsWidgetDrillDownIcon");
+//    image->setVisible(false);
+//    horizontalLayoutPolicy->addItem(image, Qt::AlignCenter);
 }
 
 ServiceSettingsWidgetListItem::~ServiceSettingsWidgetListItem()
@@ -167,7 +167,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
+            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignTop);
             containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
 
             mainPolicy->addItem(upperWidget);
