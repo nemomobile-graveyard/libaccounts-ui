@@ -1,3 +1,9 @@
+libaccounts-ui (0.127-1) unstable; urgency=low
+
+  * Fixes: NB#235987 - Using 'enter' key in VKB as Sign-in button in Login view.
+
+ -- Simjees Abraham <simjees.abraham@nokia.com>  Tue, 10 May 2011 10:45:50 +0530
+
 libaccounts-ui (0.126-1) unstable; urgency=low
 
   * Fixes: NB#249311 - Password verification dialog contents are not as specified
