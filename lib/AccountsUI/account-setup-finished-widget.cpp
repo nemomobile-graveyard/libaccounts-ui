@@ -146,9 +146,9 @@ AccountSetupFinishedWidget::AccountSetupFinishedWidget(const QString &providerNa
             AccountsUI::ProviderPluginProcess::instance()->lastPageActions();
     const AccountsUI::LastPageActions::ServiceActionList actions =
             lastPageActions.serviceActions();
-    foreach (AccountsUI::LastPageActions::ServiceAction action, actions) {
-        MButton *button = new MButton(qtTrId("qtn_comm_go_to_x").
-                                      arg(action.title()));
+    if (!actions.isEmpty()) {
+        AccountsUI::LastPageActions::ServiceAction action = actions.at(0);
+        MButton *button = new MButton(qtTrId("qtn_comm_command_continue"));
         button->setProperty("serviceName", action.serviceName());
         connect(button, SIGNAL(clicked()), this, SLOT(actionButtonClicked()));
         button->setStyleName("CommonSingleButtonInverted");
