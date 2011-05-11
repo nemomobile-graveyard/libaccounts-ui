@@ -2,7 +2,7 @@ libaccounts-ui (0.128-1) unstable; urgency=low
 
   * Fixes: NB#246684 - Button Go to share in Facebook installed view is wrong
 
- -- Simjees Abraham <simjees.abraham@nokia.com>  Wed, 11 May 2011 14:23:08 +0530
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Wed, 11 May 2011 14:23:08 +0530
 
 libaccounts-ui (0.127-1) unstable; urgency=low
 
