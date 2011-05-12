@@ -167,17 +167,22 @@ void ServiceSelectionPage::createContent()
 
 
             // account connected message
+            QString accountConnectedMessageId;
             QDomElement accountConnectedMessage= root.firstChildElement("account-connected-message");
             if (!accountConnectedMessage.isNull()) {
                 // display a account connected message for provider
-                QString accountConnectedMessageId=
+                accountConnectedMessageId =
                         qtTrId((accountConnectedMessage.text()).toLatin1()).arg(qtTrId("qtn_comm_product_n9"));
-                MLabel *accountConnectedMessageLabel=
-                        new MLabel(accountConnectedMessageId);
-                accountConnectedMessageLabel->setWordWrap(1);
-		accountConnectedMessageLabel->setStyleName("CommonBodyTextInverted");
-                topLayoutPolicy->addItem(accountConnectedMessageLabel, Qt::AlignLeft | Qt::AlignVCenter);
             }
+            else {
+                // default message for service selection.
+                accountConnectedMessageId = qtTrId("qtn_acc_enable_services_in_apps");
+            }
+            MLabel *accountConnectedMessageLabel=
+                    new MLabel(accountConnectedMessageId);
+            accountConnectedMessageLabel->setWordWrap(1);
+            accountConnectedMessageLabel->setStyleName("CommonBodyTextInverted");
+            topLayoutPolicy->addItem(accountConnectedMessageLabel, Qt::AlignLeft | Qt::AlignVCenter);
         }
 
         MSeparator *separatorTop = new MSeparator(this);
