@@ -1,3 +1,9 @@
+libaccounts-ui (0.130-1) unstable; urgency=low
+
+  * Fixes: NB#251845 - Facebook service selection view (when setting up account), texts are not shown properly and layout needs tuning 
+
+ -- K Prasanna Kumar <k-prasanna.kumar@nokia.com>  Tue, 17 May 2011 14:28:44 +0530
+
 libaccounts-ui (0.129-1) unstable; urgency=low
 
   * Fixes: NB#216995 - Service selection view is missing a label.
