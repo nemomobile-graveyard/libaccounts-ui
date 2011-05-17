@@ -64,10 +64,12 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
     subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
-    // Add an empty item to push the subtitle up
-    titleSubtitleLayoutPolicy->addItem(new QGraphicsWidget());
 
     horizontalLayoutPolicy->addItem(titleSubtitleLayout, Qt::AlignLeft | Qt::AlignCenter);
+
+    subtitleLabelWidget()->setWordWrap(true);
+    subtitleLabelWidget()->setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    subtitleLabelWidget()->setTextElide(false);
 
     MImageWidget *image = imageWidget();
     image->setImage("icon-m-common-drilldown-arrow-inverse");
@@ -83,15 +85,12 @@ ServiceSettingsWidgetListItem::~ServiceSettingsWidgetListItem()
 
 QGraphicsLayout *ServiceSettingsWidgetListItem::createLayout()
 {
-    subtitleLabelWidget()->setWordWrap(true);
-    subtitleLabelWidget()->setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-    subtitleLabelWidget()->setTextElide(false);
-    return MBasicListItem::createLayout();
+    return horizontalLayout;
 }
 
 void ServiceSettingsWidgetListItem::showDrillDownButton()
 {
-    setStyleName("CommonPanelInverted");
+    setStyleName("CommonLargePanelInverted");
     imageWidget()->setVisible(true);
 }
 
@@ -167,8 +166,8 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignVCenter);
-            containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignVCenter);
+            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignCenter);
+            containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignTop);
 
             mainPolicy->addItem(upperWidget);
         }
