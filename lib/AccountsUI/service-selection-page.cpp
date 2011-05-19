@@ -28,6 +28,7 @@
 #include "account-setup-finished-page.h"
 #include "provider-plugin-process.h"
 #include "basic-header-widget.h"
+#include "last-page-actions.h"
 
 //Qt
 #include <QStringListModel>
@@ -271,7 +272,8 @@ void ServiceSelectionPage::onSyncStateChanged(const SyncState &state)
             d->syncHandler->store(d->abstractContexts);
             break;
         case Stored:
-            if (d->serviceType.isEmpty()) {
+            if (ProviderPluginProcess::instance()->lastPageActions().
+                serviceActions().isEmpty()) {
                 connect(d->context->account(), SIGNAL(synced()),
                         ProviderPluginProcess::instance(), SLOT(quit()));
                 d->context->account()->sync();
