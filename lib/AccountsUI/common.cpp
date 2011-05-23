@@ -52,6 +52,9 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
     case SignOn::Error::NotAuthorized:
         //% "Wrong Credentials"
         return qtTrId("qtn_acc_auth_failed_infobanner");
+    case SignOn::Error::IncorrectDate:
+        //% Date and time are wrong"
+        return qtTrId("qtn_comm_share_incorrect_date");
     default:
         //todo - provide a generic error id
         return QLatin1String("Unknown error");
