@@ -1,3 +1,9 @@
+libaccounts-ui (0.133-1) unstable; urgency=low
+
+  * Fixes: NB#251691 - Dialog asking for password is not showing authentication errors
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Tue, 24 May 2011 12:55:20 +0530
+
 libaccounts-ui (0.132-1) unstable; urgency=low
 
   * Fixes: NB#220787 - Twitter: 'Unknown error' is displayed while configuring Twitter account when incorrect/default date and time is set on the device
