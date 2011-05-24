@@ -61,8 +61,9 @@ public:
           usernameTextEdit(0),
           keychainButton(0),
           usernameHeader(0),
-          passwordLabel(0),
           passwordTextEdit(0),
+          passwordLabel(0),
+          authFailureLabel(0),
           forgotPasswordLabel(0),
           rememberPasswordLabel(0),
           rememberPasswordSwitch(0),
@@ -84,6 +85,9 @@ public:
         landscapePolicy = new MGridLayoutPolicy(mainLayout);
         portraitPolicy->setSpacing(0);
         landscapePolicy->setSpacing(0);
+
+        passwordLayout = new MLayout(mainLayout);
+        passwordLayoutPolicy = new MLinearLayoutPolicy(passwordLayout, Qt::Horizontal);
     }
 
     ~CredentialWidgetViewPrivate()
@@ -113,8 +117,9 @@ public:
     /*
      * password specific items
      */
-    MLabel *passwordLabel;
     MTextEdit *passwordTextEdit;
+    MLabel *passwordLabel;
+    MLabel *authFailureLabel;
 
     /*
      * forgot password specific items
@@ -156,6 +161,8 @@ public:
      */
     MGridLayoutPolicy *portraitPolicy;
     MGridLayoutPolicy *landscapePolicy;
+    MLayout *passwordLayout;
+    MLinearLayoutPolicy *passwordLayoutPolicy;
 
     MDialog *keyChainDialog;
 
@@ -195,6 +202,11 @@ void CredentialWidgetViewPrivate::destroyAllWidgets()
     if (passwordLabel) {
         delete passwordLabel;
         passwordLabel = NULL;
+    }
+
+    if (authFailureLabel) {
+        delete authFailureLabel;
+        authFailureLabel = NULL;
     }
 
     if (passwordTextEdit) {
@@ -384,13 +396,23 @@ void CredentialWidgetView::recreateWidgets()
            d->usernameTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
            d->usernameTextEdit->setContentType(M::EmailContentType); // TO DO url type needs to be supported if we do OpenId
         }
-        //% "Password"
-        d->passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
-        d->passwordLabel->setStyleName("CommonFieldLabelInverted");
 
         d->passwordTextEdit = new MTextEdit();
         d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
         d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
+        //% "Password"
+        d->passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
+        d->passwordLabel->setStyleName("CommonFieldLabelInverted");
+        d->passwordLayoutPolicy->addItem(d->passwordLabel);
+
+        if (model()->authenticationFailed()) {
+            d->passwordTextEdit->setErrorHighlight(true);
+            //% "authentication failed"
+            d->authFailureLabel = new MLabel(QString(QString("(%1)").arg(qtTrId("qtn_acc_auth_failed_infobanner"))));
+            d->authFailureLabel->setStyleName("WarningLabel");
+            d->passwordLayoutPolicy->addItem(d->authFailureLabel);
+        }
+        d->passwordLayoutPolicy->addStretch();
 
         if (model()->forgotPassword().isEmpty()) {
             //% "Forgot my password"
@@ -605,6 +627,9 @@ void CredentialWidgetView::setEnabled(bool isWidgetEnabled)
     if (d->passwordLabel)
         d->passwordLabel->setEnabled(isWidgetEnabled);
 
+    if (d->authFailureLabel)
+        d->authFailureLabel->setEnabled(isWidgetEnabled);
+
     if (d->passwordTextEdit)
         d->passwordTextEdit->setEnabled(isWidgetEnabled);
 
@@ -726,7 +751,7 @@ void CredentialWidgetView::configureWithLogin(int &portraitRow, int &landscapeRo
        d->portraitPolicy->addItem(d->usernameTextEdit, row, 0, 1, 2);
        row++;
     }
-    d->portraitPolicy->addItem(d->passwordLabel, row, 0);
+    d->portraitPolicy->addItem(d->passwordLayout, row, 0, 1, 2, Qt::AlignLeft);
     d->portraitPolicy->setRowSpacing(row, 0);
     row++;
     d->portraitPolicy->addItem(d->passwordTextEdit, row, 0, 1, 2);
@@ -751,7 +776,7 @@ void CredentialWidgetView::configureWithLogin(int &portraitRow, int &landscapeRo
     row++;
     d->landscapePolicy->addItem(d->usernameTextEdit, row, 0);
     row--;
-    d->landscapePolicy->addItem(d->passwordLabel, row, 1);
+    d->landscapePolicy->addItem(d->passwordLayout, row, 1);
     row++;
     d->landscapePolicy->addItem(d->passwordTextEdit, row, 1);
     row++;
@@ -814,7 +839,7 @@ void CredentialWidgetView::configureWithInfoLabel(int &portraitRow, int &landsca
 
     int row = portraitRow;
     //portrait mode
-    d->portraitPolicy->addItem(d->informativeNoteLabel, row, 0);
+    d->portraitPolicy->addItem(d->informativeNoteLabel, row, 0, 1, 2);
     row++;
     portraitRow = row;
 

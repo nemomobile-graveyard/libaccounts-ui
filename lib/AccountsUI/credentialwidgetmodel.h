@@ -162,6 +162,12 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     */
     M_MODEL_PROPERTY(QString, informativeNoteText, InformativeNoteText, true, QString())
 
+    /*!
+        \property CredentialWidgetModel::Authentication Failed
+        \brief .
+    */
+    M_MODEL_PROPERTY(bool, authenticationFailed, AuthenticationFailed, true, false)
+
     public:
 
         enum Configuration {

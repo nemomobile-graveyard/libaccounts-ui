@@ -69,3 +69,13 @@ MWidgetController#CredentialWidget MButtonStyle#CommonSingleButtonInverted {
 margin-top: $MARGIN_XXLARGE;
 }
 
+CredentialWidget MLabelStyle#WarningLabel {
+    height:        96;
+    font:          $FONT_XSMALL_LIGHT;
+    font-size:     18;
+    color:         #DA201E;     
+    margin-top:    0.8mm;        
+    margin-bottom: 0;
+    margin-left:   $INDENT_DEFAULT;
+    margin-right:  $INDENT_DEFAULT;
+}
