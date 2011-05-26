@@ -1,3 +1,9 @@
+libaccounts-ui (0.134-1) unstable; urgency=low
+
+  * Fixes: NB#256201 - Other mail account: Email address in account settings view is truncated and overlapped with enable/disable switch at top of the view
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Thu, 26 May 2011 16:48:40 +0530
+
 libaccounts-ui (0.133-1) unstable; urgency=low
 
   * Fixes: NB#251691 - Dialog asking for password is not showing authentication errors
