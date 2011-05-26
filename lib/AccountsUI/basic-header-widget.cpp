@@ -68,8 +68,10 @@ BasicHeaderWidget::BasicHeaderWidget(QGraphicsItem *parent)
     d->image->setStyleName("CommonMainIcon");
     d->title = new MLabel();
     d->title->setStyleName("CommonTitleInverted");
+    d->title->setTextElide(true);
     d->subtitle = new MLabel();
     d->subtitle->setStyleName("CommonSubTitleInverted");
+    d->subtitle->setTextElide(true);
 
     titleLayoutPolicy->addItem(d->title);
     titleLayoutPolicy->addItem(d->subtitle);
