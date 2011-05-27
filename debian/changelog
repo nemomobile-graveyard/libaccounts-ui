@@ -1,3 +1,9 @@
+libaccounts-ui (0.135-1) unstable; urgency=low
+
+  * Fixes: NB#256186 - VKB's OK/Next button blinks in certain use cases
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 27 May 2011 09:25:21 +0300
+
 libaccounts-ui (0.134-1) unstable; urgency=low
 
   * Fixes: NB#256201 - Other mail account: Email address in account settings view is truncated and overlapped with enable/disable switch at top of the view
