@@ -53,7 +53,7 @@ public:
             : MBasicListItem(MBasicListItem::IconWithTitle, parent)
     {
         setStyleName("CommonBasicListItemInverted");
-        titleLabelWidget()->setStyleName("AccountSetupFinishedLargeHeader");
+        titleLabelWidget()->setStyleName("CommonHeaderInverted");
         setEnabled(false);
     }
 

@@ -335,7 +335,6 @@ void CredentialWidgetView::itemPickedSlot(quint32 credentialsId)
     d->keyChainDialog->done(0);
 
     d->passwordTextEdit->blockSignals(true);
-    d->passwordTextEdit->setText("*******");
     d->passwordTextEdit->blockSignals(false);
 
     d->identity = SignOn::Identity::existingIdentity(credentialsId, this);
@@ -403,7 +402,7 @@ void CredentialWidgetView::recreateWidgets()
 
         d->passwordTextEdit = new MTextEdit();
         d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
-        d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
+        d->passwordTextEdit->setEchoMode(MTextEditModel::PasswordEchoOnEdit);
         d->passwordTextEdit->setCursorPosition(0);
         d->passwordTextEdit->attachToolbar(d->registeredAttributeExtensionId);
         connect(d->passwordTextEdit, SIGNAL(returnPressed()),
