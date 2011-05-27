@@ -30,6 +30,7 @@
 #include "account-sync-handler.h"
 #include "genericaccountsetupform.h"
 #include "account-setup-finished-page.h"
+#include "last-page-actions.h"
 
 //Accounts
 #include <Accounts/Account>
@@ -225,7 +226,8 @@ void AddAccountPage::onSyncStateChanged(const SyncState &state)
             d->syncHandler->store(d->abstractContexts);
             break;
         case Stored:
-            if (d->serviceType.isEmpty()) {
+            if (ProviderPluginProcess::instance()->lastPageActions()
+			                    .serviceActions().isEmpty()) {
                 connect(d->context->account(), SIGNAL(synced()),
                         ProviderPluginProcess::instance(), SLOT(quit()));
                 d->context->account()->sync();
