@@ -1,3 +1,9 @@
+libaccounts-ui (0.137-1) unstable; urgency=low
+
+  * Fixes: NB#232168 - Password field uses * (star) characters, not • (bullet) ones
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Fri, 27 May 2011 14:55:21 +0300
+
 libaccounts-ui (0.136-1) unstable; urgency=low
 
   * Fixes: NB#258410 Bad Ux flow when setting up skype account via contacts
