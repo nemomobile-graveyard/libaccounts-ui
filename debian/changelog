@@ -1,3 +1,9 @@
+libaccounts-ui (0.136-1) unstable; urgency=low
+
+  * Fixes: NB#258410 Bad Ux flow when setting up skype account via contacts
+
+ -- Devanjan Choudhury <devanjan.choudhury@nokia.com>  Fri, 27 May 2011 14:41:17 +0530
+
 libaccounts-ui (0.135-1) unstable; urgency=low
 
   * Fixes: NB#256186 - VKB's OK/Next button blinks in certain use cases
