@@ -76,7 +76,8 @@ public:
           nextButton(0),
           cancelButton(0),
           keyChainDialog(0),
-          identity(0)
+          identity(0),
+          registeredAttributeExtensionId(0)
     {
         //layouts and policies init
         mainLayout = new MLayout(controller);
@@ -167,6 +168,7 @@ public:
     MDialog *keyChainDialog;
 
     SignOn::Identity *identity;
+    int registeredAttributeExtensionId;
 
 public:
     void destroyAllWidgets();
@@ -271,7 +273,10 @@ CredentialWidgetView::CredentialWidgetView(CredentialWidget *controller)
     : MWidgetView(controller),
       d_ptr(new CredentialWidgetViewPrivate(controller))
 {
+    Q_D(CredentialWidgetView);
     connect(this, SIGNAL(enterCredentialsDone()), controller, SIGNAL(doSignIn()));
+    d->registeredAttributeExtensionId
+            = MInputMethodState::instance()->registerAttributeExtension();
 }
 
 CredentialWidgetView::~CredentialWidgetView()
@@ -281,28 +286,23 @@ CredentialWidgetView::~CredentialWidgetView()
 void CredentialWidgetView::usernameTextEditGainedFocus()
 {
     Q_D(CredentialWidgetView);
-    static bool firstTime = true;
-    if (firstTime)
-        d->usernameTextEdit->setCursorPosition(0);
 
-    firstTime = false;
-    int id = MInputMethodState::instance()->registerAttributeExtension();
-    d->usernameTextEdit->attachToolbar(id);
-    MInputMethodState::instance()->setExtendedAttribute
-            (id, "/keys", "actionKey", "label", qtTrId("qtn_comm_next"));
-    connect(d->usernameTextEdit, SIGNAL(returnPressed()),
-            this, SLOT(passwordTextEditSetFocus()));
+    MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
+                                                        "/keys",
+                                                        "actionKey",
+                                                        "label",
+                                                        qtTrId("qtn_comm_next"));
 }
 
 void CredentialWidgetView::passwordTextEditGainedFocus()
 {
     Q_D(CredentialWidgetView);
-    int id = MInputMethodState::instance()->registerAttributeExtension();
-    d->passwordTextEdit->attachToolbar(id);
-    MInputMethodState::instance()->setExtendedAttribute(id, "/keys", "actionKey", "label",
+
+    MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
+                                                        "/keys",
+                                                        "actionKey",
+                                                        "label",
                                                         qtTrId("qtn_comm_ok"));
-    connect(d->passwordTextEdit, SIGNAL(returnPressed()),
-            this, SLOT(closeVKB()));
 }
 
 void CredentialWidgetView::closeVKB()
@@ -395,11 +395,19 @@ void CredentialWidgetView::recreateWidgets()
            d->usernameTextEdit = new MTextEdit();
            d->usernameTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
            d->usernameTextEdit->setContentType(M::EmailContentType); // TO DO url type needs to be supported if we do OpenId
+           d->usernameTextEdit->setCursorPosition(0);
+           d->usernameTextEdit->attachToolbar(d->registeredAttributeExtensionId);
+           connect(d->usernameTextEdit, SIGNAL(returnPressed()),
+                   this, SLOT(passwordTextEditSetFocus()));
         }
 
         d->passwordTextEdit = new MTextEdit();
         d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
         d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
+        d->passwordTextEdit->setCursorPosition(0);
+        d->passwordTextEdit->attachToolbar(d->registeredAttributeExtensionId);
+        connect(d->passwordTextEdit, SIGNAL(returnPressed()),
+                this, SLOT(closeVKB()));
         //% "Password"
         d->passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
         d->passwordLabel->setStyleName("CommonFieldLabelInverted");
