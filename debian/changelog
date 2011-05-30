@@ -1,3 +1,10 @@
+libaccounts-ui (0.138-1) unstable; urgency=low
+
+  * Fixes: NB#232168 - Password field uses * (star) characters, not • (bullet) ones.
+    Previous attempt to fix enabled PasswordEchoOnEdit, too, which does not comply with UI spec.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Mon, 30 May 2011 15:28:12 +0300
+
 libaccounts-ui (0.137-1) unstable; urgency=low
 
   * Fixes: NB#232168 - Password field uses * (star) characters, not • (bullet) ones
