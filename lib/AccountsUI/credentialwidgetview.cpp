@@ -402,7 +402,7 @@ void CredentialWidgetView::recreateWidgets()
 
         d->passwordTextEdit = new MTextEdit();
         d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
-        d->passwordTextEdit->setEchoMode(MTextEditModel::PasswordEchoOnEdit);
+        d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
         d->passwordTextEdit->setCursorPosition(0);
         d->passwordTextEdit->attachToolbar(d->registeredAttributeExtensionId);
         connect(d->passwordTextEdit, SIGNAL(returnPressed()),
