@@ -76,6 +76,6 @@ CredentialWidget MLabelStyle#WarningLabel {
     color:         #DA201E;     
     margin-top:    0.8mm;        
     margin-bottom: 0;
-    margin-left:   $INDENT_DEFAULT;
-    margin-right:  $INDENT_DEFAULT;
+    margin-left:   0;
+    margin-right:  0;
 }
