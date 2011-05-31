@@ -1,3 +1,9 @@
+libaccounts-ui (0.139-1) unstable; urgency=low
+
+  * Fixes: NB#235862 - [TASK] Login dialog to use Sheet component
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Tue, 31 May 2011 17:02:41 +0530
+
 libaccounts-ui (0.138-1) unstable; urgency=low
 
   * Fixes: NB#232168 - Password field uses * (star) characters, not • (bullet) ones.
