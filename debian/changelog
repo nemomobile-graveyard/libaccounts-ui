@@ -1,3 +1,9 @@
+libaccounts-ui (0.140-1) unstable; urgency=low
+
+  * Fixes: NB#262064 - Login view opens with Password field on focus
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Fri, 03 Jun 2011 16:59:22 +0530
+
 libaccounts-ui (0.139-1) unstable; urgency=low
 
   * Fixes: NB#235862 - [TASK] Login dialog to use Sheet component
