@@ -65,14 +65,6 @@ public:
     void setEnabled(bool isWidgetEnabled);
     void setInformativeNoteText(const QString &text);
 
-protected:
-    /*!
-     * \brief by receiving this notification from the Window system
-     *        controller can set the focus to the password field when the view is displayed
-     * \param show event
-     */
-    virtual void showEvent(QShowEvent *event);
-
 signals:
     void doSignIn();
 

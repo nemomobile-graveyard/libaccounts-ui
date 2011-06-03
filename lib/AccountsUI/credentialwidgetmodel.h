@@ -69,7 +69,7 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
         \property CredentialWidgetModel::FocusOnPasswordField
         \brief .
     */
-    M_MODEL_PROPERTY(bool, focusOnPasswordField, FocusOnPasswordField, true, true)
+    M_MODEL_PROPERTY(bool, focusOnPasswordField, FocusOnPasswordField, true, false)
 
     /*!
         \property CredentialWidgetModel::ForgotPassword

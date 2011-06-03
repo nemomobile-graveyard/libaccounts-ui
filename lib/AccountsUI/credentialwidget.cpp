@@ -52,12 +52,6 @@ CredentialWidget::~CredentialWidget()
 {
 }
 
-void CredentialWidget::showEvent(QShowEvent *event)
-{
-    model()->setFocusOnPasswordField(true);
-    MWidgetController::showEvent(event);
-}
-
 QString CredentialWidget::username()
 {
     Q_ASSERT(model());
