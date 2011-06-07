@@ -34,6 +34,7 @@ public:
 
 private Q_SLOTS:
     void actionButtonClicked();
+    void killPlugin();
 };
 
 #endif // ACCOUNTSETUPFINISHEDWIDGET_H

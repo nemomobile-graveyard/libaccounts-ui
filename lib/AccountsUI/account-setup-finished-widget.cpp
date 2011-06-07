@@ -45,6 +45,7 @@
 
 //Qt
 #include <QDebug>
+#include <QTimer>
 
 class AccountSetupFinishedListItem: public MBasicListItem
 {
@@ -173,6 +174,11 @@ void AccountSetupFinishedWidget::actionButtonClicked()
     QString serviceName = sender()->property("serviceName").toString();
     qDebug() << "Invoking service" << serviceName;
     AccountsUI::LastPageActions::executeService(serviceName);
+    QTimer::singleShot(200, this, SLOT(killPlugin()));
+}
+
+void AccountSetupFinishedWidget::killPlugin()
+{
     bool killCaller = true;
     QVariant data(killCaller);
     AccountsUI::ProviderPluginProcess::instance()->setExitData(data);
