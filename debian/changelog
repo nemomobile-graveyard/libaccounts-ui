@@ -1,3 +1,9 @@
+libaccounts-ui (0.141-1) unstable; urgency=low
+
+  * Fixes: NB#Bug 259501 - When setting up mfe account from email, the "service provider list" is shown for a short time when tapping "Continue" from success view although it should go to email directly
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 07 Jun 2011 14:59:21 +0300
+
 libaccounts-ui (0.140-1) unstable; urgency=low
 
   * Fixes: NB#262064 - Login view opens with Password field on focus
