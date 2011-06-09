@@ -57,7 +57,7 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
         return qtTrId("qtn_comm_share_incorrect_date");
     default:
         //todo - provide a generic error id
-        return QLatin1String("Unknown error");
+        return qtTrId("qtn_comm_general_error");
     }
 }
 
