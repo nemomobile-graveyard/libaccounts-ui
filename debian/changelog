@@ -1,3 +1,10 @@
+libaccounts-ui (0.142-1) unstable; urgency=low
+
+  * Fixes: NB#241663 - String 'Unknown error' is displayed not localized while configuring Picasa,Youtube and Facebook account when an incorrect date and time is set on 
+the device
+
+ -- Dominic Velikakath <dominic.velikakath@nokia.com>  Thu, 09 Jun 2011 11:10:55 +0530
+
 libaccounts-ui (0.141-1) unstable; urgency=low
 
   * Fixes: NB#Bug 259501 - When setting up mfe account from email, the "service provider list" is shown for a short time when tapping "Continue" from success view although it should go to email directly
