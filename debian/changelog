@@ -1,3 +1,9 @@
+libaccounts-ui (0.143-1) unstable; urgency=low
+
+  * Addresses: NB#176838 - While configuring Accounts,Service providers list/Login View flashed for a second
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 21 Jun 2011 10:13:34 +0300
+
 libaccounts-ui (0.142-1) unstable; urgency=low
 
   * Fixes: NB#241663 - String 'Unknown error' is displayed not localized while configuring Picasa,Youtube and Facebook account when an incorrect date and time is set on the device
