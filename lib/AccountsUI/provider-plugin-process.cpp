@@ -38,7 +38,7 @@
 #include <QFile>
 #include <QLocalSocket>
 #include <QProcess>
-
+#include <QTimer>
 namespace AccountsUI {
 
 static ProviderPluginProcess *plugin_instance = 0;
@@ -217,8 +217,7 @@ int ProviderPluginProcess::exec()
 void ProviderPluginProcess::quit()
 {
     Q_D(ProviderPluginProcess);
-
-    d->wrapped->quit();
+    QTimer::singleShot(200, d->wrapped, SLOT(quit()));
 }
 
 AbstractAccountSetupContext *ProviderPluginProcess::setupContext() const
