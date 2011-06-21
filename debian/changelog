@@ -1,3 +1,9 @@
+libaccounts-ui (0.143-2) unstable; urgency=low
+
+  * Fixing the delay
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 21 Jun 2011 15:56:59 +0300
+
 libaccounts-ui (0.143-1) unstable; urgency=low
 
   * Addresses: NB#176838 - While configuring Accounts,Service providers list/Login View flashed for a second
