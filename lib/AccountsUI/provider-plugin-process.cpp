@@ -217,7 +217,7 @@ int ProviderPluginProcess::exec()
 void ProviderPluginProcess::quit()
 {
     Q_D(ProviderPluginProcess);
-    QTimer::singleShot(200, d->wrapped, SLOT(quit()));
+    QTimer::singleShot(500, d->wrapped, SLOT(quit()));
 }
 
 AbstractAccountSetupContext *ProviderPluginProcess::setupContext() const
