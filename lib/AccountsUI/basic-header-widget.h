@@ -28,6 +28,11 @@
 
 namespace AccountsUI {
 
+enum BasicHeaderWidgetType {
+    TitleAndSubtitle,
+    IconWithTitleAndSubTitle
+};
+
 class BasicHeaderWidgetPrivate;
 
 class BasicHeaderWidget : public MWidgetController
@@ -35,7 +40,7 @@ class BasicHeaderWidget : public MWidgetController
     Q_OBJECT
 
 public:
-    BasicHeaderWidget(QGraphicsItem *parent = 0);
+    BasicHeaderWidget(BasicHeaderWidgetType type, QGraphicsItem *parent = 0);
     void setTitle(const QString &titleText);
     void setSubtitle(const QString &subtitleText);
     void setImage(const QString &imageId);

@@ -355,7 +355,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
         }
     }
 
-    BasicHeaderWidget *usernameAndStatus = new BasicHeaderWidget(this);
+    BasicHeaderWidget *usernameAndStatus = new BasicHeaderWidget(IconWithTitleAndSubTitle, this);
     usernameAndStatus->setImage(providerIconId);
     usernameAndStatus->setTitle(qtTrId(provider->displayName().toLatin1()));
     usernameAndStatus->setSubtitle(d->account->displayName());

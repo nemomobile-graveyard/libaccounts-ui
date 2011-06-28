@@ -392,7 +392,7 @@ void CredentialWidgetView::recreateWidgets()
 
         if (model()->confirmPassword()) {
 
-            d->usernameHeader = new AccountsUI::BasicHeaderWidget();
+            d->usernameHeader = new AccountsUI::BasicHeaderWidget(AccountsUI::IconWithTitleAndSubTitle);
             //Add icon here
             if (!model()->serviceIcon().isEmpty()) {
                d->usernameHeader->setImage(model()->serviceIcon());
