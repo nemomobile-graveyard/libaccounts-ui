@@ -58,7 +58,8 @@ public:
         wrapped(0),
         plugin(plugin),
         m_context(0),
-        returnToApp(false)
+        returnToApp(false),
+        accountSetupCompleted(false)
     {
         application = MComponentCache::mApplication(argc, argv);
         window = MComponentCache::mApplicationWindow();
@@ -72,7 +73,8 @@ public:
 
     ProviderPluginProcessPrivate(int &argc, char **argv):
         wrapped(0),
-        m_context(0)
+        m_context(0),
+        accountSetupCompleted(0)
     {
         service = new PluginService();
         application = MComponentCache::mApplication(argc, argv, QString(), service);
@@ -155,6 +157,7 @@ private:
     LastPageActions lastPageActions;
     PluginService *service;
     mutable QString translatedProviderName;
+    bool accountSetupCompleted;
 };
 
 } // namespace

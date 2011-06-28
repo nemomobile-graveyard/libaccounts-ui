@@ -30,6 +30,7 @@
 #include "accountsmanagersingleton.h"
 #include "last-page-actions.h"
 #include "provider-plugin-process.h"
+#include "provider-plugin-proxy.h"
 
 #include <MLayout>
 #include <MLinearLayoutPolicy>
@@ -137,8 +138,7 @@ AccountSetupFinishedWidget::AccountSetupFinishedWidget(const QString &providerNa
     //% "Add more account"
     MButton *addMoreAccountButton = new MButton(qtTrId("qtn_acc_add_more_accounts"));
     addMoreAccountButton->setStyleName("CommonSingleButtonInverted");
-    connect(addMoreAccountButton, SIGNAL(clicked()),
-             AccountsUI::ProviderPluginProcess::instance(), SLOT(quit()));
+    connect(addMoreAccountButton, SIGNAL(clicked()), this, SLOT(onAddMoreAccounts()));
     MLayout *buttonsLayout = new MLayout();
     MLinearLayoutPolicy *portraitPolicy = new MLinearLayoutPolicy(buttonsLayout, Qt::Vertical);
     MLinearLayoutPolicy *landscapePolicy = new MLinearLayoutPolicy(buttonsLayout, Qt::Horizontal);
@@ -179,8 +179,14 @@ void AccountSetupFinishedWidget::actionButtonClicked()
 
 void AccountSetupFinishedWidget::killPlugin()
 {
-    bool killCaller = true;
-    QVariant data(killCaller);
+    QVariant data(AccountsUI::ProviderPluginProxy::EXIT_ACCOUNTS_UI);
+    AccountsUI::ProviderPluginProcess::instance()->setExitData(data);
+    AccountsUI::ProviderPluginProcess::instance()->quit();
+}
+
+void AccountSetupFinishedWidget::onAddMoreAccounts()
+{
+    QVariant data(AccountsUI::ProviderPluginProxy::RETURN_TO_PROVIDERS_PAGE);
     AccountsUI::ProviderPluginProcess::instance()->setExitData(data);
     AccountsUI::ProviderPluginProcess::instance()->quit();
 }

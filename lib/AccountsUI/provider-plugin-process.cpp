@@ -258,6 +258,18 @@ const LastPageActions &ProviderPluginProcess::lastPageActions() const
     return d->lastPageActions;
 }
 
+bool ProviderPluginProcess::isSetupComplete()
+{
+    Q_D(const ProviderPluginProcess);
+    return d->accountSetupCompleted;
+}
+
+void ProviderPluginProcess::setSetupComplete(bool value)
+{
+    Q_D(ProviderPluginProcess);
+    d->accountSetupCompleted = value;
+}
+
 QString ProviderPluginProcess::translatedProviderName() const
 {
     Q_D(const ProviderPluginProcess);

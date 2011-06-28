@@ -117,6 +117,16 @@ public:
      */
     void setExitData(const QVariant &data);
 
+    /*!
+     * Get if account setup completed
+     */
+    bool isSetupComplete();
+
+    /*!
+     * sets account setup completed.
+     */
+    void setSetupComplete(bool value);
+
     QString translatedProviderName() const;
 
 public Q_SLOTS:
