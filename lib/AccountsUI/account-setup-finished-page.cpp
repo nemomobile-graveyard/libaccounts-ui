@@ -55,6 +55,7 @@ AccountSetupFinishedPage::AccountSetupFinishedPage(AbstractAccountSetupContext *
     setObjectName("wgAccountSetupFinishedPage");
     setStyleName("AccountsUiPage");
     pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
+    AccountsUI::ProviderPluginProcess::instance()->setSetupComplete(true);
 }
 
 AccountSetupFinishedPage::~AccountSetupFinishedPage()

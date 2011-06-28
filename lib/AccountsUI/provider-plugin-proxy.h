@@ -115,6 +115,15 @@ public:
      */
     QVariant exitData();
 
+    /*!
+     * Plugin exit data values
+     */
+    enum PluginExitData {
+        RETURN_TO_PROVIDERS_PAGE = 0,
+        RETURN_TO_ACCOUNTS_PAGE,
+        EXIT_ACCOUNTS_UI
+    };
+
 public Q_SLOTS:
     /*!
      * Stops the plugin process.
