@@ -1,6 +1,7 @@
 libaccounts-ui (0.144-1) unstable; urgency=low
 
   * UNRELEASED
+  * Fixes: NB#247269 - Accounts main page is not opened on top of Success view
   * Fixes: NB#249040 - Switch labels should not highlight text on press
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 28 Jun 2011 12:16:21 +0300
