@@ -49,7 +49,7 @@ public:
     MLabel *subtitle;
 };
 
-BasicHeaderWidget::BasicHeaderWidget(QGraphicsItem *parent)
+BasicHeaderWidget::BasicHeaderWidget(BasicHeaderWidgetType type, QGraphicsItem *parent)
         :MWidgetController(parent),
         d_ptr(new BasicHeaderWidgetPrivate())
 {
@@ -64,21 +64,26 @@ BasicHeaderWidget::BasicHeaderWidget(QGraphicsItem *parent)
     MLayout *titleLayout = new MLayout();
     MLinearLayoutPolicy *titleLayoutPolicy = new MLinearLayoutPolicy(titleLayout, Qt::Vertical);
 
-    d->image = new MImageWidget();
-    d->image->setStyleName("CommonMainIcon");
     d->title = new MLabel();
     d->title->setStyleName("CommonTitleInverted");
     d->title->setTextElide(true);
     d->subtitle = new MLabel();
     d->subtitle->setStyleName("CommonSubTitleInverted");
-    d->subtitle->setTextElide(true);
+    d->subtitle->setWordWrap(true);
+    d->subtitle->setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    d->subtitle->setTextElide(false);
 
     titleLayoutPolicy->addItem(d->title);
     titleLayoutPolicy->addItem(d->subtitle);
     // Add an empty item to push the subtitle up
     titleLayoutPolicy->addItem(new QGraphicsWidget());
 
-    mainLayoutPolicy->addItem(d->image);
+    if (type == IconWithTitleAndSubTitle) {
+        d->image = new MImageWidget();
+        d->image->setStyleName("CommonMainIcon");
+        mainLayoutPolicy->addItem(d->image);
+    }
+
     mainLayoutPolicy->addItem(titleLayout);
 
     setLayout(mainLayout);

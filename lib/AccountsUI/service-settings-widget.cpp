@@ -25,6 +25,7 @@
 #include "abstract-service-setup-context.h"
 #include "settings-page.h"
 #include "service-helper.h"
+#include "basic-header-widget.h"
 
 //M
 #include <MBasicListItem>
@@ -136,8 +137,8 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     MLinearLayoutPolicy *containerMainPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
-
-    ServiceSettingsWidgetListItem *serviceInfo = 0;
+    ServiceSettingsWidgetListItem *serviceInfoList = 0;
+    BasicHeaderWidget *serviceInfoLayout = 0;
 
     if (settingsConf & EnableButton) {
         if (context) {
@@ -149,9 +150,6 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
 
             ServiceHelper *serviceHelper =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
-
-            serviceInfo = new ServiceSettingsWidgetListItem();
-            serviceInfo->setTitle(serviceHelper->prettyName());
             QString subTitle = serviceHelper->description();
 
             if (settingsConf != (MandatorySettings | EnableButton)) {
@@ -159,7 +157,20 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                     subTitle = serviceHelper->shortDescription();
             }
 
-            serviceInfo->setSubtitle(subTitle);
+            MWidget *widget = context->widget(0);
+            MWidget *serviceInfo = 0;
+            if (widget) {
+                serviceInfoList = new ServiceSettingsWidgetListItem();
+                serviceInfoList->setTitle(serviceHelper->prettyName());
+                serviceInfoList->setSubtitle(subTitle);
+                serviceInfo = serviceInfoList;
+            } else {
+                serviceInfoLayout = new BasicHeaderWidget(TitleAndSubtitle, this);
+                serviceInfoLayout->setTitle(serviceHelper->prettyName());
+                serviceInfoLayout->setSubtitle(subTitle);
+                serviceInfo = serviceInfoLayout;
+            }
+
             /*
              * no signals during widget creation
              * */
@@ -177,9 +188,9 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
         MWidget *widget = context->widget(0, (settingsConf & NonMandatorySettings));
 
         if (widget) {
-            if (serviceInfo) {
-                serviceInfo->showDrillDownButton();
-                connect(serviceInfo, SIGNAL(clicked()),
+            if (serviceInfoList) {
+                serviceInfoList->showDrillDownButton();
+                connect(serviceInfoList, SIGNAL(clicked()),
                         this, SLOT(openSettingsPage()));
             }
 
