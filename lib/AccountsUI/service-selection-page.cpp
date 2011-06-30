@@ -202,13 +202,19 @@ void ServiceSelectionPage::createContent()
     d->layoutServicePolicy->setSpacing(0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
+        bool serviceStatus = true;
+        const Accounts::Service *service = d->serviceContextList.at(i)->service();
+        QDomElement root = service->domDocument().documentElement();
+        QDomElement serviceDefaultStatus = root.firstChildElement("default-status");
+        if (serviceDefaultStatus.text() == "false")
+            serviceStatus = false;
         //ServiceSettingsWidget sets the display widget of the changing settings
         ServiceSettingsWidget *settingsWidget =
             new ServiceSettingsWidget(d->serviceContextList.at(i), serviceWidget,
                                       ServiceSettingsWidget::MandatorySettings |
                                       ServiceSettingsWidget::EnableButton,
-                                      true);
-        const Accounts::Service *service = d->serviceContextList.at(i)->service();
+                                      serviceStatus);
+
         emit serviceEnabled(service->name(), true);
         d->serviceStatusMap.insert(service->name(), true);
         d->abstractContexts.append(d->serviceContextList.at(i));
