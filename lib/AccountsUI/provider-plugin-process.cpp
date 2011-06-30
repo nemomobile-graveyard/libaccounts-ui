@@ -193,6 +193,11 @@ int ProviderPluginProcess::exec()
 {
     Q_D(ProviderPluginProcess);
 
+    if (!d->validProvider) {
+        qCritical()<< Q_FUNC_INFO << "Not a Valid Provider";
+        return 1;
+    }
+
     /* if we the account is invalid (either because it does not exists or
      * couldn't be loaded because of some DB error), return immediately */
     if (d->account == 0) {
