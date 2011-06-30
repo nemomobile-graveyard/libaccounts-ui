@@ -1,3 +1,9 @@
+libaccounts-ui (0.144-1) unstable; urgency=low
+
+  * Fixes: NB#261426 - Facebook chat option to be turned off by default
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 30 Jun 2011 12:33:38 +0300
+
 libaccounts-ui (0.143-2) unstable; urgency=low
 
   * Fixing the delay
