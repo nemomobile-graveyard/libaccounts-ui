@@ -59,6 +59,7 @@ public:
         plugin(plugin),
         m_context(0),
         returnToApp(false),
+        validProvider(true),
         accountSetupCompleted(false)
     {
         application = MComponentCache::mApplication(argc, argv);
@@ -102,12 +103,15 @@ public:
             monitorServices();
             QString providerName = account->providerName();
             Accounts::Provider *provider = account->manager()->provider(providerName);
-            QString catalog = provider->trCatalog();
-            MLocale locale;
-            if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
-                locale.installTrCatalog(catalog);
-                MLocale::setDefault(locale);
-            }
+            if (provider) {
+                QString catalog = provider->trCatalog();
+                MLocale locale;
+                if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
+                    locale.installTrCatalog(catalog);
+                    MLocale::setDefault(locale);
+                }
+            } else
+                validProvider = false;
         }
 
         WId windowId = wrapped->parentWindowId();
@@ -157,6 +161,7 @@ private:
     LastPageActions lastPageActions;
     PluginService *service;
     mutable QString translatedProviderName;
+    bool validProvider;
     bool accountSetupCompleted;
 };
 
