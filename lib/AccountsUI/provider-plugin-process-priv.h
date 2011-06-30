@@ -104,6 +104,7 @@ public:
             QString providerName = account->providerName();
             Accounts::Provider *provider = account->manager()->provider(providerName);
             if (provider) {
+                validProvider = true;
                 QString catalog = provider->trCatalog();
                 MLocale locale;
                 if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
