@@ -196,6 +196,11 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
 
             if ((settingsConf & NonMandatorySettings) ||
                 (settingsConf & MandatorySettings)) {
+
+                /* Ugly Ugly HACK -
+                 * Remove ASAP + Add fix for AbstractServiceSetupContext API,
+                 * in order to properly solve this issue. */
+                if (context->account()->providerName() != QLatin1String("google"))
                     mainPolicy->addItem(widget);
             }
         }
@@ -225,6 +230,7 @@ void ServiceSettingsWidget::setServiceButtonEnable(bool enable)
 {
     Q_D(ServiceSettingsWidget);
     qDebug() << Q_FUNC_INFO << __LINE__;
+    if (d->enableServiceButton == 0) return;
 
     if (d->enableServiceButton->isChecked() != enable)
         d->enableServiceButton->setChecked(enable);
@@ -233,6 +239,8 @@ void ServiceSettingsWidget::setServiceButtonEnable(bool enable)
 void ServiceSettingsWidget::openSettingsPage()
 {
     Q_D(ServiceSettingsWidget);
+    if (d->enableServiceButton == 0) return;
+
     SettingsPage *settingsPage =
             new SettingsPage(d->context, d->enableServiceButton->model());
     settingsPage->appear();
@@ -243,6 +251,8 @@ void ServiceSettingsWidget::openSettingsPage()
 void ServiceSettingsWidget::onSettingsPageClosed()
 {
     Q_D(ServiceSettingsWidget);
+    if (d->enableServiceButton == 0) return;
+
     // Restore button style
     d->enableServiceButton->setStyleName("CommonLeftSwitchInverted");
 }

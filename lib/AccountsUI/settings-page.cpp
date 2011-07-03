@@ -112,30 +112,21 @@ void SettingsPage::createContent()
 
     MDetailedListItem *usernameAndStatus =
             new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons, this);
+
     usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
     usernameAndStatus->setObjectName("wgSettingsPageCommonBasicListItem");
     usernameAndStatus->imageWidget()->setImage(providerIconId);
     usernameAndStatus->setTitle(serviceHepler->prettyName());
-    usernameAndStatus->setSubtitle(serviceHepler->description());
+    usernameAndStatus->setSubtitle(
+        qtTrId(d->context->account()->displayName().toLatin1()));
 
     MSeparator *separatorTop = new MSeparator(this);
-    separatorTop->setStyleName("CommonItemDividerInverted");
+    separatorTop->setStyleName("CommonHeaderDividerInverted");
     separatorTop->setOrientation(Qt::Horizontal);
-
-    d->enableButton = new MButton(this, d->buttonModel);
-    d->enableButton->setViewType(MButton::switchType);
-    d->enableButton->setStyleName("CommonRightSwitchInverted");
-    d->enableButton->setCheckable(true);
 
     d->context->account()->selectService(d->context->service());
 
-    if (d->buttonModel->checked())
-        d->enableButton->setChecked(true);
-    else
-        d->enableButton->setChecked(false);
-
     horizontalLayoutPolicy->addItem(usernameAndStatus, Qt::AlignLeft | Qt::AlignVCenter);
-    horizontalLayoutPolicy->addItem(d->enableButton, Qt::AlignRight | Qt::AlignVCenter);
     upperLayoutPolicy->addItem(horizontalLayout);
     upperLayoutPolicy->addItem(separatorTop);
 
