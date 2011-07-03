@@ -1,3 +1,9 @@
+libaccounts-ui (0.144-2) unstable; urgency=low
+
+  * Fixes: NB#246711 - Gmail settings are missing.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@teleca.com>  Sun, 03 Jul 2011 07:10:10 +0300
+
 libaccounts-ui (0.144-1) unstable; urgency=low
 
   * Fixes: NB#261426 - Facebook chat option to be turned off by default
