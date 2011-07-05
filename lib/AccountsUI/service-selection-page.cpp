@@ -56,6 +56,8 @@
 #include <Accounts/Provider>
 #include <Accounts/Manager>
 
+//others
+#include <sysinfo.h>
 
 namespace AccountsUI {
 
@@ -169,13 +171,30 @@ void ServiceSelectionPage::createContent()
 
             // account connected message
             QString accountConnectedMessageId;
-            QDomElement accountConnectedMessage= root.firstChildElement("account-connected-message");
+            QDomElement accountConnectedMessage = root.firstChildElement("account-connected-message");
             if (!accountConnectedMessage.isNull()) {
                 // display a account connected message for provider
-                accountConnectedMessageId =
+                struct system_config *sc = 0;
+                QByteArray name;
+                if (sysinfo_init(&sc) == 0) {
+                    uint8_t *data = 0;
+                    unsigned long size = 0;
+
+                    if (sysinfo_get_value(sc, "/component/product-name",
+                                          &data, &size) == 0) {
+                        name = QByteArray((const char *)(data), size);
+                        free(data);
+                    }
+                    sysinfo_finish(sc);
+                }
+                if (name == "N9") {
+                    accountConnectedMessageId =
                         qtTrId((accountConnectedMessage.text()).toLatin1()).arg(qtTrId("qtn_comm_product_n9"));
-            }
-            else {
+                } else {
+                    accountConnectedMessageId =
+                        qtTrId((accountConnectedMessage.text()).toLatin1()).arg(qtTrId("qtn_comm_product_nxx"));
+                }
+            } else {
                 // default message for service selection.
                 accountConnectedMessageId = qtTrId("qtn_acc_enable_services_in_apps");
             }
