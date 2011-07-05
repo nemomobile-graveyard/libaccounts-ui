@@ -1,3 +1,9 @@
+libaccounts-ui (0.144-3) unstable; urgency=low
+
+  * Fixes: NB#267148 - Twitter account set-up shows "Nokia N9" even if run on N950
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Tue, 05 Jul 2011 12:56:21 +0300
+
 libaccounts-ui (0.144-2) unstable; urgency=low
 
   * Fixes: NB#246711 - Gmail settings are missing.
@@ -9,12 +15,6 @@ libaccounts-ui (0.144-1) unstable; urgency=low
   * Fixes: NB#261426 - Facebook chat option to be turned off by default
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 30 Jun 2011 12:33:38 +0300
-
-libaccounts-ui (0.144-1) unstable; urgency=low
-
-  * Fixes: NB#267148 - Twitter account set-up shows "Nokia N9" even if run on N950
-
- -- Tomi Suviola <tomi.suviola@nokia.com>  Tue, 05 Jul 2011 12:56:21 +0300
 
 libaccounts-ui (0.143-2) unstable; urgency=low
 
