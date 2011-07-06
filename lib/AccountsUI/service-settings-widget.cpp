@@ -166,7 +166,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignCenter);
+            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignTop/*Qt::AlignCenter*/);
             containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignTop);
 
             mainPolicy->addItem(upperWidget);
