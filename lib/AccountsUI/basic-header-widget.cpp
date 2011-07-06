@@ -22,84 +22,58 @@
 
 #include "basic-header-widget.h"
 
-#include <MImageWidget>
+//M
 #include <MLabel>
-#include <MLayout>
-#include <MLinearLayoutPolicy>
+#include <MImageWidget>
 
 //Qt
 #include <QDebug>
 
 namespace AccountsUI {
 
-class BasicHeaderWidgetPrivate: public QObject
+BasicHeaderWidget::BasicHeaderWidget(MBasicListItem::ItemStyle style,
+                                     QGraphicsItem *parent)
+    : MBasicListItem(style, parent)
 {
-public:
-    BasicHeaderWidgetPrivate()
-        :image(0),
-        title(0),
-        subtitle(0)
-    {}
+    setStyleName("CommonBasicListItemInverted");
+    titleLabelWidget()->setTextElide(true);
 
-    ~BasicHeaderWidgetPrivate() {}
-
-public:
-    MImageWidget *image;
-    MLabel *title;
-    MLabel *subtitle;
-};
-
-BasicHeaderWidget::BasicHeaderWidget(QGraphicsItem *parent)
-        :MWidgetController(parent),
-        d_ptr(new BasicHeaderWidgetPrivate())
-{
-    Q_D(BasicHeaderWidget);
-
-    setStyleName("CommonPanelInverted");
-
-    MLayout *mainLayout = new MLayout();
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    MLinearLayoutPolicy *mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Horizontal);
-
-    MLayout *titleLayout = new MLayout();
-    MLinearLayoutPolicy *titleLayoutPolicy = new MLinearLayoutPolicy(titleLayout, Qt::Vertical);
-
-    d->image = new MImageWidget();
-    d->image->setStyleName("CommonMainIcon");
-    d->title = new MLabel();
-    d->title->setStyleName("CommonTitleInverted");
-    d->title->setTextElide(true);
-    d->subtitle = new MLabel();
-    d->subtitle->setStyleName("CommonSubTitleInverted");
-    d->subtitle->setTextElide(true);
-
-    titleLayoutPolicy->addItem(d->title);
-    titleLayoutPolicy->addItem(d->subtitle);
-    // Add an empty item to push the subtitle up
-    titleLayoutPolicy->addItem(new QGraphicsWidget());
-
-    mainLayoutPolicy->addItem(d->image);
-    mainLayoutPolicy->addItem(titleLayout);
-
-    setLayout(mainLayout);
-}
-
-void BasicHeaderWidget::setTitle(const QString &titleText)
-{
-    Q_D(BasicHeaderWidget);
-    d->title->setText(titleText);
-}
-
-void BasicHeaderWidget::setSubtitle(const QString &subtitleText)
-{
-    Q_D(BasicHeaderWidget);
-    d->subtitle->setText(subtitleText);
+    /* Any of the MBasicListItem's subwidget getters also create
+     * the specific subwidget if it is not already created, so
+     * calling them, only within context */
+    switch (style) {
+    case MBasicListItem::SingleTitle:
+        titleLabelWidget()->setStyleName("CommonHeaderInverted");
+        break;
+    case MBasicListItem::TitleWithSubtitle:
+        titleLabelWidget()->setStyleName("CommonTitleInverted");
+        subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
+        subtitleLabelWidget()->setTextElide(true);
+        break;
+    case MBasicListItem::IconWithTitle:
+        imageWidget()->setStyleName("CommonMainIcon");
+        titleLabelWidget()->setStyleName("CommonHeaderInverted");
+        break;
+    case MBasicListItem::IconWithTitleAndSubtitle:
+        imageWidget()->setStyleName("CommonMainIcon");
+        titleLabelWidget()->setStyleName("CommonTitleInverted");
+        subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
+        subtitleLabelWidget()->setTextElide(true);
+        break;
+    default:
+        break;
+    }
 }
 
 void BasicHeaderWidget::setImage(const QString &imageId)
 {
-    Q_D(BasicHeaderWidget);
-    d->image->setImage(imageId);
+    MBasicListItem::ItemStyle style = itemStyle();
+    bool hasIconWidget =
+        (style == MBasicListItem::IconWithTitle)
+        || (style == IconWithTitleAndSubtitle);
+
+    if (hasIconWidget)
+        imageWidget()->setImage(imageId);
 }
 
 } // namespace

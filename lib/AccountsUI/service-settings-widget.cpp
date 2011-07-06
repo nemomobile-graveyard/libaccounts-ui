@@ -45,7 +45,7 @@ namespace AccountsUI {
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
         : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
-    setStyleName("CommonLargePanel");
+    setStyleName("CommonLargePanelInverted");
     setObjectName("wgServiceSettingsWidgetListItem");
 
     horizontalLayout = new MLayout(this);
@@ -127,13 +127,15 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     }
 
     MLayout *containerMainLayout = new MLayout(this);
-    MLinearLayoutPolicy *mainPolicy = new MLinearLayoutPolicy(containerMainLayout, Qt::Vertical);
+    MLinearLayoutPolicy *mainPolicy =
+        new MLinearLayoutPolicy(containerMainLayout, Qt::Vertical);
     mainPolicy->setSpacing(0);
     mainPolicy->setContentsMargins(0,0,0,0);
 
     MWidget *upperWidget = new MWidget(this);
     MLayout *upperLayout = new MLayout(upperWidget);
-    MLinearLayoutPolicy *containerMainPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
+    MLinearLayoutPolicy *containerMainPolicy =
+        new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
 
@@ -141,11 +143,24 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
 
     if (settingsConf & EnableButton) {
         if (context) {
+            /* Dummy layout for the enable service button
+             * The layout's top margin is compensating for the top
+             * margin of the title label in the ServiceSettingsWidgetListItem
+             * CommonTitleInverted - styling issue.
+             *
+             * TODO - Remove when styling will be fixed. */
+            MLayout *enableServiceButtonLayout = new MLayout;
+            MLinearLayoutPolicy *enableServiceButtonPolicy =
+                new MLinearLayoutPolicy(enableServiceButtonLayout, Qt::Horizontal);
+            enableServiceButtonPolicy->setSpacing(0);
+            enableServiceButtonPolicy->setContentsMargins(0, 15, 0, 0);
+
             d->enableServiceButton = new MButton(this);
             d->enableServiceButton->setViewType(MButton::switchType);
             d->enableServiceButton->setStyleName("CommonLeftSwitchInverted");
             d->enableServiceButton->setObjectName("wgServiceSettingsWidgetServiceButton");
             d->enableServiceButton->setCheckable(true);
+            enableServiceButtonPolicy->addItem(d->enableServiceButton);
 
             ServiceHelper *serviceHelper =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
@@ -166,7 +181,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignCenter);
+            containerMainPolicy->addItem(enableServiceButtonLayout, Qt::AlignRight | Qt::AlignTop);
             containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignTop);
 
             mainPolicy->addItem(upperWidget);
