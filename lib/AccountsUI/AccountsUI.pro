@@ -19,7 +19,8 @@ QT += xml \
 PKGCONFIG += accounts-qt \
     AccountSetup \
     libsignon-qt \
-    meegotouch
+    meegotouch \
+    sysinfo
 
 # -----------------------------------------------------------------------------
 # input
