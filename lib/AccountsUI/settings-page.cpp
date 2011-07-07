@@ -25,6 +25,7 @@
 #include "abstract-service-setup-context.h"
 #include "accountsmanagersingleton.h"
 #include "service-helper.h"
+#include "basic-header-widget.h"
 
 //Accounts
 #include <Accounts/Account>
@@ -110,13 +111,22 @@ void SettingsPage::createContent()
     ServiceHelper *serviceHepler =
         new ServiceHelper(const_cast<Accounts::Service*>(d->context->service()), this);
 
-    MDetailedListItem *usernameAndStatus =
-            new MDetailedListItem(MDetailedListItem::IconTitleSubtitleAndTwoSideIcons, this);
-    usernameAndStatus->setStyleName("CommonDetailedListItemInverted");
+    BasicHeaderWidget *usernameAndStatus = 0;
+
+    if (d->context->account()->id() == 0) {
+        usernameAndStatus = new BasicHeaderWidget(
+            MBasicListItem::IconWithTitle, this);
+    } else {
+        usernameAndStatus = new BasicHeaderWidget(
+            MBasicListItem::IconWithTitleAndSubtitle, this);
+        usernameAndStatus->setSubtitle(
+            qtTrId(d->context->account()->displayName().toLatin1()));
+    }
+
+    usernameAndStatus->setStyleName("CommonBasicListItemInverted");
     usernameAndStatus->setObjectName("wgSettingsPageCommonBasicListItem");
     usernameAndStatus->imageWidget()->setImage(providerIconId);
     usernameAndStatus->setTitle(serviceHepler->prettyName());
-    usernameAndStatus->setSubtitle(serviceHepler->description());
 
     MSeparator *separatorTop = new MSeparator(this);
     separatorTop->setStyleName("CommonItemDividerInverted");
