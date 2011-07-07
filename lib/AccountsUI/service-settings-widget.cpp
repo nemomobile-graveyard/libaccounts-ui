@@ -180,7 +180,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                 serviceInfoList->setSubtitle(subTitle);
                 serviceInfo = serviceInfoList;
             } else {
-                serviceInfoLayout = new BasicHeaderWidget(TitleAndSubtitle, this);
+                serviceInfoLayout = new BasicHeaderWidget(MBasicListItem::TitleWithSubtitle, this);
                 serviceInfoLayout->setTitle(serviceHelper->prettyName());
                 serviceInfoLayout->setSubtitle(subTitle);
                 serviceInfo = serviceInfoLayout;
