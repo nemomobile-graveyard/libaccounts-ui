@@ -9,9 +9,13 @@ TARGET = AccountPlugin
 VERSION = 1.0.0
 CONFIG += qt \
     meegotouch \
-    link_pkgconfig
+    link_pkgconfig \
+    gallerycore \
+    qtsparql
+
 QT += xml \
-    network
+    network \
+    core
 
 # -----------------------------------------------------------------------------
 # dependencies
@@ -20,7 +24,11 @@ PKGCONFIG += accounts-qt \
     AccountSetup \
     libsignon-qt \
     meegotouch \
-    sysinfo
+    sysinfo \
+    TelepathyQt4 \
+    QtSparql \
+    QtSparqlTrackerLive \
+    RTComTelepathyQt4-1
 
 # -----------------------------------------------------------------------------
 # input
@@ -69,7 +77,9 @@ HEADERS += account-plugin-interface.h \
     validation-data.h \
     account-setup-finished-widget.h \
     plugin-service.h \
-    basic-header-widget.h
+    basic-header-widget.h \
+    avatar-selector.h \
+    imagecontentprovider.h
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
     abstract-setup-context.cpp \
@@ -104,7 +114,9 @@ SOURCES += abstract-account-setup-context.cpp \
     accountlistitem.cpp \
     account-setup-finished-widget.cpp \
     plugin-service.cpp \
-    basic-header-widget.cpp
+    basic-header-widget.cpp \
+    avatar-selector.cpp \
+    imagecontentprovider.cpp
 MODEL_HEADERS += \
     credentialwidgetmodel.h \
     genericaccountsetupformmodel.h

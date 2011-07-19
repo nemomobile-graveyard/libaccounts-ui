@@ -31,6 +31,16 @@
 //Accounts
 #include <Accounts/Account>
 
+//Telepathy
+#include <TelepathyQt4/Account>
+#include <TelepathyQt4/AccountManager>
+#include <TelepathyQt4/PendingOperation>
+#include <TelepathyQt4/ReferencedHandles>
+#include <TelepathyQt4/ContactManager>
+#include <RTComTelepathyQt4/Types>
+#include <RTComTelepathyQt4/Constants>
+#include <RTComTelepathyQt4/Connection>
+
 //Meegotouch
 #include <MButton>
 #include <MDetailedListItem>
@@ -43,20 +53,48 @@
 //Accounts-Ui
 #include "abstract-account-setup-context.h"
 #include "accountsmanagersingleton.h"
+#include "avatar-selector.h"
 
 
 namespace AccountsUI {
 
+class AvatarListItem : public MBasicListItem
+{
+    Q_OBJECT
+
+public:
+    AvatarListItem(QGraphicsWidget *parent = 0);
+    ~AvatarListItem();
+    QGraphicsLayout *createLayout();
+    void setImage(const QImage &image);
+
+private:
+    MLayout *horizontalLayout;
+    MImageWidget *imageAvatar;
+};
+
+class AvatarSelector;
 class AccountSettingsPagePrivate: public QObject
 {
     Q_OBJECT
     Q_DECLARE_PUBLIC(AccountSettingsPage)
 
 public:
+
+    static const int AVATAR_WIDTH_SMALL = 64;
+    static const int AVATAR_HEIGHT_SMALL = 64;
+    static const int AVATAR_WIDTH_MEDIUM = 128;
+    static const int AVATAR_HEIGHT_MEDIUM = 128;
+    static const int AVATAR_WIDTH_LARGE = 256;
+    static const int AVATAR_HEIGHT_LARGE = 256;
+
     AccountSettingsPagePrivate(AbstractAccountSetupContext *context);
     ~AccountSettingsPagePrivate() {}
 
     bool hasSingleService() const;
+    void scaleImage(const QImage &image, QImage &scaledImage);
+    void setAvatarImage(const QImage &scaledImg);
+    void saveImage(const QImage &image);
 
 public Q_SLOTS:
     void saveSettings();
@@ -65,6 +103,12 @@ public Q_SLOTS:
     void deleteCredentialsDialog();
     void disableSameServiceTypes(const QString &serviceType);
     void setEnabledService(const QString& serviceName, bool enabled);
+    void finishedCalled(Tp::PendingOperation *op);
+    void onAvatarSelectedFromGallery(const QImage &image);
+    void onAccountManagerReady(Tp::PendingOperation *op);
+    void accountReady(Tp::PendingOperation *op);
+    void connectionReady(Tp::PendingOperation *op);
+    void onAvatarChange(const Tp::Avatar &avatar);
 
 private:
     mutable AccountSettingsPage *q_ptr;
@@ -83,6 +127,21 @@ private:
     Accounts::ServiceList hiddenServiceList;
     QMap<QString, bool> serviceStatusMap;
     bool saving;
+    QString accountPath;
+    AvatarSelector *avatarSelector;
+    AvatarListItem *avatarItem;
+    int preferredWidth;
+    int preferredHeight;
+    Tp::Features accountFeatures;
+    Tp::AccountPtr accountPtr;
+    Tp::AccountManagerPtr accountMgr;
+    Tp::ConnectionPtr connection;
+    Tp::Features connectionFeatures;
+    QByteArray avatarImageData;
+    QString avatarImageType;
+    QString connectionError;
+    QDomElement avatar;
+    Tp::PendingOperation *op;
 };
 
 } // namespace
