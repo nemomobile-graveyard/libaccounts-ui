@@ -1,3 +1,9 @@
+libaccounts-ui (0.145-1) unstable; urgency=low
+
+  * Addresses: NB#265339 - [TASK] Changing my own avatar in Gtalk service
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 20 Jul 2011 11:55:48 +0300
+
 libaccounts-ui (0.144-4) unstable; urgency=low
 
   * Fixes: NB#271416 - Gmail signature shows N9 when run from N950.
