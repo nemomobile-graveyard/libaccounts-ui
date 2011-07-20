@@ -118,8 +118,20 @@ public slots:
      */
     virtual void removeAccount();
 
+    /*!
+     * Changes the Avatar of the account if the provider allows any
+     */
+    void changeAvatar();
+
+    /*!
+     * Gets the avatar set for the account if the provider allows any
+     */
+    void getAvatar();
+
 Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);
+    void avatarInitCompleted();
+    void avatarInitFailed();
 
 protected:
     /*!
