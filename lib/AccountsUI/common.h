@@ -70,6 +70,10 @@ void showInfoBanner(const QString &text,
                     const quint32 disapperTimeout = 3000);
 #endif
 
+/*!
+ * @returns The product name translation id.
+ */
+ACCOUNTSUI_EXPORT const QString productNameTr();
 }
 
 #endif // ACCOUNTSUI_COMMON_H

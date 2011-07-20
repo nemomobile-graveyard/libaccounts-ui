@@ -56,7 +56,6 @@
 #include <Accounts/Provider>
 #include <Accounts/Manager>
 
-
 namespace AccountsUI {
 
 M_REGISTER_WIDGET_NO_CREATE(ServiceSelectionPage)
@@ -131,6 +130,7 @@ void ServiceSelectionPage::createContent()
     MLayout *layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
     layoutPolicy->setSpacing(0);
+    layoutPolicy->setContentsMargins(0, 0, 0, 0);
 
     if (d->context) {
         MWidget *upperWidget = new MWidget(this);
@@ -159,23 +159,21 @@ void ServiceSelectionPage::createContent()
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
 
-            BasicHeaderWidget *providerInfoItem = new BasicHeaderWidget(IconWithTitleAndSubTitle, this);
+            BasicHeaderWidget *providerInfoItem =
+                new BasicHeaderWidget(MBasicListItem::IconWithTitle, this);
             providerInfoItem->setImage(providerIconId);
             providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
-            providerInfoItem->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));
             providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
             topLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
 
-
             // account connected message
             QString accountConnectedMessageId;
-            QDomElement accountConnectedMessage= root.firstChildElement("account-connected-message");
+            QDomElement accountConnectedMessage = root.firstChildElement("account-connected-message");
             if (!accountConnectedMessage.isNull()) {
                 // display a account connected message for provider
                 accountConnectedMessageId =
-                        qtTrId((accountConnectedMessage.text()).toLatin1()).arg(qtTrId("qtn_comm_product_n9"));
-            }
-            else {
+                    qtTrId((accountConnectedMessage.text()).toLatin1()).arg(productNameTr());
+            } else {
                 // default message for service selection.
                 accountConnectedMessageId = qtTrId("qtn_acc_enable_services_in_apps");
             }
@@ -187,7 +185,7 @@ void ServiceSelectionPage::createContent()
         }
 
         MSeparator *separatorTop = new MSeparator(this);
-        separatorTop->setStyleName("CommonItemDividerInverted");
+        separatorTop->setStyleName("CommonHeaderDividerInverted");
         separatorTop->setOrientation(Qt::Horizontal);
 
         upperLayoutPolicy->addItem(topLayout);
@@ -200,6 +198,7 @@ void ServiceSelectionPage::createContent()
     MLayout *serviceSettingLayout = new MLayout(serviceWidget);
     d->layoutServicePolicy = new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
     d->layoutServicePolicy->setSpacing(0);
+    d->layoutServicePolicy->setContentsMargins(0, 0, 0 ,0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         bool serviceStatus = true;
