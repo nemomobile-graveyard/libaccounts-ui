@@ -179,11 +179,12 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                 serviceInfoList->setTitle(serviceHelper->prettyName());
                 serviceInfoList->setSubtitle(subTitle);
                 serviceInfo = serviceInfoList;
+                system("echo servie clickable");
             } else {
                 serviceInfoLayout = new BasicHeaderWidget(MBasicListItem::TitleWithSubtitle, this);
                 serviceInfoLayout->setTitle(serviceHelper->prettyName());
                 serviceInfoLayout->setSubtitle(subTitle);
-                serviceInfo = serviceInfoLayout;
+                serviceInfo = serviceInfoLayout;system("echo servie not clickable");
             }
 
             /*
