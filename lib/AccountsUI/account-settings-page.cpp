@@ -92,9 +92,9 @@ AvatarListItem::AvatarListItem(QGraphicsWidget *parent)
     titleLabelWidget()->setStyleName("CommonTitleInverted");
     titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
 
-    imageAvatar = new MImageWidget();
-    imageAvatar->setStyleName("CommonMainIcon");
-    horizontalLayoutPolicy->addItem(imageAvatar, Qt::AlignLeft);
+    avatarImage = new MImageWidget();
+    avatarImage->setStyleName("CommonMainIcon");
+    horizontalLayoutPolicy->addItem(avatarImage, Qt::AlignLeft);
     horizontalLayoutPolicy->addItem(titleSubtitleLayout, Qt::AlignLeft | Qt::AlignCenter);
 
     MImageWidget *image = imageWidget();
@@ -115,7 +115,7 @@ QGraphicsLayout *AvatarListItem::createLayout()
 
 void AvatarListItem::setImage(const QImage &image)
 {
-    imageAvatar->setImage(image);
+    avatarImage->setImage(image);
 }
 
 AccountSettingsPagePrivate::AccountSettingsPagePrivate(
@@ -129,8 +129,8 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     layout(0),
     panelPolicy(0),
     saving(false),
-    preferredWidth(AVATAR_WIDTH_MEDIUM),
-    preferredHeight(AVATAR_HEIGHT_MEDIUM)
+    preferredWidth(avatar_width_medium),
+    preferredHeight(avatar_height_medium)
 {
     account = context->account();
     serviceList = account->services();
@@ -179,16 +179,19 @@ void AccountSettingsPagePrivate::saveSettings()
         if (account->enabled() != state)
             account->setEnabled(state);
     }
-
     if (accountPtr) {
-        Tp::Avatar newAvatar;
-        newAvatar.avatarData = avatarImageData;
-        newAvatar.MIMEType = avatarImageType;
-        connect((Tp::Account *)accountPtr.data(), SIGNAL(avatarChanged (const Tp::Avatar &)),
-                this, SLOT(onAvatarChange(const Tp::Avatar &)));
-        op = accountPtr->setAvatar(newAvatar);
-        connect(op, SIGNAL(finished(Tp::PendingOperation *)), this, SLOT(finishedCalled(Tp::PendingOperation *)));
+        if (accountPtr->isOnline()) {
+            Tp::Avatar newAvatar;
+            newAvatar.avatarData = avatarImageData;
+            newAvatar.MIMEType = avatarImageType;
+            connect((Tp::Account *)accountPtr.data(), SIGNAL(avatarChanged (const Tp::Avatar &)),
+                    this, SLOT(onAvatarChange(const Tp::Avatar &)));
+            op = accountPtr->setAvatar(newAvatar);
+            connect(op, SIGNAL(finished(Tp::PendingOperation *)), this, SLOT(finishedCalled(Tp::PendingOperation *)));
+        } else
+            qDebug() << "Account Not Online";
     }
+
     //we should call only validate. Storing will be handled
     //in onSyncStateChangted func.
     syncHandler->validate(abstractContexts);
@@ -323,7 +326,6 @@ void AccountSettingsPagePrivate::setAvatarImage(const QImage &scaledImg)
     QPixmap *framePixmap = MTheme::pixmapCopy(QLatin1String("meegotouch-contactsui-avatar-frame"),
                                               preferredSize);
 
-
     if (maskPixmap != NULL && framePixmap != NULL) {
 
         qDebug() << "Non null Mask Pixmap && frame pixmap";
@@ -373,7 +375,7 @@ AccountSettingsPage::~AccountSettingsPage()
 
 void AccountSettingsPage::setServicesToBeShown()
 {
-    qWarning() << Q_FUNC_INFO << "Deprecated. This function does nothing.";
+    qDebug() << Q_FUNC_INFO << "Deprecated. This function does nothing.";
 }
 
 QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
@@ -561,7 +563,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
 void AccountSettingsPage::getAvatar()
 {
     Q_D(AccountSettingsPage);
-    qWarning() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
 
     if (d->accountPtr->isReady(d->accountFeatures)) {
         Tp::Avatar accountAvatar = d->accountPtr->avatar();
@@ -569,41 +571,37 @@ void AccountSettingsPage::getAvatar()
         d->avatarImageType = accountAvatar.MIMEType;
 
         if (d->avatarImageData.isEmpty()) {
-            qWarning() << "Got a NULL Avatar image";
-            //Avatar retrieval should be done usinng account()->avatar()
-            //However, due to a BUG in 'telepathy-spirit' connection managaer, spirit
-            //emits avatarChange("") after account creation, so the call to Mission Control
-            // returns empty avatar
-            //So, forcefully asking cm to get the avatar using RequestAvatar interface
+            qDebug() << "Got a NULL Avatar image";
             QMetaObject::invokeMethod(this, "requestAvatarData", Qt::QueuedConnection);
         } else {
             qDebug() << "Found  a proper image with type" << d->avatarImageType;
         }
-        connect((Tp::Account *)d->accountPtr.data(), SIGNAL(avatarChanged (const Tp::Avatar &)),
+        connect((Tp::Account *)d->accountPtr.data(), SIGNAL(avatarChanged(const Tp::Avatar &)),
                 d, SLOT(onAvatarChange(const Tp::Avatar &)));
         if (!d->avatarImageData.isEmpty()) {
             const char *fmt = NULL;
-            if (d->avatarImageType.contains("jpeg", Qt::CaseInsensitive) || d->avatarImageType.contains("jpg", Qt::CaseInsensitive)) {
+            if (d->avatarImageType.contains("jpeg", Qt::CaseInsensitive)
+                    || d->avatarImageType.contains("jpg", Qt::CaseInsensitive)) {
                 qDebug() << "JPG format";
                 fmt = "JPG";
             }
 
             QImage img;
             img.loadFromData(d->avatarImageData, fmt);
-            d->avatarItem->setImage(img);
+            d->saveImage(img);
             qDebug() << "Received  a proper image with type" << d->avatarImageType;
         } else {
-            qWarning() << "Received a  NULL Avatar image";
+            qDebug() << "Received a  NULL Avatar image";
         }
 
     } else {
-        qWarning() << "cannot get avatar";
+        qDebug() << "cannot get avatar";
     }
 }
 
 void AccountSettingsPagePrivate::onAvatarChange(const Tp::Avatar &avatar)
 {
-    qWarning() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
     avatarImageData = avatar.avatarData;
     avatarImageType = avatar.MIMEType;
 
@@ -617,20 +615,17 @@ void AccountSettingsPagePrivate::onAvatarChange(const Tp::Avatar &avatar)
         QImage img;
         img.loadFromData(avatarImageData, fmt);
         avatarItem->setImage(img);
-        qWarning() << "Received  a proper image with type" << avatarImageType;
+        qDebug() << "Received  a proper image with type" << avatarImageType;
     } else {
-        qWarning() << "Received a  NULL Avatar image";
+        qDebug() << "Received a  NULL Avatar image";
     }
-
 }
-
-
 
 void AccountSettingsPagePrivate::onAccountManagerReady(Tp::PendingOperation *op)
 {
     Q_Q(AccountSettingsPage);
     if (op->isError()) {
-        qWarning() << "Account Manager cannot become ready";
+        qDebug() << "Account Manager cannot become ready";
         emit q->avatarInitFailed();
     } else {
         bool accFound = false;
@@ -638,7 +633,7 @@ void AccountSettingsPagePrivate::onAccountManagerReady(Tp::PendingOperation *op)
         QList<Tp::AccountPtr> givenProviderAccounts = accountMgr->allAccounts();
         int numOfAccounts = givenProviderAccounts.count();
         if (numOfAccounts == 0) {
-            qWarning() << "CANNOT GET EVEN ONE ACCOUNT";
+            qDebug() << "CANNOT GET EVEN ONE ACCOUNT";
             emit q->avatarInitFailed();
             return;
         }
@@ -657,21 +652,13 @@ void AccountSettingsPagePrivate::onAccountManagerReady(Tp::PendingOperation *op)
             }
         }
 
-        bool isOnline =  accountPtr->isOnline();
-        if (accFound && isOnline) {
+        bool isValid =  accountPtr->isValid();
+        if (accFound && isValid) {
             connect(accountPtr->becomeReady(accountFeatures),
                     SIGNAL(finished(Tp::PendingOperation *)), this, SLOT(accountReady(Tp::PendingOperation *)));
-        } else {
-            if (!isOnline) {
-                connectionError = "OFFLINE";
-                qDebug() << "Account is offline";
-                if (accountPtr->connectionStatusReason() == Tp::ConnectionStatusReasonNetworkError) {
-                    connectionError = "NETWORKERROR";
-                } else if (accountPtr->connectionStatusReason() == Tp::ConnectionStatusReasonAuthenticationFailed) {
-                    connectionError = "AUTHENTICATIONFAILED";
-                }
-            }
         }
+        if (!isValid)
+            qDebug() << "Account Not Valid";
     }
 }
 
@@ -679,40 +666,13 @@ void AccountSettingsPagePrivate::accountReady(Tp::PendingOperation *op)
 {
     Q_Q(AccountSettingsPage);
     if (op->isError()) {
-        qWarning() << "Account could not become ready" << op->errorMessage() << op->errorName();
+        qDebug() << "Account could not become ready" << op->errorMessage() << op->errorName();
         emit q->avatarInitFailed();
         return;
     }
 
-    qWarning() << "Acc Ready";
-
-    connection = accountPtr->connection();
-    if ((connection.data() != NULL) && (connection->isValid())) {
-        qWarning() << "connection is valid Making conn ready";
-        qDBusRegisterMetaType<Tp::UIntList>();
-        qDBusRegisterMetaType<Tp::ContactAttributesMap>();
-        connect(connection->becomeReady(connectionFeatures), SIGNAL(finished(Tp::PendingOperation *)),
-                this, SLOT(connectionReady(Tp::PendingOperation *)));
-    } else {
-
-        qWarning() << "NULL connection ..Still!!";
-        emit q->avatarInitFailed();
-    }
-
-}
-
-void AccountSettingsPagePrivate::connectionReady(Tp::PendingOperation *op)
-{
-    Q_Q(AccountSettingsPage);
-    qWarning() << Q_FUNC_INFO;
-    if (op->isError()) {
-        qWarning() << "Connection could not become ready" << op->errorMessage() << op->errorName();
-        emit q->avatarInitFailed();
-        return;
-    }
-
-    qWarning() << "account and its connection are ready to use";
-    emit q->avatarInitComplete();
+    qDebug() << "Account Ready";
+    emit q->avatarInitCompleted();
 }
 
 void AccountSettingsPage::createPageActions()
@@ -789,15 +749,17 @@ void AccountSettingsPage::createContent()
             path.prepend("/org/freedesktop/Telepathy/Account/");
         d->accountPath = path;
         d->accountMgr = Tp::AccountManager::create();
-        connect((d->accountMgr->becomeReady(Tp::AccountManager::FeatureCore)),
-                SIGNAL(finished(Tp::PendingOperation *)), d,
-                SLOT(onAccountManagerReady(Tp::PendingOperation *)));
+        if (!d->accountMgr.isNull()) {
+            connect((d->accountMgr->becomeReady(Tp::AccountManager::FeatureCore)),
+                    SIGNAL(finished(Tp::PendingOperation *)), d,
+                    SLOT(onAccountManagerReady(Tp::PendingOperation *)));
 
-        QSet<Tp::Feature> featuresSet;
-        featuresSet  << Tp::Account::FeatureCore << Tp::Account::FeatureProtocolInfo << Tp::Account::FeatureAvatar;
-        d->accountFeatures = Tp::Features(featuresSet);
-        connect(this, SIGNAL(avatarInitComplete()), this, SLOT(getAvatar()));
-        connect(this, SIGNAL(avatarInitFailed()), this, SLOT(initFailed()));
+            QSet<Tp::Feature> featuresSet;
+            featuresSet << Tp::Account::FeatureAvatar;
+            d->accountFeatures = Tp::Features(featuresSet);
+            connect(this, SIGNAL(avatarInitCompleted()), this, SLOT(getAvatar()));
+            connect(this, SIGNAL(avatarInitFailed()), this, SLOT(initFailed()));
+        }
     }
 }
 
@@ -858,7 +820,7 @@ AccountSyncHandler *AccountSettingsPage::accountSyncHandler() const
 void AccountSettingsPage::changeAvatar()
 {
     Q_D(const AccountSettingsPage);
-    qWarning() << Q_FUNC_INFO;
+    qDebug() << Q_FUNC_INFO;
     connect(d->avatarSelector, SIGNAL(avatarSelected(const QImage &)),
             d, SLOT(onAvatarSelectedFromGallery(const QImage &)));
     d->avatarSelector->launch();
@@ -894,6 +856,6 @@ void AccountSettingsPagePrivate::saveImage(const QImage &image)
             }
         }
     } else {
-        qWarning() << "NULL image from Gallery";
+        qDebug() << "NULL image from Gallery";
     }
 }

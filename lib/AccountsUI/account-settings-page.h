@@ -130,7 +130,7 @@ public slots:
 
 Q_SIGNALS:
     void serviceEnabled(const QString &serviceName, bool enabled);
-    void avatarInitComplete();
+    void avatarInitCompleted();
     void avatarInitFailed();
 
 protected:

@@ -70,7 +70,7 @@ public:
 
 private:
     MLayout *horizontalLayout;
-    MImageWidget *imageAvatar;
+    MImageWidget *avatarImage;
 };
 
 class AvatarSelector;
@@ -81,12 +81,12 @@ class AccountSettingsPagePrivate: public QObject
 
 public:
 
-    static const int AVATAR_WIDTH_SMALL = 64;
-    static const int AVATAR_HEIGHT_SMALL = 64;
-    static const int AVATAR_WIDTH_MEDIUM = 128;
-    static const int AVATAR_HEIGHT_MEDIUM = 128;
-    static const int AVATAR_WIDTH_LARGE = 256;
-    static const int AVATAR_HEIGHT_LARGE = 256;
+    static const int avatar_width_small = 64;
+    static const int avatar_height_small = 64;
+    static const int avatar_width_medium = 128;
+    static const int avatar_height_medium = 128;
+    static const int avatar_width_large = 256;
+    static const int avatar_height_large = 256;
 
     AccountSettingsPagePrivate(AbstractAccountSetupContext *context);
     ~AccountSettingsPagePrivate() {}
@@ -107,7 +107,6 @@ public Q_SLOTS:
     void onAvatarSelectedFromGallery(const QImage &image);
     void onAccountManagerReady(Tp::PendingOperation *op);
     void accountReady(Tp::PendingOperation *op);
-    void connectionReady(Tp::PendingOperation *op);
     void onAvatarChange(const Tp::Avatar &avatar);
 
 private:
