@@ -27,6 +27,7 @@
 #include "common.h"
 #include "accountsmanagersingleton.h"
 #include "provider-plugin-process.h"
+#include "provider-plugin-proxy.h"
 
 //M
 #include <MLayout>
@@ -467,10 +468,17 @@ void GenericAccountSetupFormView::signIn()
             queryBox.addButton(continueButton->model());
             queryBox.addButton(cancelButton->model());
             queryBox.exec();
-            if (queryBox.clickedButton() == continueButton->model())
-                ProviderPluginProcess::instance()->setReturnToAccountsList(true);
-            else if (queryBox.clickedButton() == cancelButton->model())
-                ProviderPluginProcess::instance()->quit();
+
+            ProviderPluginProcess *pluginProcess = ProviderPluginProcess::instance();
+
+            if (queryBox.clickedButton() == continueButton->model()) {
+                QVariant data(AccountsUI::ProviderPluginProxy::EDIT_EXISTING_ACCOUNT);
+                pluginProcess->setExitData(data);
+                pluginProcess->setEditExistingAccount(id);
+                pluginProcess->quit();
+            } else if (queryBox.clickedButton() == cancelButton->model()) {
+                pluginProcess->quit();
+            }
         }
     }
 

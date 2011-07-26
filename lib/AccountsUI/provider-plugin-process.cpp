@@ -303,7 +303,13 @@ QString ProviderPluginProcess::translatedProviderName() const
     else if (!providerName.isEmpty())
         return providerName;
     else
-        return "";
+        return QString();
+}
+
+void ProviderPluginProcess::setEditExistingAccount(Accounts::AccountId accountId)
+{
+    Q_D(ProviderPluginProcess);
+    d->wrapped->setEditExistingAccount(accountId);
 }
 
 } // namespace
