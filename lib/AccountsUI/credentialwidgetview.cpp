@@ -306,6 +306,11 @@ void CredentialWidgetView::usernameTextEditGainedFocus()
                                                         "actionKey",
                                                         "label",
                                                         qtTrId("qtn_comm_next"));
+    MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
+                                                        "/keys",
+                                                        "actionKey",
+                                                        "enabled",
+                                                        QVariant(false));
 }
 
 void CredentialWidgetView::passwordTextEditGainedFocus()
@@ -317,6 +322,34 @@ void CredentialWidgetView::passwordTextEditGainedFocus()
                                                         "actionKey",
                                                         "label",
                                                         qtTrId("qtn_comm_ok"));
+    MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
+                                                        "/keys",
+                                                        "actionKey",
+                                                        "enabled",
+                                                        QVariant(false));
+}
+
+void CredentialWidgetView::onTextChanged()
+{
+    Q_D(CredentialWidgetView);
+    MTextEdit *textEdit = qobject_cast<MTextEdit *>(sender());
+    if (!textEdit->text().isEmpty()) {
+        MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
+                                                            "/keys",
+                                                            "actionKey",
+                                                            "enabled",
+                                                            QVariant(true));
+        MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
+                                                            "/keys",
+                                                            "actionKey",
+                                                            "highlighted",
+                                                            QVariant(true));
+    } else
+        MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
+                                                            "/keys",
+                                                            "actionKey",
+                                                            "enabled",
+                                                            QVariant(false));
 }
 
 void CredentialWidgetView::closeVKB()
@@ -490,6 +523,10 @@ void CredentialWidgetView::recreateWidgets()
 
         connect(d->usernameTextEdit, SIGNAL(gainedFocus (Qt::FocusReason)),
                 this, SLOT(usernameTextEditGainedFocus()));
+        connect(d->usernameTextEdit, SIGNAL(textChanged()),
+                this, SLOT(onTextChanged()));
+        connect(d->passwordTextEdit, SIGNAL(textChanged()),
+                this, SLOT(onTextChanged()));
 
         connect(d->forgotPasswordLabel, SIGNAL(linkActivated(QString)),
                 this, SLOT(forgotPasswordClicked(QString)));
