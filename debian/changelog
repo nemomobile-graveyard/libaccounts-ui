@@ -1,3 +1,9 @@
+libaccounts-ui (1.1-1) unstable; urgency=low
+
+  * Fixes: NB#264690 - Customized enter key (OK) should be dimmed when not functional and white when functional
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 28 Jul 2011 11:24:51 +0300
+
 libaccounts-ui (1.0-1) unstable; urgency=low
 
   * Fixes: NB#235544 - [TASK] UI of verify usename should have service provider information
