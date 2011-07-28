@@ -423,15 +423,23 @@ void CredentialWidgetView::recreateWidgets()
             d->informativeNoteLabel->setAlignment(Qt::AlignCenter);
         }
 
-        if (model()->confirmPassword()) {
+        if (!model()->usernameEditable()) {
 
             d->usernameHeader = new AccountsUI::BasicHeaderWidget(MBasicListItem::IconWithTitleAndSubtitle);
             //Add icon here
             if (!model()->serviceIcon().isEmpty()) {
-               d->usernameHeader->setImage(model()->serviceIcon());
+                d->usernameHeader->setImage(model()->serviceIcon());
+            } else {
+                //empty icon
+                d->usernameHeader->setImage("icon-l-default-application");
             }
             //% "Username"
-            d->usernameHeader->setTitle(model()->username());
+            if (!model()->displayName().isEmpty() && model()->confirmPassword()) {
+                d->usernameHeader->setTitle(model()->displayName());
+                d->usernameHeader->setSubtitle(model()->username());
+            } else {
+                d->usernameHeader->setTitle(model()->username());
+            }
 
         } else {
            //% "Username"
@@ -492,7 +500,7 @@ void CredentialWidgetView::recreateWidgets()
         }
         d->forgotPasswordLabel->setStyleName("CommonFieldLabelInverted");
         d->forgotPasswordLabel->setTextFormat(Qt::RichText);
-        d->forgotPasswordLabel->setAlignment(Qt::AlignCenter);
+        d->forgotPasswordLabel->setAlignment(Qt::AlignLeft);
         d->forgotPasswordLabel->setStyleName("CommonFieldLabelInverted");
         d->forgotPasswordLabel->setObjectName("wgForgotPasswordLabel");
 
@@ -817,7 +825,7 @@ void CredentialWidgetView::configureWithLogin(int &portraitRow, int &landscapeRo
 
     int row = portraitRow;
     //portrait mode
-    if (model()->confirmPassword()) {
+    if (!model()->usernameEditable()) {
         d->portraitPolicy->addItem(d->usernameHeader, row , 0, Qt::AlignLeft);
        row++;
     } else {
