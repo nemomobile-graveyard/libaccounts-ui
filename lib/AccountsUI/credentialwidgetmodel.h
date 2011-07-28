@@ -36,6 +36,12 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     M_MODEL(CredentialWidgetModel)
 
     /*!
+        \property CredentialWidgetModel::DisplayName
+        \brief .
+    */
+    M_MODEL_PROPERTY(QString, displayName, DisplayName, true, QString())
+
+    /*!
         \property CredentialWidgetModel::Username
         \brief .
     */
