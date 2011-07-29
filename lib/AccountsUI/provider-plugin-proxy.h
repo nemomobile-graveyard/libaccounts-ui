@@ -121,7 +121,8 @@ public:
     enum PluginExitData {
         RETURN_TO_PROVIDERS_PAGE = 0,
         RETURN_TO_ACCOUNTS_PAGE,
-        EXIT_ACCOUNTS_UI
+        EXIT_ACCOUNTS_UI,
+        EDIT_EXISTING_ACCOUNT
     };
 
 public Q_SLOTS:
@@ -135,6 +136,7 @@ Q_SIGNALS:
     void edited();
     void failed();
     void cancelled();
+    void editExistingAccount(int accountId);
 
 private:
     ProviderPluginProxyPrivate *d_ptr;

@@ -27,6 +27,7 @@
 #include "common.h"
 #include "accountsmanagersingleton.h"
 #include "provider-plugin-process.h"
+#include "provider-plugin-proxy.h"
 
 //M
 #include <MLayout>
@@ -464,16 +465,28 @@ void GenericAccountSetupFormView::signIn()
         Accounts::Account *account = AccountsManager::instance()->account(id);
         if ((d->widgetModel->username() == account->displayName()) &&
             (d->provider == account->providerName())) {
-            MMessageBox queryBox(qtTrId("qtn_acc_account_exists"), qtTrId("qtn_acc_tune_it_in_accounts"), 0);
+
+            QString messageBoxText = QString("%1\n%2").
+                arg(qtTrId("qtn_acc_one_account_allowed").arg(model()->providerName())).
+                arg(qtTrId("qtn_acc_tune_it_in_accounts"));
+
+            MMessageBox queryBox(qtTrId("qtn_acc_account_exists"), messageBoxText, 0);
             MButton *continueButton = new MButton(qtTrId("qtn_comm_command_continue"));
             MButton *cancelButton = new MButton(qtTrId("qtn_comm_cancel"));
             queryBox.addButton(continueButton->model());
             queryBox.addButton(cancelButton->model());
             queryBox.exec();
-            if (queryBox.clickedButton() == continueButton->model())
-                ProviderPluginProcess::instance()->setReturnToAccountsList(true);
-            else if (queryBox.clickedButton() == cancelButton->model())
-                ProviderPluginProcess::instance()->quit();
+
+            ProviderPluginProcess *pluginProcess = ProviderPluginProcess::instance();
+
+            if (queryBox.clickedButton() == continueButton->model()) {
+                QVariant data(AccountsUI::ProviderPluginProxy::EDIT_EXISTING_ACCOUNT);
+                pluginProcess->setExitData(data);
+                pluginProcess->setEditExistingAccount(id);
+                pluginProcess->quit();
+            } else if (queryBox.clickedButton() == cancelButton->model()) {
+                pluginProcess->quit();
+            }
         }
     }
 
