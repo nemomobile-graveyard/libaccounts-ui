@@ -92,9 +92,9 @@ void GenericAccountSetupForm::setDomDocument(const QDomDocument& providerAccount
     model()->setProviderAccountDocumentAsString(providerAccountDocument.toString());
 }
 
-void GenericAccountSetupForm::setUsernameDisplayString(const QString &displaystring)
+void GenericAccountSetupForm::setUsernameDisplayString(const QString &displayString)
 {
-    model()->setUsernameDisplayString(displaystring);
+    model()->setUsernameDisplayString(displayString);
 }
 
 QDomDocument GenericAccountSetupForm::domDocument()

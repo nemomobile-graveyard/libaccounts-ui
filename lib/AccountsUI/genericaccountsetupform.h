@@ -49,7 +49,7 @@ public:
 
     QDomDocument domDocument();
     void setDomDocument(const QDomDocument& providerAccountDocument);
-    void setUsernameDisplayString(const QString &displaystring);
+    void setUsernameDisplayString(const QString &displayString);
     const QString username() const;
     const QString password() const;
     const QString providerName() const;

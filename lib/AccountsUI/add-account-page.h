@@ -74,7 +74,7 @@ public:
     /*!
      * Sets the label for the username.
      */
-    void setUsernameDisplayString(const QString &displaystring);
+    void setUsernameDisplayString(const QString &displayString);
 
 protected slots:
     void navigateToServiceSelectionPage();
