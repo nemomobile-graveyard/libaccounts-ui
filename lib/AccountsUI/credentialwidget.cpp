@@ -141,4 +141,10 @@ void CredentialWidget::setInformativeNoteText(const QString &text)
     model()->setInformativeNoteText(text);
 }
 
+void CredentialWidget::setUsernameDisplayString(const QString &displayString)
+{
+    Q_ASSERT(model());
+    model()->setUsernameDisplayString(displayString);
+}
+
 M_REGISTER_WIDGET_NO_CREATE(CredentialWidget);

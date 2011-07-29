@@ -64,6 +64,7 @@ public:
     void setFocusOnCaptchaField();
     void setEnabled(bool isWidgetEnabled);
     void setInformativeNoteText(const QString &text);
+    void setUsernameDisplayString(const QString &displayString);
 
 signals:
     void doSignIn();
