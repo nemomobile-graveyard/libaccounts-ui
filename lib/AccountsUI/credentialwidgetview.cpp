@@ -680,6 +680,9 @@ void CredentialWidgetView::updateData(const QList <const char *> &modifications)
             if (d->informativeNoteLabel)
                 d->informativeNoteLabel->setText(model()->informativeNoteText());
         }
+        else if (member == CredentialWidgetModel::UsernameDisplayString) {
+            d->usernameLabel->setText(qtTrId(model()->usernameDisplayString().toLatin1()));
+        }
     }
 }
 

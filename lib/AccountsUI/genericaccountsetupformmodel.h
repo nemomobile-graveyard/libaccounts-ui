@@ -34,6 +34,7 @@ class ACCOUNTSUI_EXPORT GenericAccountSetupFormModel : public MWidgetModel
 
     M_MODEL_PROPERTY(QString, providerAccountDocumentAsString, ProviderAccountDocumentAsString, true, QString())
     M_MODEL_PROPERTY(QString, username, Username, true, QString())
+    M_MODEL_PROPERTY(QString, usernameDisplayString, UsernameDisplayString, true, QString())
     M_MODEL_PROPERTY(QString, password, Password, true, QString())
     M_MODEL_PROPERTY(QString, providerName, ProviderName, true, QString())
     M_MODEL_PROPERTY(bool, rememberMe, RememberMe, true, true)

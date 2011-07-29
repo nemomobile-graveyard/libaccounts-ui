@@ -169,6 +169,12 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     M_MODEL_PROPERTY(QString, informativeNoteText, InformativeNoteText, true, QString())
 
     /*!
+        \property CredentialWidgetModel::usernameDisplayString
+        \brief .Property holding if any plugin wants to change the username label string.
+    */
+    M_MODEL_PROPERTY(QString, usernameDisplayString, UsernameDisplayString, true, QString())
+
+    /*!
         \property CredentialWidgetModel::Authentication Failed
         \brief .
     */
