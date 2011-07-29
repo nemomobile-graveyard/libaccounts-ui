@@ -396,6 +396,9 @@ void GenericAccountSetupFormView::updateData(const QList<const char*> &modificat
     MWidgetView::updateData(modifications);
 
     foreach(const char *member, modifications) {
+        if (!qstrcmp(member, "usernameDisplayString")) {
+            d->credentialWidget->setUsernameDisplayString(model()->usernameDisplayString());
+        }
         if (!qstrcmp(member, "providerAccountDocumentAsString") &&
             d->isInDomDocumentUpdate == false) {
             QDomDocument providerAccountDocument;

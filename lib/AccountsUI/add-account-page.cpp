@@ -76,6 +76,7 @@ public:
     QList<AbstractSetupContext*> abstractContexts;
     QString serviceType;
     Accounts::ServiceList hiddenServiceList;
+    QGraphicsLayoutItem *pluginWidget;
 };
 
 AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
@@ -113,8 +114,8 @@ void AddAccountPage::createContent()
             new MLinearLayoutPolicy( layout, Qt::Vertical );
 
     // plugin widget has the provider info and credentials widget
-    QGraphicsLayoutItem *pluginWidget = d->context->widget();
-    layoutPolicy->addItem(pluginWidget);
+    d->pluginWidget = d->context->widget();
+    layoutPolicy->addItem(d->pluginWidget);
 
     // TODO : this part is just for testing purposes, to jump to service selection page, without going through authentication
     if (!qgetenv("ACCOUNTSUI_SKIP_VALIDATION").isEmpty()) {
@@ -133,9 +134,9 @@ void AddAccountPage::createContent()
             this, SLOT(onError(AccountsUI::ErrorCode, const QString &)));
 
     //cancelling
-    connect((GenericAccountSetupForm*)pluginWidget, SIGNAL(stopButtonPressed()),
+    connect((GenericAccountSetupForm*)d->pluginWidget, SIGNAL(stopButtonPressed()),
             d->context, SLOT(stopAuthSession()));
-    connect((GenericAccountSetupForm*)pluginWidget, SIGNAL(stopButtonPressed()),
+    connect((GenericAccountSetupForm*)d->pluginWidget, SIGNAL(stopButtonPressed()),
             d->context, SLOT(showMenuBar()));
 }
 
@@ -149,6 +150,12 @@ AccountSyncHandler *AddAccountPage::accountSyncHandler()
 {
     Q_D(AddAccountPage);
     return d->syncHandler;
+}
+
+void AddAccountPage::setUsernameDisplayString(const QString &displayString)
+{
+    Q_D(AddAccountPage);
+    ((GenericAccountSetupForm*)d->pluginWidget)->setUsernameDisplayString(displayString);
 }
 
 void AddAccountPage::navigateToServiceSelectionPage()

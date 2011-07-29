@@ -71,6 +71,11 @@ public:
      */
     AccountSyncHandler *accountSyncHandler();
 
+    /*!
+     * Sets the label for the username.
+     */
+    void setUsernameDisplayString(const QString &displayString);
+
 protected slots:
     void navigateToServiceSelectionPage();
 
