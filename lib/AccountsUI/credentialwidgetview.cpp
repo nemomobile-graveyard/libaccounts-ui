@@ -79,7 +79,9 @@ public:
           cancelButton(0),
           keyChainDialog(0),
           identity(0),
-          registeredAttributeExtensionId(0)
+          registeredAttributeExtensionId(0),
+          usernameEmtpy(true),
+          passwordEmpty(true)
     {
         //layouts and policies init
         mainLayout = new MLayout(controller);
@@ -173,9 +175,12 @@ public:
 
     SignOn::Identity *identity;
     int registeredAttributeExtensionId;
+    bool usernameEmtpy;
+    bool passwordEmpty;
 
 public:
     void destroyAllWidgets();
+    void setVKB(MTextEdit *textEdit);
 };
 
 void CredentialWidgetViewPrivate::destroyAllWidgets()
@@ -283,6 +288,29 @@ void CredentialWidgetViewPrivate::destroyAllWidgets()
     captchaImageClicked = false;
 }
 
+
+void CredentialWidgetViewPrivate::setVKB(MTextEdit *textEdit)
+{
+    if (!textEdit->text().isEmpty()) {
+        MInputMethodState::instance()->setExtendedAttribute(registeredAttributeExtensionId,
+                                                            "/keys",
+                                                            "actionKey",
+                                                            "enabled",
+                                                            QVariant(true));
+        MInputMethodState::instance()->setExtendedAttribute(registeredAttributeExtensionId,
+                                                            "/keys",
+                                                            "actionKey",
+                                                            "highlighted",
+                                                            QVariant(true));
+    } else
+        MInputMethodState::instance()->setExtendedAttribute(registeredAttributeExtensionId,
+                                                            "/keys",
+                                                            "actionKey",
+                                                            "enabled",
+                                                            QVariant(false));
+
+}
+
 CredentialWidgetView::CredentialWidgetView(CredentialWidget *controller)
     : MWidgetView(controller),
       d_ptr(new CredentialWidgetViewPrivate(controller))
@@ -329,27 +357,29 @@ void CredentialWidgetView::passwordTextEditGainedFocus()
                                                         QVariant(false));
 }
 
-void CredentialWidgetView::onTextChanged()
+void CredentialWidgetView::onUsernameTextChanged()
 {
     Q_D(CredentialWidgetView);
     MTextEdit *textEdit = qobject_cast<MTextEdit *>(sender());
-    if (!textEdit->text().isEmpty()) {
-        MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
-                                                            "/keys",
-                                                            "actionKey",
-                                                            "enabled",
-                                                            QVariant(true));
-        MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
-                                                            "/keys",
-                                                            "actionKey",
-                                                            "highlighted",
-                                                            QVariant(true));
-    } else
-        MInputMethodState::instance()->setExtendedAttribute(d->registeredAttributeExtensionId,
-                                                            "/keys",
-                                                            "actionKey",
-                                                            "enabled",
-                                                            QVariant(false));
+    d->setVKB(textEdit);
+    if (textEdit->text().isEmpty() && d->passwordEmpty)
+        d->signInButton->setEnabled(false);
+    else
+        d->signInButton->setEnabled(true);
+    d->usernameEmtpy = textEdit->text().isEmpty();
+
+}
+
+void CredentialWidgetView::onPasswordTextChanged()
+{
+    Q_D(CredentialWidgetView);
+    MTextEdit *textEdit = qobject_cast<MTextEdit *>(sender());
+    d->setVKB(textEdit);
+    if (textEdit->text().isEmpty() && d->usernameEmtpy)
+        d->signInButton->setEnabled(false);
+    else
+        d->signInButton->setEnabled(true);
+    d->passwordEmpty = textEdit->text().isEmpty();
 }
 
 void CredentialWidgetView::closeVKB()
@@ -532,9 +562,9 @@ void CredentialWidgetView::recreateWidgets()
         connect(d->usernameTextEdit, SIGNAL(gainedFocus (Qt::FocusReason)),
                 this, SLOT(usernameTextEditGainedFocus()));
         connect(d->usernameTextEdit, SIGNAL(textChanged()),
-                this, SLOT(onTextChanged()));
+                this, SLOT(onUsernameTextChanged()));
         connect(d->passwordTextEdit, SIGNAL(textChanged()),
-                this, SLOT(onTextChanged()));
+                this, SLOT(onPasswordTextChanged()));
 
         connect(d->forgotPasswordLabel, SIGNAL(linkActivated(QString)),
                 this, SLOT(forgotPasswordClicked(QString)));
@@ -610,6 +640,8 @@ void CredentialWidgetView::recreateWidgets()
 
     d->captchaImageClicked = false;
     setEnabled(model()->enabled());
+    d->signInButton->setEnabled(false);
+
 }
 
 void CredentialWidgetView::setupModel()
