@@ -75,7 +75,8 @@ private Q_SLOTS:
     void passwordTextEditSetFocus();
     void closeVKB();
     void passwordTextEditGainedFocus();
-    void onTextChanged();
+    void onUsernameTextChanged();
+    void onPasswordTextChanged();
 
 private:
     void configureWithCaptcha(int &portraitRow, int &landscapeRow);
