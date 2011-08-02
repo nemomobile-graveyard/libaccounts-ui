@@ -129,6 +129,15 @@ public:
 
     QString translatedProviderName() const;
 
+    /*!
+     * Informs accounts-ui that the already existing account which the plugin
+     * instance attempted to create, should be edited when the plugin exits.
+     * @param accountId Id of the account to be edited.
+     * @note Use this method when attempting to create a duplicate account and
+     * a UI decision to edit the already existing account was taken.
+     */
+    void setEditExistingAccount(Accounts::AccountId accountId);
+
 public Q_SLOTS:
     /*!
      * Clean termination of the plugin process.
