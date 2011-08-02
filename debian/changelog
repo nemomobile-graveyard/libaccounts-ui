@@ -1,7 +1,6 @@
 libaccounts-ui (1.3-1) unstable; urgency=low
 
   * UNRELEASED
-  * Fixes: NB#268690 - Creating a duplicate Google account: Error message is not complete.
   * Fixes: NB#249627 - Accounts&SSO; After creation of duplicate account button §qtn_comm_command_continue§ doesn't move to edit setting view.
 
  -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Fri, 29 Jul 2011 11:18:00 +0300
