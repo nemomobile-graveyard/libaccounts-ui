@@ -23,23 +23,32 @@
 #ifndef ACCOUNTSUI_BASICHEADERWIDGET_H
 #define ACCOUNTSUI_BASICHEADERWIDGET_H
 
-#include <MBasicListItem>
+#include <MWidgetController>
 #include <QObject>
 
 namespace AccountsUI {
 
-class BasicHeaderWidget : public MBasicListItem
+enum BasicHeaderWidgetType {
+    TitleAndSubtitle,
+    IconWithTitleAndSubTitle
+};
+
+class BasicHeaderWidgetPrivate;
+
+class BasicHeaderWidget : public MWidgetController
 {
     Q_OBJECT
 
 public:
-    BasicHeaderWidget(MBasicListItem::ItemStyle style = IconWithTitleAndSubtitle,
-                      QGraphicsItem *parent = 0);
-
+    BasicHeaderWidget(BasicHeaderWidgetType type, QGraphicsItem *parent = 0);
+    void setTitle(const QString &titleText);
+    void setSubtitle(const QString &subtitleText);
     void setImage(const QString &imageId);
 
 private:
+    BasicHeaderWidgetPrivate *d_ptr;
     Q_DISABLE_COPY(BasicHeaderWidget)
+    Q_DECLARE_PRIVATE(BasicHeaderWidget)
 };
 
 } // namespace

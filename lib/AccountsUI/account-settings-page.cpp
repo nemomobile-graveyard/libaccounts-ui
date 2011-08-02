@@ -494,15 +494,14 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
         }
     }
 
-    BasicHeaderWidget *usernameAndStatus =
-        new BasicHeaderWidget(MBasicListItem::IconWithTitleAndSubtitle, this);
+    BasicHeaderWidget *usernameAndStatus = new BasicHeaderWidget(IconWithTitleAndSubTitle, this);
     usernameAndStatus->setImage(providerIconId);
     usernameAndStatus->setTitle(qtTrId(provider->displayName().toLatin1()));
     usernameAndStatus->setSubtitle(d->account->displayName());
 
     MSeparator *separatorTop = new MSeparator(this);
     separatorTop->setOrientation(Qt::Horizontal);
-    separatorTop->setStyleName("CommonHeaderDividerInverted");
+    separatorTop->setStyleName("CommonItemDividerInverted");
 
     d->enableButton = new MButton(this);
     d->enableButton->setViewType(MButton::switchType);
