@@ -1,3 +1,9 @@
+libaccounts-ui (1.4-1) unstable; urgency=low
+
+  * Fixes: NB#243829 - Sign-in button should be dimmed in Account log-in view when no text entered
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 02 Aug 2011 12:03:32 +0300
+
 libaccounts-ui (1.3-1) unstable; urgency=low
 
   * Fixes: NB#268690 - Creating a duplicate Google account: Error message is not complete.
