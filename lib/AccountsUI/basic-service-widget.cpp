@@ -20,24 +20,21 @@
  * 02110-1301 USA
  */
 
-#ifndef BASICHEADERWIDGET_H
-#define BASICHEADERWIDGET_H
+#include "basic-service-widget.h"
 
-#include "basic-item-widget.h"
-#include <QObject>
+//Qt
+#include <QDebug>
 
 namespace AccountsUI {
 
-class BasicHeaderWidget : public BasicItemWidget
+BasicServiceWidget::BasicServiceWidget(BasicItemWidgetType type, QGraphicsItem *parent)
+        :BasicItemWidget(type, parent)
 {
-    Q_OBJECT
+    setStyleName("CommonLargePanelInverted");
+}
 
-public:
-    BasicHeaderWidget(BasicItemWidgetType type, QGraphicsItem *parent = 0);
-    ~BasicHeaderWidget();
-};
+BasicServiceWidget::~BasicServiceWidget()
+{}
 
-} // namespace
+}
 
-
-#endif // BASICHEADERWIDGET_H

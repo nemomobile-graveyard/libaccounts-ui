@@ -158,7 +158,8 @@ void ServiceSelectionPage::createContent()
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
 
-            BasicHeaderWidget *providerInfoItem = new BasicHeaderWidget(IconWithTitleAndSubTitle, this);
+            BasicHeaderWidget *providerInfoItem = new BasicHeaderWidget(BasicHeaderWidget::IconWithTitle, this);
+            providerInfoItem->createLayout();
             providerInfoItem->setImage(providerIconId);
             providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
             providerInfoItem->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));

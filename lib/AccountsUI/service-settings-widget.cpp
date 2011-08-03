@@ -25,7 +25,7 @@
 #include "abstract-service-setup-context.h"
 #include "settings-page.h"
 #include "service-helper.h"
-#include "basic-header-widget.h"
+#include "basic-service-widget.h"
 
 //M
 #include <MBasicListItem>
@@ -138,7 +138,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
     ServiceSettingsWidgetListItem *serviceInfoList = 0;
-    BasicHeaderWidget *serviceInfoLayout = 0;
+    BasicServiceWidget *serviceInfoLayout = 0;
 
     if (settingsConf & EnableButton) {
         if (context) {
@@ -165,7 +165,8 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
                 serviceInfoList->setSubtitle(subTitle);
                 serviceInfo = serviceInfoList;
             } else {
-                serviceInfoLayout = new BasicHeaderWidget(MBasicListItem::TitleWithSubtitle, this);
+                serviceInfoLayout = new BasicServiceWidget(BasicServiceWidget::TitleAndSubtitle, this);
+                serviceInfoLayout->createLayout();
                 serviceInfoLayout->setTitle(serviceHelper->prettyName());
                 serviceInfoLayout->setSubtitle(subTitle);
                 serviceInfo = serviceInfoLayout;

@@ -1,9 +1,9 @@
 /*
  * This file is part of accounts-ui
  *
- * Copyright (C) 2009-2011 Nokia Corporation.
+ * Copyright (C) 2009-2010 Nokia Corporation.
  *
- * Contact: Alberto Mardegan <alberto.mardegan@nokia.com>
+ * Contact: Tomi Suviola <tomi.suviola@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -22,89 +22,18 @@
 
 #include "basic-header-widget.h"
 
-#include <MImageWidget>
-#include <MLabel>
-#include <MLayout>
-#include <MLinearLayoutPolicy>
-
 //Qt
 #include <QDebug>
 
 namespace AccountsUI {
 
-class BasicHeaderWidgetPrivate: public QObject
+BasicHeaderWidget::BasicHeaderWidget(BasicItemWidgetType type, QGraphicsItem *parent)
+        :BasicItemWidget(type, parent)
 {
-public:
-    BasicHeaderWidgetPrivate()
-        :image(0),
-        title(0),
-        subtitle(0)
-    {}
-
-    ~BasicHeaderWidgetPrivate() {}
-
-public:
-    MImageWidget *image;
-    MLabel *title;
-    MLabel *subtitle;
-};
-
-BasicHeaderWidget::BasicHeaderWidget(BasicHeaderWidgetType type, QGraphicsItem *parent)
-        :MWidgetController(parent),
-        d_ptr(new BasicHeaderWidgetPrivate())
-{
-    Q_D(BasicHeaderWidget);
-
     setStyleName("CommonPanelInverted");
-
-    MLayout *mainLayout = new MLayout();
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    MLinearLayoutPolicy *mainLayoutPolicy = new MLinearLayoutPolicy(mainLayout, Qt::Horizontal);
-
-    MLayout *titleLayout = new MLayout();
-    MLinearLayoutPolicy *titleLayoutPolicy = new MLinearLayoutPolicy(titleLayout, Qt::Vertical);
-
-    d->title = new MLabel();
-    d->title->setStyleName("CommonTitleInverted");
-    d->title->setTextElide(true);
-    d->subtitle = new MLabel();
-    d->subtitle->setStyleName("CommonSubTitleInverted");
-    d->subtitle->setWordWrap(true);
-    d->subtitle->setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-    d->subtitle->setTextElide(false);
-
-    titleLayoutPolicy->addItem(d->title);
-    titleLayoutPolicy->addItem(d->subtitle);
-    // Add an empty item to push the subtitle up
-    titleLayoutPolicy->addItem(new QGraphicsWidget());
-
-    if (type == IconWithTitleAndSubTitle) {
-        d->image = new MImageWidget();
-        d->image->setStyleName("CommonMainIcon");
-        mainLayoutPolicy->addItem(d->image);
-    }
-
-    mainLayoutPolicy->addItem(titleLayout);
-
-    setLayout(mainLayout);
 }
 
-void BasicHeaderWidget::setTitle(const QString &titleText)
-{
-    Q_D(BasicHeaderWidget);
-    d->title->setText(titleText);
-}
+BasicHeaderWidget::~BasicHeaderWidget()
+{}
 
-void BasicHeaderWidget::setSubtitle(const QString &subtitleText)
-{
-    Q_D(BasicHeaderWidget);
-    d->subtitle->setText(subtitleText);
 }
-
-void BasicHeaderWidget::setImage(const QString &imageId)
-{
-    Q_D(BasicHeaderWidget);
-    d->image->setImage(imageId);
-}
-
-} // namespace
