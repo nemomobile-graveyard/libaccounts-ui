@@ -20,24 +20,40 @@
  * 02110-1301 USA
  */
 
-#ifndef BASICHEADERWIDGET_H
-#define BASICHEADERWIDGET_H
+#ifndef ACCOUNTSUI_BASICITEMWIDGET_H
+#define ACCOUNTSUI_BASICITEMWIDGET_H
 
-#include "basic-item-widget.h"
+#include <MWidgetController>
 #include <QObject>
 
 namespace AccountsUI {
 
-class BasicHeaderWidget : public BasicItemWidget
+class BasicItemWidgetPrivate;
+
+class BasicItemWidget : public MWidgetController
 {
     Q_OBJECT
+public:
+    enum BasicItemWidgetType {
+        TitleAndSubtitle,
+        IconWithTitle,
+        IconWithTitleAndSubTitle
+    };
 
 public:
-    BasicHeaderWidget(BasicItemWidgetType type, QGraphicsItem *parent = 0);
-    ~BasicHeaderWidget();
+    BasicItemWidget(BasicItemWidgetType type, QGraphicsItem *parent = 0);
+    virtual void createLayout();
+    void setTitle(const QString &titleText);
+    void setSubtitle(const QString &subtitleText);
+    void setImage(const QString &imageId);
+
+private:
+    BasicItemWidgetPrivate *d_ptr;
+    Q_DISABLE_COPY(BasicItemWidget)
+    Q_DECLARE_PRIVATE(BasicItemWidget)
 };
 
 } // namespace
 
+#endif // ACCOUNTSUI_BASICITEMWIDGET_H
 
-#endif // BASICHEADERWIDGET_H

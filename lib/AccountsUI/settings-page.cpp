@@ -110,22 +110,18 @@ void SettingsPage::createContent()
 
     ServiceHelper *serviceHepler =
         new ServiceHelper(const_cast<Accounts::Service*>(d->context->service()), this);
-
     BasicHeaderWidget *usernameAndStatus = 0;
 
     if (d->context->account()->id() == 0) {
-        usernameAndStatus = new BasicHeaderWidget(
-            MBasicListItem::IconWithTitle, this);
+        usernameAndStatus = new BasicHeaderWidget(BasicHeaderWidget::IconWithTitle, this);
+        usernameAndStatus->createLayout();
     } else {
-        usernameAndStatus = new BasicHeaderWidget(
-            MBasicListItem::IconWithTitleAndSubtitle, this);
-        usernameAndStatus->setSubtitle(
-            qtTrId(d->context->account()->displayName().toLatin1()));
+        usernameAndStatus = new BasicHeaderWidget(BasicHeaderWidget::IconWithTitleAndSubTitle, this);
+        usernameAndStatus->createLayout();
+        usernameAndStatus->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));
     }
 
-    usernameAndStatus->setStyleName("CommonBasicListItemInverted");
-    usernameAndStatus->setObjectName("wgSettingsPageCommonBasicListItem");
-    usernameAndStatus->imageWidget()->setImage(providerIconId);
+    usernameAndStatus->setImage(providerIconId);
     usernameAndStatus->setTitle(serviceHepler->prettyName());
 
     MSeparator *separatorTop = new MSeparator(this);

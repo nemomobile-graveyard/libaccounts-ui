@@ -1,9 +1,9 @@
 /*
  * This file is part of accounts-ui
  *
- * Copyright (C) 2009-2011 Nokia Corporation.
+ * Copyright (C) 2009-2010 Nokia Corporation.
  *
- * Contact: Alberto Mardegan <alberto.mardegan@nokia.com>
+ * Contact: Tomi Suviola <tomi.suviola@nokia.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -22,58 +22,18 @@
 
 #include "basic-header-widget.h"
 
-//M
-#include <MLabel>
-#include <MImageWidget>
-
 //Qt
 #include <QDebug>
 
 namespace AccountsUI {
 
-BasicHeaderWidget::BasicHeaderWidget(MBasicListItem::ItemStyle style,
-                                     QGraphicsItem *parent)
-    : MBasicListItem(style, parent)
+BasicHeaderWidget::BasicHeaderWidget(BasicItemWidgetType type, QGraphicsItem *parent)
+        :BasicItemWidget(type, parent)
 {
-    setStyleName("CommonBasicListItemInverted");
-    titleLabelWidget()->setTextElide(true);
-
-    /* Any of the MBasicListItem's subwidget getters also create
-     * the specific subwidget if it is not already created, so
-     * calling them, only within context */
-    switch (style) {
-    case MBasicListItem::SingleTitle:
-        titleLabelWidget()->setStyleName("CommonHeaderInverted");
-        break;
-    case MBasicListItem::TitleWithSubtitle:
-        titleLabelWidget()->setStyleName("CommonTitleInverted");
-        subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
-        subtitleLabelWidget()->setTextElide(true);
-        break;
-    case MBasicListItem::IconWithTitle:
-        imageWidget()->setStyleName("CommonMainIcon");
-        titleLabelWidget()->setStyleName("CommonHeaderInverted");
-        break;
-    case MBasicListItem::IconWithTitleAndSubtitle:
-        imageWidget()->setStyleName("CommonMainIcon");
-        titleLabelWidget()->setStyleName("CommonTitleInverted");
-        subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
-        subtitleLabelWidget()->setTextElide(true);
-        break;
-    default:
-        break;
-    }
+    setStyleName("CommonPanelInverted");
 }
 
-void BasicHeaderWidget::setImage(const QString &imageId)
-{
-    MBasicListItem::ItemStyle style = itemStyle();
-    bool hasIconWidget =
-        (style == MBasicListItem::IconWithTitle)
-        || (style == IconWithTitleAndSubtitle);
+BasicHeaderWidget::~BasicHeaderWidget()
+{}
 
-    if (hasIconWidget)
-        imageWidget()->setImage(imageId);
 }
-
-} // namespace

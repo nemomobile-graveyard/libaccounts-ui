@@ -77,9 +77,11 @@ HEADERS += account-plugin-interface.h \
     validation-data.h \
     account-setup-finished-widget.h \
     plugin-service.h \
-    basic-header-widget.h \
+    basic-item-widget.h \
     avatar-selector.h \
-    imagecontentprovider.h
+    imagecontentprovider.h \
+    basic-header-widget.h \
+    basic-service-widget.h
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
     abstract-setup-context.cpp \
@@ -114,9 +116,11 @@ SOURCES += abstract-account-setup-context.cpp \
     accountlistitem.cpp \
     account-setup-finished-widget.cpp \
     plugin-service.cpp \
-    basic-header-widget.cpp \
+    basic-item-widget.cpp \
     avatar-selector.cpp \
-    imagecontentprovider.cpp
+    imagecontentprovider.cpp \
+    basic-header-widget.cpp \
+    basic-service-widget.cpp
 MODEL_HEADERS += \
     credentialwidgetmodel.h \
     genericaccountsetupformmodel.h
