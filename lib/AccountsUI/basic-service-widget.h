@@ -20,24 +20,24 @@
  * 02110-1301 USA
  */
 
-#ifndef BASICHEADERWIDGET_H
-#define BASICHEADERWIDGET_H
+#ifndef BASICSERVICEWIDGET_H
+#define BASICSERVICEWIDGET_H
 
 #include "basic-item-widget.h"
 #include <QObject>
 
 namespace AccountsUI {
 
-class BasicHeaderWidget : public BasicItemWidget
+class BasicServiceWidget : public BasicItemWidget
 {
     Q_OBJECT
 
 public:
-    BasicHeaderWidget(BasicItemWidgetType type, QGraphicsItem *parent = 0);
-    ~BasicHeaderWidget();
+    BasicServiceWidget(BasicItemWidgetType type, QGraphicsItem *parent = 0);
+    ~BasicServiceWidget();
+
 };
 
 } // namespace
 
-
-#endif // BASICHEADERWIDGET_H
+#endif // BASICSERVICEWIDGET_H
