@@ -455,7 +455,8 @@ void CredentialWidgetView::recreateWidgets()
 
         if (!model()->usernameEditable()) {
 
-            d->usernameHeader = new AccountsUI::BasicHeaderWidget(MBasicListItem::IconWithTitleAndSubtitle);
+            d->usernameHeader = new AccountsUI::BasicHeaderWidget(AccountsUI::BasicHeaderWidget::IconWithTitleAndSubTitle);
+            d->usernameHeader->createLayout();
             //Add icon here
             if (!model()->serviceIcon().isEmpty()) {
                 d->usernameHeader->setImage(model()->serviceIcon());
