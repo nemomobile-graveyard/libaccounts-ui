@@ -362,12 +362,13 @@ void CredentialWidgetView::onUsernameTextChanged()
     Q_D(CredentialWidgetView);
     MTextEdit *textEdit = qobject_cast<MTextEdit *>(sender());
     d->setVKB(textEdit);
-    if (textEdit->text().isEmpty() && d->passwordEmpty)
-        d->signInButton->setEnabled(false);
-    else
-        d->signInButton->setEnabled(true);
+    if (d->signInButton) {
+        if (textEdit->text().isEmpty() && d->passwordEmpty)
+            d->signInButton->setEnabled(false);
+        else
+            d->signInButton->setEnabled(true);
+    }
     d->usernameEmtpy = textEdit->text().isEmpty();
-
 }
 
 void CredentialWidgetView::onPasswordTextChanged()
@@ -375,10 +376,12 @@ void CredentialWidgetView::onPasswordTextChanged()
     Q_D(CredentialWidgetView);
     MTextEdit *textEdit = qobject_cast<MTextEdit *>(sender());
     d->setVKB(textEdit);
-    if (textEdit->text().isEmpty() && d->usernameEmtpy)
-        d->signInButton->setEnabled(false);
-    else
-        d->signInButton->setEnabled(true);
+    if (d->signInButton) {
+        if (textEdit->text().isEmpty() && d->usernameEmtpy)
+            d->signInButton->setEnabled(false);
+        else
+            d->signInButton->setEnabled(true);
+    }
     d->passwordEmpty = textEdit->text().isEmpty();
 }
 
@@ -557,15 +560,17 @@ void CredentialWidgetView::recreateWidgets()
         connect(d->passwordTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
                 this, SLOT(refreshPasswordInModel()));
 
-        connect(d->usernameTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
-                this, SLOT(refreshUsernameInModel()));
-
-        connect(d->usernameTextEdit, SIGNAL(gainedFocus (Qt::FocusReason)),
-                this, SLOT(usernameTextEditGainedFocus()));
-        connect(d->usernameTextEdit, SIGNAL(textChanged()),
-                this, SLOT(onUsernameTextChanged()));
         connect(d->passwordTextEdit, SIGNAL(textChanged()),
                 this, SLOT(onPasswordTextChanged()));
+
+        if (d->usernameTextEdit) {
+            connect(d->usernameTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
+                    this, SLOT(refreshUsernameInModel()));
+            connect(d->usernameTextEdit, SIGNAL(gainedFocus (Qt::FocusReason)),
+                    this, SLOT(usernameTextEditGainedFocus()));
+            connect(d->usernameTextEdit, SIGNAL(textChanged()),
+                    this, SLOT(onUsernameTextChanged()));
+        }
 
         connect(d->forgotPasswordLabel, SIGNAL(linkActivated(QString)),
                 this, SLOT(forgotPasswordClicked(QString)));
@@ -641,7 +646,8 @@ void CredentialWidgetView::recreateWidgets()
 
     d->captchaImageClicked = false;
     setEnabled(model()->enabled());
-    d->signInButton->setEnabled(false);
+    if (d->signInButton)
+        d->signInButton->setEnabled(false);
 
 }
 
