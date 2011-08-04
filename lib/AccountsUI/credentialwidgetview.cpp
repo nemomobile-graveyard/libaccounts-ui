@@ -514,7 +514,6 @@ void CredentialWidgetView::recreateWidgets()
             d->passwordLayoutPolicy->addItem(d->authFailureLabel);
             d->passwordLayoutPolicy->addItem(d->authFailureCloseLabel);
         }
-        d->passwordLayoutPolicy->addStretch();
 
         if (model()->focusOnPasswordField())
             setFocusOnPasswordField();
