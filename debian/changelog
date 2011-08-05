@@ -1,3 +1,10 @@
+libaccounts-ui (1.5-1) unstable; urgency=low
+
+  * Fixes: NB#249040 - Switch labels should not highlight text on press
+  * Fixes: NB#266274 - §qtn_comm_share_wrong_credentials§ Wrong spacing in Dish
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 05 Aug 2011 06:32:03 +0300
+
 libaccounts-ui (1.4-1) unstable; urgency=low
 
   * Fixes: NB#243829 - Sign-in button should be dimmed in Account log-in view when no text entered
