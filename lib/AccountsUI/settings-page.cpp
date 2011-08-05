@@ -25,6 +25,7 @@
 #include "abstract-service-setup-context.h"
 #include "accountsmanagersingleton.h"
 #include "service-helper.h"
+#include "basic-header-widget.h"
 
 //Accounts
 #include <Accounts/Account>
