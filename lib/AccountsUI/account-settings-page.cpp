@@ -502,7 +502,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
 
     MSeparator *separatorTop = new MSeparator(this);
     separatorTop->setOrientation(Qt::Horizontal);
-    separatorTop->setStyleName("CommonItemDividerInverted");
+    separatorTop->setStyleName("CommonHeaderDividerInverted");
 
     d->enableButton = new MButton(this);
     d->enableButton->setViewType(MButton::switchType);

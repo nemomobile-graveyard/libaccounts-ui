@@ -123,7 +123,6 @@ void SettingsPage::createContent()
 
     usernameAndStatus->setImage(providerIconId);
     usernameAndStatus->setTitle(serviceHepler->prettyName());
-    usernameAndStatus->setSubtitle(serviceHepler->description());
 
     MSeparator *separatorTop = new MSeparator(this);
     separatorTop->setStyleName("CommonHeaderDividerInverted");

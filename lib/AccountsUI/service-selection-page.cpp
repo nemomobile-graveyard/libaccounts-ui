@@ -162,7 +162,6 @@ void ServiceSelectionPage::createContent()
             providerInfoItem->createLayout();
             providerInfoItem->setImage(providerIconId);
             providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
-            providerInfoItem->setSubtitle(qtTrId(d->context->account()->displayName().toLatin1()));
             providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
             topLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -186,7 +185,7 @@ void ServiceSelectionPage::createContent()
         }
 
         MSeparator *separatorTop = new MSeparator(this);
-        separatorTop->setStyleName("CommonItemDividerInverted");
+        separatorTop->setStyleName("CommonHeaderDividerInverted");
         separatorTop->setOrientation(Qt::Horizontal);
 
         upperLayoutPolicy->addItem(topLayout);
