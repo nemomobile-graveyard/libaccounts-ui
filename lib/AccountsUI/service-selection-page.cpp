@@ -130,7 +130,6 @@ void ServiceSelectionPage::createContent()
     MLayout *layout = new MLayout(centralWidget);
     MLinearLayoutPolicy *layoutPolicy = new MLinearLayoutPolicy(layout, Qt::Vertical);
     layoutPolicy->setSpacing(0);
-    layoutPolicy->setContentsMargins(0, 0, 0, 0);
 
     if (d->context) {
         MWidget *upperWidget = new MWidget(this);
@@ -198,7 +197,6 @@ void ServiceSelectionPage::createContent()
     MLayout *serviceSettingLayout = new MLayout(serviceWidget);
     d->layoutServicePolicy = new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
     d->layoutServicePolicy->setSpacing(0);
-    d->layoutServicePolicy->setContentsMargins(0, 0, 0 ,0);
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         bool serviceStatus = true;

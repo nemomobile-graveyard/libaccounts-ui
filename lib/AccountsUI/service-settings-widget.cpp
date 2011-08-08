@@ -46,7 +46,7 @@ namespace AccountsUI {
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
         : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
-    setStyleName("CommonLargePanelInverted");
+    setStyleName("CommonLargePanel");
     setObjectName("wgServiceSettingsWidgetListItem");
 
     horizontalLayout = new MLayout(this);
@@ -128,15 +128,13 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     }
 
     MLayout *containerMainLayout = new MLayout(this);
-    MLinearLayoutPolicy *mainPolicy =
-        new MLinearLayoutPolicy(containerMainLayout, Qt::Vertical);
+    MLinearLayoutPolicy *mainPolicy = new MLinearLayoutPolicy(containerMainLayout, Qt::Vertical);
     mainPolicy->setSpacing(0);
     mainPolicy->setContentsMargins(0,0,0,0);
 
     MWidget *upperWidget = new MWidget(this);
     MLayout *upperLayout = new MLayout(upperWidget);
-    MLinearLayoutPolicy *containerMainPolicy =
-        new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
+    MLinearLayoutPolicy *containerMainPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
     ServiceSettingsWidgetListItem *serviceInfoList = 0;
