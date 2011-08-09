@@ -80,6 +80,7 @@ void BasicItemWidget::createLayout()
         d->subtitle->setWordWrap(true);
         d->subtitle->setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
         d->subtitle->setTextElide(false);
+        d->subtitle->setPreferredWidth(QFontMetrics(d->subtitle->font()).height() * 1000);
         titleLayoutPolicy->addItem(d->title, Qt::AlignLeft | Qt::AlignTop);
         titleLayoutPolicy->addItem(d->subtitle, Qt::AlignLeft | Qt::AlignTop);
         break;
