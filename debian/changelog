@@ -1,3 +1,10 @@
+libaccounts-ui (1.6-1) unstable; urgency=low
+
+  * Fixes: NB#249040 - Switch labels should not highlight text on press
+  * Fixes: NB#275693 - Signon-ui crashes while opening the Login dialog after changing the password in server side
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 09 Aug 2011 07:20:42 +0300
+
 libaccounts-ui (1.5-1) unstable; urgency=low
 
   * Fixes: NB#249040 - Switch labels should not highlight text on press
