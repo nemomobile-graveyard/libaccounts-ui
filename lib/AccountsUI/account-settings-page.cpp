@@ -67,6 +67,8 @@
 #include <QDebug>
 #include <QBuffer>
 
+#include <sysinfo.h>
+
 #define INFO_BANNER_TIMEOUT 3000
 
 using namespace AccountsUI;
@@ -541,8 +543,27 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     spacer->setStyleName("CommonSmallSpacer");
     upperLayoutPolicy->addItem(spacer);
 
+    struct system_config *sc = 0;
+    QByteArray name;
+
+    if (sysinfo_init(&sc) == 0) {
+        uint8_t *data = 0;
+        unsigned long size = 0;
+
+        if (sysinfo_get_value(sc, "/device/sw-release-ver",
+                              &data, &size) == 0) {
+            name = QByteArray((const char *)(data), size);
+            free(data);
+        }
+        sysinfo_finish(sc);
+    }
+
     QDomElement root = provider->domDocument().documentElement();
     d->avatar = root.firstChildElement("display-avatar");
+
+    if (name.endsWith("003"))
+        d->avatar.clear();
+
     if (d->avatar.text() == "true") {
         d->avatarItem = new AvatarListItem();
         connect(d->avatarItem, SIGNAL(clicked()), this, SLOT(changeAvatar()));
