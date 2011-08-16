@@ -1,3 +1,9 @@
+libaccounts-ui (1.7-1) unstable; urgency=low
+
+  * Fixes: NB#277285 - Accounts & SSO; Can't edit or delete google account in Account application
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Tue, 16 Aug 2011 16:18:38 +0300
+
 libaccounts-ui (1.6-1) unstable; urgency=low
 
   * Fixes: NB#249040 - Switch labels should not highlight text on press
