@@ -20,6 +20,7 @@ public:
     AvatarSelector(QObject *parent = NULL);
     ~AvatarSelector();
     void launch();
+    void init();
 
 signals:
     void avatarSelected(const QImage &image);
@@ -30,13 +31,11 @@ private Q_SLOTS:
     void onSingleSelectionCancelled();
 
 private:
-
-    void init();
-
     GalleryModel *galleryModel;
     ImageContentProvider *imageContentprovider;
     GalleryGridPage *gridPage;
     GalleryFullScreenPage *fullScreenPage;
+    bool alreadyInitialized;
 
 };
 }

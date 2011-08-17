@@ -843,6 +843,7 @@ void AccountSettingsPage::changeAvatar()
 {
     Q_D(const AccountSettingsPage);
     qDebug() << Q_FUNC_INFO;
+    d->avatarSelector->init();
     connect(d->avatarSelector, SIGNAL(avatarSelected(const QImage &)),
             d, SLOT(onAvatarSelectedFromGallery(const QImage &)));
     d->avatarSelector->launch();
