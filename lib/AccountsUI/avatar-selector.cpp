@@ -15,9 +15,7 @@ AvatarSelector::AvatarSelector(QObject *parent)
     galleryModel->addContentProvider(imageContentprovider);
     gridPage = new GalleryGridPage(*galleryModel);
     fullScreenPage = new GalleryFullScreenPage(*galleryModel);
-
-    init();
-
+    alreadyInitialized = false;
 }
 
 AvatarSelector::~AvatarSelector()
@@ -47,19 +45,21 @@ AvatarSelector::~AvatarSelector()
 
 void AvatarSelector::init()
 {
-    // Grid page
-    gridPage->setTopBarText(//% "Set as avatar"
-            qtTrId("qtn_comm_set_avatar"));
-    gridPage->showTopBar(true);
-    gridPage->selectItem();
-    gridPage->setNavigationBarVisible(true);
-    connect(gridPage, SIGNAL(itemSelected(QUrl)), this, SLOT(onGridItemSelected(QUrl)));
-    connect(gridPage, SIGNAL(singleSelectionCancelled()), this, SLOT(onSingleSelectionCancelled()));
+    if (!alreadyInitialized) {
+        // Grid page
+        gridPage->setTopBarText(//% "Set as avatar"
+                qtTrId("qtn_comm_set_avatar"));
+        gridPage->showTopBar(true);
+        gridPage->selectItem();
+        gridPage->setNavigationBarVisible(true);
+        connect(gridPage, SIGNAL(itemSelected(QUrl)), this, SLOT(onGridItemSelected(QUrl)));
+        connect(gridPage, SIGNAL(singleSelectionCancelled()), this, SLOT(onSingleSelectionCancelled()));
 
-    // Fullscreen page
-    connect(fullScreenPage, SIGNAL(croppingDone(QImage)), this, SLOT(onCroppingDone(QImage)));
-    connect(fullScreenPage, SIGNAL(croppingCancelled()), &fullScreenPage->sheet(), SLOT(disappear()));
-
+        // Fullscreen page
+        connect(fullScreenPage, SIGNAL(croppingDone(QImage)), this, SLOT(onCroppingDone(QImage)));
+        connect(fullScreenPage, SIGNAL(croppingCancelled()), &fullScreenPage->sheet(), SLOT(disappear()));
+        alreadyInitialized = true;
+    }
 }
 
 void AvatarSelector::launch()
