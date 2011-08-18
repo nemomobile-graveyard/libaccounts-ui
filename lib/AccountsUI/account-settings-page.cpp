@@ -567,8 +567,8 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     if (d->avatar.text() == "true") {
         d->avatarItem = new AvatarListItem();
         connect(d->avatarItem, SIGNAL(clicked()), this, SLOT(changeAvatar()));
-        //TODO: replace the title by logical id when its provided
-        d->avatarItem->setTitle("Avatar");
+        //% Avatar
+        d->avatarItem->setTitle(qtTrId("qtn_acc_avatar"));
         d->panelPolicy->addItem(d->avatarItem);
         d->avatarSelector = new AvatarSelector();
 
