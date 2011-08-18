@@ -24,11 +24,15 @@
 #define BASICHEADERWIDGET_H
 
 #include "basic-item-widget.h"
+
+//libAccountsUI
+#include <AccountsUI/common.h>
+
 #include <QObject>
 
 namespace AccountsUI {
 
-class BasicHeaderWidget : public BasicItemWidget
+class ACCOUNTSUI_EXPORT BasicHeaderWidget : public BasicItemWidget
 {
     Q_OBJECT
 

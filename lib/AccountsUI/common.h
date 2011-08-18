@@ -47,11 +47,13 @@ typedef SignOn::Error::ErrorType SignonErrType;
  * @param providerName the provider name.
  * @returns corresponding translation id string.
  */
+ACCOUNTSUI_EXPORT
 const QString trIdFromSignonError(const SignonErrType err, const QString& providerName = NULL);
 
 /*!
  * @overload trIdFromSignonError(const SignonErrType err)
  */
+ACCOUNTSUI_EXPORT
 const QString trIdFromSignonError(const int err);
 
 #ifndef ACCOUNTSUI_DISABLE_DEPRECATED
