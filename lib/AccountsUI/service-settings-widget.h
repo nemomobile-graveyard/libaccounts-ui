@@ -23,6 +23,9 @@
 #ifndef ACCOUNTSUI_SERVICESETTINGSWIDGET_H
 #define ACCOUNTSUI_SERVICESETTINGSWIDGET_H
 
+//libAccountsUI
+#include <AccountsUI/common.h>
+
 //M
 #include <MContainer>
 #include <MWidget>
@@ -38,7 +41,7 @@ class AbstractServiceSetupContext;
  *  It gives one switch to enable/disable settings and below are
  * all the settings.
  */
-class ServiceSettingsWidget : public MWidget
+class ACCOUNTSUI_EXPORT ServiceSettingsWidget : public MWidget
 {
 Q_OBJECT;
 public:

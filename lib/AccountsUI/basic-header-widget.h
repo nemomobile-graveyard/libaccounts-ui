@@ -24,6 +24,10 @@
 #define BASICHEADERWIDGET_H
 
 #include "basic-item-widget.h"
+
+//libAccountsUI
+#include <AccountsUI/common.h>
+
 #include <QObject>
 
 #include <AccountsUI/common.h>
