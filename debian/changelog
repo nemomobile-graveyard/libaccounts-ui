@@ -1,3 +1,10 @@
+libaccounts-ui (1.8-1) unstable; urgency=low
+
+  * Fixes: NB#275639 - Google account settings view stucks while opening
+  * Adding avatar logical id
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 18 Aug 2011 13:56:17 +0300
+
 libaccounts-ui (1.7-1) unstable; urgency=low
 
   * Fixes: NB#277285 - Accounts & SSO; Can't edit or delete google account in Account application
