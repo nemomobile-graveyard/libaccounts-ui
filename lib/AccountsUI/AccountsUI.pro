@@ -150,6 +150,10 @@ headers.files += AccountPluginInterface \
     accountsmanagersingleton.h \
     AddAccountPage \
     add-account-page.h \
+    BasicHeaderWidget \
+    basic-header-widget.h\
+    BasicItemWidget \
+    basic-item-widget.h \
     Common \
     common.h \
     CredentialDialog \
@@ -161,7 +165,9 @@ headers.files += AccountPluginInterface \
     debug.h \
     GenericAccountSetupContext \
     generic-account-setup-context.h \
+    GenericAccountSetupForm \
     genericaccountsetupform.h \
+    GenericAccountSetupFormModel \
     genericaccountsetupformmodel.h \
     genericaccountsetupformstyle.h \
     GenericServicePlugin \
@@ -188,6 +194,8 @@ headers.files += AccountPluginInterface \
     service-selection-page.h \
     SortServiceModel \
     sort-service-model.h \
+    service-settings-widget.h \
+    ServiceSettingsWidget \
     UiBuilder \
     ui-builder.h \
     ValidationData \

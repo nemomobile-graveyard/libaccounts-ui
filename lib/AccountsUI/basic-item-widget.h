@@ -26,6 +26,7 @@
 #include <MWidgetController>
 #include <QObject>
 
+//libAccountsUI
 #include <AccountsUI/common.h>
 
 namespace AccountsUI {
