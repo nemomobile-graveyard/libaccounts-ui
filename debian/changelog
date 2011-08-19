@@ -1,3 +1,9 @@
+libaccounts-ui (1.10-1) unstable; urgency=low
+
+  * Fixes: NB#277975 - Account & SSO: The brackets of the string §qtn_acc_auth_failed_infobanner§ are improperly displayed
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Fri, 19 Aug 2011 11:35:54 +0300
+
 libaccounts-ui (1.9-1) unstable; urgency=low
 
   * Fixes: NB#244594 - COREWEB: accounts libs, accountsetup plugins crashing for 'MfePluginProcess::MfePluginProcess
