@@ -63,9 +63,7 @@ public:
           usernameHeader(0),
           passwordTextEdit(0),
           passwordLabel(0),
-          authFailureOpenLabel(0),
           authFailureLabel(0),
-          authFailureCloseLabel(0),
           forgotPasswordLabel(0),
           rememberPasswordLabel(0),
           rememberPasswordSwitch(0),
@@ -124,9 +122,7 @@ public:
      */
     MTextEdit *passwordTextEdit;
     MLabel *passwordLabel;
-    MLabel *authFailureOpenLabel;
     MLabel *authFailureLabel;
-    MLabel *authFailureCloseLabel;
 
     /*
      * forgot password specific items
@@ -215,19 +211,9 @@ void CredentialWidgetViewPrivate::destroyAllWidgets()
         passwordLabel = NULL;
     }
 
-    if (authFailureOpenLabel) {
-        delete authFailureOpenLabel;
-        authFailureOpenLabel = NULL;
-    }
-
     if (authFailureLabel) {
         delete authFailureLabel;
         authFailureLabel = NULL;
-    }
-
-    if (authFailureCloseLabel) {
-        delete authFailureCloseLabel;
-        authFailureCloseLabel = NULL;
     }
 
     if (passwordTextEdit) {
@@ -503,19 +489,13 @@ void CredentialWidgetView::recreateWidgets()
 
         if (model()->authenticationFailed()) {
             d->passwordTextEdit->setErrorHighlight(true);
-            d->authFailureOpenLabel = new MLabel(QLatin1String("("));
-            d->authFailureOpenLabel->setStyleName("WarningLabel");
             //% "authentication failed"
-            d->authFailureLabel = new MLabel(qtTrId("qtn_acc_auth_failed_infobanner"));
+            d->authFailureLabel = new MLabel(QString("(%1)").arg(qtTrId("qtn_acc_auth_failed_infobanner")));
             d->authFailureLabel->setTextElide(true);
             d->authFailureLabel->setStyleName("WarningLabel");
             d->authFailureLabel->setWrapMode(QTextOption::WordWrap);
-            d->authFailureCloseLabel = new MLabel(QLatin1String(")"));
-            d->authFailureCloseLabel->setStyleName("WarningLabel");
 
-            d->passwordLayoutPolicy->addItem(d->authFailureOpenLabel);
             d->passwordLayoutPolicy->addItem(d->authFailureLabel);
-            d->passwordLayoutPolicy->addItem(d->authFailureCloseLabel);
         }
 
         if (model()->focusOnPasswordField())
@@ -746,14 +726,8 @@ void CredentialWidgetView::setEnabled(bool isWidgetEnabled)
     if (d->passwordLabel)
         d->passwordLabel->setEnabled(isWidgetEnabled);
 
-    if (d->authFailureOpenLabel)
-        d->authFailureOpenLabel->setEnabled(isWidgetEnabled);
-
     if (d->authFailureLabel)
         d->authFailureLabel->setEnabled(isWidgetEnabled);
-
-    if (d->authFailureCloseLabel)
-        d->authFailureCloseLabel->setEnabled(isWidgetEnabled);
 
     if (d->passwordTextEdit)
         d->passwordTextEdit->setEnabled(isWidgetEnabled);
