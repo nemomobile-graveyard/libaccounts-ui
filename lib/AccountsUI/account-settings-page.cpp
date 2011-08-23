@@ -669,8 +669,9 @@ void AccountSettingsPagePrivate::onAccountManagerReady(Tp::PendingOperation *op)
                 break;
             }
         }
-
-        bool isValid =  accountPtr->isValid();
+        bool isValid = false;
+        if (accountPtr)
+            isValid =  accountPtr->isValid();
         if (accFound && isValid) {
             connect(accountPtr->becomeReady(accountFeatures),
                     SIGNAL(finished(Tp::PendingOperation *)), this, SLOT(accountReady(Tp::PendingOperation *)));
