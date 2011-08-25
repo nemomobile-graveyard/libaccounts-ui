@@ -36,6 +36,7 @@
 #include <MButton>
 #include <MLocale>
 #include <MImageWidget>
+#include <MStylableWidget>
 
 //Qt
 #include <QDebug>
@@ -65,6 +66,10 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
     subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
+
+    MStylableWidget *widget = new MStylableWidget();
+    widget->setStyleName("CommonSpacer");
+    titleSubtitleLayoutPolicy->addItem(widget, Qt::AlignLeft | Qt::AlignTop);
 
     horizontalLayoutPolicy->addItem(titleSubtitleLayout, Qt::AlignLeft | Qt::AlignCenter);
 
