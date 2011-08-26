@@ -184,12 +184,22 @@ void ServiceSelectionPage::createContent()
             topLayoutPolicy->addItem(accountConnectedMessageLabel, Qt::AlignLeft | Qt::AlignVCenter);
         }
 
-        MSeparator *separatorTop = new MSeparator(this);
-        separatorTop->setStyleName("CommonHeaderDividerInverted");
-        separatorTop->setOrientation(Qt::Horizontal);
-
         upperLayoutPolicy->addItem(topLayout);
-        upperLayoutPolicy->addItem(separatorTop);
+
+        if (d->serviceContextList.count() <= 1) {
+            if ((d->serviceContextList.at(0) != 0) && (d->serviceContextList.at(0)->widget())) {
+                MSeparator *separatorTop = new MSeparator(this);
+                separatorTop->setStyleName("CommonHeaderDividerInverted");
+                separatorTop->setOrientation(Qt::Horizontal);
+                upperLayoutPolicy->addItem(separatorTop);
+            }
+        } else {
+            MSeparator *separatorTop = new MSeparator(this);
+            separatorTop->setStyleName("CommonHeaderDividerInverted");
+            separatorTop->setOrientation(Qt::Horizontal);
+            upperLayoutPolicy->addItem(separatorTop);
+        }
+
 
         layoutPolicy->addItem(upperWidget);
     }

@@ -396,15 +396,6 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
     //% "%1 Settings"
     setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->account()->providerName()));
 
-    ServiceModel *serviceModel = new ServiceModel(d->context->account(), this);
-    SortServiceModel *sortModel = new SortServiceModel(this);
-    sortModel->setSourceModel(serviceModel);
-    sortModel->setEnabledServices(d->context->account()->enabledServices());
-    sortModel->setHiddenServices(d->hiddenServiceList);
-    sortModel->sort(ServiceModel::ServiceNameColumn);
-
-    d->contexts = ServiceModel::createServiceContexts(sortModel, d->context, this);
-
     /* iterate through the contexts we created for each service, and get the
      * UI widgets to embed */
     QMap<QString, bool> enabledServiceTypes;
@@ -502,10 +493,6 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     usernameAndStatus->setTitle(qtTrId(provider->displayName().toLatin1()));
     usernameAndStatus->setSubtitle(d->account->displayName());
 
-    MSeparator *separatorTop = new MSeparator(this);
-    separatorTop->setOrientation(Qt::Horizontal);
-    separatorTop->setStyleName("CommonHeaderDividerInverted");
-
     d->enableButton = new MButton(this);
     d->enableButton->setViewType(MButton::switchType);
     d->enableButton->setStyleName("CommonRightSwitchInverted");
@@ -537,7 +524,19 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     spacer->setStyleName("CommonSmallSpacer");
     upperLayoutPolicy->addItem(spacer);
 
-    upperLayoutPolicy->addItem(separatorTop);
+    if (d->serviceList.count() <= 1) {
+        if ((d->contexts.at(0) != 0) && (d->contexts.at(0)->widget())) {
+            MSeparator *separatorTop = new MSeparator(this);
+            separatorTop->setOrientation(Qt::Horizontal);
+            separatorTop->setStyleName("CommonHeaderDividerInverted");
+            upperLayoutPolicy->addItem(separatorTop);
+        }
+    } else {
+        MSeparator *separatorTop = new MSeparator(this);
+        separatorTop->setOrientation(Qt::Horizontal);
+        separatorTop->setStyleName("CommonHeaderDividerInverted");
+        upperLayoutPolicy->addItem(separatorTop);
+    }
 
     spacer = new MWidgetController(this);
     spacer->setStyleName("CommonSmallSpacer");
@@ -743,6 +742,14 @@ void AccountSettingsPage::createContent()
     layoutPanel->setContentsMargins(0, 0, 0, 0);
     d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
 
+    ServiceModel *serviceModel = new ServiceModel(d->context->account(), this);
+    SortServiceModel *sortModel = new SortServiceModel(this);
+    sortModel->setSourceModel(serviceModel);
+    sortModel->setEnabledServices(d->context->account()->enabledServices());
+    sortModel->setHiddenServices(d->hiddenServiceList);
+    sortModel->sort(ServiceModel::ServiceNameColumn);
+
+    d->contexts = ServiceModel::createServiceContexts(sortModel, d->context, this);
     QGraphicsLayoutItem *accountSettingsLayout = createAccountSettingsLayout();
     layoutPolicy->addItem(accountSettingsLayout);
 
