@@ -17,8 +17,8 @@ margin-right:  $INDENT_DEFAULT;
 }
 
 MApplicationPage MLabelStyle#GenericAccountSetupFormSignUpStyle {
-font:          $FONT_FAMILY bold 24;
-color:         #3465a4;
+font:          $FONT_DEFAULT_REGULAR;
+color:         $COLOR_LINK_ACTIVE;
 }
 
 AccountSetupFinishedWidget MLabelStyle#AccountSetupFinishedLargeHeader {
