@@ -26,11 +26,13 @@
 #include <MWidgetController>
 #include <QObject>
 
+#include <AccountsUI/common.h>
+
 namespace AccountsUI {
 
 class BasicItemWidgetPrivate;
 
-class BasicItemWidget : public MWidgetController
+class ACCOUNTSUI_EXPORT BasicItemWidget : public MWidgetController
 {
     Q_OBJECT
 public:

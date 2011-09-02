@@ -26,9 +26,11 @@
 #include "basic-item-widget.h"
 #include <QObject>
 
+#include <AccountsUI/common.h>
+
 namespace AccountsUI {
 
-class BasicServiceWidget : public BasicItemWidget
+class ACCOUNTSUI_EXPORT BasicServiceWidget : public BasicItemWidget
 {
     Q_OBJECT
 

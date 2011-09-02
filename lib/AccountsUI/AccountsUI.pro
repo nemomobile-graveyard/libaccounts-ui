@@ -191,7 +191,10 @@ headers.files += AccountPluginInterface \
     UiBuilder \
     ui-builder.h \
     ValidationData \
-    validation-data.h
+    validation-data.h \
+    basic-item-widget.h \
+    basic-header-widget.h \
+    basic-service-widget.h
 
 # -----------------------------------------------------------------------------
 # common installation setup
