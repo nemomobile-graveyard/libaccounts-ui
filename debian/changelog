@@ -1,3 +1,14 @@
+libaccounts-ui (2.0-1) unstable; urgency=low
+
+  * Addresses: NB#247773 - Sip account settings view, layout tuning needed
+  * Fixes: NB#270787 - Sign in hyperlink layouts need adjustment
+  * Fixes: NB#251899 - Two dividers are shown in CalDav account settings view
+  * Addresses: NB#269013 - Google sync widget should follow the same style as MfE sync widget does
+  * Fixes: NB#266369 - Accounts; Improvement of the string §qtn_acc_conn_to_service_fail§
+  * Fixes: NB#277975 - Account & SSO: The brackets of the string §qtn_acc_auth_failed_infobanner§ are improperly displayed
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 05 Sep 2011 15:35:36 +0300
+
 libaccounts-ui (1.10-1) unstable; urgency=low
 
   * Fixes: NB#277975 - Account & SSO: The brackets of the string §qtn_acc_auth_failed_infobanner§ are improperly displayed
