@@ -1,3 +1,9 @@
+libaccounts-ui (2.1-1) unstable; urgency=low
+
+  * Fixes: NB#265994 - <coverity> defects from libaccounts-ui/0.141-1_0m6
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 07 Sep 2011 09:08:35 +0300
+
 libaccounts-ui (2.0-1) unstable; urgency=low
 
   * Addresses: NB#247773 - Sip account settings view, layout tuning needed
