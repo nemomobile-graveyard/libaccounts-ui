@@ -295,9 +295,9 @@ QString ProviderPluginProcess::translatedProviderName() const
             locale.installTrCatalog(catalog);
             MLocale::setDefault(locale);
         }
-    }
 
-    d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
+        d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
+    }
     if (!(d->translatedProviderName .isEmpty()))
         return d->translatedProviderName;
     else if (!providerName.isEmpty())
