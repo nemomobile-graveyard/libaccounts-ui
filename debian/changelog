@@ -1,3 +1,9 @@
+libaccounts-ui (2.2-1) unstable; urgency=low
+
+  * Fixes: NB#277259 - COREWEB: /usr/lib/AccountSetup/bin/googleplugin Tp::DBusProxy::isValid AccountsUI::AccountSettingsPagePrivate::onAccountManagerReady
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 08 Sep 2011 11:01:10 +0300
+
 libaccounts-ui (2.1-1) unstable; urgency=low
 
   * Fixes: NB#265994 - <coverity> defects from libaccounts-ui/0.141-1_0m6
