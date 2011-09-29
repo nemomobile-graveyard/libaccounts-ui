@@ -465,6 +465,11 @@ void CredentialWidgetView::recreateWidgets()
            //% "Username"
            d->usernameLabel = new MLabel(qtTrId("qtn_acc_login_username"));
            d->usernameLabel->setStyleName("CommonFieldLabelInverted");
+           if(MLocale::directionForText(qtTrId("qtn_acc_login_username")) == Qt::RightToLeft) {
+               d->usernameLabel->setAlignment(Qt::AlignRight);
+           } else
+               d->usernameLabel->setAlignment(Qt::AlignLeft);
+
 
            d->usernameTextEdit = new MTextEdit();
            d->usernameTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
@@ -485,6 +490,10 @@ void CredentialWidgetView::recreateWidgets()
         //% "Password"
         d->passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
         d->passwordLabel->setStyleName("CommonFieldLabelInverted");
+        if(MLocale::directionForText(qtTrId("qtn_acc_login_password")) == Qt::RightToLeft) {
+            d->passwordLabel->setAlignment(Qt::AlignRight);
+        } else
+            d->passwordLabel->setAlignment(Qt::AlignLeft);
         d->passwordLayoutPolicy->addItem(d->passwordLabel);
 
         if (model()->authenticationFailed()) {
