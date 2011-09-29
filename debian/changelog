@@ -1,3 +1,9 @@
+libaccounts-ui (1.22-1) unstable; urgency=low
+
+  * Fixes: NB#277952 - Accounts:Arabic labels on top of white entry box and Arabic description free text should be aligned to right
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 29 Sep 2011 12:21:21 +0300
+
 libaccounts-ui (1.21-1) unstable; urgency=low
 
   * Fixes: NB#282218 - Account & SSO: The string §qtn_goog_2_gmail_service_desc_s§ and the “bigger than” symbol are improperly displayed.
