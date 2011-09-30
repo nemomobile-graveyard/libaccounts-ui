@@ -113,6 +113,7 @@ void BasicItemWidget::createLayout()
     }
 
     mainLayoutPolicy->addItem(titleLayout, Qt::AlignLeft | Qt::AlignCenter);
+    mainLayoutPolicy->addItem(new QGraphicsWidget());
 
     setLayout(mainLayout);
     updateGeometry();
