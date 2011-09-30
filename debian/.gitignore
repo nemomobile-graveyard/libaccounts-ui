@@ -1,0 +1,10 @@
+*.substvars
+*.debhelper
+*.log
+files
+libaccountplugin-dev/
+libaccounts-ui-doc/
+libaccountplugin-tests/
+libaccountplugin0-dbg/
+libaccountplugin0/
+tmp/
