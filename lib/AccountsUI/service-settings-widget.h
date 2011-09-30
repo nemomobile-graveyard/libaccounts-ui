@@ -30,6 +30,13 @@
 
 namespace AccountsUI {
 
+    enum SettingsType {
+        ShowMandatory = 0,
+        ShowAll,
+        ShowOnlySettings,
+        ShowButtonAndSettings,
+    };
+
 class ServiceSettingsWidgetPrivate;
 class AbstractServiceSetupContext;
 /*!

@@ -24,6 +24,8 @@ DOC_INPUT += $${_PRO_FILE_PWD_}/doc/src
 
 # target for generating documentation
 doctarget.target     = docs
+NODOCS = $$(NO_DOCS)
+!contains( NODOCS, yes ) {
 doctarget.commands   = OUTPUT_DIRECTORY=doc \
                        PROJECT_NAME=\"$${PROJECT_NAME}\" \
                        PROJECT_NUMBER=\"$${PROJECT_VERSION}\" \
@@ -34,6 +36,7 @@ doctarget.commands   = OUTPUT_DIRECTORY=doc \
                        TAGFILES=\"$$system(pwd)/qt.tags\" \
                        TAGFILE=\"doc/$${TARGET}.tags\" \
                        doxygen $$system(pwd)/doxy.conf
+}
 doctarget.depends    = FORCE
 QMAKE_EXTRA_TARGETS += doctarget
 

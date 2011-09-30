@@ -47,7 +47,7 @@ namespace AccountsUI {
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
         : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
-    setStyleName("CommonLargePanelInverted");
+    setStyleName("CommonLargePanel");
     setObjectName("wgServiceSettingsWidgetListItem");
 
     horizontalLayout = new MLayout(this);
@@ -133,15 +133,13 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     }
 
     MLayout *containerMainLayout = new MLayout(this);
-    MLinearLayoutPolicy *mainPolicy =
-        new MLinearLayoutPolicy(containerMainLayout, Qt::Vertical);
+    MLinearLayoutPolicy *mainPolicy = new MLinearLayoutPolicy(containerMainLayout, Qt::Vertical);
     mainPolicy->setSpacing(0);
     mainPolicy->setContentsMargins(0,0,0,0);
 
     MWidget *upperWidget = new MWidget(this);
     MLayout *upperLayout = new MLayout(upperWidget);
-    MLinearLayoutPolicy *containerMainPolicy =
-        new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
+    MLinearLayoutPolicy *containerMainPolicy = new MLinearLayoutPolicy(upperLayout, Qt::Horizontal);
     containerMainPolicy->setSpacing(0);
     containerMainPolicy->setContentsMargins(0,0,0,0);
     ServiceSettingsWidgetListItem *serviceInfoList = 0;
@@ -149,24 +147,11 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
 
     if (settingsConf & EnableButton) {
         if (context) {
-            /* Dummy layout for the enable service button
-             * The layout's top margin is compensating for the top
-             * margin of the title label in the ServiceSettingsWidgetListItem
-             * CommonTitleInverted - styling issue.
-             *
-             * TODO - Remove when styling will be fixed. */
-            MLayout *enableServiceButtonLayout = new MLayout;
-            MLinearLayoutPolicy *enableServiceButtonPolicy =
-                new MLinearLayoutPolicy(enableServiceButtonLayout, Qt::Horizontal);
-            enableServiceButtonPolicy->setSpacing(0);
-            enableServiceButtonPolicy->setContentsMargins(0, 15, 0, 0);
-
             d->enableServiceButton = new MButton(this);
             d->enableServiceButton->setViewType(MButton::switchType);
             d->enableServiceButton->setStyleName("CommonLeftSwitchInverted");
             d->enableServiceButton->setObjectName("wgServiceSettingsWidgetServiceButton");
             d->enableServiceButton->setCheckable(true);
-            enableServiceButtonPolicy->addItem(d->enableServiceButton);
 
             ServiceHelper *serviceHelper =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
@@ -198,7 +183,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            containerMainPolicy->addItem(enableServiceButtonLayout, Qt::AlignRight | Qt::AlignTop);
+            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignCenter);
             containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignTop);
 
             mainPolicy->addItem(upperWidget);
@@ -217,6 +202,11 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
 
             if ((settingsConf & NonMandatorySettings) ||
                 (settingsConf & MandatorySettings)) {
+
+                /* Ugly Ugly HACK -
+                 * Remove ASAP + Add fix for AbstractServiceSetupContext API,
+                 * in order to properly solve this issue. */
+                if (context->account()->providerName() != QLatin1String("google"))
                     mainPolicy->addItem(widget);
             }
         }
@@ -246,6 +236,7 @@ void ServiceSettingsWidget::setServiceButtonEnable(bool enable)
 {
     Q_D(ServiceSettingsWidget);
     qDebug() << Q_FUNC_INFO << __LINE__;
+    if (d->enableServiceButton == 0) return;
 
     if (d->enableServiceButton->isChecked() != enable)
         d->enableServiceButton->setChecked(enable);
@@ -254,6 +245,8 @@ void ServiceSettingsWidget::setServiceButtonEnable(bool enable)
 void ServiceSettingsWidget::openSettingsPage()
 {
     Q_D(ServiceSettingsWidget);
+    if (d->enableServiceButton == 0) return;
+
     SettingsPage *settingsPage =
             new SettingsPage(d->context, d->enableServiceButton->model());
     settingsPage->appear();
@@ -264,6 +257,8 @@ void ServiceSettingsWidget::openSettingsPage()
 void ServiceSettingsWidget::onSettingsPageClosed()
 {
     Q_D(ServiceSettingsWidget);
+    if (d->enableServiceButton == 0) return;
+
     // Restore button style
     d->enableServiceButton->setStyleName("CommonLeftSwitchInverted");
 }

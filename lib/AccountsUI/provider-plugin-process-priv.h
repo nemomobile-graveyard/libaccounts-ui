@@ -42,6 +42,7 @@
 #include <MApplicationWindow>
 #include <MComponentData>
 #include <MLocale>
+#include <MApplicationService>
 
 //Qt
 #include <QLocalSocket>
@@ -62,7 +63,12 @@ public:
         validProvider(true),
         accountSetupCompleted(false)
     {
-        application = MComponentCache::mApplication(argc, argv);
+        service = new PluginService();
+        QStringList argList = QString(*argv).split("/");
+        /* set the serviceName as per the name of the plugin */
+        service->setServiceName(QString("com.nokia.%1").
+                                arg(argList.at(argList.count()-1)).toLatin1());
+        application = MComponentCache::mApplication(argc, argv, QLatin1String(""), service);
         window = MComponentCache::mApplicationWindow();
         window->setStyleName("AccountsUiWindow");
 
