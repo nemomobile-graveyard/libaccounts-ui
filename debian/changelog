@@ -1,3 +1,10 @@
+libaccounts-ui (2.4-1) unstable; urgency=low
+
+  * Fixes: NB#247812 - [TASK] Configure Picasa sharing account during google account creation.
+  * Fixes: NB#247817 - [TASK] Configure Youtube sharing account during google account creation.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Mon, 03 Oct 2011 16:12:59 +0300
+
 libaccounts-ui (2.3-1) unstable; urgency=low
 
   * Fixes: NB#277952 - Accounts:Arabic labels on top of white entry box and Arabic description free text should be aligned to right
