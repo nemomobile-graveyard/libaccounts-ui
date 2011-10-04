@@ -67,6 +67,7 @@ public:
     ~AvatarListItem();
     QGraphicsLayout *createLayout();
     void setImage(const QImage &image);
+    void setImage(const QString &id);
 
 private:
     MLayout *horizontalLayout;
