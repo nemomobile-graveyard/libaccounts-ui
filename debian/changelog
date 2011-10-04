@@ -1,3 +1,9 @@
+libaccounts-ui (2.4-2) unstable; urgency=low
+
+  * Added missing headers
+
+ -- Tomi Suviola <tomi.suviola@nokia.com>  Tue, 04 Oct 2011 12:12:59 +0300
+
 libaccounts-ui (2.4-1) unstable; urgency=low
 
   * Fixes: NB#247812 - [TASK] Configure Picasa sharing account during google account creation.
