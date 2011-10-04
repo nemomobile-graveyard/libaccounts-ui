@@ -120,6 +120,11 @@ void AvatarListItem::setImage(const QImage &image)
     avatarImage->setImage(image);
 }
 
+void AvatarListItem::setImage(const QString &id)
+{
+    avatarImage->setImage(id);
+}
+
 AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     AbstractAccountSetupContext *context):
     context(context),
@@ -609,6 +614,7 @@ void AccountSettingsPage::getAvatar()
             d->saveImage(img);
             qDebug() << "Received  a proper image with type" << d->avatarImageType;
         } else {
+            d->avatarItem->setImage("icon-m-telephony-avatar-placeholder");
             qDebug() << "Received a  NULL Avatar image";
         }
 
