@@ -270,6 +270,10 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     descriptionLabel->setWordWrap(true);
     descriptionLabel->setWrapMode(QTextOption::WordWrap);
     descriptionLabel->setStyleName("CommonBodyTextInverted");
+    if(MLocale::directionForText(qtTrId(descriptionText.toLatin1())) == Qt::RightToLeft)
+        descriptionLabel->setAlignment(Qt::AlignRight);
+    else
+        descriptionLabel->setAlignment(Qt::AlignLeft);
 
     // Credentials widget
     if (widgetModel) {
