@@ -1,6 +1,12 @@
+libaccounts-ui (2.3-2) unstable; urgency=low
+
+  * Removing invalid bugs from this release.
+
+ -- Subramanian Girish <ext-girish.1.subramanian@nokia.com>  Thu, 06 Oct 2011 11:20:59 +0300
+
 libaccounts-ui (2.3-1) unstable; urgency=low
 
-  * Fixes: NB#277952 - Accounts:Arabic labels on top of white entry box and Arabic description free text should be aligned to right
+  * Addresses: NB#277952 - Accounts:Arabic labels on top of white entry box and Arabic description free text should be aligned to right
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 29 Sep 2011 11:01:10 +0300
 
@@ -22,8 +28,8 @@ libaccounts-ui (2.0-1) unstable; urgency=low
   * Fixes: NB#270787 - Sign in hyperlink layouts need adjustment
   * Fixes: NB#251899 - Two dividers are shown in CalDav account settings view
   * Addresses: NB#269013 - Google sync widget should follow the same style as MfE sync widget does
-  * Fixes: NB#266369 - Accounts; Improvement of the string §qtn_acc_conn_to_service_fail§
-  * Fixes: NB#277975 - Account & SSO: The brackets of the string §qtn_acc_auth_failed_infobanner§ are improperly displayed
+  * Addresses: NB#266369 - Accounts; Improvement of the string §qtn_acc_conn_to_service_fail§
+  * Addresses: NB#277975 - Account & SSO: The brackets of the string §qtn_acc_auth_failed_infobanner§ are improperly displayed
 
  -- Smita Srivastava <smita.srivastava@teleca.com>  Mon, 05 Sep 2011 15:35:36 +0300
 
