@@ -1,3 +1,9 @@
+libaccounts-ui (1.25-1) unstable; urgency=low
+
+  * Fixes: NB#277952 - Accounts:Arabic labels on top of white entry box and Arabic description free text should be aligned to right
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 05 Oct 2011 15:52:25 +0300
+
 libaccounts-ui (1.24-1) unstable; urgency=low
 
   * Fixes: NB#277952 - Accounts:Arabic labels on top of white entry box and Arabic description free text should be aligned to right
