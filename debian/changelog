@@ -1,3 +1,9 @@
+libaccounts-ui (1.25-2) unstable; urgency=low
+
+  * Fixes: NB#285449 - Login dialog label is aligned to left in Arabic language.
+
+ -- Subramanian Girish <ext-girish.1.subramanian@nokia.com>  Fri, 07 Oct 2011 12:17:36 +0300
+
 libaccounts-ui (1.25-1) unstable; urgency=low
 
   * Fixes: NB#277952 - Accounts:Arabic labels on top of white entry box and Arabic description free text should be aligned to right
