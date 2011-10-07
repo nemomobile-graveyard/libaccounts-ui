@@ -26,6 +26,7 @@
 
 //M
 #include <MBanner>
+#include <MLocale>
 
 //Qt
 #include <QDebug>
@@ -110,6 +111,11 @@ void CredentialDialog::initDialog()
     //% "Password"
     passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
     passwordLabel->setStyleName("wgPasswordLabel");
+    if(MLocale::directionForText(qtTrId("qtn_acc_login_password")) == Qt::RightToLeft)
+        passwordLabel->setAlignment(Qt::AlignRight);
+    else
+        passwordLabel->setAlignment(Qt::AlignLeft);
+
 
     passwordTextEdit = new MTextEdit();
     passwordTextEdit->setObjectName("wgPasswordTextEdit");
