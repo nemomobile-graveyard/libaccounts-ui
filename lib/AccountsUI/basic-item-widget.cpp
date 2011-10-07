@@ -26,6 +26,7 @@
 #include <MLabel>
 #include <MLayout>
 #include <MLinearLayoutPolicy>
+#include <MLocale>
 
 //Qt
 #include <QDebug>
@@ -129,8 +130,13 @@ void BasicItemWidget::setTitle(const QString &titleText)
 void BasicItemWidget::setSubtitle(const QString &subtitleText)
 {
     Q_D(BasicItemWidget);
-    if (d->subtitle)
+    if (d->subtitle) {
         d->subtitle->setText(subtitleText);
+        if(MLocale::directionForText(subtitleText) == Qt::RightToLeft)
+            d->subtitle->setAlignment(Qt::AlignRight | Qt::AlignAbsolute);
+        else
+            d->subtitle->setAlignment(Qt::AlignLeft | Qt::AlignAbsolute);
+    }
 }
 
 void BasicItemWidget::setImage(const QString &imageId)
