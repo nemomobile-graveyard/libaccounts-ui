@@ -92,6 +92,7 @@ public:
         credentialWidget = NULL;
 
         registerNewLink = QString();
+        forgotPasswordUrl = QString();
         authDomainSeparator = QString();
         authDomainDefault = QString();
         provider = QString();
@@ -123,6 +124,7 @@ public:
     QDomDocument providerAccountDocument;
     bool isInDomDocumentUpdate;
     QString registerNewLink;
+    QString forgotPasswordUrl;
     QString authDomainSeparator;
     QString authDomainDefault;
     QString provider;
@@ -234,6 +236,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QDomElement providerIcon = root.firstChildElement("icon");
     QDomElement catalog = root.firstChildElement("translations");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
+    QDomElement forgotPasswordLink = root.firstChildElement("forgot-password-link");
     provider = root.attribute("id");
 
     if (!catalog.text().isEmpty()) {
@@ -248,6 +251,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QString descriptionText = descriptionElement.text();
     QString providerIconId = providerIcon.text();
     registerNewLink = signUpLink.text();
+    forgotPasswordUrl = forgotPasswordLink.text();
 
     QDomElement node = root.firstChildElement("account-setup").firstChildElement();
     while (!node.isNull()) {
@@ -288,8 +292,16 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     widgetModel = new CredentialWidgetModel();
     widgetModel->setDialogsVisabilityConfig(CredentialWidgetModel::LoginDialogVisible);
     widgetModel->setSignInButtonVisible(true);
+    if (!forgotPasswordUrl.isEmpty()) {
+        widgetModel->setForgotPasswordUrl(forgotPasswordUrl);
+        widgetModel->setForgotPasswordVisible(true);
 
-    QObject::connect(widgetModel, SIGNAL(signInClicked()), q_ptr , SLOT(signIn()));
+        QObject::connect(widgetModel, SIGNAL(forgotPasswordClicked(QString)),
+                         q_ptr, SLOT(forgotPassword(QString)));
+    }
+
+    QObject::connect(widgetModel, SIGNAL(signInClicked()),
+                     q_ptr , SLOT(signIn()));
     QObject::connect(widgetModel, SIGNAL(modified(QList<const char*>)),
                      q_ptr, SLOT(updateModel(QList<const char*>)));
 
@@ -334,7 +346,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
         subscribeLabel->addHighlighter(subscribeLabelHighligher);
 
         QObject::connect(subscribeLabelHighligher, SIGNAL(clicked(QString)),
-                q_ptr, SLOT(registerNew()));
+                         q_ptr, SLOT(registerNew()));
 
         mainLayoutPolicy->addItem(questionLabel, Qt::AlignCenter);
         mainLayoutPolicy->addItem(subscribeLabel, Qt::AlignCenter);
@@ -421,7 +433,8 @@ void GenericAccountSetupFormView::updateData(const QList<const char*> &modificat
                                   .arg(errorStr).toAscii());
             }
             d->createUiFromXml(providerAccountDocument);
-            connect(d->credentialWidget, SIGNAL(doSignIn()), this, SLOT(signIn()));
+            connect(d->credentialWidget, SIGNAL(doSignIn()),
+                    this, SLOT(signIn()));
         } else if (!qstrcmp(member, "credentialWidgetEnabled")) {
             if (model()->credentialWidgetEnabled()) {
                 d->showCredentialWidgetAndHideProgress();
@@ -520,6 +533,13 @@ void GenericAccountSetupFormView::registerNew()
     if (!QDesktopServices::openUrl(QUrl(d->registerNewLink)))
     qWarning() << Q_FUNC_INFO << "Unable to open web browser";
 }
+
+void GenericAccountSetupFormView::forgotPassword(QString link)
+{
+    if (!QDesktopServices::openUrl(QUrl(link)))
+        qWarning() << Q_FUNC_INFO << "Unable to open web browser";
+}
+
 
 // bind view and controller together
 M_REGISTER_VIEW_NEW(GenericAccountSetupFormView, GenericAccountSetupForm)

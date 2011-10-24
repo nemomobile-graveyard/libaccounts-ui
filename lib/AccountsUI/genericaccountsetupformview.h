@@ -55,6 +55,7 @@ private slots:
     void signIn();
     void updateModel(QList<const char*>);
     void registerNew();
+    void forgotPassword(QString link);
 
 private:
     Q_DISABLE_COPY(GenericAccountSetupFormView)
