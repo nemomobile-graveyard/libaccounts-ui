@@ -23,7 +23,7 @@
 #ifndef BASICSERVICEWIDGET_H
 #define BASICSERVICEWIDGET_H
 
-#include "basic-item-widget.h"
+#include <basic-item-widget.h>
 #include <QObject>
 
 #include <AccountsUI/common.h>

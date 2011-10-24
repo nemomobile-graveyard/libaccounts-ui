@@ -23,7 +23,7 @@
 #ifndef BASICHEADERWIDGET_H
 #define BASICHEADERWIDGET_H
 
-#include "basic-item-widget.h"
+#include <basic-item-widget.h>
 
 //libAccountsUI
 #include <AccountsUI/common.h>

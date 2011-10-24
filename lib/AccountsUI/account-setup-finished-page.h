@@ -2,7 +2,7 @@
 #define ACCOUNTSETUPFINISHEDPAGE_H
 
 #include <MApplicationPage>
-#include "common.h"
+#include <common.h>
 
 namespace Accounts {
     class Account;
