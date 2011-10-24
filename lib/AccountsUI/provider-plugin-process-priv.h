@@ -88,8 +88,9 @@ public:
 
         wrapped = new AccountSetup::ProviderPluginProcess(this);
         account = wrapped->account();
+        if (account != 0)
+            service->setProviderName(account->providerName());
 
-        service->setProviderName(account->providerName());
         service->registerService();
         /* parse command line options */
         for (int i = 0; i < argc; ++i)
