@@ -90,12 +90,6 @@ public:
         stopButton = NULL;
         widgetModel = NULL;
         credentialWidget = NULL;
-
-        registerNewLink = QString();
-        forgotPasswordUrl = QString();
-        authDomainSeparator = QString();
-        authDomainDefault = QString();
-        provider = QString();
     }
 
     ~GenericAccountSetupFormViewPrivate()
