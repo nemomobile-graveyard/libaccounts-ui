@@ -17,7 +17,7 @@ Package: libaccountplugin-dev
 Architecture: any
 Section: devel
 Priority: optional
-Depends: pkg-config (>= 0.22), libaccountplugin0 (= ${binary:Version}), libaccounts-qt-dev, libsignon-qt-dev, libaccountsetup-dev(>= 0.3)
+Depends: pkg-config (>= 0.22), libaccountplugin0 (= ${binary:Version}), libaccounts-qt-dev, libsignon-qt-dev, libaccountsetup-dev(>= 0.3), libmeegotouch-dev(>= 0.20.15)
 Replaces: libaccounts-ui-dev
 Description: Accounts-ui plugin development headers
  Development package for building plugins for the MeeGo accounts UI.
