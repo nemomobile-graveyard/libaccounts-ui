@@ -1,3 +1,10 @@
+libaccounts-ui (2.5-1) unstable; urgency=low
+
+  * Fixes: NB#272317 - [TASK] "Forgot your password?" feature should be implemented in accounts ui lib.
+  * Fixes: NB#232361 - <coverity> defects from libaccounts-ui/0.86-1_0m6
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Tue, 25 Oct 2011 12:12:59 +0300
+ 
 libaccounts-ui (2.4-2) unstable; urgency=low
 
   * Added missing headers
