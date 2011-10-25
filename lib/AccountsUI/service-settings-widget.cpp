@@ -62,9 +62,9 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     MLinearLayoutPolicy *titleSubtitleLayoutPolicy = new MLinearLayoutPolicy(titleSubtitleLayout, Qt::Vertical);
     titleSubtitleLayoutPolicy->setSpacing(0);
 
-    titleLabelWidget()->setStyleName("CommonTitleInverted");
+    titleLabelWidget()->setStyleName("CommonHeaderInverted");
     titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
-    subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
+    subtitleLabelWidget()->setStyleName("CommonBodyTextInverted");
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
 
     MStylableWidget *widget = new MStylableWidget();

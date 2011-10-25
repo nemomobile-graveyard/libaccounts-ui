@@ -480,10 +480,12 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
 
     QString providerName(d->account->providerName());
     QString providerIconId;
+    QString providerTitleId;
     Accounts::Provider *provider =
         AccountsManager::instance()->provider(providerName);
     if (provider) {
         providerIconId = provider->iconName();
+        providerTitleId = provider->displayName();
         QString catalog = provider->trCatalog();
         MLocale locale;
         if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
@@ -495,7 +497,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     BasicHeaderWidget *usernameAndStatus = new BasicHeaderWidget(BasicHeaderWidget::IconWithTitleAndSubTitle, this);
     usernameAndStatus->createLayout();
     usernameAndStatus->setImage(providerIconId);
-    usernameAndStatus->setTitle(qtTrId(provider->displayName().toLatin1()));
+    usernameAndStatus->setTitle(qtTrId(providerTitleId.toLatin1()));
     usernameAndStatus->setSubtitle(d->account->displayName());
 
     d->enableButton = new MButton(this);
@@ -562,20 +564,21 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
         sysinfo_finish(sc);
     }
 
-    QDomElement root = provider->domDocument().documentElement();
-    d->avatar = root.firstChildElement("display-avatar");
+    if (provider) {
+        QDomElement root = provider->domDocument().documentElement();
+        d->avatar = root.firstChildElement("display-avatar");
 
-    if (name.endsWith("003"))
-        d->avatar.clear();
+        if (name.endsWith("003"))
+            d->avatar.clear();
 
-    if (d->avatar.text() == "true") {
-        d->avatarItem = new AvatarListItem();
-        connect(d->avatarItem, SIGNAL(clicked()), this, SLOT(changeAvatar()));
-        //% Avatar
-        d->avatarItem->setTitle(qtTrId("qtn_acc_avatar"));
-        d->panelPolicy->addItem(d->avatarItem);
-        d->avatarSelector = new AvatarSelector();
-
+        if (d->avatar.text() == "true") {
+            d->avatarItem = new AvatarListItem();
+            connect(d->avatarItem, SIGNAL(clicked()), this, SLOT(changeAvatar()));
+            //% Avatar
+            d->avatarItem->setTitle(qtTrId("qtn_acc_avatar"));
+            d->panelPolicy->addItem(d->avatarItem);
+            d->avatarSelector = new AvatarSelector();
+        }
     }
 
     return upperWidget;

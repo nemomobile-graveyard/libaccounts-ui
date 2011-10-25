@@ -186,11 +186,9 @@ void AccountSyncHandler::store(QList<AbstractSetupContext*> contexts)
     /* Store the service settings */
     foreach (AbstractSetupContext *context, contexts) {
         connect(context, SIGNAL(stored()),
-                this, SLOT(onContextStored()));
-        connect(context, SIGNAL(error(AccountsUI::ErrorCode,
-                                      const QString &)),
-                this, SLOT(onContextError(AccountsUI::ErrorCode,
-                                          const QString &)));
+                this, SLOT(onContextStored()), Qt::UniqueConnection);
+        connect(context, SIGNAL(error(AccountsUI::ErrorCode, const QString &)),
+                this, SLOT(onContextError(AccountsUI::ErrorCode, const QString &)), Qt::UniqueConnection);
         context->store();
     }
 }

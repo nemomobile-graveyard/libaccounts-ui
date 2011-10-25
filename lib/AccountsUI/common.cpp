@@ -85,6 +85,7 @@ const QString productNameTr()
         uint8_t *data = 0;
         unsigned long size = 0;
 
+
         if (sysinfo_get_value(sc, "/component/product-name",
                               &data, &size) == 0) {
             name = QByteArray((const char *)(data), size);
@@ -93,7 +94,7 @@ const QString productNameTr()
         sysinfo_finish(sc);
     }
     QString productNameId;
-    if (name == "N9")
+    if (name == "N9" || name == "Nxy")
         productNameId = qtTrId("qtn_comm_product_n9");
     else
         productNameId = qtTrId("qtn_comm_product_nxx");

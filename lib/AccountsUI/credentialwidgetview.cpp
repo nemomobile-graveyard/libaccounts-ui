@@ -472,6 +472,7 @@ void CredentialWidgetView::recreateWidgets()
 
 
            d->usernameTextEdit = new MTextEdit();
+           d->usernameTextEdit->setObjectName("wgUsernameTextEdit");
            d->usernameTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
            d->usernameTextEdit->setContentType(M::EmailContentType); // TO DO url type needs to be supported if we do OpenId
            d->usernameTextEdit->setCursorPosition(0);
@@ -482,6 +483,7 @@ void CredentialWidgetView::recreateWidgets()
 
         d->passwordTextEdit = new MTextEdit();
         d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
+        d->passwordTextEdit->setObjectName("wgPasswordTextEdit");
         d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
         d->passwordTextEdit->setCursorPosition(0);
         d->passwordTextEdit->attachToolbar(d->registeredAttributeExtensionId);
@@ -512,7 +514,8 @@ void CredentialWidgetView::recreateWidgets()
 
         if (model()->forgotPassword().isEmpty()) {
             //% "Forgot my password"
-            QString link("<a href=\"%1\"> " + qtTrId("qtn_acc_forgot_password") + "! </a>");
+            QString link("<a href=\"%1\"> " + qtTrId("qtn_comm_forgot_cred") + "</a>");
+
             link = link.left(link.indexOf(QChar(BinaryTextVariantSeparator)));
             d->forgotPasswordLabel = new MLabel(link.arg(model()->forgotPasswordUrl()));
         } else {
