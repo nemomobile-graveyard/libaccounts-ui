@@ -10,5 +10,5 @@ Description: Accounts-UI plugins development
 Version: 0.1
 Requires.private: accounts-qt, meegotouch, libsignon-qt
 Libs: -L${libdir} -lAccountPlugin
-Cflags: -I${includedir}
+Cflags: -I${includedir} -I${includedir}/AccountsUI
 
