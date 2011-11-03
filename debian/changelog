@@ -1,3 +1,9 @@
+libaccounts-ui (2.6-1) unstable; urgency=low
+
+  * Fixes: NB#245376 - Error banner sounds/haptics should be implemented according to UI spec changes
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Thu, 03 Nov 2011 12:38:20 +0200
+
 libaccounts-ui (2.5-2) unstable; urgency=low
 
   * Adding omitted dependecies
