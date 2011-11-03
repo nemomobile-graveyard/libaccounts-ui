@@ -11,7 +11,8 @@ CONFIG += qt \
     meegotouch \
     link_pkgconfig \
     gallerycore \
-    qtsparql
+    qtsparql \
+    mngfclient
 
 QT += xml \
     network \

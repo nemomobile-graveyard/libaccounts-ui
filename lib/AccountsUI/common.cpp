@@ -23,6 +23,7 @@
 #include "common.h"
 
 #include <MBanner>
+#include <MNGFClient>
 
 #include <sysinfo.h>
 
@@ -64,6 +65,7 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
 }
 
 void showInfoBanner(const QString &text,
+                    const QString &feedback,
                     const MInfoBanner::BannerType type,
                     const quint32 disapperTimeout)
 {
@@ -74,6 +76,10 @@ void showInfoBanner(const QString &text,
     banner->setStyleName("InformationBanner");
     banner->setTitle(text);
     banner->appear(MSceneWindow::DestroyWhenDone);
+    if (!feedback.isEmpty()) {
+        MNGFClient m_NgfClient;
+        m_NgfClient.playEvent(feedback);
+    }
 }
 
 const QString productNameTr()

@@ -1,10 +1,12 @@
 #include "plugin-service.h"
 #include "provider-plugin-process.h"
 #include "provider-plugin-proxy.h"
+#include "common.h"
 
 #include <MBanner>
 #include <MApplication>
 #include <MApplicationWindow>
+#include <MNGFClient>
 
 class PluginServicePrivate
 {
@@ -36,6 +38,8 @@ void PluginService::launch()
         QString translatedProviderName( AccountsUI::ProviderPluginProcess::instance()->translatedProviderName());
         QString bannerTitle = qtTrId("qtn_acc_view_update_failed_infobanner").arg(translatedProviderName);
         banner->setTitle(bannerTitle);
+        MNGFClient m_NgfClient;
+        m_NgfClient.playEvent(SOUND_INFO);
         banner->appear(window, MSceneWindow::DestroyWhenDone);
     } else {
         QVariant data(AccountsUI::ProviderPluginProxy::RETURN_TO_ACCOUNTS_PAGE);
