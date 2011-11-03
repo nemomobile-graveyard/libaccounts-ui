@@ -36,7 +36,7 @@
 #endif
 
 #define ACCOUNTSUI_EXPORT Q_DECL_EXPORT
-
+#define SOUND_INFO QLatin1String("warning_snd")
 namespace AccountsUI {
 
 typedef SignOn::Error::ErrorType SignonErrType;
@@ -68,6 +68,7 @@ const QString trIdFromSignonError(const int err);
  */
 ACCOUNTSUI_EXPORT
 void showInfoBanner(const QString &text,
+                    const QString &feedback = SOUND_INFO,
                     const MInfoBanner::BannerType type = MInfoBanner::Information,
                     const quint32 disapperTimeout = 3000);
 #endif
