@@ -1,3 +1,9 @@
+libaccounts-ui (2.7-1) unstable; urgency=low
+
+  * Fixes: NB#2284716 - Unneeded password is asked in add-account screen (real-one is asked later in web)
+
+ -- Alexander Akimov <ext-alexander.akimov@nokia.com>  Fri, 04 Nov 2011 16:12:59 +0300
+
 libaccounts-ui (2.6-1) unstable; urgency=low
 
   * Fixes: NB#245376 - Error banner sounds/haptics should be implemented according to UI spec changes
