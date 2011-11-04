@@ -400,11 +400,6 @@ void CredentialWidgetView::itemPickedSlot(quint32 credentialsId)
     //dismiss the keychain
     d->keyChainDialog->done(0);
 
-    if (d->passwordTextEdit) {
-        d->passwordTextEdit->blockSignals(true);
-        d->passwordTextEdit->blockSignals(false);
-    }
-
     d->identity = SignOn::Identity::existingIdentity(credentialsId, this);
     if (d->identity) {
         connect(d->identity, SIGNAL(info(const SignOn::IdentityInfo&)),
