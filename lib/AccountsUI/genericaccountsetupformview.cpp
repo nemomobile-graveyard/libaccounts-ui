@@ -90,6 +90,7 @@ public:
         stopButton = NULL;
         widgetModel = NULL;
         credentialWidget = NULL;
+        doNotShowPassword = false;
     }
 
     ~GenericAccountSetupFormViewPrivate()
@@ -119,6 +120,7 @@ public:
     bool isInDomDocumentUpdate;
     QString registerNewLink;
     QString forgotPasswordUrl;
+    bool doNotShowPassword;
     QString authDomainSeparator;
     QString authDomainDefault;
     QString provider;
@@ -231,6 +233,7 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QDomElement catalog = root.firstChildElement("translations");
     QDomElement signUpLink = root.firstChildElement("sign-up-link");
     QDomElement forgotPasswordLink = root.firstChildElement("forgot-password-link");
+    QDomElement doNotShowPasswordField = root.firstChildElement("do-not-show-password");
     provider = root.attribute("id");
 
     if (!catalog.text().isEmpty()) {
@@ -246,6 +249,11 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
     QString providerIconId = providerIcon.text();
     registerNewLink = signUpLink.text();
     forgotPasswordUrl = forgotPasswordLink.text();
+    if (!doNotShowPasswordField.text().isEmpty() &&
+        !doNotShowPasswordField.text().compare(QLatin1String("yes"), Qt::CaseInsensitive))
+        doNotShowPassword = true;
+    else
+        doNotShowPassword = false;
 
     QDomElement node = root.firstChildElement("account-setup").firstChildElement();
     while (!node.isNull()) {
@@ -293,6 +301,8 @@ void GenericAccountSetupFormViewPrivate::createUiFromXml(const QDomDocument &aPr
         QObject::connect(widgetModel, SIGNAL(forgotPasswordClicked(QString)),
                          q_ptr, SLOT(forgotPassword(QString)));
     }
+
+    widgetModel->setPasswordFieldVisible(!doNotShowPassword);
 
     QObject::connect(widgetModel, SIGNAL(signInClicked()),
                      q_ptr , SLOT(signIn()));
@@ -455,7 +465,7 @@ void GenericAccountSetupFormView::signIn()
         return;
     }
 
-    if (d->widgetModel->password().isEmpty()) {
+    if (!d->doNotShowPassword && d->widgetModel->password().isEmpty()) {
         //% "Fill in password"
         showInfoBanner(qtTrId("qtn_acc_fill_in_password_infobanner"));
         d->credentialWidget->setFocusOnPasswordField();

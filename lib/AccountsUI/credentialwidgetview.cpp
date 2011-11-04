@@ -400,8 +400,10 @@ void CredentialWidgetView::itemPickedSlot(quint32 credentialsId)
     //dismiss the keychain
     d->keyChainDialog->done(0);
 
-    d->passwordTextEdit->blockSignals(true);
-    d->passwordTextEdit->blockSignals(false);
+    if (d->passwordTextEdit) {
+        d->passwordTextEdit->blockSignals(true);
+        d->passwordTextEdit->blockSignals(false);
+    }
 
     d->identity = SignOn::Identity::existingIdentity(credentialsId, this);
     if (d->identity) {
@@ -481,25 +483,29 @@ void CredentialWidgetView::recreateWidgets()
                    this, SLOT(passwordTextEditSetFocus()));
         }
 
-        d->passwordTextEdit = new MTextEdit();
-        d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
-        d->passwordTextEdit->setObjectName("wgPasswordTextEdit");
-        d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
-        d->passwordTextEdit->setCursorPosition(0);
-        d->passwordTextEdit->attachToolbar(d->registeredAttributeExtensionId);
-        connect(d->passwordTextEdit, SIGNAL(returnPressed()),
-                this, SLOT(closeVKB()));
-        //% "Password"
-        d->passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
-        d->passwordLabel->setStyleName("CommonFieldLabelInverted");
-        if(MLocale::directionForText(qtTrId("qtn_acc_login_password")) == Qt::RightToLeft) {
-            d->passwordLabel->setAlignment(Qt::AlignRight);
-        } else
-            d->passwordLabel->setAlignment(Qt::AlignLeft);
-        d->passwordLayoutPolicy->addItem(d->passwordLabel);
+        if (model()->passwordFieldVisible()) {
+            d->passwordTextEdit = new MTextEdit();
+            d->passwordTextEdit->setStyleName("CommonSingleInputFieldLabeledInverted");
+            d->passwordTextEdit->setObjectName("wgPasswordTextEdit");
+            d->passwordTextEdit->setEchoMode(MTextEditModel::Password);
+            d->passwordTextEdit->setCursorPosition(0);
+            d->passwordTextEdit->attachToolbar(d->registeredAttributeExtensionId);
+            connect(d->passwordTextEdit, SIGNAL(returnPressed()),
+                    this, SLOT(closeVKB()));
+            //% "Password"
+            d->passwordLabel = new MLabel(qtTrId("qtn_acc_login_password"));
+            d->passwordLabel->setStyleName("CommonFieldLabelInverted");
+            if(MLocale::directionForText(qtTrId("qtn_acc_login_password")) == Qt::RightToLeft) {
+                d->passwordLabel->setAlignment(Qt::AlignRight);
+            } else
+                d->passwordLabel->setAlignment(Qt::AlignLeft);
+            d->passwordLayoutPolicy->addItem(d->passwordLabel);
+        }
 
         if (model()->authenticationFailed()) {
-            d->passwordTextEdit->setErrorHighlight(true);
+            if (d->passwordTextEdit)
+                d->passwordTextEdit->setErrorHighlight(true);
+
             //% "authentication failed"
             d->authFailureLabel = new MLabel(QString("(%1)").arg(qtTrId("qtn_acc_auth_failed_infobanner")));
             d->authFailureLabel->setTextElide(true);
@@ -543,16 +549,16 @@ void CredentialWidgetView::recreateWidgets()
             d->usernameTextEdit->setReadOnly(!model()->usernameEditable());
             d->usernameTextEdit->setText(model()->username());
         }
-        d->passwordTextEdit->setText(model()->password());
 
-        connect(d->passwordTextEdit, SIGNAL(gainedFocus(Qt::FocusReason)),
-                this, SLOT(passwordTextEditGainedFocus()));
-
-        connect(d->passwordTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
-                this, SLOT(refreshPasswordInModel()));
-
-        connect(d->passwordTextEdit, SIGNAL(textChanged()),
-                this, SLOT(onPasswordTextChanged()));
+        if (d->passwordTextEdit) {
+            d->passwordTextEdit->setText(model()->password());
+            connect(d->passwordTextEdit, SIGNAL(gainedFocus(Qt::FocusReason)),
+                    this, SLOT(passwordTextEditGainedFocus()));
+            connect(d->passwordTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
+                    this, SLOT(refreshPasswordInModel()));
+            connect(d->passwordTextEdit, SIGNAL(textChanged()),
+                    this, SLOT(onPasswordTextChanged()));
+        }
 
         if (d->usernameTextEdit) {
             connect(d->usernameTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
@@ -862,11 +868,15 @@ void CredentialWidgetView::configureWithLogin(int &portraitRow, int &landscapeRo
        d->portraitPolicy->addItem(d->usernameTextEdit, row, 0, 1, 2);
        row++;
     }
+
     d->portraitPolicy->addItem(d->passwordLayout, row, 0, 1, 2, Qt::AlignLeft);
     d->portraitPolicy->setRowSpacing(row, 0);
     row++;
-    d->portraitPolicy->addItem(d->passwordTextEdit, row, 0, 1, 2);
-    row++;
+
+    if (d->passwordTextEdit) {
+        d->portraitPolicy->addItem(d->passwordTextEdit, row, 0, 1, 2);
+        row++;
+    }
 
     if (model()->forgotPasswordVisible()) {
         d->portraitPolicy->addItem(d->forgotPasswordLabel, row, 0, 1, 2, Qt::AlignLeft);
@@ -889,8 +899,11 @@ void CredentialWidgetView::configureWithLogin(int &portraitRow, int &landscapeRo
     row--;
     d->landscapePolicy->addItem(d->passwordLayout, row, 1);
     row++;
-    d->landscapePolicy->addItem(d->passwordTextEdit, row, 1);
-    row++;
+
+    if (d->passwordTextEdit) {
+        d->landscapePolicy->addItem(d->passwordTextEdit, row, 1);
+        row++;
+    }
 
     if (model()->forgotPasswordVisible()) {
         d->landscapePolicy->addItem(d->forgotPasswordLabel, row, 0, 1, 2, Qt::AlignLeft);

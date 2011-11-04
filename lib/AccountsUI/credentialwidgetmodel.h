@@ -72,6 +72,12 @@ class ACCOUNTSUI_EXPORT CredentialWidgetModel: public MWidgetModel
     M_MODEL_PROPERTY(QString, password, Password, true, QString())
 
     /*!
+        \property CredentialWidgetModel::passwordFieldVisible
+        \brief .
+    */
+    M_MODEL_PROPERTY(bool, passwordFieldVisible, PasswordFieldVisible, true, true)
+
+    /*!
         \property CredentialWidgetModel::FocusOnPasswordField
         \brief .
     */
