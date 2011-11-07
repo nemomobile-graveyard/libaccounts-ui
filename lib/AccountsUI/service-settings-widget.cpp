@@ -47,7 +47,7 @@ namespace AccountsUI {
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
         : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
-    setStyleName("CommonLargePanel");
+    setStyleName("CommonBasicListItemInverted");
     setObjectName("wgServiceSettingsWidgetListItem");
 
     horizontalLayout = new MLayout(this);
@@ -62,9 +62,9 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     MLinearLayoutPolicy *titleSubtitleLayoutPolicy = new MLinearLayoutPolicy(titleSubtitleLayout, Qt::Vertical);
     titleSubtitleLayoutPolicy->setSpacing(0);
 
-    titleLabelWidget()->setStyleName("CommonHeaderInverted");
+    titleLabelWidget()->setStyleName("CommonTitleInverted");
     titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
-    subtitleLabelWidget()->setStyleName("CommonBodyTextInverted");
+    subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
 
     MStylableWidget *widget = new MStylableWidget();
