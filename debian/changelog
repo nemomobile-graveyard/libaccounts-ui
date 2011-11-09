@@ -1,3 +1,9 @@
+libaccounts-ui (2.8-1) unstable; urgency=low
+
+  * Fixes: NB#269348 - Settings view layout issues.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 09 Nov 2011 09:28:07 +0200
+
 libaccounts-ui (2.7-1) unstable; urgency=low
 
   * Fixes: NB#2284716 - Unneeded password is asked in add-account screen (real-one is asked later in web)
