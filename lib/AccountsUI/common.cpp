@@ -65,9 +65,9 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
 }
 
 void showInfoBanner(const QString &text,
-                    const QString &feedback,
                     const MInfoBanner::BannerType type,
-                    const quint32 disapperTimeout)
+                    const quint32 disapperTimeout,
+                    const QString &feedback)
 {
     Q_UNUSED(type);
     Q_UNUSED(disapperTimeout);
