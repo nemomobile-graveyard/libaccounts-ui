@@ -1,3 +1,9 @@
+libaccounts-ui (2.9-1) unstable; urgency=low
+
+  * Fixes: NB#289569 - View changes and error banner is not displayed when incorrect credentials are given in login view.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 09 Nov 2011 12:44:57 +0200
+
 libaccounts-ui (2.8-1) unstable; urgency=low
 
   * Fixes: NB#269348 - Settings view layout issues.
