@@ -528,19 +528,14 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
         if (senderSession == d->authSession)
             d->authSession = NULL;
     }
-    //TODO handle user cancel in case of url or captcha popup !!!!!
-
-    //Connection errors should be handled by Connectivity, but their Ui
-    //is not quite in the proper shape
-
-    Accounts::Provider *provider =
-        account()->manager()->provider(account()->providerName());
-
-    QString providerName = provider->displayName();
-
-    showInfoBanner(trIdFromSignonError((SignonErrType)err.type(), 
-                                        qtTrId(providerName.toAscii().constData())));
-
+    if (err.type() != SignOn::Error::SessionCanceled) {
+        Accounts::Provider *provider =
+            account()->manager()->provider(account()->providerName());
+        QString providerName = provider->displayName();
+        showInfoBanner(trIdFromSignonError(
+            (SignonErrType)err.type(),
+            qtTrId(providerName.toAscii().constData())));
+    }
     emit error(UnknownError, err.message());
 }
 
