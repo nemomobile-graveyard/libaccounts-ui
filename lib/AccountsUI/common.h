@@ -77,6 +77,9 @@ void showInfoBanner(const QString &text,
  * @returns The product name translation id.
  */
 ACCOUNTSUI_EXPORT const QString productNameTr();
+
+ACCOUNTSUI_EXPORT bool isChinaVariant();
+
 }
 
 #endif // ACCOUNTSUI_COMMON_H
