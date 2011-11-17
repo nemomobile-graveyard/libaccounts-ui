@@ -420,18 +420,14 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
             enabled = true;
         }
 
-        if (!d->hasSingleService())
-            settingsWidget = new ServiceSettingsWidget(context,
-                                                   d->panel,
-                                                   ServiceSettingsWidget::EnableButton,
-                                                   enabled);
-        else
-            settingsWidget = new ServiceSettingsWidget(context,
-                                                       d->panel,
-                                                       ServiceSettingsWidget::MandatorySettings |
-                                                       ServiceSettingsWidget::NonMandatorySettings,
-                                                       enabled);
+        int settingsConf =  ServiceSettingsWidget::EnableButton;
+        if (d->hasSingleService()) {
+           settingsConf = ServiceSettingsWidget::MandatorySettings
+                        | ServiceSettingsWidget::NonMandatorySettings;
+        }
 
+        settingsWidget = new ServiceSettingsWidget(
+            context, d->panel, settingsConf, enabled);
         d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
 
         d->panelPolicy->addItem(settingsWidget);

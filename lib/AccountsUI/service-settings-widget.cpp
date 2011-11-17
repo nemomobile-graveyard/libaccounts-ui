@@ -42,6 +42,8 @@
 #include <QDebug>
 #include <QDomElement>
 
+#define ACCOUNTS_UI_GOOGLE_RELATED_HACKS
+
 namespace AccountsUI {
 
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
@@ -145,6 +147,14 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     ServiceSettingsWidgetListItem *serviceInfoList = 0;
     BasicServiceWidget *serviceInfoLayout = 0;
 
+#ifdef ACCOUNTS_UI_GOOGLE_RELATED_HACKS
+    QString providerName = context->account()->providerName();
+    /* Ugly Ugly HACK -
+     * Remove ASAP + Move this fix to the google accounts-ui plugin, */
+    if (isChinaVariant() && (providerName == QLatin1String("google")))
+        settingsConf = EnableButton;
+#endif
+
     if (settingsConf & EnableButton) {
         if (context) {
             /* Dummy layout for the enable service button
@@ -216,10 +226,12 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             if ((settingsConf & NonMandatorySettings) ||
                 (settingsConf & MandatorySettings)) {
 
+#ifdef ACCOUNTS_UI_GOOGLE_RELATED_HACKS
                 /* Ugly Ugly HACK -
                  * Remove ASAP + Add fix for AbstractServiceSetupContext API,
                  * in order to properly solve this issue. */
                 if (context->account()->providerName() != QLatin1String("google"))
+#endif
                     mainPolicy->addItem(widget);
             }
         }
