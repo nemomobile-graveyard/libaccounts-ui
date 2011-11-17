@@ -108,4 +108,23 @@ const QString productNameTr()
     return productNameId;
 }
 
+bool isChinaVariant()
+{
+    struct system_config *sc = 0;
+    QByteArray name;
+
+    if (sysinfo_init(&sc) == 0) {
+        uint8_t *data = 0;
+        unsigned long size = 0;
+
+        if (sysinfo_get_value(sc, "/device/sw-release-ver",
+                              &data, &size) == 0) {
+            name = QByteArray((const char *)(data), size);
+            free(data);
+        }
+        sysinfo_finish(sc);
+    }
+    return name.endsWith("003");
+}
+
 } //namespace
