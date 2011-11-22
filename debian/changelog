@@ -1,3 +1,9 @@
+libaccounts-ui (2.11-2) unstable; urgency=low
+
+  * Removing reopened and invalid bugs from changelog.
+
+ -- Subramanian Girish <ext-girish.1.subramanian@nokia.com>  Tue, 22 Nov 2011 10:47:45 +0200
+
 libaccounts-ui (2.11-1) unstable; urgency=low
 
   * Fixes: NB#290445 - China variant:Settings option goes missing in configured Gmail account when entering second time.
@@ -6,19 +12,16 @@ libaccounts-ui (2.11-1) unstable; urgency=low
 
 libaccounts-ui (2.10-1) unstable; urgency=low
 
-  * Fixes: NB#288895 - Incorrect error notes when tapped on Cancel/close buttons in Youtube authentication view.
 
  -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Thu, 10 Nov 2011 13:37:23 +0200
 
 libaccounts-ui (2.9-1) unstable; urgency=low
 
-  * Fixes: NB#289569 - View changes and error banner is not displayed when incorrect credentials are given in login view.
 
  -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 09 Nov 2011 12:44:57 +0200
 
 libaccounts-ui (2.8-1) unstable; urgency=low
 
-  * Fixes: NB#269348 - Settings view layout issues.
 
  -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 09 Nov 2011 09:28:07 +0200
 
