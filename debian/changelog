@@ -1,3 +1,9 @@
+libaccounts-ui (2.12.2) unstable; urgency=low
+
+  * Addresses: NB#288895 - Incorrect error notes when tapped on Cancel/close buttons in Youtube authentication view.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Mon, 05 Dec 2011 15:19:52 +0200
+
 libaccounts-ui (2.11-2) unstable; urgency=low
 
   * Removing reopened and invalid bugs from changelog.
