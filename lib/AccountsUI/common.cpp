@@ -56,8 +56,11 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
         //% "Wrong Credentials"
         return qtTrId("qtn_acc_auth_failed_infobanner");
     case SignOn::Error::IncorrectDate:
-        //% Date and time are wrong"
+        //% "Date and time are wrong"
         return qtTrId("qtn_comm_share_incorrect_date");
+    case SignOn::Error::SessionClosed:
+        //% "Account creation failed."
+        return qtTrId("qtn_acc_general_error_infobanner");
     default:
         //todo - provide a generic error id
         return qtTrId("qtn_comm_general_error");
