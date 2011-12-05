@@ -118,11 +118,13 @@ QGraphicsLayout *AvatarListItem::createLayout()
 void AvatarListItem::setImage(const QImage &image)
 {
     avatarImage->setImage(image);
+    updateGeometry();
 }
 
 void AvatarListItem::setImage(const QString &id)
 {
     avatarImage->setImage(id);
+    updateGeometry();
 }
 
 AccountSettingsPagePrivate::AccountSettingsPagePrivate(

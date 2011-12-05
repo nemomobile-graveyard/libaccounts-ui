@@ -45,6 +45,7 @@ public:
 
 public:
     BasicItemWidget(BasicItemWidgetType type, QGraphicsItem *parent = 0);
+    ~BasicItemWidget();
     virtual void createLayout();
     void setTitle(const QString &titleText);
     void setSubtitle(const QString &subtitleText);

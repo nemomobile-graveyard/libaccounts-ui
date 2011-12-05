@@ -95,6 +95,7 @@ public:
 
     ~CredentialWidgetViewPrivate()
     {
+        destroyAllWidgets();
     }
 
     /*
@@ -309,6 +310,7 @@ CredentialWidgetView::CredentialWidgetView(CredentialWidget *controller)
 
 CredentialWidgetView::~CredentialWidgetView()
 {
+    delete d_ptr;
 }
 
 void CredentialWidgetView::usernameTextEditGainedFocus()
