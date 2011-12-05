@@ -56,8 +56,11 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
         //% "Wrong Credentials"
         return qtTrId("qtn_acc_auth_failed_infobanner");
     case SignOn::Error::IncorrectDate:
-        //% Date and time are wrong"
+        //% "Date and time are wrong"
         return qtTrId("qtn_comm_share_incorrect_date");
+    case SignOn::Error::SessionClosed:
+        //% "Account creation failed."
+        return qtTrId("qtn_acc_general_error_infobanner");
     default:
         //todo - provide a generic error id
         return qtTrId("qtn_comm_general_error");
@@ -65,9 +68,9 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
 }
 
 void showInfoBanner(const QString &text,
-                    const QString &feedback,
                     const MInfoBanner::BannerType type,
-                    const quint32 disapperTimeout)
+                    const quint32 disapperTimeout,
+                    const QString &feedback)
 {
     Q_UNUSED(type);
     Q_UNUSED(disapperTimeout);
@@ -106,6 +109,25 @@ const QString productNameTr()
         productNameId = qtTrId("qtn_comm_product_nxx");
 
     return productNameId;
+}
+
+bool isChinaVariant()
+{
+    struct system_config *sc = 0;
+    QByteArray name;
+
+    if (sysinfo_init(&sc) == 0) {
+        uint8_t *data = 0;
+        unsigned long size = 0;
+
+        if (sysinfo_get_value(sc, "/device/sw-release-ver",
+                              &data, &size) == 0) {
+            name = QByteArray((const char *)(data), size);
+            free(data);
+        }
+        sysinfo_finish(sc);
+    }
+    return name.endsWith("003");
 }
 
 } //namespace

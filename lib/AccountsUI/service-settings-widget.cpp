@@ -42,12 +42,14 @@
 #include <QDebug>
 #include <QDomElement>
 
+#define ACCOUNTS_UI_GOOGLE_RELATED_HACKS
+
 namespace AccountsUI {
 
 ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *parent)
         : MBasicListItem(MBasicListItem::IconWithTitleAndSubtitle, parent)
 {
-    setStyleName("CommonLargePanel");
+    setStyleName("CommonBasicListItemInverted");
     setObjectName("wgServiceSettingsWidgetListItem");
 
     horizontalLayout = new MLayout(this);
@@ -62,9 +64,9 @@ ServiceSettingsWidgetListItem::ServiceSettingsWidgetListItem(QGraphicsWidget *pa
     MLinearLayoutPolicy *titleSubtitleLayoutPolicy = new MLinearLayoutPolicy(titleSubtitleLayout, Qt::Vertical);
     titleSubtitleLayoutPolicy->setSpacing(0);
 
-    titleLabelWidget()->setStyleName("CommonHeaderInverted");
+    titleLabelWidget()->setStyleName("CommonTitleInverted");
     titleSubtitleLayoutPolicy->addItem(titleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
-    subtitleLabelWidget()->setStyleName("CommonBodyTextInverted");
+    subtitleLabelWidget()->setStyleName("CommonSubTitleInverted");
     titleSubtitleLayoutPolicy->addItem(subtitleLabelWidget(), Qt::AlignLeft | Qt::AlignTop);
 
     MStylableWidget *widget = new MStylableWidget();
@@ -145,13 +147,34 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     ServiceSettingsWidgetListItem *serviceInfoList = 0;
     BasicServiceWidget *serviceInfoLayout = 0;
 
+#ifdef ACCOUNTS_UI_GOOGLE_RELATED_HACKS
+    QString providerName = context->account()->providerName();
+    /* Ugly Ugly HACK -
+     * Remove ASAP + Move this fix to the google accounts-ui plugin, */
+    if (isChinaVariant() && (providerName == QLatin1String("google")))
+        settingsConf = EnableButton;
+#endif
+
     if (settingsConf & EnableButton) {
         if (context) {
+            /* Dummy layout for the enable service button
+             * The layout's top margin is compensating for the top
+             * margin of the title label in the ServiceSettingsWidgetListItem
+             * CommonTitleInverted - styling issue.
+             *
+             * TODO - Remove it, if the styling will be fixed accordingly. */
+            MLayout *enableServiceButtonLayout = new MLayout;
+            MLinearLayoutPolicy *enableServiceButtonPolicy =
+                new MLinearLayoutPolicy(enableServiceButtonLayout, Qt::Horizontal);
+            enableServiceButtonPolicy->setSpacing(0);
+            enableServiceButtonPolicy->setContentsMargins(0, 15, 0, 0);
+
             d->enableServiceButton = new MButton(this);
             d->enableServiceButton->setViewType(MButton::switchType);
             d->enableServiceButton->setStyleName("CommonLeftSwitchInverted");
             d->enableServiceButton->setObjectName("wgServiceSettingsWidgetServiceButton");
             d->enableServiceButton->setCheckable(true);
+            enableServiceButtonPolicy->addItem(d->enableServiceButton);
 
             ServiceHelper *serviceHelper =
                 new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
@@ -183,7 +206,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             d->enableServiceButton->setChecked(enabled);
             connect(d->enableServiceButton, SIGNAL(toggled(bool)), this, SLOT(enabled(bool)));
 
-            containerMainPolicy->addItem(d->enableServiceButton, Qt::AlignRight | Qt::AlignCenter);
+            containerMainPolicy->addItem(enableServiceButtonLayout, Qt::AlignRight | Qt::AlignTop);
             containerMainPolicy->addItem(serviceInfo, Qt::AlignLeft | Qt::AlignTop);
 
             mainPolicy->addItem(upperWidget);
@@ -203,10 +226,12 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             if ((settingsConf & NonMandatorySettings) ||
                 (settingsConf & MandatorySettings)) {
 
+#ifdef ACCOUNTS_UI_GOOGLE_RELATED_HACKS
                 /* Ugly Ugly HACK -
                  * Remove ASAP + Add fix for AbstractServiceSetupContext API,
                  * in order to properly solve this issue. */
                 if (context->account()->providerName() != QLatin1String("google"))
+#endif
                     mainPolicy->addItem(widget);
             }
         }
