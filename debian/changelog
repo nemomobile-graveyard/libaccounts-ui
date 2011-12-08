@@ -1,4 +1,4 @@
-libaccounts-ui (2.12.2) unstable; urgency=low
+libaccounts-ui (2.12.3) unstable; urgency=low
 
   * Addresses: NB#288895 - Incorrect error notes when tapped on Cancel/close buttons in Youtube authentication view.
 
