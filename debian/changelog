@@ -1,3 +1,9 @@
+libaccounts-ui (2.13-1) unstable; urgency=low
+
+  * Fixes: NB#273759 - <MemLeak>memory leak observed in accounts-ui when trying to configure 'picasa' account
+
+ -- Smita Srivastava <smita.srivastava@teleca.com>  Wed, 18 Jan 2012 09:18:45 +0200
+
 libaccounts-ui (2.12.3) unstable; urgency=low
 
   * Addresses: NB#288895 - Incorrect error notes when tapped on Cancel/close buttons in Youtube authentication view.
