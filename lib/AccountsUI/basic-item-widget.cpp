@@ -59,6 +59,11 @@ BasicItemWidget::BasicItemWidget(BasicItemWidgetType type, QGraphicsItem *parent
     d->type = type;
 }
 
+BasicItemWidget::~BasicItemWidget()
+{
+    delete d_ptr;
+}
+
 void BasicItemWidget::createLayout()
 {
     Q_D(BasicItemWidget);

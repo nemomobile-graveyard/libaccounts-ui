@@ -170,6 +170,9 @@ void GenericAccountSetupFormViewPrivate::showCredentialWidgetAndHideProgress()
 
 void GenericAccountSetupFormViewPrivate::hideCredentialWidgetAndShowProgress()
 {
+    if (subscribeLabel)
+        subscribeLabel->removeAllHighlighters();
+
     if (mainLayoutPolicy) {
         for (int i = mainLayoutPolicy->count() - 1; i >= 0; i--)
             mainLayoutPolicy->removeAt(i);
@@ -508,6 +511,12 @@ void GenericAccountSetupFormView::signIn()
             } else if (queryBox.clickedButton() == cancelButton->model()) {
                 pluginProcess->quit();
             }
+
+            queryBox.removeButton(continueButton->model());
+            queryBox.removeButton(continueButton->model());
+
+            delete continueButton;
+            delete cancelButton;
         }
     }
 
