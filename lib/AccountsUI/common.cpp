@@ -29,13 +29,38 @@
 
 namespace AccountsUI {
 
-const QString trIdFromSignonError(const int err)
+ErrorTrHelper::ErrorTrHelper() : undefinedErr(-1) {}
+
+void ErrorTrHelper::setErrorType(const int errType)
 {
-    //todo - if possible, add QFlag<> validation
-    return trIdFromSignonError((SignonErrType)err);
+    this->errType = errType;
 }
 
-const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QString& providerName)
+QString ErrorTrHelper::trId()
+{
+    errType = undefinedErr;
+    return QString();
+};
+
+const QString trIdFromSignonError(const SignonErrType err,
+                                  const QString& providerName)
+{
+    return trIdFromSignonError((SignonErrType)err, providerName, 0);
+}
+
+const QString trIdFromSignonError(const int err)
+{
+    return trIdFromSignonError((SignonErrType)err, QString(), 0);
+}
+
+const QString trIdFromSignonError(const int err, ErrorTrHelper *errTrHelper)
+{
+    return trIdFromSignonError((SignonErrType)err, QString(), errTrHelper);
+}
+
+const QString trIdFromSignonError(const SignOn::Error::ErrorType err,
+                                  const QString& providerName,
+                                  ErrorTrHelper *errTrHelper)
 {
     //todo - enrich this
     switch (err) {
@@ -62,9 +87,42 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err, const QStr
         //% "Account creation failed."
         return qtTrId("qtn_acc_general_error_infobanner");
     default:
+        if (errTrHelper != 0) {
+            errTrHelper->setErrorType(static_cast<int>(err));
+            QString trId = errTrHelper->trId();
+            if (!trId.isEmpty()) return trId;
+        }
         //todo - provide a generic error id
         return qtTrId("qtn_comm_general_error");
     }
+}
+
+void
+ErrorMessageDisplayHelper::displayMessage(const QString &text,
+                                          const ErrorContext errContext,
+                                          const QString &providerName)
+{
+    Q_UNUSED(errContext)
+    Q_UNUSED(providerName)
+    switch (errContext) {
+    case AccountValidationErr:
+        /* fall through */
+    case UserInputErr:
+        /* fall through */
+    case AccountSavingErr:
+        /* fall through */
+    default:
+        showInfoBanner(text); break;
+    }
+}
+
+void
+ErrorMessageDisplayHelper::displayMessage(const int errCode,
+                                          const ErrorContext errContext,
+                                          const QString &providerName)
+{
+    const QString text = trIdFromSignonError(errCode);
+    displayMessage(text, errContext, providerName);
 }
 
 void showInfoBanner(const QString &text,

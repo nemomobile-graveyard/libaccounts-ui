@@ -61,6 +61,19 @@ public:
      */
     void setValidationData(const ValidationData &validationData);
 
+    /*!
+     * Installs an error translation helper object on the context.
+     * Currently this is used for supporting plugin additional specific error
+     * texts on authentication failure.
+     */
+    void installErrorTrHelper(ErrorTrHelper *errTrHelper);
+    /*!
+     * Installs an error display helper object on the context.
+     * Currently this is used for supporting plugin specfic UI behavior
+     * on authentication failure.
+     */
+    void installErrorMessageDisplayHelper(ErrorMessageDisplayHelper *errDisplayHelper);
+
 protected:
     SignOn::Identity *identity() const;
     QString userName() const;
