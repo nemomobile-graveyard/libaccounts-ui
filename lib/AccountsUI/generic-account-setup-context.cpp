@@ -83,6 +83,8 @@ public:
         , identityCreated(false)
         , credentialsStored(false)
         , validationData(QString(), QString(), QVariantMap())
+        , errTrHelper(0)
+        , errDisplayHelper(0)
         , q_ptr(parent)
     {}
 
@@ -95,6 +97,16 @@ public:
             networkManager->disconnect();
             networkManager->stopSession();
             networkManager->deleteLater();
+        }
+
+        if (errTrHelper != 0) {
+            delete errTrHelper;
+            errTrHelper = 0;
+        }
+
+        if (errDisplayHelper != 0) {
+            delete errDisplayHelper;
+            errDisplayHelper = 0;
         }
     }
 
@@ -117,6 +129,8 @@ public:
     bool credentialsStored;
 
     ValidationData validationData;
+    ErrorTrHelper *errTrHelper;
+    ErrorMessageDisplayHelper *errDisplayHelper;
 
 private:
     GenericAccountSetupContext *q_ptr;
@@ -399,6 +413,20 @@ QString GenericAccountSetupContext::userName() const
     return d->identityInfo.userName();
 }
 
+void GenericAccountSetupContext::installErrorTrHelper(
+    ErrorTrHelper *errTrHelper)
+{
+    Q_D(GenericAccountSetupContext);
+    d->errTrHelper = errTrHelper;
+}
+
+void GenericAccountSetupContext::installErrorMessageDisplayHelper(
+    ErrorMessageDisplayHelper *errDisplayHelper)
+{
+    Q_D(GenericAccountSetupContext);
+    d->errDisplayHelper = errDisplayHelper;
+}
+
 void GenericAccountSetupContext::validate()
 {
     Q_D(GenericAccountSetupContext);
@@ -528,14 +556,26 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
         if (senderSession == d->authSession)
             d->authSession = NULL;
     }
-    if (err.type() != SignOn::Error::SessionCanceled) {
+
+    if (err.type() != static_cast<int>(SignOn::Error::SessionCanceled)) {
         Accounts::Provider *provider =
             account()->manager()->provider(account()->providerName());
-        QString providerName = provider->displayName();
-        showInfoBanner(trIdFromSignonError(
-            (SignonErrType)err.type(),
-            qtTrId(providerName.toAscii().constData())));
+
+        QString providerName =
+            qtTrId(provider->displayName().toLatin1().constData());
+
+        if (d->errDisplayHelper != 0) {
+            d->errDisplayHelper->displayMessage(err.type(),
+                ErrorMessageDisplayHelper::AccountValidationErr, providerName);
+        } else {
+            QString errText =
+                trIdFromSignonError((SignonErrType)err.type(),
+                                    providerName,
+                                    d->errTrHelper);
+            showInfoBanner(errText);
+        }
     }
+
     emit error(UnknownError, err.message());
 }
 

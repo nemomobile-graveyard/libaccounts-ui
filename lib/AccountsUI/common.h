@@ -42,19 +42,131 @@ namespace AccountsUI {
 typedef SignOn::Error::ErrorType SignonErrType;
 
 /*!
+ * @class ErrorMessageDisplayHelper
+ * @headerfile AccountsUI/common.h \
+ * AccountsUI/Common
+ * @brief Base class for error display helpers
+ * @see void GenericAccountSetupContext::installErrorMessageDisplayHelper()
+ *
+ * Use this class to support additional translation ids for error types,
+ * rather than only the generic default ones the `trIdFromSignonError()`
+ * implementation has to offer.
+ * @note The GenericAccountSetupContext instance will take ownership of the
+ * installed ErrorDisplayHelper */
+class ACCOUNTSUI_EXPORT ErrorMessageDisplayHelper
+{
+    Q_DISABLE_COPY(ErrorMessageDisplayHelper)
+
+public:
+    enum ErrorContext {
+        UserInputErr = 0,
+        AccountValidationErr,
+        AccountSavingErr
+    };
+
+    /*!
+     * Basic constructor */
+    explicit ErrorMessageDisplayHelper() {}
+    /*!
+     * @param text The text to be displayed
+     * @param errContext The error's context
+     * @param providerName The service provider associated with the account
+     * @note This ought to be a blocking call. In the case of displaying
+     * a modal dialog, this method must return upon dialog closure only.
+     */
+    virtual void displayMessage(const QString &text,
+                                const ErrorContext errContext = AccountValidationErr,
+                                const QString &providerName = QString::null);
+
+    /*!
+     * @param errCode The errCode
+     * @param errContext The error's context
+     * @param providerName The service provider associated with the account
+     * @note This ought to be a blocking call. In the case of displaying
+     * a modal dialog, this method must return upon dialog closure only.
+     */
+    virtual void displayMessage(const int errCode,
+                                const ErrorContext errContext = AccountValidationErr,
+                                const QString &providerName = QString::null);
+};
+
+/*!
+ * @class ErrorTrHelper
+ * @headerfile AccountsUI/common.h \
+ * AccountsUI/Common
+ * @brief Base class for error translation helpers
+ * @see void GenericAccountSetupContext::installErrorTrHelper()
+ * @see const QString trIdFromSignonError()
+ *
+ * Use this class to support additional translation ids for error types,
+ * rather than only the generic default ones the `trIdFromSignonError()`
+ * implementation has to offer.
+ * @note The GenericAccountSetupContext instance will take ownership of the
+ * installed ErrorTrHandler */
+class ACCOUNTSUI_EXPORT ErrorTrHelper
+{
+    Q_DISABLE_COPY(ErrorTrHelper)
+
+public:
+    /*!
+     * Basic constructor */
+    explicit ErrorTrHelper();
+    /*!
+     * @param errType The error type for which a translation id will be
+     * computed at the next `trId()` call. */
+    void setErrorType(const int errType);
+    /*!
+     * Computes a translation id based on the currently set error type.
+     * Base implementation resets the internal error type to `undefinedErr`
+     * and returns an empty string. Should this method return an empty string.
+     * Reimplement this to provide additional translation ids.
+     * @returns translation for the error message corresponding to the
+     *          previously set error type. */
+    virtual QString trId();
+
+protected:
+    /*!
+     * Defines the undefined error value. */
+    const int undefinedErr;
+    int errType;
+};
+
+/*!
+ * @deprecated
  * Helper function. Maps SignOn error types to logical translation ids.
  * @param err the SignOn error type.
  * @param providerName the provider name.
  * @returns corresponding translation id string.
  */
 ACCOUNTSUI_EXPORT
-const QString trIdFromSignonError(const SignonErrType err, const QString& providerName = NULL);
+const QString trIdFromSignonError(const SignonErrType err,
+                                  const QString& providerName = NULL);
+
+/*!
+ * @deprecated
+ * @overload trIdFromSignonError(const SignonErrType err)
+ */
+ACCOUNTSUI_EXPORT
+const QString trIdFromSignonError(const int err);
+
+/*!
+ * Helper function. Maps SignOn error types to logical translation ids.
+ * @param err the SignOn error type.
+ * @param providerName the provider name.
+ * @param errTrHelper brings in additional error types support
+ * @returns corresponding translation id string.
+ */
+ACCOUNTSUI_EXPORT
+const QString trIdFromSignonError(const SignonErrType err,
+                                  const QString& providerName,
+                                  ErrorTrHelper *errTrHelper);
 
 /*!
  * @overload trIdFromSignonError(const SignonErrType err)
  */
 ACCOUNTSUI_EXPORT
-const QString trIdFromSignonError(const int err);
+const QString trIdFromSignonError(const int err,
+                                  ErrorTrHelper *errHelper);
 
 #ifndef ACCOUNTSUI_DISABLE_DEPRECATED
 /*!
