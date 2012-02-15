@@ -1,3 +1,10 @@
+libaccounts-ui (2.14-1) unstable; urgency=low
+
+  * Addresses: NB#294461 - [TASK] Facebook new error code: 405 - Identify or location verification.
+  * Addresses: NB#294460 - [TASK] Facebook new error code 407: unconfirmed account error when logging in.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 15 Feb 2012 06:37:01 +0200
+
 libaccounts-ui (2.13-1) unstable; urgency=low
 
   * Fixes: NB#273759 - <MemLeak>memory leak observed in accounts-ui when trying to configure 'picasa' account
