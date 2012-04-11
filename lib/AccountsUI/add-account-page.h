@@ -78,13 +78,13 @@ public:
 
 protected slots:
     void navigateToServiceSelectionPage();
+    void onError(AccountsUI::ErrorCode, const QString &);
 
 private slots:
     void clearServiceContextList();
     void hideMenuBar();
     void showMenuBar();
     void onSyncStateChanged(const SyncState &state);
-    void onError(AccountsUI::ErrorCode, const QString &);
 
 protected:
     virtual void openServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
