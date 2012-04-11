@@ -1,3 +1,9 @@
+libaccounts-ui (2.15-1) unstable; urgency=low
+
+  * Addresses: NB#300023 - Configuring gmail account does not work without configuring network connection first.
+
+ -- Aurel Popirtac <ext-aurel.popirtac@nokia.com>  Wed, 11 Apr 2012 13:40:06 +0300
+
 libaccounts-ui (2.14-1) unstable; urgency=low
 
   * Addresses: NB#294461 - [TASK] Facebook new error code: 405 - Identify or location verification.
