@@ -37,9 +37,9 @@
 #include <TelepathyQt4/PendingOperation>
 #include <TelepathyQt4/ReferencedHandles>
 #include <TelepathyQt4/ContactManager>
-#include <RTComTelepathyQt4/Types>
-#include <RTComTelepathyQt4/Constants>
-#include <RTComTelepathyQt4/Connection>
+#include <TelepathyQt4/Types>
+#include <TelepathyQt4/Constants>
+#include <TelepathyQt4/Connection>
 
 //Meegotouch
 #include <MButton>
