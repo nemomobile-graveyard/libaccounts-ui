@@ -67,7 +67,9 @@
 #include <QDebug>
 #include <QBuffer>
 
-#include <sysinfo.h>
+#include <QSystemInfo>
+
+QTM_USE_NAMESPACE
 
 #define INFO_BANNER_TIMEOUT 3000
 
@@ -547,26 +549,12 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     spacer->setStyleName("CommonSmallSpacer");
     upperLayoutPolicy->addItem(spacer);
 
-    struct system_config *sc = 0;
-    QByteArray name;
-
-    if (sysinfo_init(&sc) == 0) {
-        uint8_t *data = 0;
-        unsigned long size = 0;
-
-        if (sysinfo_get_value(sc, "/device/sw-release-ver",
-                              &data, &size) == 0) {
-            name = QByteArray((const char *)(data), size);
-            free(data);
-        }
-        sysinfo_finish(sc);
-    }
-
     if (provider) {
+        QSystemInfo sysInfo;
         QDomElement root = provider->domDocument().documentElement();
         d->avatar = root.firstChildElement("display-avatar");
 
-        if (name.endsWith("003"))
+        if (sysInfo.version(QSystemInfo::Firmware).endsWith("003"))
             d->avatar.clear();
 
         if (d->avatar.text() == "true") {

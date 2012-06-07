@@ -9,10 +9,13 @@ TARGET = AccountPlugin
 VERSION = 1.0.0
 CONFIG += qt \
     meegotouch \
+    mobility \
     link_pkgconfig \
     gallerycore \
     qtsparql \
     mngfclient
+
+MOBILITY = systeminfo
 
 QT += xml \
     network \
@@ -25,7 +28,6 @@ PKGCONFIG += accounts-qt \
     AccountSetup \
     libsignon-qt \
     meegotouch \
-    sysinfo \
     TelepathyQt4 \
     QtSparql \
     QtSparqlTrackerLive \

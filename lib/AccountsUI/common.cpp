@@ -25,7 +25,10 @@
 #include <MBanner>
 #include <MNGFClient>
 
-#include <sysinfo.h>
+#include <QSystemDeviceInfo>
+#include <QSystemInfo>
+
+QTM_USE_NAMESPACE
 
 namespace AccountsUI {
 
@@ -145,23 +148,10 @@ void showInfoBanner(const QString &text,
 
 const QString productNameTr()
 {
-    struct system_config *sc = 0;
-    QByteArray name;
-
-    if (sysinfo_init(&sc) == 0) {
-        uint8_t *data = 0;
-        unsigned long size = 0;
-
-
-        if (sysinfo_get_value(sc, "/component/product-name",
-                              &data, &size) == 0) {
-            name = QByteArray((const char *)(data), size);
-            free(data);
-        }
-        sysinfo_finish(sc);
-    }
+    QSystemDeviceInfo sysInfo;
     QString productNameId;
-    if (name == "N9" || name == "Nxy")
+
+    if (sysInfo.model() == "N9" || sysInfo.model() == "Nxy")
         productNameId = qtTrId("qtn_comm_product_n9");
     else
         productNameId = qtTrId("qtn_comm_product_nxx");
@@ -171,21 +161,9 @@ const QString productNameTr()
 
 bool isChinaVariant()
 {
-    struct system_config *sc = 0;
-    QByteArray name;
+    QSystemInfo sysInfo;
 
-    if (sysinfo_init(&sc) == 0) {
-        uint8_t *data = 0;
-        unsigned long size = 0;
-
-        if (sysinfo_get_value(sc, "/device/sw-release-ver",
-                              &data, &size) == 0) {
-            name = QByteArray((const char *)(data), size);
-            free(data);
-        }
-        sysinfo_finish(sc);
-    }
-    return name.endsWith("003");
+    return sysInfo.version(QSystemInfo::Firmware).endsWith("003");
 }
 
 } //namespace
