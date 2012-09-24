@@ -249,7 +249,7 @@ void GenericAccountSetupContext::store()
         emit error(UnknownError, msg);
         return;
     }
-    account()->selectService(NULL);
+    account()->selectService();
     if (d->genericAccountSetupForm) {
         qDebug()<< d->genericAccountSetupForm->username();
         QString username = d->genericAccountSetupForm->username();
@@ -380,15 +380,15 @@ MWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
     }
 
     QString providerName = account()->providerName();
-    Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
+    Accounts::Provider provider = AccountsManager::instance()->provider(providerName);
 
-    Q_ASSERT(provider);
-    if (!provider) {
+    Q_ASSERT(provider.isValid());
+    if (!provider.isValid()) {
         return 0;
     }
 
     d->genericAccountSetupForm = new GenericAccountSetupForm(this, parent);
-    d->genericAccountSetupForm->setDomDocument(provider->domDocument());
+    d->genericAccountSetupForm->setDomDocument(provider.domDocument());
 
     return d->genericAccountSetupForm;
 }
@@ -558,11 +558,11 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
     }
 
     if (err.type() != static_cast<int>(SignOn::Error::SessionCanceled)) {
-        Accounts::Provider *provider =
+        Accounts::Provider provider =
             account()->manager()->provider(account()->providerName());
 
         QString providerName =
-            qtTrId(provider->displayName().toLatin1().constData());
+            qtTrId(provider.displayName().toLatin1().constData());
 
         if (d->errDisplayHelper != 0) {
             d->errDisplayHelper->displayMessage(err.type(),
@@ -616,7 +616,7 @@ void GenericAccountSetupContext::credentialsStored(const quint32 id)
 {
     Q_D(GenericAccountSetupContext);
     qDebug() << "SSO stored id: " << id;
-    account()->selectService(NULL);
+    account()->selectService();
     account()->setCredentialsId(id);
 
     d->credentialsStored = true;

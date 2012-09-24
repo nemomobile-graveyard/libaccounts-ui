@@ -38,7 +38,7 @@ MWidget *GenericServicePlugin::iconWidget(const QDomDocument &domDocument,
 
 AccountsUI::AbstractServiceSetupContext *GenericServicePlugin::serviceSetupContext(
         Accounts::Account *account,
-        const Accounts::Service *service,
+        const Accounts::Service &service,
         QObject *parent)
 {
     return new GenericServiceSetupContext(account, service, parent);

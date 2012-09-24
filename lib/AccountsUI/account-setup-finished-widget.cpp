@@ -80,11 +80,11 @@ AccountSetupFinishedWidget::AccountSetupFinishedWidget(const QString &providerNa
     layoutPolicy->addItem(headerSpacer);
 
     // xml file that describes the ui elements for the provider
-    Accounts::Provider *provider = AccountsUI::AccountsManager::instance()->provider(providerName);
-    if (provider) {
-        QDomElement root = provider->domDocument().documentElement();
+    Accounts::Provider provider = AccountsUI::AccountsManager::instance()->provider(providerName);
+    if (provider.isValid()) {
+        QDomElement root = provider.domDocument().documentElement();
         QDomElement providerIcon = root.firstChildElement("icon");
-        QString catalog = provider->trCatalog();
+        QString catalog = provider.trCatalog();
         MLocale locale;
         if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
             locale.installTrCatalog(catalog);
@@ -93,7 +93,7 @@ AccountSetupFinishedWidget::AccountSetupFinishedWidget(const QString &providerNa
 
         AccountSetupFinishedListItem *providerItem = new AccountSetupFinishedListItem(this);
         providerItem->imageWidget()->setImage(providerIcon.text());
-        providerItem->setTitle(qtTrId(provider->displayName().toLatin1()));
+        providerItem->setTitle(qtTrId(provider.displayName().toLatin1()));
         layoutPolicy->addItem(providerItem);
     }
 

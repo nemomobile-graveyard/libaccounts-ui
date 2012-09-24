@@ -41,16 +41,16 @@ namespace AccountsUI {
 class ServiceHelperPrivate
 {
 public:
-    ServiceHelperPrivate(Accounts::Service *p) :
+    ServiceHelperPrivate(Accounts::Service p) :
         service(p), plugin(0)
     {
-        domDocument = service->domDocument();
+        domDocument = service.domDocument();
     }
 
     void loadPlugin();
 
     QDomDocument domDocument;
-    Accounts::Service *service;
+    Accounts::Service &service;
     ServicePluginInterface *plugin;
 };
 
@@ -91,12 +91,12 @@ void ServiceHelperPrivate::loadPlugin()
     if (!d->plugin) d->loadPlugin(); \
     if (!d->plugin) return retval
 
-ServiceHelper::ServiceHelper(Accounts::Service *service, QObject *parent)
+ServiceHelper::ServiceHelper(Accounts::Service service, QObject *parent)
     : QObject(parent),
     d_ptr(new ServiceHelperPrivate(service))
 {
     Q_D(ServiceHelper);
-    QString catalog = d->service->trCatalog();
+    QString catalog = d->service.trCatalog();
     if (!catalog.isEmpty()) {
         MLocale locale;
         locale.installTrCatalog(catalog);
@@ -111,7 +111,7 @@ ServiceHelper::~ServiceHelper()
     delete d;
 }
 
-Accounts::Service *ServiceHelper::service() const
+Accounts::Service &ServiceHelper::service() const
 {
     Q_D(const ServiceHelper);
 
@@ -122,7 +122,7 @@ const QDomDocument ServiceHelper::domDocument() const
 {
     Q_D(const ServiceHelper);
 
-    return d->service->domDocument();
+    return d->service.domDocument();
 }
 
 MWidget *ServiceHelper::iconWidget(QGraphicsItem *parent)
@@ -156,7 +156,7 @@ QString ServiceHelper::prettyName()
     if (!setupNameElement.isNull())
         name = setupNameElement.text();
     else
-        name = d->service->displayName();
+        name = d->service.displayName();
     return qtTrId(name.toLatin1());
 }
 
@@ -218,19 +218,19 @@ ServiceHelper::serviceSetupContext(Accounts::Account *account,
 QString ServiceHelper::providerName()
 {
     Q_D(ServiceHelper);
-    return d->service->provider();
+    return d->service.provider();
 }
 
 QString ServiceHelper::serviceType()
 {
     Q_D(ServiceHelper);
-    return d->service->serviceType();
+    return d->service.serviceType();
 }
 
 QString ServiceHelper::serviceName()
 {
     Q_D(ServiceHelper);
-    return d->service->name();
+    return d->service.name();
 }
 
 } // namespace
