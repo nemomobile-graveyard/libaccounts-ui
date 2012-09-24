@@ -46,7 +46,7 @@ public:
 };
 
 GenericServiceSetupContext::GenericServiceSetupContext(Account *account,
-                                                       const Service *service,
+                                                       const Service &service,
                                                        QObject *parent)
     : AbstractServiceSetupContext(account, service, parent)
     , m_parser (new Parser)

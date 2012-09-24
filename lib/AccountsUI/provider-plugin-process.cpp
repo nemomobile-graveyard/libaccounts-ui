@@ -91,18 +91,18 @@ void ProviderPluginProcessPrivate::executeCommandFromXML(const QDomDocument
     }
 }
 
-void ProviderPluginProcessPrivate::serviceEnabled(Accounts::Service *service)
+void ProviderPluginProcessPrivate::serviceEnabled(Accounts::Service &service)
 {
-    qDebug() << Q_FUNC_INFO << service->name();
+    qDebug() << Q_FUNC_INFO << service.name();
 
-    executeCommandFromXML(service->domDocument());
+    executeCommandFromXML(service.domDocument());
 
     // Commands might be specified in service-type files too
     Accounts::Manager *manager = account->manager();
-    Accounts::ServiceType *serviceType =
-        manager->serviceType(service->serviceType());
-    if (serviceType != 0)
-        executeCommandFromXML(serviceType->domDocument());
+    Accounts::ServiceType serviceType =
+        manager->serviceType(service.serviceType());
+    if (serviceType.isValid())
+        executeCommandFromXML(serviceType.domDocument());
 }
 
 void ProviderPluginProcessPrivate::accountSaved()
@@ -113,7 +113,7 @@ void ProviderPluginProcessPrivate::accountSaved()
     if (account->enabled()) {
         /* Go through the enabled services and run the activation command, if
          * present */
-        foreach (Accounts::Service *service, account->services()) {
+        foreach (Accounts::Service service, account->services()) {
             account->selectService(service);
             if (account->enabled() && !enabledServices.contains(service))
                 serviceEnabled(service);
@@ -130,7 +130,7 @@ void ProviderPluginProcessPrivate::monitorServices()
     account->selectService();
     if (wrapped->setupType() == AccountSetup::EditExisting &&
         account->enabled()) {
-        foreach (Accounts::Service *service, account->services()) {
+        foreach (Accounts::Service service, account->services()) {
             account->selectService(service);
             if (account->enabled())
                 enabledServices.append(service);
@@ -284,19 +284,19 @@ QString ProviderPluginProcess::translatedProviderName() const
 
     QString providerName(d->account->providerName());
     QString providerIconId;
-    Accounts::Provider *provider =
+    Accounts::Provider provider =
             AccountsManager::instance()->provider(providerName);
 
-    if (provider) {
-        providerIconId = provider->iconName();
-        QString catalog = provider->trCatalog();
+    if (provider.isValid()) {
+        providerIconId = provider.iconName();
+        QString catalog = provider.trCatalog();
         MLocale locale;
         if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
             locale.installTrCatalog(catalog);
             MLocale::setDefault(locale);
         }
 
-        d->translatedProviderName = qtTrId(provider->displayName().toLatin1());
+        d->translatedProviderName = qtTrId(provider.displayName().toLatin1());
     }
     if (!(d->translatedProviderName .isEmpty()))
         return d->translatedProviderName;

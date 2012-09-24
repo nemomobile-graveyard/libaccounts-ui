@@ -122,14 +122,14 @@ ProviderPluginProxy::~ProviderPluginProxy()
     delete d;
 }
 
-void ProviderPluginProxy::createAccount(Provider *provider,
+void ProviderPluginProxy::createAccount(Provider provider,
                                         const QString &serviceType)
 {
     LastPageActions lastPageActions;
     return createAccount(provider, serviceType, lastPageActions);
 }
 
-void ProviderPluginProxy::createAccount(Provider *provider,
+void ProviderPluginProxy::createAccount(Provider provider,
                                         const QString &serviceType,
                                         const LastPageActions &lastPageActions)
 {

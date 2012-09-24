@@ -54,7 +54,7 @@ ServiceModel::ServiceModel(Accounts::Account *account, QObject *parent)
     init(account->services());
 }
 
-void ServiceModel::init(const Accounts::ServiceList &services)
+void ServiceModel::init(Accounts::ServiceList services)
 {
     Q_D(ServiceModel);
 
@@ -63,7 +63,7 @@ void ServiceModel::init(const Accounts::ServiceList &services)
     d->headerData.insert(ColumnCount, "columncount");
     for (int i = 0; i < services.size(); i++)
     {
-        QDomDocument domDocument = services[i]->domDocument();
+        QDomDocument domDocument = services[i].domDocument();
         d->serviceList << new ServiceHelper(services[i]);
     }
 }

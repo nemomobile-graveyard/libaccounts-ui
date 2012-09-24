@@ -30,6 +30,7 @@
 
 QTM_USE_NAMESPACE
 
+
 namespace AccountsUI {
 
 ErrorTrHelper::ErrorTrHelper() : undefinedErr(-1) {}
@@ -86,9 +87,11 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err,
     case SignOn::Error::IncorrectDate:
         //% "Date and time are wrong"
         return qtTrId("qtn_comm_share_incorrect_date");
+    /* TODO: see why SessionClosed is not showing as member
     case SignOn::Error::SessionClosed:
         //% "Account creation failed."
         return qtTrId("qtn_acc_general_error_infobanner");
+        */
     default:
         if (errTrHelper != 0) {
             errTrHelper->setErrorType(static_cast<int>(err));
@@ -150,7 +153,6 @@ const QString productNameTr()
 {
     QSystemDeviceInfo sysInfo;
     QString productNameId;
-
     if (sysInfo.model() == "N9" || sysInfo.model() == "Nxy")
         productNameId = qtTrId("qtn_comm_product_n9");
     else
