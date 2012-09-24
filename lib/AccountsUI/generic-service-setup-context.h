@@ -54,7 +54,7 @@ class ACCOUNTSUI_EXPORT GenericServiceSetupContext :
          * Class constructor
          */
         GenericServiceSetupContext(Accounts::Account *account,
-                                   const Accounts::Service *service,
+                                   const Accounts::Service &service,
                                    QObject *parent = 0);
 
         virtual ~GenericServiceSetupContext();
@@ -91,7 +91,7 @@ class ACCOUNTSUI_EXPORT GenericServiceSetupContext :
          */
         QDomDocument domDocument() const
         {
-            return service()->domDocument();
+            return service().domDocument();
         }
 
         /*!

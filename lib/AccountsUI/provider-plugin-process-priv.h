@@ -109,10 +109,10 @@ public:
         if (account != 0) {
             monitorServices();
             QString providerName = account->providerName();
-            Accounts::Provider *provider = account->manager()->provider(providerName);
-            if (provider) {
+            Accounts::Provider provider = account->manager()->provider(providerName);
+            if (provider.isValid()) {
                 validProvider = true;
-                QString catalog = provider->trCatalog();
+                QString catalog = provider.trCatalog();
                 MLocale locale;
                 if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
                     locale.installTrCatalog(catalog);
@@ -149,7 +149,7 @@ public:
     }
 
     AbstractAccountSetupContext *context() const;
-    void serviceEnabled(Accounts::Service *service);
+    void serviceEnabled(Accounts::Service &service);
     void executeCommandFromXML(const QDomDocument &document);
     void monitorServices();
 

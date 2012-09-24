@@ -88,7 +88,7 @@ void SettingsPage::createContent()
     setStyleName("AccountsUiPage");
 
     //% "%1 settings"
-    setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->service()->name()));
+    setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->service().name()));
 
     MWidget *upperWidget = new MWidget(this);
     MLayout *upperLayout = new MLayout(upperWidget);
@@ -101,15 +101,15 @@ void SettingsPage::createContent()
     QString providerName(d->context->account()->providerName());
     QString providerIconId;
     // xml file that describes the ui elements for the provider
-    Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
-    if (provider) {
-        QDomElement root = provider->domDocument().documentElement();
+    Accounts::Provider provider = AccountsManager::instance()->provider(providerName);
+    if (provider.isValid()) {
+        QDomElement root = provider.domDocument().documentElement();
         QDomElement providerIcon = root.firstChildElement("icon");
         providerIconId = providerIcon.text();
     }
 
     ServiceHelper *serviceHepler =
-        new ServiceHelper(const_cast<Accounts::Service*>(d->context->service()), this);
+        new ServiceHelper(d->context->service(), this);
     BasicHeaderWidget *usernameAndStatus = 0;
 
     if (d->context->account()->id() == 0) {
