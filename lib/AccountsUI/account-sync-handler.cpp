@@ -152,10 +152,10 @@ void AccountSyncHandler::onContextValidateError(AccountsUI::ErrorCode code,
     AbstractServiceSetupContext *serviceContext
         = qobject_cast<AbstractServiceSetupContext *>(QObject::sender());
     if (serviceContext != 0) {
-        const Accounts::Service *service = serviceContext->service();
+        const Accounts::Service service = serviceContext->service();
         //% "Values for %1 wrong. %2"
         QString errMessage = qtTrId("qtn_acc_creds_validation_failed")
-                             .arg(service->name()).arg(message);
+                             .arg(service.name()).arg(message);
 
         qDebug() << errMessage;
 

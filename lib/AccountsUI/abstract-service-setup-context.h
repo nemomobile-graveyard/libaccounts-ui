@@ -49,14 +49,14 @@ public:
      * Class constructor
      */
     AbstractServiceSetupContext(Accounts::Account *account,
-                                const Accounts::Service *service,
+                                const Accounts::Service &service,
                                 QObject *parent = 0);
     virtual ~AbstractServiceSetupContext();
 
     /*!
      * Gets the service being setup by this context.
      */
-    const Accounts::Service *service() const;
+    const Accounts::Service service() const;
 
     /*!
      * Sets the AbstractServiceSetupContext. This method should not be called
