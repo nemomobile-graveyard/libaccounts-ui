@@ -68,7 +68,7 @@ public:
      */
     virtual AccountsUI::AbstractServiceSetupContext *serviceSetupContext(
         Accounts::Account *account,
-        const Accounts::Service *service,
+        const Accounts::Service &service,
         QObject *parent = 0);
 };
 

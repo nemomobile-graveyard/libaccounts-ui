@@ -149,7 +149,7 @@ private:
     ServiceModelPrivate* d_ptr;
     Q_DISABLE_COPY(ServiceModel)
     Q_DECLARE_PRIVATE(ServiceModel);
-    void init(const Accounts::ServiceList &services);
+    void init(Accounts::ServiceList services);
 };
 
 Q_DECLARE_METATYPE(AccountsUI::ServiceHelper *)

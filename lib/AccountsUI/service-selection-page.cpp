@@ -97,7 +97,7 @@ ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
     setStyleName("AccountsUiPage");
     d->context = context;
     d->serviceType = context->serviceType();
-    d->context->account()->selectService(NULL);
+    d->context->account()->selectService();
     d->context->account()->setEnabled(true);
     d->serviceContextList = serviceContextList;
     d->abstractContexts.append(d->context);
@@ -143,8 +143,8 @@ void ServiceSelectionPage::createContent()
 
         QString providerName(d->context->account()->providerName());
         // xml file that describes the ui elements for the provider
-        Accounts::Provider *provider = AccountsManager::instance()->provider(providerName);
-        if (provider) {
+        Accounts::Provider provider = AccountsManager::instance()->provider(providerName);
+        if (provider.isValid()) {
             // loading common catalog to show device name string
             MLocale locale;
             QString catalog = "common";
@@ -154,14 +154,14 @@ void ServiceSelectionPage::createContent()
             }
 
             // provider info header
-            QDomElement root = provider->domDocument().documentElement();
+            QDomElement root = provider.domDocument().documentElement();
             QDomElement providerIcon = root.firstChildElement("icon");
             QString providerIconId = providerIcon.text();
 
             BasicHeaderWidget *providerInfoItem = new BasicHeaderWidget(BasicHeaderWidget::IconWithTitle, this);
             providerInfoItem->createLayout();
             providerInfoItem->setImage(providerIconId);
-            providerInfoItem->setTitle(qtTrId(provider->displayName().toLatin1()));
+            providerInfoItem->setTitle(qtTrId(provider.displayName().toLatin1()));
             providerInfoItem->setObjectName("wgServiceSelectionPageBasicListItem");
             topLayoutPolicy->addItem(providerInfoItem, Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -211,8 +211,8 @@ void ServiceSelectionPage::createContent()
 
     for (int i = 0; i < d->serviceContextList.count(); i++) {
         bool serviceStatus = true;
-        const Accounts::Service *service = d->serviceContextList.at(i)->service();
-        QDomElement root = service->domDocument().documentElement();
+        const Accounts::Service service = d->serviceContextList.at(i)->service();
+        QDomElement root = service.domDocument().documentElement();
         QDomElement serviceDefaultStatus = root.firstChildElement("default-status");
         if (serviceDefaultStatus.text() == "false")
             serviceStatus = false;
@@ -223,8 +223,8 @@ void ServiceSelectionPage::createContent()
                                       ServiceSettingsWidget::EnableButton,
                                       serviceStatus);
 
-        emit serviceEnabled(service->name(), true);
-        d->serviceStatusMap.insert(service->name(), true);
+        emit serviceEnabled(service.name(), true);
+        d->serviceStatusMap.insert(service.name(), true);
         d->abstractContexts.append(d->serviceContextList.at(i));
         d->layoutServicePolicy->addItem(settingsWidget, Qt::AlignLeft);
         connect (settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
@@ -266,9 +266,9 @@ void ServiceSelectionPage::onAccountInstallButton()
 
     setProgressIndicatorVisible(true);
     for (int i = 0; i < d->serviceContextList.count(); i++) {
-        const Accounts::Service *service = d->serviceContextList.at(i)->service();
+        const Accounts::Service service = d->serviceContextList.at(i)->service();
         QMap<QString, bool>::iterator mapIterator =
-                d->serviceStatusMap.find(service->name());
+                d->serviceStatusMap.find(service.name());
         if (mapIterator == d->serviceStatusMap.end())
             continue;
         d->serviceContextList.at(i)->enable(mapIterator.value());

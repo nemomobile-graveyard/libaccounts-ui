@@ -71,15 +71,15 @@ SortServiceModel::SortServiceModel(QObject *parent)
 void SortServiceModel::setEnabledServices(const Accounts::ServiceList &enabledServices)
 {
     qDebug()<<Q_FUNC_INFO;
-    foreach(Accounts::Service *service, enabledServices)
-        enabledServicesName.append(service->name());
+    foreach(Accounts::Service service, enabledServices)
+        enabledServicesName.append(service.name());
 }
 
 void SortServiceModel::setHiddenServices(const Accounts::ServiceList &hiddenServices)
 {
     qDebug() << Q_FUNC_INFO;
-    foreach (Accounts::Service *service, hiddenServices) {
-        QString serviceName = service->name();
+    foreach (Accounts::Service service, hiddenServices) {
+        QString serviceName = service.name();
         if (!hiddenService.contains(serviceName))
             hiddenService.append(serviceName);
     }

@@ -127,7 +127,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
     Q_D(ServiceSettingsWidget);
 
     d->context = context;
-    QString catalog = d->context->service()->trCatalog();
+    QString catalog = d->context->service().trCatalog();
     if (!catalog.isEmpty()) {
          MLocale locale;
          locale.installTrCatalog(catalog);
@@ -177,7 +177,7 @@ ServiceSettingsWidget::ServiceSettingsWidget(AbstractServiceSetupContext *contex
             enableServiceButtonPolicy->addItem(d->enableServiceButton);
 
             ServiceHelper *serviceHelper =
-                new ServiceHelper(const_cast<Accounts::Service*>(context->service()), this);
+                new ServiceHelper((context->service()), this);
             QString subTitle = serviceHelper->description();
 
             if (settingsConf != (MandatorySettings | EnableButton)) {
@@ -249,11 +249,11 @@ void ServiceSettingsWidget::enabled(bool enabled)
     if (!d->context)
         return;
 
-    emit serviceEnabled(d->context->service()->name(), enabled);
+    emit serviceEnabled(d->context->service().name(), enabled);
     if (enabled &&
-        d->context->service()) {
-            emit serviceButtonEnabled(d->context->service()->serviceType());
-            qDebug() << Q_FUNC_INFO << __LINE__ << d->context->service()->serviceType() << enabled;
+        d->context->service().isValid()) {
+            emit serviceButtonEnabled(d->context->service().serviceType());
+            qDebug() << Q_FUNC_INFO << __LINE__ << d->context->service().serviceType() << enabled;
     }
 }
 

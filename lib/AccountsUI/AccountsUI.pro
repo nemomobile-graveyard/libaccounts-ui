@@ -30,7 +30,8 @@ PKGCONFIG += accounts-qt \
     meegotouch \
     TelepathyQt4 \
     QtSparql \
-    QtSparqlTrackerLive
+    QtSparqlTrackerLive \
+    RTComTelepathyQt4-1
 
 # -----------------------------------------------------------------------------
 # input

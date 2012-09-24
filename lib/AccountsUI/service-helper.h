@@ -49,13 +49,13 @@ public:
     /*!
      * Class constructor.
      */
-    explicit ServiceHelper(Accounts::Service *service, QObject *parent = 0);
+    explicit ServiceHelper(Accounts::Service service, QObject *parent = 0);
     virtual ~ServiceHelper();
 
     /*!
      * Gets the Accounts::Service that was used to construct this object.
      */
-    Accounts::Service *service() const;
+    Accounts::Service &service() const;
 
     /*!
      * Gets the QDomDocument installed by the service.

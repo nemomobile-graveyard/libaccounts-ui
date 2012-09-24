@@ -30,18 +30,17 @@ class AbstractServiceSetupContextPrivate
 {
 public:
     AbstractServiceSetupContextPrivate():
-        service(0),
         accountSetupContext(0)
     {
     }
 
-    const Service *service;
+    Service service;
     AbstractAccountSetupContext *accountSetupContext;
 };
 
 AbstractServiceSetupContext::AbstractServiceSetupContext
     (Accounts::Account *account,
-     const Accounts::Service *service,
+     const Accounts::Service &service,
      QObject *parent)
     : AbstractSetupContext(account, parent),
     d_ptr(new AbstractServiceSetupContextPrivate())
@@ -56,7 +55,7 @@ AbstractServiceSetupContext::~AbstractServiceSetupContext()
     delete d_ptr;
 }
 
-const Service *AbstractServiceSetupContext::service() const
+const Service AbstractServiceSetupContext::service() const
 {
     Q_D(const AbstractServiceSetupContext);
 
