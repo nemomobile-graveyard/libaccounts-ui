@@ -174,9 +174,9 @@ void AccountSettingsPagePrivate::saveSettings()
                 account->setEnabled(state);
         } else if (serviceList.count() > 1) {
             foreach (AbstractServiceSetupContext *serviceContext, contexts) {
-                const Accounts::Service *service = serviceContext->service();
+                const Accounts::Service service = serviceContext->service();
                 QMap<QString, bool>::iterator i =
-                        serviceStatusMap.find(service->name());
+                        serviceStatusMap.find(service.name());
                 if (i == serviceStatusMap.end())
                     continue;
                 account->selectService(service);
@@ -186,7 +186,7 @@ void AccountSettingsPagePrivate::saveSettings()
             }
         }
 
-        context->account()->selectService(NULL);
+        context->account()->selectService();
         if (account->enabled() != state)
             account->setEnabled(state);
     }
@@ -411,16 +411,16 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
 
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
-        const Accounts::Service *service = context->service();
+        const Accounts::Service service = context->service();
         ServiceSettingsWidget *settingsWidget;
 
         d->account->selectService(service);
-        d->serviceStatusMap.insert(service->name(), d->account->enabled());
-        emit serviceEnabled(service->name(), d->account->enabled());
+        d->serviceStatusMap.insert(service.name(), d->account->enabled());
+        emit serviceEnabled(service.name(), d->account->enabled());
         bool enabled = false;
         if (d->account->enabled() &&
-            !enabledServiceTypes.contains(service->serviceType())) {
-            enabledServiceTypes.insert(service->serviceType(), true);
+            !enabledServiceTypes.contains(service.serviceType())) {
+            enabledServiceTypes.insert(service.serviceType(), true);
             enabled = true;
         }
 
@@ -432,7 +432,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
 
         settingsWidget = new ServiceSettingsWidget(
             context, d->panel, settingsConf, enabled);
-        d->settingsWidgets.insertMulti(service->serviceType(), settingsWidget);
+        d->settingsWidgets.insertMulti(service.serviceType(), settingsWidget);
 
         d->panelPolicy->addItem(settingsWidget);
     }
@@ -481,12 +481,12 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     QString providerName(d->account->providerName());
     QString providerIconId;
     QString providerTitleId;
-    Accounts::Provider *provider =
+    Accounts::Provider provider =
         AccountsManager::instance()->provider(providerName);
-    if (provider) {
-        providerIconId = provider->iconName();
-        providerTitleId = provider->displayName();
-        QString catalog = provider->trCatalog();
+    if (provider.isValid()) {
+        providerIconId = provider.iconName();
+        providerTitleId = provider.displayName();
+        QString catalog = provider.trCatalog();
         MLocale locale;
         if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
             locale.installTrCatalog(catalog);
@@ -505,7 +505,7 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     d->enableButton->setStyleName("CommonRightSwitchInverted");
     d->enableButton->setCheckable(true);
 
-    d->account->selectService(NULL);
+    d->account->selectService();
     if (d->account->enabled()) {
         d->panel->setEnabled(true);
         d->enableButton->setChecked(true);
@@ -549,9 +549,9 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
     spacer->setStyleName("CommonSmallSpacer");
     upperLayoutPolicy->addItem(spacer);
 
-    if (provider) {
+    if (provider.isValid()) {
         QSystemInfo sysInfo;
-        QDomElement root = provider->domDocument().documentElement();
+        QDomElement root = provider.domDocument().documentElement();
         d->avatar = root.firstChildElement("display-avatar");
 
         if (sysInfo.version(QSystemInfo::Firmware).endsWith("003"))
@@ -763,7 +763,7 @@ void AccountSettingsPage::createContent()
         Tp::enableWarnings(true);
         foreach (AbstractServiceSetupContext *context, d->contexts) {
             d->abstractContexts.append(context);
-            const Accounts::Service *service = context->service();
+            const Accounts::Service service = context->service();
             d->account->selectService(service);
             d->accountPath = d->account->valueAsString("tmc-uid");
             if (path.isNull()) {

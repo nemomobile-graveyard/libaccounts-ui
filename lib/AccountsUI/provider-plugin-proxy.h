@@ -68,7 +68,7 @@ public:
      * @param serviceType The main service type the user is interested in, or
      * empty string.
      */
-    void createAccount(Accounts::Provider *provider,
+    void createAccount(Accounts::Provider provider,
                        const QString &serviceType);
     /*!
      * Runs the account plugin to create an account.
@@ -79,7 +79,7 @@ public:
      * @param lastPageActions Structure describing what should be offered to
      * the user in the last page of a successful account creation.
      */
-    void createAccount(Accounts::Provider *provider,
+    void createAccount(Accounts::Provider provider,
                        const QString &serviceType,
                        const LastPageActions &lastPageActions);
 
