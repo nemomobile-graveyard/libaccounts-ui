@@ -34,18 +34,18 @@
 #include <Accounts/Provider>
 
 //Telepathy
-#include <TelepathyQt4/PendingReady>
-#include <TelepathyQt4/Types>
-#include <TelepathyQt4/AccountSet>
-#include <TelepathyQt4/Contact>
-#include <TelepathyQt4/PendingContactInfo>
-#include <TelepathyQt4/PendingContacts>
-#include <TelepathyQt4/PendingHandles>
-#include <TelepathyQt4/PendingVariant>
-#include <TelepathyQt4/ConnectionLowlevel>
-#include <TelepathyQt4/AvatarSpec>
-#include <TelepathyQt4/Debug>
-#include <TelepathyQt4/Constants>
+#include <TelepathyQt/PendingReady>
+#include <TelepathyQt/Types>
+#include <TelepathyQt/AccountSet>
+#include <TelepathyQt/Contact>
+#include <TelepathyQt/PendingContactInfo>
+#include <TelepathyQt/PendingContacts>
+#include <TelepathyQt/PendingHandles>
+#include <TelepathyQt/PendingVariant>
+#include <TelepathyQt/ConnectionLowlevel>
+#include <TelepathyQt/AvatarSpec>
+#include <TelepathyQt/Debug>
+#include <TelepathyQt/Constants>
 
 //Meegotouch
 #include <MLayout>
