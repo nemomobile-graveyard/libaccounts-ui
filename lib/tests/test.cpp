@@ -57,7 +57,7 @@ void Test::serviceHelperTest()
 {
     Manager *manager = new Manager();
 
-    Service *service = manager->service("gmail");
+    Service service = manager->service("gmail");
     ServiceHelper *serviceHelper = new ServiceHelper(service);
     QVERIFY(serviceHelper != NULL);
 
