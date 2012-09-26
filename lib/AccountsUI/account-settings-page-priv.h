@@ -32,14 +32,14 @@
 #include <Accounts/Account>
 
 //Telepathy
-#include <TelepathyQt4/Account>
-#include <TelepathyQt4/AccountManager>
-#include <TelepathyQt4/PendingOperation>
-#include <TelepathyQt4/ReferencedHandles>
-#include <TelepathyQt4/ContactManager>
-#include <TelepathyQt4/Types>
-#include <TelepathyQt4/Constants>
-#include <TelepathyQt4/Connection>
+#include <TelepathyQt/Account>
+#include <TelepathyQt/AccountManager>
+#include <TelepathyQt/PendingOperation>
+#include <TelepathyQt/ReferencedHandles>
+#include <TelepathyQt/ContactManager>
+#include <TelepathyQt/Types>
+#include <TelepathyQt/Constants>
+#include <TelepathyQt/Connection>
 
 //Meegotouch
 #include <MButton>
