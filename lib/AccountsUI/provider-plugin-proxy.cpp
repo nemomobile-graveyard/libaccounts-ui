@@ -76,7 +76,6 @@ void ProviderPluginProxyWrapper::setup(const LastPageActions *lastPageActions)
         parameters << QLatin1String("-output-level") << outputLevel;
 
     setAdditionalParameters(parameters);
-    setParentWidget(MApplication::instance()->activeWindow());
 }
 
 bool ProviderPluginProxyWrapper::stopProcess()
