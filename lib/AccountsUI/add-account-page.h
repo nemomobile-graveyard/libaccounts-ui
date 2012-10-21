@@ -89,7 +89,7 @@ private slots:
 protected:
     virtual void openServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
                                      QList<AccountsUI::AbstractServiceSetupContext*>
-                                     &serviceContextList);
+                                     serviceContextList);
 
 private:
     AddAccountPagePrivate *d_ptr;

@@ -200,7 +200,7 @@ void AddAccountPage::navigateToServiceSelectionPage()
 }
 
 void AddAccountPage::openServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
-                                              QList<AccountsUI::AbstractServiceSetupContext *> &serviceContextList)
+                                              QList<AccountsUI::AbstractServiceSetupContext *> serviceContextList)
 {
     ServiceSelectionPage *serviceSelectionPage =
         new ServiceSelectionPage(context, serviceContextList);

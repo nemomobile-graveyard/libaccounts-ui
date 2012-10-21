@@ -55,7 +55,7 @@ public:
     /*!
      * Gets the Accounts::Service that was used to construct this object.
      */
-    Accounts::Service &service() const;
+    Accounts::Service service() const;
 
     /*!
      * Gets the QDomDocument installed by the service.

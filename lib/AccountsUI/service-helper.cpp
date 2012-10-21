@@ -50,7 +50,7 @@ public:
     void loadPlugin();
 
     QDomDocument domDocument;
-    Accounts::Service &service;
+    Accounts::Service service;
     ServicePluginInterface *plugin;
 };
 
@@ -96,6 +96,7 @@ ServiceHelper::ServiceHelper(Accounts::Service service, QObject *parent)
     d_ptr(new ServiceHelperPrivate(service))
 {
     Q_D(ServiceHelper);
+    d->service = service;
     QString catalog = d->service.trCatalog();
     if (!catalog.isEmpty()) {
         MLocale locale;
@@ -111,7 +112,7 @@ ServiceHelper::~ServiceHelper()
     delete d;
 }
 
-Accounts::Service &ServiceHelper::service() const
+Accounts::Service ServiceHelper::service() const
 {
     Q_D(const ServiceHelper);
 

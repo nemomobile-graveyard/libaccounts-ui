@@ -88,7 +88,7 @@ public:
 
 ServiceSelectionPage::ServiceSelectionPage(AbstractAccountSetupContext *context,
                                            QList<AbstractServiceSetupContext*>
-                                           &serviceContextList,
+                                           serviceContextList,
                                            QGraphicsItem *parent)
         : MApplicationPage(parent),
         d_ptr(new ServiceSelectionPagePrivate())

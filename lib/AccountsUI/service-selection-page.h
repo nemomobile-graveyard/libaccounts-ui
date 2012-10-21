@@ -47,7 +47,7 @@ class ACCOUNTSUI_EXPORT ServiceSelectionPage: public MApplicationPage
 public:
     explicit ServiceSelectionPage(AccountsUI::AbstractAccountSetupContext *context,
                                   QList<AccountsUI::AbstractServiceSetupContext*>
-                                  &serviceContextList,
+                                  serviceContextList,
                                   QGraphicsItem *parent = 0);
     virtual ~ServiceSelectionPage();
     virtual void createContent();
