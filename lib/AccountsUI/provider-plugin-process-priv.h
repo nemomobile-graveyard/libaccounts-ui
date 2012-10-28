@@ -46,6 +46,7 @@
 
 //Qt
 #include <QLocalSocket>
+#include <QDeclarativeView>
 
 namespace AccountsUI {
 
@@ -161,7 +162,7 @@ private:
     AccountSetup::ProviderPluginProcess *wrapped;
     Accounts::ServiceList enabledServices;
     AccountPluginInterface *plugin;
-    MApplication *application;
+    QApplication *application;
     MApplicationWindow *window;
     mutable AbstractAccountSetupContext *m_context;
     Accounts::Account *account;
@@ -171,6 +172,7 @@ private:
     mutable QString translatedProviderName;
     bool validProvider;
     bool accountSetupCompleted;
+    QDeclarativeView *view;
 };
 
 } // namespace

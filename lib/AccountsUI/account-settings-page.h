@@ -54,7 +54,7 @@ class AccountSettingsPagePrivate;
  * the ProviderPluginProcess::mainPage() method, right before starting the
  * execution of the MApplication.
  */
-class ACCOUNTSUI_EXPORT AccountSettingsPage: public MApplicationPage
+class ACCOUNTSUI_EXPORT AccountSettingsPage: public QGraphicsWidget
 {
     Q_OBJECT
 
@@ -138,19 +138,19 @@ protected:
      * Create the widget with the settings for all the services.
      * This method is called from createContent().
      */
-    QGraphicsLayoutItem *createServiceSettingsLayout();
+    void *createServiceSettingsLayout();
 
     /*!
      * Create the upper part of the page, containing the global account
      * settings. This method is called from createContent().
      */
-    QGraphicsLayoutItem *createAccountSettingsLayout();
+    void createAccountSettingsLayout();
 
     /*!
-     * Create the MActions for the page.
+     * Create the Menu actions for the page.
      * This method is called from createContent().
      */
-    void createPageActions();
+    void createMenuActions();
 
 private:
     AccountSettingsPagePrivate *d_ptr;

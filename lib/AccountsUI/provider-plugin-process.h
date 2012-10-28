@@ -30,6 +30,8 @@
 
 //Qt
 #include <QObject>
+#include <QGraphicsWidget>
+#include <QDeclarativeView>
 
 namespace AccountsUI {
 
@@ -156,7 +158,7 @@ protected:
      * get a handle to the page, subclass it, or provide a completely
      * different implementation of it.
      */
-    virtual MApplicationPage *mainPage();
+    virtual QGraphicsWidget *mainPage();
 
 private:
     void init(int &argc, char **argv);

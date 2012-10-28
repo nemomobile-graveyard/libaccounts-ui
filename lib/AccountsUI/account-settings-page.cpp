@@ -66,8 +66,13 @@
 //Qt
 #include <QDebug>
 #include <QBuffer>
-
+#include <QGraphicsLinearLayout>
 #include <QSystemInfo>
+#include <QDeclarativeEngine>
+#include <QDeclarativeComponent>
+#include <QGraphicsObject>
+#include <QGraphicsProxyWidget>
+#include <QDeclarativeContext>
 
 QTM_USE_NAMESPACE
 
@@ -150,6 +155,8 @@ AccountSettingsPagePrivate::AccountSettingsPagePrivate(
     syncHandler = new AccountSyncHandler(this);
     connect(syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
             this, SLOT(onSyncStateChanged(const SyncState&)));
+
+    enablePannel = new QGraphicsWidget();
 }
 
 bool AccountSettingsPagePrivate::hasSingleService() const
@@ -163,33 +170,31 @@ void AccountSettingsPagePrivate::saveSettings()
 
     if (saving) return;
     saving = true;
-
-    q->setProgressIndicatorVisible(true);
     qDebug() << Q_FUNC_INFO;
-    if (enableButton) {
-        bool state = enableButton->isChecked();
-        if (serviceList.count() == 1) {
-            account->selectService(serviceList.at(0));
-            if (account->enabled() != state)
-                account->setEnabled(state);
-        } else if (serviceList.count() > 1) {
-            foreach (AbstractServiceSetupContext *serviceContext, contexts) {
-                const Accounts::Service service = serviceContext->service();
-                QMap<QString, bool>::iterator i =
-                        serviceStatusMap.find(service.name());
-                if (i == serviceStatusMap.end())
-                    continue;
-                account->selectService(service);
-                if (account->enabled() != i.value())
-                        serviceContext->enable(i.value());
-                serviceStatusMap.remove(i.key());
-            }
-        }
-
-        context->account()->selectService();
+    bool state = accountState;
+    if (serviceList.count() == 1) {
+        account->selectService(serviceList.at(0));
         if (account->enabled() != state)
             account->setEnabled(state);
+    } else if (serviceList.count() > 1) {
+        foreach (AbstractServiceSetupContext *serviceContext, contexts) {
+            const Accounts::Service service = serviceContext->service();
+            QMap<QString, bool>::iterator i =
+                    serviceStatusMap.find(service.name());
+            if (i == serviceStatusMap.end())
+                continue;
+            account->selectService(service);
+            if (account->enabled() != i.value())
+                    serviceContext->enable(i.value());
+            serviceStatusMap.remove(i.key());
+        }
     }
+
+    context->account()->selectService();
+    if (account->enabled() != state)
+        account->setEnabled(state);
+
+
     if (accountPtr) {
         if (accountPtr->isOnline()) {
             Tp::Avatar newAvatar;
@@ -223,7 +228,6 @@ void AccountSettingsPagePrivate::onSyncStateChanged(const SyncState &state)
     switch (state) {
         case NotValidated:
             qDebug() << Q_FUNC_INFO << "NotValidated";
-            q->setProgressIndicatorVisible(false);
             //Saving the settings on back button press
             saving = false;
             break;
@@ -367,7 +371,7 @@ void AccountSettingsPagePrivate::setAvatarImage(const QImage &scaledImg)
 }
 
 AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
-        : MApplicationPage(),
+        : QGraphicsWidget(),
           d_ptr(new AccountSettingsPagePrivate(context))
 {
     Q_D(AccountSettingsPage);
@@ -375,8 +379,22 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
     Q_ASSERT (context != NULL);
     d->q_ptr = this;
 
-    setStyleName("AccountsUiPage");
-    pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
+    d->engine = new QDeclarativeEngine();
+    QDeclarativeComponent *component =
+            new QDeclarativeComponent(d->engine,
+                                    QUrl("qrc:/qml/mainPage.qml"));
+    if (component->isError())
+        qWarning() << component->errors();
+    else
+        d->qmlObject = component->create();
+    d->engine->rootContext()->setContextProperty("accountSettings", this);
+    QGraphicsObject *content = qobject_cast<QGraphicsObject*>(d->qmlObject);
+    d->qmlWidget = new QGraphicsWidget;
+    if(content)
+        content->setParentItem(d->qmlWidget);
+    d->qmlWidget->setMaximumSize(150,150);
+    QMetaObject::invokeMethod(d->qmlObject, "setPage", Q_ARG(QVariant, ""));
+    createContent();
 }
 
 AccountSettingsPage::~AccountSettingsPage()
@@ -389,21 +407,11 @@ void AccountSettingsPage::setServicesToBeShown()
     qDebug() << Q_FUNC_INFO << "Deprecated. This function does nothing.";
 }
 
-QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
+void *AccountSettingsPage::createServiceSettingsLayout()
 {
     Q_D(AccountSettingsPage);
 
-    MWidget *serviceWidget = new MWidget(this);
-    MLayout *serviceSettingLayout = new MLayout(serviceWidget);
-    serviceSettingLayout->setContentsMargins(0, 0, 0, 0);
-    MLinearLayoutPolicy *layoutServicePolicy =
-        new MLinearLayoutPolicy(serviceSettingLayout, Qt::Vertical);
-    layoutServicePolicy->setSpacing(0);
-
-    /* List the services available on the account and load all the respective plugins. */
-
-    //% "%1 Settings"
-    setTitle(qtTrId("qtn_acc_ser_prof_set_title").arg(d->context->account()->providerName()));
+    //TODO:Uncomment the code in this and show the service settings widgets.
 
     /* iterate through the contexts we created for each service, and get the
      * UI widgets to embed */
@@ -412,11 +420,10 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
     foreach (AbstractServiceSetupContext *context, d->contexts) {
         d->abstractContexts.append(context);
         const Accounts::Service service = context->service();
-        ServiceSettingsWidget *settingsWidget;
+//        ServiceSettingsWidget *settingsWidget;
 
         d->account->selectService(service);
         d->serviceStatusMap.insert(service.name(), d->account->enabled());
-        emit serviceEnabled(service.name(), d->account->enabled());
         bool enabled = false;
         if (d->account->enabled() &&
             !enabledServiceTypes.contains(service.serviceType())) {
@@ -430,54 +437,36 @@ QGraphicsLayoutItem *AccountSettingsPage::createServiceSettingsLayout()
                         | ServiceSettingsWidget::NonMandatorySettings;
         }
 
-        settingsWidget = new ServiceSettingsWidget(
-            context, d->panel, settingsConf, enabled);
-        d->settingsWidgets.insertMulti(service.serviceType(), settingsWidget);
+//        settingsWidget = new ServiceSettingsWidget(
+//            context, d->panel, settingsConf, enabled);
+//        d->settingsWidgets.insertMulti(service.serviceType(), settingsWidget);
 
-        d->panelPolicy->addItem(settingsWidget);
+//        d->panelPolicy->addItem(settingsWidget);
     }
 
-    d->panelPolicy->setSpacing(0);
-    layoutServicePolicy->addItem(d->panel);
+//    d->panelPolicy->setSpacing(0);
+//    layoutServicePolicy->addItem(d->panel);
     /*
      * no need in extra processing of any signals during content creation
      * */
 
-    foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets) {
-        connect(settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
-                d, SLOT(disableSameServiceTypes(const QString&)));
-        connect(settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
-                d, SIGNAL(serviceEnabled(const QString&, bool)));
-        connect(settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
-                d, SLOT(setEnabledService(const QString&, bool)));
-    }
+//    foreach (ServiceSettingsWidget *settingsWidget, d->settingsWidgets) {
+//        connect(settingsWidget, SIGNAL(serviceButtonEnabled(const QString&)),
+//                d, SLOT(disableSameServiceTypes(const QString&)));
+//        connect(settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+//                d, SIGNAL(serviceEnabled(const QString&, bool)));
+//        connect(settingsWidget, SIGNAL(serviceEnabled(const QString&, bool)),
+//                d, SLOT(setEnabledService(const QString&, bool)));
+//    }
 
-    return serviceWidget;
+//    return serviceWidget;
 }
 
-QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
+void AccountSettingsPage::createAccountSettingsLayout()
 {
     Q_D(AccountSettingsPage);
 
-    // First, see if the plugin has own implementation of this widget
-    QGraphicsLayoutItem *accountSettingsWidget = d->context->widget();
-    if (accountSettingsWidget != 0)
-        return accountSettingsWidget;
-
-    // Generic implementation
-    MWidget *upperWidget = new MWidget(this);
-    MLayout *upperLayout = new MLayout(upperWidget);
-    upperLayout->setContentsMargins(0, 0, 0, 0);
-    MLinearLayoutPolicy *upperLayoutPolicy =
-        new MLinearLayoutPolicy(upperLayout, Qt::Vertical);
-    upperLayoutPolicy->setSpacing(0);
-
-    MLayout *horizontalLayout = new MLayout();
-    horizontalLayout->setContentsMargins(0, 0, 0, 0);
-    MLinearLayoutPolicy *horizontalLayoutPolicy =
-        new MLinearLayoutPolicy(horizontalLayout, Qt::Horizontal);
-    horizontalLayoutPolicy->setSpacing(0);
-
+    /*Fetch the provider specific details */
     QString providerName(d->account->providerName());
     QString providerIconId;
     QString providerTitleId;
@@ -487,87 +476,19 @@ QGraphicsLayoutItem *AccountSettingsPage::createAccountSettingsLayout()
         providerIconId = provider.iconName();
         providerTitleId = provider.displayName();
         QString catalog = provider.trCatalog();
-        MLocale locale;
-        if (!catalog.isEmpty() && !locale.isInstalledTrCatalog(catalog)) {
-            locale.installTrCatalog(catalog);
-            MLocale::setDefault(locale);
-        }
     }
-
-    BasicHeaderWidget *usernameAndStatus = new BasicHeaderWidget(BasicHeaderWidget::IconWithTitleAndSubTitle, this);
-    usernameAndStatus->createLayout();
-    usernameAndStatus->setImage(providerIconId);
-    usernameAndStatus->setTitle(qtTrId(providerTitleId.toLatin1()));
-    usernameAndStatus->setSubtitle(d->account->displayName());
-
-    d->enableButton = new MButton(this);
-    d->enableButton->setViewType(MButton::switchType);
-    d->enableButton->setStyleName("CommonRightSwitchInverted");
-    d->enableButton->setCheckable(true);
+    QMetaObject::invokeMethod(d->accountsObject, "setProviderName", Q_ARG(QVariant, providerTitleId));
+    QMetaObject::invokeMethod(d->accountsObject, "setAccountDname", Q_ARG(QVariant, d->account->displayName()));
+    QMetaObject::invokeMethod(d->accountsObject, "setProviderIcon", Q_ARG(QVariant, providerIconId));
 
     d->account->selectService();
     if (d->account->enabled()) {
-        d->panel->setEnabled(true);
-        d->enableButton->setChecked(true);
+        QMetaObject::invokeMethod(d->accountsObject, "setEnableAccount",
+                                  Q_ARG(QVariant, true));
     } else {
-        d->panel->setEnabled(false);
-        d->enableButton->setChecked(false);
+        QMetaObject::invokeMethod(d->accountsObject, "setEnableAccount",
+                                  Q_ARG(QVariant, false));
     }
-
-    connect(d->enableButton, SIGNAL(toggled(bool)), this, SLOT(enable(bool)));
-
-    horizontalLayoutPolicy->addItem(usernameAndStatus,
-                                    Qt::AlignLeft | Qt::AlignVCenter);
-    horizontalLayoutPolicy->addItem(d->enableButton,
-                                    Qt::AlignRight | Qt::AlignVCenter);
-
-    MWidgetController *spacer = new MWidgetController(this);
-    spacer->setStyleName("CommonSpacer");
-    upperLayoutPolicy->addItem(spacer);
-
-    upperLayoutPolicy->addItem(horizontalLayout);
-
-    spacer = new MWidgetController(this);
-    spacer->setStyleName("CommonSmallSpacer");
-    upperLayoutPolicy->addItem(spacer);
-
-    if (d->serviceList.count() <= 1) {
-        if ((d->contexts.at(0) != 0) && (d->contexts.at(0)->widget())) {
-            MSeparator *separatorTop = new MSeparator(this);
-            separatorTop->setOrientation(Qt::Horizontal);
-            separatorTop->setStyleName("CommonHeaderDividerInverted");
-            upperLayoutPolicy->addItem(separatorTop);
-        }
-    } else {
-        MSeparator *separatorTop = new MSeparator(this);
-        separatorTop->setOrientation(Qt::Horizontal);
-        separatorTop->setStyleName("CommonHeaderDividerInverted");
-        upperLayoutPolicy->addItem(separatorTop);
-    }
-
-    spacer = new MWidgetController(this);
-    spacer->setStyleName("CommonSmallSpacer");
-    upperLayoutPolicy->addItem(spacer);
-
-    if (provider.isValid()) {
-        QSystemInfo sysInfo;
-        QDomElement root = provider.domDocument().documentElement();
-        d->avatar = root.firstChildElement("display-avatar");
-
-        if (sysInfo.version(QSystemInfo::Firmware).endsWith("003"))
-            d->avatar.clear();
-
-        if (d->avatar.text() == "true") {
-            d->avatarItem = new AvatarListItem();
-            connect(d->avatarItem, SIGNAL(clicked()), this, SLOT(changeAvatar()));
-            //% Avatar
-            d->avatarItem->setTitle(qtTrId("qtn_acc_avatar"));
-            d->panelPolicy->addItem(d->avatarItem);
-            d->avatarSelector = new AvatarSelector();
-        }
-    }
-
-    return upperWidget;
 }
 
 
@@ -688,35 +609,18 @@ void AccountSettingsPagePrivate::accountReady(Tp::PendingOperation *op)
     emit q->avatarInitCompleted();
 }
 
-void AccountSettingsPage::createPageActions()
+void AccountSettingsPage::createMenuActions()
 {
     Q_D(AccountSettingsPage);
-    MAction *action;
-
-    //% "Save"
-    action = new MAction(qtTrId("qtn_comm_save"), this);
-    action->setLocation(MAction::ToolBarLocation);
-    addAction(action);
-    connect(action, SIGNAL(triggered()),
+    connect(d->accountsObject, SIGNAL(saveSettings()),
             d, SLOT(saveSettings()));
 
-    //% "Cancel"
-    action = new MAction(qtTrId("qtn_comm_cancel"), this);
-    action->setLocation(MAction::ToolBarLocation);
-    addAction(action);
-    connect(action, SIGNAL(triggered()),
+    connect(d->accountsObject, SIGNAL(removeAccount()),
+            this, SLOT(removeAccount()));
+
+    connect(d->accountsObject, SIGNAL(cancel()),
             ProviderPluginProcess::instance(), SLOT(quit()));
 
-    // Hide the standard back/close button
-    setComponentsDisplayMode(MApplicationPage::EscapeButton,
-                             MApplicationPageModel::Hide);
-
-    //% "Delete"
-    action = new MAction(qtTrId("qtn_comm_command_delete"), this);
-    action->setLocation(MAction::ApplicationMenuLocation);
-    addAction(action);
-    connect(action, SIGNAL(triggered()),
-            this, SLOT(removeAccount()));
 }
 
 void AccountSettingsPage::createContent()
@@ -724,38 +628,35 @@ void AccountSettingsPage::createContent()
     Q_D(AccountSettingsPage);
 
     if (d->context == 0) return;
-
-    //we need a central widget to get the right layout size under the menubar
-    MWidget *centralWidget = new MWidget();
-    d->layout = new MLayout(centralWidget);
-    d->layout->setContentsMargins(0, 0, 0, 0);
-    MLinearLayoutPolicy *layoutPolicy =
-        new MLinearLayoutPolicy(d->layout, Qt::Vertical);
-    layoutPolicy->setSpacing(0);
-
-    MLayout *layoutPanel = new MLayout(d->panel);
-    layoutPanel->setContentsMargins(0, 0, 0, 0);
-    d->panelPolicy = new MLinearLayoutPolicy(layoutPanel, Qt::Vertical);
+    d->layout = new  QGraphicsLinearLayout();
+    setLayout(d->layout);
+    d->layout->setOrientation(Qt::Vertical);
+    d->layout->addItem(d->qmlWidget);
+    d->accountsObject = d->qmlObject->findChild<QObject*>("settingsWidget");
+    createAccountSettingsLayout();
 
     ServiceModel *serviceModel = new ServiceModel(d->context->account(), this);
     SortServiceModel *sortModel = new SortServiceModel(this);
     sortModel->setSourceModel(serviceModel);
+
+
+    d->engine->rootContext()->setContextProperty("servicesModel", sortModel);
     sortModel->setEnabledServices(d->context->account()->enabledServices());
     sortModel->setHiddenServices(d->hiddenServiceList);
     sortModel->sort(ServiceModel::ServiceNameColumn);
 
     d->contexts = ServiceModel::createServiceContexts(sortModel, d->context, this);
-    QGraphicsLayoutItem *accountSettingsLayout = createAccountSettingsLayout();
-    layoutPolicy->addItem(accountSettingsLayout);
 
-    QGraphicsLayoutItem *serviceWidget = createServiceSettingsLayout();
-    layoutPolicy->addItem(serviceWidget);
+    //Fetching the service list object
+    QObject *serviceObject = d->accountsObject->findChild<QObject*>("serviceListView");
 
-    layoutPolicy->addStretch();
+    connect(serviceObject, SIGNAL(serviceEnabled(QString, bool)),
+                    d, SLOT(setEnabledService(QString, bool)));
 
-    setCentralWidget(centralWidget);
+    //ToDO: Uncomment and show service settings widget in this
+//    QGraphicsLayoutItem *serviceWidget = createServiceSettingsLayout();
 
-    createPageActions();
+    createMenuActions();
     QString path;
     if (d->avatar.text() == "true") {
         Tp::registerTypes();
@@ -797,25 +698,16 @@ const AbstractAccountSetupContext *AccountSettingsPage::context()
 void AccountSettingsPage::enable(bool state)
 {
     Q_D(AccountSettingsPage);
+    d->accountState = state;
     d->panel->setEnabled(state);
 }
 
 void AccountSettingsPage::removeAccount()
 {
     Q_D(AccountSettingsPage);
-    //% "Delete %1 from your device?"
-    QString dialogTitle =
-        qtTrId("qtn_acc_remove_account").arg(d->context->account()->displayName());
-    //% "All content related to this account will be deleted permanently"
-    MMessageBox removeMBox(dialogTitle, qtTrId("qtn_acc_remove_account_statement"),
-                           M::YesButton | M::NoButton);
-    removeMBox.setStyleName("RemoveDialog");
-
-    if (removeMBox.exec() == M::YesButton) {
-        d->context->account()->remove();
-        d->context->account()->sync();
-        ProviderPluginProcess::instance()->quit();
-    }
+    d->context->account()->remove();
+    d->context->account()->sync();
+    ProviderPluginProcess::instance()->quit();
 }
 
 void AccountSettingsPage::setWidget(MWidget *widget)

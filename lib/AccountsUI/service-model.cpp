@@ -37,7 +37,8 @@ public:
         qDeleteAll(serviceList);
     }
     QList<ServiceHelper *> serviceList;
-    QMap<ServiceModel::Columns, QVariant> headerData;
+    QHash<int, QByteArray> headerData;
+    Accounts::Account *account;
 };
 
 ServiceModel::ServiceModel(QObject *parent)
@@ -51,6 +52,8 @@ ServiceModel::ServiceModel(Accounts::Account *account, QObject *parent)
     : QAbstractTableModel(parent)
     , d_ptr(new ServiceModelPrivate())
 {
+    Q_D(ServiceModel);
+    d->account = account;
     init(account->services());
 }
 
@@ -58,9 +61,12 @@ void ServiceModel::init(Accounts::ServiceList services)
 {
     Q_D(ServiceModel);
 
-    d->headerData.insert(ServiceHelperColumn, "serviceHelper");
-    d->headerData.insert(ServiceNameColumn, "serviceName");
-    d->headerData.insert(ColumnCount, "columncount");
+    d->headerData.insert(ServiceHelperRole, "serviceHelper");
+    d->headerData.insert(ServiceNameRole, "serviceName");
+    d->headerData.insert(ServiceDescRole, "serviceDesc");
+    d->headerData.insert(ServiceStatusRole, "serviceStatus");
+    d->headerData.insert(ColumnCountRole, "columncount");
+    setRoleNames(d->headerData);
     for (int i = 0; i < services.size(); i++)
     {
         QDomDocument domDocument = services[i].domDocument();
@@ -139,19 +145,36 @@ int ServiceModel::columnCount(const QModelIndex& parent) const
 
 QVariant ServiceModel::data(const QModelIndex& index, int role) const
 {
+    Q_D(const ServiceModel);
     if (!index.isValid())
         return QVariant();
     ServiceHelper *serviceHelper = this->serviceHelper(index);
     if (!serviceHelper)
         return QVariant();
-    if (role == Qt::DisplayRole) {
-        if (index.column() == ServiceHelperColumn) {
-            return QVariant::fromValue(serviceHelper);
-        }
-    if (index.column() == ServiceNameColumn)
+
+
+    if (role == ServiceHelperRole ||
+            (role == Qt::DisplayRole && index.column() == ServiceHelperColumn))
+        return QVariant::fromValue(serviceHelper);
+
+    if (role == ServiceNameRole ||
+            (role == Qt::DisplayRole && index.column() == ServiceNameColumn))
         return serviceHelper->serviceName();
 
+    if (role == ServiceDescRole ||
+            (role == Qt::DisplayRole && index.column() == ServiceDescColumn))
+        return serviceHelper->description();
+
+    if (role == ServiceStatusRole ||
+            (role == Qt::DisplayRole && index.column() == ServiceStatusColumn)) {
+        if (d->account) {
+            Accounts::Service service = serviceHelper->service();
+            d->account->selectService(service);
+            return d->account->enabled();
+        } else
+            return QVariant::fromValue(true); //keeping them enabled while acount creation
     }
+
     return QVariant();
 }
 

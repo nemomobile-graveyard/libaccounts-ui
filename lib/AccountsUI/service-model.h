@@ -55,7 +55,17 @@ public:
     enum Columns{
         ServiceHelperColumn,
         ServiceNameColumn,
+        ServiceDescColumn,
+        ServiceStatusColumn,
         ColumnCount
+    };
+
+    enum Roles{
+        ServiceHelperRole,
+        ServiceNameRole,
+        ServiceDescRole,
+        ServiceStatusRole,
+        ColumnCountRole
     };
 
 #ifndef ACCOUNTSUI_DISABLE_DEPRECATED

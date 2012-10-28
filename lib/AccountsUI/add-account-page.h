@@ -29,7 +29,7 @@
 #include <AccountsUI/common.h>
 
 //M
-#include <MApplicationPage>
+#include <QDeclarativeView>
 
 namespace AccountsUI {
 
@@ -44,7 +44,7 @@ class AddAccountPagePrivate;
  * ProviderPluginProcess::mainPage() method, right before starting the
  * execution of the MApplication.
  */
-class ACCOUNTSUI_EXPORT AddAccountPage : public MApplicationPage
+class ACCOUNTSUI_EXPORT AddAccountPage : public QGraphicsWidget
 {
     Q_OBJECT
 
@@ -52,8 +52,7 @@ public:
     /*!
      * Class constructor.
      */
-    explicit AddAccountPage(AccountsUI::AbstractAccountSetupContext *context,
-                            QGraphicsItem *parent = 0);
+    explicit AddAccountPage(AccountsUI::AbstractAccountSetupContext *context);
     virtual ~AddAccountPage();
 
     /*!
@@ -82,8 +81,6 @@ protected slots:
 
 private slots:
     void clearServiceContextList();
-    void hideMenuBar();
-    void showMenuBar();
     void onSyncStateChanged(const SyncState &state);
 
 protected:
