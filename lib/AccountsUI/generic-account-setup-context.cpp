@@ -76,7 +76,7 @@ class GenericAccountSetupContextPrivate
 {
 public:
     GenericAccountSetupContextPrivate(GenericAccountSetupContext *parent)
-        : genericAccountSetupForm(0)
+        : genericAccountWidget(0)
         , identity(0)
         , authSession(0)
         , networkManager(0)
@@ -371,10 +371,10 @@ QGraphicsWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
     if (setupType() == EditExisting)
         return 0;
 
-//    if (d->genericAccountWidget) {
-//        qWarning() << Q_FUNC_INFO << "There is an existing widget so it will return this.";
-//        return d->genericAccountWidget->widget();
-//    }
+    if (d->genericAccountWidget) {
+        qWarning() << Q_FUNC_INFO << "There is an existing widget so it will return this.";
+        return d->genericAccountWidget->widget();
+    }
 
     Q_ASSERT(account());
     if (!account()) {
@@ -440,8 +440,6 @@ void GenericAccountSetupContext::validate()
     Q_D(GenericAccountSetupContext);
     qDebug() << Q_FUNC_INFO;
 
-    connect(this, SIGNAL(validated()),
-            d->genericAccountWidget, SIGNAL(navigateToServiceSelectionPage()));
     if (d->contextIsValidated == true) {
         qDebug() << Q_FUNC_INFO << "context is validated already";
         emit validated();
@@ -457,6 +455,9 @@ void GenericAccountSetupContext::validate()
 
     // set the user name for the AbstractAccountSetupContext
     if (d->genericAccountWidget) {
+        connect(this, SIGNAL(validated()),
+                d->genericAccountWidget, SIGNAL(navigateToServiceSelectionPage()));
+
         setUserName(d->genericAccountWidget->username());
 
         emit validating();

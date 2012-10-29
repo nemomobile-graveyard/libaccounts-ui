@@ -158,8 +158,8 @@ GenericAccountWidget::GenericAccountWidget(AbstractAccountSetupContext *context)
 {
     Q_D(GenericAccountWidget);
     d->context = context;
-    connect(this, SIGNAL(validateSignal()), d->context, SIGNAL(validated()));
-//    connect(this, SIGNAL(validateSignal()), d->context, SLOT(validate()));
+//    connect(this, SIGNAL(validateSignal()), d->context, SIGNAL(validated()));
+    connect(this, SIGNAL(validateSignal()), d->context, SLOT(validate()));
     connect(d->context, SIGNAL(error(AccountsUI::ErrorCode, const QString&)), SLOT(validationOver()));
     connect(d->context, SIGNAL(validated()), SLOT(validationOver()));
     connect(d->context,
@@ -190,9 +190,8 @@ GenericAccountWidget::GenericAccountWidget(AbstractAccountSetupContext *context)
     d->qmlWidget->setMinimumSize(1000,150);
     /* TODO: when the credential widget is in qml put the below widget in
     single qml file */
-    QDeclarativeEngine *bEngine = new QDeclarativeEngine;
     QDeclarativeComponent *bottomComponent =
-            new QDeclarativeComponent(bEngine,
+            new QDeclarativeComponent(d->engine,
                                     QUrl("qrc:/qml/AccountsBottomWidget.qml"));
     if (bottomComponent->isError())
         qWarning() << bottomComponent->errors();
@@ -395,10 +394,10 @@ void GenericAccountWidget::openServiceSelectionPage()
 {
     Q_D(GenericAccountWidget);
 
-    d->hideWidget->setVisible(false);
+//    d->hideWidget->setVisible(false);
 
-    QMetaObject::invokeMethod(d->qmlObject, "openServiceSelectionPage",
-                              Q_ARG(QVariant, "add"));
+//    QMetaObject::invokeMethod(d->qmlObject, "openServiceSelectionPage",
+//                              Q_ARG(QVariant, "add"));
 }
 
 }
