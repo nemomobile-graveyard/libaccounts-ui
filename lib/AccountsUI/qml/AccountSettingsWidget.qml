@@ -4,7 +4,10 @@ import com.nokia.meego 1.0
 
 Page {
     id: accountSettingsWidget
-
+    height: 1000;
+    width: 1000;
+    anchors.leftMargin: 10
+    anchors.rightMargin: 10
     signal saveSettings()
     signal cancel()
     signal removeAccount()
@@ -22,15 +25,15 @@ Page {
 
     Row {
         y: 100
+        spacing: 200
         width: parent.width
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
+        height: 50
         BasicHeaderWidget {
             id: settingsHeader
         }
-
         CheckBox {
             id: enableButton
+            anchors.right: parent.right
             onClicked: {
                 accountSettings.enable(checked)
             }
