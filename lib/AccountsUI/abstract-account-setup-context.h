@@ -27,7 +27,8 @@
 #include <AccountsUI/abstract-setup-context.h>
 
 //Meegotouch
-#include <MWidget>
+#include <QGraphicsWidget>
+#include <QDeclarativeEngine>
 
 namespace AccountsUI {
 
@@ -72,9 +73,14 @@ public:
 #endif
 
     /*!
+     * Gets the qmlEngine of the constructed widget below
+     */
+    virtual QDeclarativeEngine *engine() = 0;
+
+    /*!
      * Constructs the UI element which handles account creation/settings/deletion.
      */
-    virtual MWidget *widget(QGraphicsItem *parent = 0) = 0;
+    virtual QGraphicsWidget *widget(QGraphicsItem *parent = 0) = 0;
 
     /*!
      * Set the service type.

@@ -31,6 +31,8 @@
 #include <SignOn/SessionData>
 #include <SignOn/Error>
 
+#include <QDeclarativeEngine>
+
 namespace AccountsUI {
 
 class ValidationData;
@@ -51,7 +53,8 @@ public:
     virtual ~GenericAccountSetupContext();
 
     void store();
-    MWidget *widget(QGraphicsItem *parent);
+    QGraphicsWidget *widget(QGraphicsItem *parent);
+    QDeclarativeEngine *engine();
 
     /*!
      * Call this method to specify the method, mechanism and session data for

@@ -49,6 +49,9 @@
 
 //Qt
 #include <QMultiMap>
+#include <QGraphicsWidget>
+#include <QGraphicsLinearLayout>
+#include <QDeclarativeEngine>
 
 //Accounts-Ui
 #include "abstract-account-setup-context.h"
@@ -122,7 +125,6 @@ private:
     bool changePasswordDialogStarted;
     QMultiMap<QString, ServiceSettingsWidget*> settingsWidgets;
     MWidgetController *panel;
-    MLayout *layout;
     MLinearLayoutPolicy *panelPolicy;
     Accounts::ServiceList hiddenServiceList;
     QMap<QString, bool> serviceStatusMap;
@@ -142,6 +144,15 @@ private:
     QString connectionError;
     QDomElement avatar;
     Tp::PendingOperation *op;
+
+    QGraphicsLinearLayout *layout;
+    QGraphicsWidget *enablePannel;
+    QGraphicsLinearLayout *layoutPanel;
+    QObject *qmlObject;
+    QGraphicsWidget *qmlWidget;
+    QObject *accountsObject;
+    QDeclarativeEngine *engine;
+    bool accountState;
 };
 
 } // namespace
