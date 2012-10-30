@@ -27,6 +27,7 @@
 #include <AccountsUI/network-session-manager.h>
 #include <AccountsUI/common.h>
 #include <AccountsUI/validation-data.h>
+#include <AccountsUI/generic-account-widget.h>
 #include "genericaccountsetupform.h"
 
 //signon
@@ -75,7 +76,7 @@ class GenericAccountSetupContextPrivate
 {
 public:
     GenericAccountSetupContextPrivate(GenericAccountSetupContext *parent)
-        : genericAccountSetupForm(0)
+        : genericAccountWidget(0)
         , identity(0)
         , authSession(0)
         , networkManager(0)
@@ -117,6 +118,7 @@ public:
 
 public:
     GenericAccountSetupForm *genericAccountSetupForm;
+    GenericAccountWidget *genericAccountWidget;
 
     IdentityInfo identityInfo;
     Identity *identity;
@@ -184,7 +186,7 @@ void GenericAccountSetupContextPrivate::disconnectAuthSessionSignals()
 void GenericAccountSetupContextPrivate::readValidationDataFromXML()
 {
     //check authsession part of provider file
-    QDomDocument domDocument = genericAccountSetupForm->domDocument();
+    QDomDocument domDocument = genericAccountWidget->domDocument();
     QDomElement root = domDocument.documentElement();
     QDomElement element = root.firstChildElement("account-setup");
     QDomElement authSection = element.firstChildElement("authsession");
@@ -250,10 +252,10 @@ void GenericAccountSetupContext::store()
         return;
     }
     account()->selectService();
-    if (d->genericAccountSetupForm) {
-        qDebug()<< d->genericAccountSetupForm->username();
-        QString username = d->genericAccountSetupForm->username();
-        QString password = d->genericAccountSetupForm->password();
+    if (d->genericAccountWidget) {
+        qDebug()<< d->genericAccountWidget->username();
+        QString username = d->genericAccountWidget->username();
+        QString password = d->genericAccountWidget->password();
         if (account()->displayName().isEmpty())
             account()->setDisplayName(username);
          //TODO: check that username is valid(empty, mail address ...)
@@ -262,7 +264,7 @@ void GenericAccountSetupContext::store()
         * FIXME: this is only temporary: it's needed for glib applications, while
         * libsignon-glib is not yet ready.
         */
-        if (d->storeAccountPassword(d->genericAccountSetupForm->domDocument()))
+        if (d->storeAccountPassword(d->genericAccountWidget->domDocument()))
             account()->setValue("password", password);
 
         disconnect(d->identity, SIGNAL(credentialsStored(const quint32)),
@@ -289,12 +291,12 @@ void GenericAccountSetupContext::storeIdentity()
                 this, SLOT(storeCredentialsError(const SignOn::Error &)));
     }
 
-    d->identityInfo.setCaption(d->genericAccountSetupForm->providerName());
-    d->identityInfo.setUserName(d->genericAccountSetupForm->username());
-    bool storePassword = d->rememberPassword(d->genericAccountSetupForm->domDocument());
+    d->identityInfo.setCaption(d->genericAccountWidget->providerName());
+    d->identityInfo.setUserName(d->genericAccountWidget->username());
+    bool storePassword = d->rememberPassword(d->genericAccountWidget->domDocument());
     if (storePassword)
-        storePassword = d->genericAccountSetupForm->rememberMe();
-    d->identityInfo.setSecret(d->genericAccountSetupForm->password(),
+        storePassword = d->genericAccountWidget->rememberMe();
+    d->identityInfo.setSecret(d->genericAccountWidget->password(),
                                storePassword);
     d->identityInfo.setStoreSecret(storePassword);
 
@@ -304,7 +306,7 @@ void GenericAccountSetupContext::storeIdentity()
     }
 
     //add ACL and other data for identity info
-    QDomDocument domDocument = d->genericAccountSetupForm->domDocument();
+    QDomDocument domDocument = d->genericAccountWidget->domDocument();
 
     QDomElement root = domDocument.documentElement();
     QDomElement element = root.firstChildElement("account-setup");
@@ -361,7 +363,7 @@ void GenericAccountSetupContext::storeIdentity()
     d->identity->storeCredentials(d->identityInfo);
 }
 
-MWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
+QGraphicsWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
 {
     qDebug() << Q_FUNC_INFO;
     Q_D(GenericAccountSetupContext);
@@ -369,9 +371,9 @@ MWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
     if (setupType() == EditExisting)
         return 0;
 
-    if (d->genericAccountSetupForm) {
+    if (d->genericAccountWidget) {
         qWarning() << Q_FUNC_INFO << "There is an existing widget so it will return this.";
-        return d->genericAccountSetupForm;
+        return d->genericAccountWidget->widget();
     }
 
     Q_ASSERT(account());
@@ -387,10 +389,16 @@ MWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
         return 0;
     }
 
-    d->genericAccountSetupForm = new GenericAccountSetupForm(this, parent);
-    d->genericAccountSetupForm->setDomDocument(provider.domDocument());
+    d->genericAccountWidget = new GenericAccountWidget(this);
+    d->genericAccountWidget->setDomDocument(provider.domDocument());
 
-    return d->genericAccountSetupForm;
+    return d->genericAccountWidget->widget();
+}
+
+QDeclarativeEngine *GenericAccountSetupContext::engine()
+{
+    Q_D(GenericAccountSetupContext);
+    return d->genericAccountWidget->engine();
 }
 
 void GenericAccountSetupContext::setValidationData(const ValidationData
@@ -446,13 +454,16 @@ void GenericAccountSetupContext::validate()
     }
 
     // set the user name for the AbstractAccountSetupContext
-    if (d->genericAccountSetupForm) {
-        setUserName(d->genericAccountSetupForm->username());
+    if (d->genericAccountWidget) {
+        connect(this, SIGNAL(validated()),
+                d->genericAccountWidget, SIGNAL(navigateToServiceSelectionPage()));
+
+        setUserName(d->genericAccountWidget->username());
 
         emit validating();
 
         //check authsession part of provider file
-        QDomDocument domDocument = d->genericAccountSetupForm->domDocument();
+        QDomDocument domDocument = d->genericAccountWidget->domDocument();
         QDomElement root = domDocument.documentElement();
         QDomElement element = root.firstChildElement("account-setup");
         QDomElement authSection = element.firstChildElement("authsession");
@@ -496,8 +507,8 @@ void GenericAccountSetupContext::startAuthSession()
     SignOn::SessionData sessionData(d->validationData.sessionData());
 
     sessionData.setUiPolicy(SignOn::ValidationPolicy);
-    sessionData.setUserName(d->genericAccountSetupForm->username());
-    sessionData.setSecret(d->genericAccountSetupForm->password());
+    sessionData.setUserName(d->genericAccountWidget->username());
+    sessionData.setSecret(d->genericAccountWidget->password());
 
     if (!d->authSession) {
         d->authSession = d->identity->createSession(d->validationData.method());

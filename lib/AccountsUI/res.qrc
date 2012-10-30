@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/BasicHeaderWidget.qml</file>
+        <file>qml/PageHeader.qml</file>
+        <file>qml/mainPage.qml</file>
+        <file>qml/AddAccountsWidget.qml</file>
+        <file>qml/AccountsBottomWidget.qml</file>
+        <file>qml/AccountSettingsWidget.qml</file>
+        <file>qml/ServiceSettingsWidget.qml</file>
+        <file>qml/ServiceSelectionWidget.qml</file>
+    </qresource>
+</RCC>

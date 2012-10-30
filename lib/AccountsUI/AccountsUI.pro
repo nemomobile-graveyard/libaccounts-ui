@@ -13,13 +13,16 @@ CONFIG += qt \
     link_pkgconfig \
     gallerycore \
     qtsparql \
-    mngfclient
+    mngfclient \
+    resources
+
 
 MOBILITY = systeminfo
 
 QT += xml \
     network \
-    core
+    core \
+    declarative
 
 # -----------------------------------------------------------------------------
 # dependencies
@@ -83,7 +86,9 @@ HEADERS += account-plugin-interface.h \
     avatar-selector.h \
     imagecontentprovider.h \
     basic-header-widget.h \
-    basic-service-widget.h
+    basic-service-widget.h \
+    credentialwidgetitem.h \
+    generic-account-widget.h
 SOURCES += abstract-account-setup-context.cpp \
     abstract-service-setup-context.cpp \
     abstract-setup-context.cpp \
@@ -122,7 +127,8 @@ SOURCES += abstract-account-setup-context.cpp \
     avatar-selector.cpp \
     imagecontentprovider.cpp \
     basic-header-widget.cpp \
-    basic-service-widget.cpp
+    basic-service-widget.cpp \
+    generic-account-widget.cpp
 MODEL_HEADERS += \
     credentialwidgetmodel.h \
     genericaccountsetupformmodel.h
@@ -206,6 +212,20 @@ headers.files += AccountPluginInterface \
     basic-header-widget.h \
     basic-service-widget.h
 
+RESOURCES += res.qrc
+
+QML_FILES = qml/*.qml
+
+OTHER_FILES += $${QML_FILES} \
+    qml/BasicHeaderWidget.qml \
+    qml/PageHeader.qml \
+    qml/mainPage.qml \
+    qml/AddAccountsWidget.qml \
+    qml/AccountsBottomWidget.qml \
+    qml/AccountSettingsWidget.qml \
+    qml/ServiceSettingsWidget.qml \
+    qml/ServiceSelectionWidget.qml
+
 # -----------------------------------------------------------------------------
 # common installation setup
 # NOTE: remember to set headers.files before this include to have the headers
@@ -222,7 +242,14 @@ view_configuration.files = $${_PRO_FILE_PWD_}/libAccountPlugin.conf
 view_configuration.path = $${INSTALL_PREFIX}/share/themes/base/meegotouch/libAccountPlugin
 style_configuration.files = $${_PRO_FILE_PWD_}/libAccountPlugin.css
 style_configuration.path = $${INSTALL_PREFIX}/share/themes/base/meegotouch/libAccountPlugin/style
+resources.files = $${_PRO_FILE_PWD_}/res.qrc
+resources.path = $${INSTALL_PREFIX}/include/AccountsUI
+qml.files = $${_PRO_FILE_PWD_}/qml/*
+qml.path = $${INSTALL_PREFIX}/include/AccountsUI/qml
+
 INSTALLS += \
     pkgconfig \
     view_configuration \
-    style_configuration
+    style_configuration \
+    resources \
+    qml

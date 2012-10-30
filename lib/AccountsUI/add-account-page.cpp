@@ -52,6 +52,12 @@
 #include <QSortFilterProxyModel>
 #include <QRegExp>
 #include <QDebug>
+#include <QGraphicsLinearLayout>
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
+#include <QDeclarativeEngine>
+#include <QDeclarativeContext>
+#include <QDeclarativeComponent>
 
 using namespace Accounts;
 
@@ -76,21 +82,16 @@ public:
     QList<AbstractSetupContext*> abstractContexts;
     QString serviceType;
     Accounts::ServiceList hiddenServiceList;
-    QGraphicsLayoutItem *pluginWidget;
+    QGraphicsWidget *pluginWidget;
 };
 
-AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context,
-                               QGraphicsItem *parent)
-        : MApplicationPage(parent)
-        , d_ptr(new AddAccountPagePrivate())
+AddAccountPage::AddAccountPage(AbstractAccountSetupContext *context)
+    : d_ptr(new AddAccountPagePrivate())
 {
     Q_D(AddAccountPage);
-    Q_ASSERT(context);
-    setStyleName("AccountsUiPage");
-    setEscapeMode(MApplicationPageModel::EscapeAuto);
     d->context = context;
     d->serviceType = context->serviceType();
-    pannableViewport()->positionIndicator()->setStyleName("CommonPositionIndicatorInverted");
+    createContent();
 }
 
 AddAccountPage::~AddAccountPage()
@@ -104,40 +105,34 @@ void AddAccountPage::createContent()
     Q_D(AddAccountPage);
     Q_ASSERT(centralWidget());
 
-    //% "Add new account"
-    setTitle(qtTrId("qtn_acc_add_new_account_title"));
-
     // layout
-    MLayout *layout = new MLayout(centralWidget());
-    layout->setContentsMargins(0, 0, 0, 0);
-    MLinearLayoutPolicy *layoutPolicy =
-            new MLinearLayoutPolicy( layout, Qt::Vertical );
-
+    QGraphicsLinearLayout *layout = new  QGraphicsLinearLayout();
     // plugin widget has the provider info and credentials widget
     d->pluginWidget = d->context->widget();
-    layoutPolicy->addItem(d->pluginWidget);
+    setLayout(layout);
 
     // TODO : this part is just for testing purposes, to jump to service selection page, without going through authentication
     if (!qgetenv("ACCOUNTSUI_SKIP_VALIDATION").isEmpty()) {
-        MButton *nextButton = new MButton("Skip Validation");
-        connect(nextButton, SIGNAL(clicked()), this, SLOT(navigateToServiceSelectionPage()));
-        layoutPolicy->addItem(nextButton);
+        QPushButton *nextButton = new QPushButton("Skip Validation");
+        QObject::connect(nextButton, SIGNAL(clicked()), this, SLOT(navigateToServiceSelectionPage()));
+        QGraphicsProxyWidget *proxyWidget = new QGraphicsProxyWidget();
+        proxyWidget->setWidget(nextButton);
+        layout->addItem(proxyWidget);
     }
 
+    layout->addItem(d->pluginWidget);
     // login Ok, go to next page
     connect(d->context, SIGNAL(validated()), SLOT(navigateToServiceSelectionPage()));
-    connect(d->context, SIGNAL(validated()), SLOT(showMenuBar()));
 
     //process indicator
-    connect(d->context, SIGNAL(validating()), SLOT(hideMenuBar()));
     connect(d->context, SIGNAL(error(AccountsUI::ErrorCode, const QString &)),
             this, SLOT(onError(AccountsUI::ErrorCode, const QString &)));
 
     //cancelling
-    connect((GenericAccountSetupForm*)d->pluginWidget, SIGNAL(stopButtonPressed()),
-            d->context, SLOT(stopAuthSession()));
-    connect((GenericAccountSetupForm*)d->pluginWidget, SIGNAL(stopButtonPressed()),
-            d->context, SLOT(showMenuBar()));
+//    connect((GenericAccountSetupForm*)d->pluginWidget, SIGNAL(stopButtonPressed()),
+//            d->context, SLOT(stopAuthSession()));
+//    connect((GenericAccountSetupForm*)d->pluginWidget, SIGNAL(stopButtonPressed()),
+//            d->context, SLOT(showMenuBar()));
 }
 
 void AddAccountPage::setHiddenServices(const Accounts::ServiceList &hiddenServices)
@@ -169,6 +164,8 @@ void AddAccountPage::navigateToServiceSelectionPage()
     sortModel->setSourceModel(serviceModel);
     sortModel->setHiddenServices(d->hiddenServiceList);
     sortModel->sort(ServiceModel::ServiceNameColumn);
+    d->context->engine()->rootContext()->setContextProperty(
+                "selectServiceModel", serviceModel);
 
     d->serviceContextList = ServiceModel::createServiceContexts(sortModel, d->context, this);
 
@@ -188,8 +185,6 @@ void AddAccountPage::navigateToServiceSelectionPage()
             d->context->account()->setEnabled(true);
             d->abstractContexts.append(d->serviceContextList.at(0));
         }
-
-        setProgressIndicatorVisible(true);
 
         qDebug() << Q_FUNC_INFO;
         d->syncHandler->validate(d->abstractContexts);
@@ -223,11 +218,9 @@ void AddAccountPage::onSyncStateChanged(const SyncState &state)
     switch (state) {
         case NotValidated:
             qDebug() << Q_FUNC_INFO << __LINE__;
-            showMenuBar();
             break;
         case NotStored:
             qDebug() << Q_FUNC_INFO << __LINE__;
-            showMenuBar();
             break;
         case Validated:
             d->syncHandler->store(d->abstractContexts);
@@ -238,7 +231,6 @@ void AddAccountPage::onSyncStateChanged(const SyncState &state)
                 connect(d->context->account(), SIGNAL(synced()),
                         ProviderPluginProcess::instance(), SLOT(quit()));
                 d->context->account()->sync();
-                showMenuBar();
             } else {
                 d->context->account()->sync();
                 AccountSetupFinishedPage *page = new AccountSetupFinishedPage(d->context);
@@ -256,19 +248,9 @@ void AddAccountPage::clearServiceContextList()
     d->serviceContextList.clear();
 }
 
-void AddAccountPage::hideMenuBar()
+void AddAccountPage::onError(ErrorCode code, const QString &error)
 {
-    setComponentsDisplayMode(NavigationBar, MApplicationPageModel::Hide);
-}
-
-void AddAccountPage::showMenuBar()
-{
-    setComponentsDisplayMode(NavigationBar, MApplicationPageModel::Show);
-}
-
-void AddAccountPage::onError(AccountsUI::ErrorCode, const QString &)
-{
-    showMenuBar();
+    qDebug()<<Q_FUNC_INFO;
 }
 
 } //namespace

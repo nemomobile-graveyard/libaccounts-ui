@@ -39,6 +39,7 @@
 #include <QLocalSocket>
 #include <QProcess>
 #include <QTimer>
+#include <QGraphicsScene>
 namespace AccountsUI {
 
 static ProviderPluginProcess *plugin_instance = 0;
@@ -173,7 +174,7 @@ ProviderPluginProcess *ProviderPluginProcess::instance()
     return plugin_instance;
 }
 
-MApplicationPage * ProviderPluginProcess::mainPage()
+QGraphicsWidget *ProviderPluginProcess::mainPage()
 {
     Q_D(ProviderPluginProcess);
     AbstractAccountSetupContext *context = d->context();
@@ -205,15 +206,19 @@ int ProviderPluginProcess::exec()
         return 1;
     }
 
-    d->window->show();
-    MApplicationPage *page = mainPage();
+    QGraphicsWidget *page = mainPage();
 
     if (page == 0) {
         qWarning() << Q_FUNC_INFO << "The mainPage() returned 0";
         return 1;
     }
 
-    page->appear(d->window);
+    d->view = new QDeclarativeView;
+    QGraphicsScene scene;
+    d->view->setScene(&scene);
+    scene.addItem(page);
+    d->view->showFullScreen();
+    d->view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 
     int result = d->application->exec();
     return result;
