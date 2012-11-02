@@ -11,14 +11,13 @@ namespace AccountsUI
 {
 class GenericAccountWidgetPrivate;
 
-class GenericAccountWidget : public QDeclarativeItem
+class GenericAccountWidget : public QGraphicsWidget
 {
     Q_OBJECT
 public:
     explicit GenericAccountWidget(AbstractAccountSetupContext *context);
     ~GenericAccountWidget();
 
-    QGraphicsWidget *widget();
     void setDomDocument(QDomDocument providerAccountDocument);
     QDomDocument domDocument();
     const QString username() const;
@@ -26,6 +25,8 @@ public:
     const QString providerName() const;
     bool rememberMe() const;
     QDeclarativeEngine *engine();
+    QObject *ui();
+    void setUsernameDisplayString(const QString &displayString);
 
 private slots:
     void registerNew();

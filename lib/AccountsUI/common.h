@@ -74,7 +74,8 @@ public:
      * @note This ought to be a blocking call. In the case of displaying
      * a modal dialog, this method must return upon dialog closure only.
      */
-    virtual void displayMessage(const QString &text,
+    virtual void displayMessage(const QObject *ui,
+                                const QString &text,
                                 const ErrorContext errContext = AccountValidationErr,
                                 const QString &providerName = QString::null);
 
@@ -85,7 +86,8 @@ public:
      * @note This ought to be a blocking call. In the case of displaying
      * a modal dialog, this method must return upon dialog closure only.
      */
-    virtual void displayMessage(const int errCode,
+    virtual void displayMessage(const QObject *ui,
+                                const int errCode,
                                 const ErrorContext errContext = AccountValidationErr,
                                 const QString &providerName = QString::null);
 };
@@ -179,8 +181,8 @@ const QString trIdFromSignonError(const int err,
  * version.
  */
 ACCOUNTSUI_EXPORT
-void showInfoBanner(const QString &text,
-                    const MInfoBanner::BannerType type = MInfoBanner::Information,
+void showInfoBanner(const QObject *ui,
+                    const QString &text,
                     const quint32 disapperTimeout = 3000,
                     const QString &feedback = SOUND_INFO);
 #endif

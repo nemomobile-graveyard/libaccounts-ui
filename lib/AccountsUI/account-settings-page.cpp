@@ -393,6 +393,7 @@ AccountSettingsPage::AccountSettingsPage(AbstractAccountSetupContext *context)
     if(content)
         content->setParentItem(d->qmlWidget);
     d->qmlWidget->setMaximumSize(150,150);
+    d->syncHandler->setUIObject(d->qmlObject);
     QMetaObject::invokeMethod(d->qmlObject, "setPage", Q_ARG(QVariant, ""));
     createContent();
 }

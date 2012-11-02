@@ -28,7 +28,6 @@
 #include <AccountsUI/common.h>
 #include <AccountsUI/validation-data.h>
 #include <AccountsUI/generic-account-widget.h>
-#include "genericaccountsetupform.h"
 
 //signon
 #include <SignOn/Identity>
@@ -117,7 +116,6 @@ public:
     void readValidationDataFromXML();
 
 public:
-    GenericAccountSetupForm *genericAccountSetupForm;
     GenericAccountWidget *genericAccountWidget;
 
     IdentityInfo identityInfo;
@@ -367,13 +365,14 @@ QGraphicsWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
 {
     qDebug() << Q_FUNC_INFO;
     Q_D(GenericAccountSetupContext);
+    Q_UNUSED(parent);
 
     if (setupType() == EditExisting)
         return 0;
 
     if (d->genericAccountWidget) {
         qWarning() << Q_FUNC_INFO << "There is an existing widget so it will return this.";
-        return d->genericAccountWidget->widget();
+        return d->genericAccountWidget;
     }
 
     Q_ASSERT(account());
@@ -392,7 +391,7 @@ QGraphicsWidget *GenericAccountSetupContext::widget(QGraphicsItem *parent)
     d->genericAccountWidget = new GenericAccountWidget(this);
     d->genericAccountWidget->setDomDocument(provider.domDocument());
 
-    return d->genericAccountWidget->widget();
+    return d->genericAccountWidget;
 }
 
 QDeclarativeEngine *GenericAccountSetupContext::engine()
@@ -576,14 +575,14 @@ void GenericAccountSetupContext::authSessionError(const SignOn::Error &err)
             qtTrId(provider.displayName().toLatin1().constData());
 
         if (d->errDisplayHelper != 0) {
-            d->errDisplayHelper->displayMessage(err.type(),
+            d->errDisplayHelper->displayMessage(d->genericAccountWidget->ui(), err.type(),
                 ErrorMessageDisplayHelper::AccountValidationErr, providerName);
         } else {
             QString errText =
                 trIdFromSignonError((SignonErrType)err.type(),
                                     providerName,
                                     d->errTrHelper);
-            showInfoBanner(errText);
+            showInfoBanner(d->genericAccountWidget->ui(), errText);
         }
     }
 
@@ -614,7 +613,7 @@ void GenericAccountSetupContext::storeCredentialsError(const SignOn::Error &err)
     Q_D(GenericAccountSetupContext);
 
     qDebug() << "Error :" << err.type() << ":" << err.message();
-    showInfoBanner(trIdFromSignonError(Error::StoreFailed));
+    showInfoBanner(d->genericAccountWidget->ui(), trIdFromSignonError(Error::StoreFailed));
 
     d->contextIsValidated = false;
 

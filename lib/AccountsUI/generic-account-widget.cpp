@@ -48,7 +48,6 @@ public:
     QString providerName;
     CredentialWidgetModel *widgetModel;
     CredentialWidget *credentialWidget;
-    QGraphicsWidget *widget;
     QGraphicsLinearLayout *layout;
     bool accountValidationInProgress;
     QString username;
@@ -129,8 +128,6 @@ void GenericAccountWidgetPrivate::createUiFromXml(const QDomDocument &aProviderA
 
     QObject::connect(widgetModel, SIGNAL(signInClicked()),
                      q_ptr , SLOT(signIn()));
-    QObject::connect(widgetModel, SIGNAL(modified(QList<const char*>)),
-                     q_ptr, SLOT(updateModel(QList<const char*>)));
 
     credentialWidget = new CredentialWidget(widgetModel);
     QObject::connect(credentialWidget, SIGNAL(doSignIn()),
@@ -166,7 +163,6 @@ GenericAccountWidget::GenericAccountWidget(AbstractAccountSetupContext *context)
             SIGNAL(error(AccountsUI::ErrorCode, const QString&)),
             SLOT(errorSlot()));
 
-    d->widget = new QGraphicsWidget(this);
     d->layout = new QGraphicsLinearLayout();
     d->layout->setOrientation(Qt::Vertical);
 
@@ -206,25 +202,19 @@ GenericAccountWidget::GenericAccountWidget(AbstractAccountSetupContext *context)
 
     d->layout->addItem(d->qmlWidget);
     d->layout->setItemSpacing(0, 50);
-    d->widget->setLayout(d->layout);
+    setLayout(d->layout);
 }
 
 GenericAccountWidget::~GenericAccountWidget()
 {
 }
 
-QGraphicsWidget *GenericAccountWidget::widget()
-{
-    //To be called once the domDocument is set
-    Q_D(GenericAccountWidget);
-    d->createUiFromXml(d->providerAccountDocument);
-    return d->widget;
-}
-
 void GenericAccountWidget::setDomDocument(QDomDocument providerAccountDocument)
 {
     Q_D(GenericAccountWidget);
     d->providerAccountDocument = providerAccountDocument;
+    //call the ui after domdocument is set
+    d->createUiFromXml(d->providerAccountDocument);
 }
 
 QDomDocument GenericAccountWidget::domDocument()
@@ -279,6 +269,18 @@ QDeclarativeEngine *GenericAccountWidget::engine()
     return d->engine;
 }
 
+QObject *GenericAccountWidget::ui()
+{
+    Q_D(const GenericAccountWidget);
+    return d->qmlObject;
+}
+
+void GenericAccountWidget::setUsernameDisplayString(const QString &displayString)
+{
+    Q_D(const GenericAccountWidget);
+    d->credentialWidget->setUsernameDisplayString(displayString);
+}
+
 void GenericAccountWidget::registerNew()
 {
     Q_D(GenericAccountWidget);
@@ -297,14 +299,14 @@ void GenericAccountWidget::signIn()
     Q_D(GenericAccountWidget);
     if (d->widgetModel->username().isEmpty()) {
         //% "Fill in username"
-        showInfoBanner(qtTrId("qtn_acc_fill_in_username_infobanner"));
+        showInfoBanner(d->qmlObject, "Fill in username");
         d->credentialWidget->setFocusOnUserNameField();
         return;
     }
 
     if (!d->doNotShowPassword && d->widgetModel->password().isEmpty()) {
         //% "Fill in password"
-        showInfoBanner(qtTrId("qtn_acc_fill_in_password_infobanner"));
+        showInfoBanner(d->qmlObject, "Fill in password");
         d->credentialWidget->setFocusOnPasswordField();
         return;
     }
