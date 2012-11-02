@@ -41,6 +41,7 @@ public:
     int storeLocks;
     bool validateError;
     bool storeError;
+    QObject *ui;
 };
 
 AccountSyncHandler::AccountSyncHandler( QObject *parent)
@@ -159,7 +160,7 @@ void AccountSyncHandler::onContextValidateError(AccountsUI::ErrorCode code,
 
         qDebug() << errMessage;
 
-        showInfoBanner(errMessage);
+        showInfoBanner(d->ui, errMessage);
 
         releaseValidateLock(serviceContext);
 
@@ -167,7 +168,7 @@ void AccountSyncHandler::onContextValidateError(AccountsUI::ErrorCode code,
     }
 
     AbstractSetupContext *context = qobject_cast<AbstractSetupContext *>(QObject::sender());
-    showInfoBanner(message);
+    showInfoBanner(d->ui, message);
 
     qDebug() << message;
     releaseValidateLock(context);
@@ -191,6 +192,12 @@ void AccountSyncHandler::store(QList<AbstractSetupContext*> contexts)
                 this, SLOT(onContextError(AccountsUI::ErrorCode, const QString &)), Qt::UniqueConnection);
         context->store();
     }
+}
+
+void AccountSyncHandler::setUIObject(QObject *ui)
+{
+    Q_D(AccountSyncHandler);
+    d->ui = ui;
 }
 
 void AccountSyncHandler::onContextStored()
@@ -219,7 +226,7 @@ void AccountSyncHandler::onContextError(AccountsUI::ErrorCode code,
 
     qDebug() << message;
 
-    showInfoBanner(errMessage);
+    showInfoBanner(d->ui, errMessage);
 
     releaseStoreLock(context);
 }

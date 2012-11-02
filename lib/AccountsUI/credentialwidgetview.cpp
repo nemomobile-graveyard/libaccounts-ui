@@ -551,14 +551,14 @@ void CredentialWidgetView::recreateWidgets()
             d->passwordTextEdit->setText(model()->password());
             connect(d->passwordTextEdit, SIGNAL(gainedFocus(Qt::FocusReason)),
                     this, SLOT(passwordTextEditGainedFocus()));
-            connect(d->passwordTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
+            connect(d->passwordTextEdit, SIGNAL(textChanged()),
                     this, SLOT(refreshPasswordInModel()));
             connect(d->passwordTextEdit, SIGNAL(textChanged()),
                     this, SLOT(onPasswordTextChanged()));
         }
 
         if (d->usernameTextEdit) {
-            connect(d->usernameTextEdit, SIGNAL(lostFocus(Qt::FocusReason)),
+            connect(d->usernameTextEdit, SIGNAL(textChanged()),
                     this, SLOT(refreshUsernameInModel()));
             connect(d->usernameTextEdit, SIGNAL(gainedFocus (Qt::FocusReason)),
                     this, SLOT(usernameTextEditGainedFocus()));

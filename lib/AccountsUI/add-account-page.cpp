@@ -28,7 +28,7 @@
 #include "sort-service-model.h"
 #include "provider-plugin-process.h"
 #include "account-sync-handler.h"
-#include "genericaccountsetupform.h"
+#include "generic-account-widget.h"
 #include "account-setup-finished-page.h"
 #include "last-page-actions.h"
 
@@ -150,7 +150,7 @@ AccountSyncHandler *AddAccountPage::accountSyncHandler()
 void AddAccountPage::setUsernameDisplayString(const QString &displayString)
 {
     Q_D(AddAccountPage);
-    ((GenericAccountSetupForm*)d->pluginWidget)->setUsernameDisplayString(displayString);
+    ((GenericAccountWidget*)d->pluginWidget)->setUsernameDisplayString(displayString);
 }
 
 void AddAccountPage::navigateToServiceSelectionPage()
@@ -168,12 +168,13 @@ void AddAccountPage::navigateToServiceSelectionPage()
                 "selectServiceModel", serviceModel);
 
     d->serviceContextList = ServiceModel::createServiceContexts(sortModel, d->context, this);
-
+    GenericAccountWidget *widget = (GenericAccountWidget*)d->pluginWidget;
     if (d->serviceContextList.count() == 0 ||
         (d->serviceContextList.count() == 1 &&
         !d->serviceContextList.at(0)->hasMandatorySettings())) {
 
         d->syncHandler = new AccountSyncHandler(this);
+        d->syncHandler->setUIObject(widget->ui());
         connect(d->syncHandler, SIGNAL(syncStateChanged(const SyncState&)),
                 this, SLOT(onSyncStateChanged(const SyncState&)));
         d->context->account()->selectService();

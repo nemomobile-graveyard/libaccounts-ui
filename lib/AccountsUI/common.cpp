@@ -23,7 +23,7 @@
 #include "common.h"
 
 #include <MBanner>
-#include <MNGFClient>
+//#include <MNGFClient>
 
 #include <QSystemDeviceInfo>
 #include <QSystemInfo>
@@ -104,7 +104,8 @@ const QString trIdFromSignonError(const SignOn::Error::ErrorType err,
 }
 
 void
-ErrorMessageDisplayHelper::displayMessage(const QString &text,
+ErrorMessageDisplayHelper::displayMessage(const QObject *ui,
+                                          const QString &text,
                                           const ErrorContext errContext,
                                           const QString &providerName)
 {
@@ -118,35 +119,35 @@ ErrorMessageDisplayHelper::displayMessage(const QString &text,
     case AccountSavingErr:
         /* fall through */
     default:
-        showInfoBanner(text); break;
+        showInfoBanner(ui, text); break;
     }
 }
 
 void
-ErrorMessageDisplayHelper::displayMessage(const int errCode,
+ErrorMessageDisplayHelper::displayMessage(const QObject *ui,
+                                          const int errCode,
                                           const ErrorContext errContext,
                                           const QString &providerName)
 {
     const QString text = trIdFromSignonError(errCode);
-    displayMessage(text, errContext, providerName);
+    displayMessage(ui, text, errContext, providerName);
 }
 
-void showInfoBanner(const QString &text,
-                    const MInfoBanner::BannerType type,
+void showInfoBanner(const QObject *ui,
+                    const QString &text,
                     const quint32 disapperTimeout,
                     const QString &feedback)
 {
-    Q_UNUSED(type);
     Q_UNUSED(disapperTimeout);
 
-    MBanner *banner = new MBanner();
-    banner->setStyleName("InformationBanner");
-    banner->setTitle(text);
-    banner->appear(MSceneWindow::DestroyWhenDone);
+    QObject *qmlObject = const_cast<QObject*>(ui);
+    QMetaObject::invokeMethod(qmlObject, "showInfoBanner", Q_ARG(QVariant, text));
+    /*
     if (!feedback.isEmpty()) {
         MNGFClient m_NgfClient;
         m_NgfClient.playEvent(feedback);
     }
+    */
 }
 
 const QString productNameTr()

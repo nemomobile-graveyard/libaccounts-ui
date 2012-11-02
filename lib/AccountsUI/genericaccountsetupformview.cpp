@@ -462,15 +462,16 @@ void GenericAccountSetupFormView::signIn()
     Q_D(GenericAccountSetupFormView);
 
     if (d->widgetModel->username().isEmpty()) {
+        //This page we will remove later
         //% "Fill in username"
-        showInfoBanner(qtTrId("qtn_acc_fill_in_username_infobanner"));
+//        showInfoBanner(qtTrId("qtn_acc_fill_in_username_infobanner"));
         d->credentialWidget->setFocusOnUserNameField();
         return;
     }
 
     if (!d->doNotShowPassword && d->widgetModel->password().isEmpty()) {
         //% "Fill in password"
-        showInfoBanner(qtTrId("qtn_acc_fill_in_password_infobanner"));
+//        showInfoBanner(qtTrId("qtn_acc_fill_in_password_infobanner"));
         d->credentialWidget->setFocusOnPasswordField();
         return;
     }

@@ -77,6 +77,12 @@ public:
      */
     void store(QList<AbstractSetupContext*> contexts);
 
+    /*!
+     * Sets the qml ui element to show any InfoBanner
+     */
+
+    void setUIObject(QObject *ui);
+
 signals:
     /*!
      * Emits when process of validating and storing has changed the state
